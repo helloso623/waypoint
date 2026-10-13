@@ -6,7 +6,7 @@
 ; so removing and reinstalling never loses their tasks.
 
 #define AppName "Waypoint"
-#define AppVersion "1.0.0"
+#define AppVersion "1.0.1"
 
 [Setup]
 AppId={{6B4398A7-A1FF-4E0A-8C25-BCE553DBCE41}
