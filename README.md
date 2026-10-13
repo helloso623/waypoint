@@ -127,3 +127,10 @@ When run from a git checkout, Waypoint can commit **Napkin** feedback notes to `
 `plan/ISSUES.md` as a running improvement list. Notes marked private never leave the machine, and
 IPs, email addresses, user paths and API keys are masked before anything is written to those files.
 The installed app has this turned off.
+
+---
+
+## License
+
+[MIT](LICENSE): free to use, modify and share, as long as the copyright notice stays with it.
+Provided as is, with no warranty.
