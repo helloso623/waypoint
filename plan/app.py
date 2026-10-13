@@ -82,7 +82,7 @@ import school_sync
 import workflow
 from categories import METRICS
 
-PLAN_PATH = Path(__file__).parent / "obsidian_vault" / "Project Plan.md"
+PLAN_PATH = personal_data.vault_path() / "Project Plan.md"
 COMMAND_TIMEOUT_SECONDS = 120
 GIT_UPDATE_TIMEOUT_SECONDS = 60
 

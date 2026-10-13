@@ -11,9 +11,10 @@ from pathlib import Path
 
 import ai
 import db
+import personal_data
 import model_roles
 
-VAULT_PATH = Path(__file__).parent / "obsidian_vault" / "Token Budget.md"
+VAULT_PATH = personal_data.vault_path() / "Token Budget.md"
 
 EXPENSIVE_CLAUDE_MARKERS = ("opus", "sonnet", "claude")
 

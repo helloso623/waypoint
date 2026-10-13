@@ -126,7 +126,7 @@
     const overlay = document.createElement("div");
     overlay.id = "waypoint-egg-overlay";
     overlay.className = "waypoint-egg-overlay";
-    overlay.innerHTML = `<button type="button" class="waypoint-egg-star" aria-label="Dismiss secret"><svg class="ws-mark wp-tile-mark" viewBox="0 0 96 96" width="22" height="22" aria-hidden="true"><path d="M48 16 L84 76 H12 Z" fill="#e84a2f" fill-opacity="0.22" stroke="#c9a227" stroke-width="5.5" stroke-linejoin="round"/><path d="M48 34 L64 64 H32 Z" fill="#e84a2f"/><circle cx="48" cy="18" r="7.5" fill="#e84a2f"/></svg></button><p>${escapeText(meta.name)}</p><small>${escapeText(message)}</small>`;
+    overlay.innerHTML = `<button type="button" class="waypoint-egg-star" aria-label="Dismiss secret"><svg class="ws-mark wp-tile-mark" viewBox="0 0 96 96" width="22" height="22" aria-hidden="true"><defs><linearGradient id="wp-egg-mark" x1="48" y1="40" x2="48" y2="61" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#c44226"/><stop offset="1" stop-color="#d3ba46"/></linearGradient></defs><rect x="5" y="5" width="86" height="86" rx="24" fill="#17181a" stroke="#2a2c30" stroke-width="2"/><path d="M27.5 61 L48 40 L68 61" fill="none" stroke="url(#wp-egg-mark)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="27.5" cy="61" r="6" fill="#d3ba46"/><circle cx="68" cy="61" r="6" fill="#b9a13a"/><circle cx="48" cy="40" r="8" fill="#c44226"/></svg></button><p>${escapeText(meta.name)}</p><small>${escapeText(message)}</small>`;
     overlay.onclick = () => overlay.remove();
     document.body.appendChild(overlay);
     window.setTimeout(() => overlay.remove(), 3200);

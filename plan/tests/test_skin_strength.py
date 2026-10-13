@@ -288,7 +288,11 @@ class SkinOverlapContracts(unittest.TestCase):
         self.assertNotIn("wp-brand-rim", brand)
         self.assertNotIn('id="brand-rim"', brand)
         self.assertNotIn("wp-brand-plate", brand)
-        self.assertIn("wp-brand-peak", brand)
+        # The mark matches the desktop icon (Waypoint.ico): a node with two routes down to
+        # dots. The old filled triangle (wp-brand-peak) must not come back -- skin CSS fills
+        # that class solid.
+        self.assertNotIn("wp-brand-peak", brand)
+        self.assertIn("wp-brand-route", brand)
         self.assertIn("wp-brand-core", brand)
         self.assertIn("wp-brand-jewel", brand)
         self.assertIn('rx="24"', brand)

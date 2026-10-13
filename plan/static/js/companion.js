@@ -2033,7 +2033,7 @@
     launcher.title = "AI companion";
     launcher.setAttribute("aria-label", "Open AI companion");
     launcher.setAttribute("aria-expanded", "false");
-    launcher.innerHTML = `<span class="companion-launcher-orb" aria-hidden="true"><svg class="ws-mark wp-tile-mark" viewBox="0 0 96 96" width="28" height="28"><defs><linearGradient id="wp-companion-mark" x1="8" y1="88" x2="88" y2="8"><stop offset="0" stop-color="#c9a227"/><stop offset="1" stop-color="#e84a2f"/></linearGradient></defs><rect x="6" y="6" width="84" height="84" rx="26" fill="url(#wp-companion-mark)" fill-opacity="0.18"/><path d="M48 16 L84 76 H12 Z" fill="url(#wp-companion-mark)" fill-opacity="0.22" stroke="url(#wp-companion-mark)" stroke-width="5.5" stroke-linejoin="round"/><path d="M48 34 L64 64 H32 Z" fill="#e84a2f"/><circle cx="48" cy="18" r="7.5" fill="#e84a2f"/></svg></span>`;
+    launcher.innerHTML = `<span class="companion-launcher-orb" aria-hidden="true"><svg class="ws-mark wp-tile-mark" viewBox="0 0 96 96" width="28" height="28" aria-hidden="true"><defs><linearGradient id="wp-companion-mark" x1="48" y1="40" x2="48" y2="61" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#c44226"/><stop offset="1" stop-color="#d3ba46"/></linearGradient></defs><rect x="5" y="5" width="86" height="86" rx="24" fill="#17181a" stroke="#2a2c30" stroke-width="2"/><path d="M27.5 61 L48 40 L68 61" fill="none" stroke="url(#wp-companion-mark)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="27.5" cy="61" r="6" fill="#d3ba46"/><circle cx="68" cy="61" r="6" fill="#b9a13a"/><circle cx="48" cy="40" r="8" fill="#c44226"/></svg></span>`;
     launcher.onclick = togglePanel;
 
     const panel = document.createElement("div");

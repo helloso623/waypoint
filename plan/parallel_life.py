@@ -19,11 +19,14 @@ from pathlib import Path
 
 import ai
 import db
+import personal_data
 
 _PLAN_DIR = Path(__file__).parent
 _DATA_DIR = Path(os.environ["WAYPOINT_DATA_DIR"]) if os.environ.get("WAYPOINT_DATA_DIR") else _PLAN_DIR
 SEED_PATH = _PLAN_DIR / "game_seed.json"
-WORLD_BIBLE_PATH = _PLAN_DIR / "obsidian_vault" / "World Bible.md"
+# The vault lives in WAYPOINT_DATA_DIR since personal content left the checkout; reading
+# plan/obsidian_vault silently found nothing, so the game ran with no canon at all.
+WORLD_BIBLE_PATH = personal_data.vault_path() / "World Bible.md"
 IMAGE_CACHE_DIR = _DATA_DIR / "parallel_images"
 SCENES_DIR = IMAGE_CACHE_DIR / "scenes"
 PORTRAITS_DIR = IMAGE_CACHE_DIR / "portraits"
