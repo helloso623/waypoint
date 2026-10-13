@@ -1,0 +1,875 @@
+/* ═══════════════════════════════════════════════════════════════
+   VOLT RUNNER — a practice-track electrified rail.
+
+   The object: oxidized teal copper with phosphor-lime current.
+   A dark gym, a live third-rail, a contact shoe that snaps on.
+   Motion + charge. Not Thunder Kite (storm-yellow bursts), not
+   Voltage Spine (HUD flicker rail), not Venom (acid ticks).
+
+   Photograph: /img/skins/volt.png · a green spark on verdigris
+   copper, track lanes falling away left. Place: page + home +
+   agent + practice.
+
+   Selectors carry :root so this room outranks bolt-family
+   stencils (hazard tape, steps() flicker, square radius, skew).
+   Never clip #main or .launcher-card. Glyphs may clip.
+   Reduced motion kills sparks.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — lime current on oxidized copper ────────────── */
+
+html[data-player-skin="volt"]:root {
+  color-scheme: dark;
+
+  --volt-gym: #07110f;
+  --volt-well: #04100e;
+  --volt-oxide: #0c2a26;
+  --volt-patina: #134e4a;
+  --volt-copper: #0f766e;
+  --volt-verdigris: #115e59;
+  --volt-metal: #1a3d38;
+  --volt-lime: #a3e635;
+  --volt-hot: #d9f99d;
+  --volt-arc: #ecfccb;
+  --volt-ink: #e8f5d8;
+  --volt-ink-2: #b7c9b0;
+  --volt-mute: #7a9188;
+
+  /* Contact-shoe radius: hard mount left, traveling edge right.
+     Not 0 (bolt family), not 42/48%. */
+  --volt-shoe: 4px 22px 13px 5px;
+  --volt-shoe-md: 3px 18px 10px 4px;
+  --volt-shoe-sm: 3px 14px 8px 3px;
+  --volt-shoe-ctl: 3px 16px 9px 4px;
+  --volt-booth: 8px 8px 3px 3px;
+
+  --bg-shell: #07110f;
+  --bg-content: #0a1a17;
+  --bg-card: #0f2c28;
+  --bg-card-hover: #143833;
+  --ink-primary: #e8f5d8;
+  --ink-secondary: #b7c9b0;
+  --ink-muted: #7a9188;
+  --border: rgba(163, 230, 53, 0.18);
+  --gridline: rgba(15, 118, 110, 0.22);
+  --accent: #a3e635;
+  --ws-accent: #a3e635;
+  --accent-ink: #05211c;
+
+  --skin-a: #a3e635;
+  --skin-b: #0f766e;
+  --at-a: #a3e635;
+  --at-b: #0f766e;
+  --feel-a: #a3e635;
+  --feel-b: #0f766e;
+  --feel-accent: #a3e635;
+  --feel-ground: #07110f;
+  --feel-paper: #0f2c28;
+  --feel-ink: #e8f5d8;
+
+  --at-plate: #0f2c28;
+  --at-plate-2: #143833;
+  --at-well: #04100e;
+  --at-ink: #e8f5d8;
+  --at-ink-2: #b7c9b0;
+  --at-ink-3: #7a9188;
+  --at-hair: rgba(163, 230, 53, 0.16);
+  --at-hair-2: rgba(163, 230, 53, 0.32);
+  --at-hair-a: rgba(163, 230, 53, 0.55);
+  --at-focus: 0 0 0 2px #a3e635;
+  --glow-accent: rgba(163, 230, 53, 0.22);
+  --glow-violet: rgba(15, 118, 110, 0.18);
+
+  --at-r-plate: var(--volt-shoe);
+  --at-r-card: var(--volt-shoe-md);
+  --at-r-ctl: var(--volt-shoe-ctl);
+  --at-r-chip: var(--volt-shoe-sm);
+  --at-r-cell: 3px 12px 7px 3px;
+
+  --at-font-display: "Barlow Condensed", "DIN Alternate", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --at-font-ui: "Barlow Condensed", "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--at-font-display);
+  --font-ui: var(--at-font-ui);
+
+  /* Copper depth, not bolt's black outline + offset. */
+  --feel-3d:
+    inset 0 1px 0 rgba(236, 252, 203, 0.14),
+    0 3px 0 #042f2e,
+    0 10px 22px rgba(2, 12, 11, 0.48);
+  --feel-3d-press:
+    inset 0 2px 6px rgba(2, 12, 11, 0.55),
+    0 1px 0 #042f2e;
+
+  /* Longitudinal rail grooves — along the track, not 90° flicker stripes. */
+  --feel-grain-opacity: 0.38;
+  --feel-grain-blend: overlay;
+  --feel-grain:
+    repeating-linear-gradient(180deg, transparent 0 5px, rgba(15, 118, 110, 0.16) 5px 6px),
+    radial-gradient(circle at 62% 48%, rgba(163, 230, 53, 0.06), transparent 42%);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 0;
+  --feel-icon: contrast(1.08) saturate(1.12) drop-shadow(0 0 4px rgba(163, 230, 53, 0.45));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.16em;
+  --feel-plate-image: linear-gradient(90deg, rgba(163, 230, 53, 0.1), transparent 28%);
+}
+
+/* ── 2 · Photograph — gym, rail receding, one spark ──────────── */
+
+html[data-player-skin="volt"]:root body {
+  background-color: #07110f !important;
+  background-image:
+    linear-gradient(90deg, rgba(4, 16, 14, 0.72) 0%, rgba(4, 16, 14, 0.22) 42%, rgba(7, 17, 15, 0.58) 100%),
+    url("/img/skins/volt.png") !important;
+  background-position: center, 58% 46% !important;
+  background-size: cover, cover !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  color: var(--volt-ink);
+  text-shadow: none;
+  animation: none;
+}
+
+/* Oxidized patina — still. Current lives on the rail, not the air. */
+html[data-player-skin="volt"]:root body::before {
+  opacity: 0.22 !important;
+  background-image:
+    radial-gradient(ellipse 28% 12% at 64% 52%, rgba(163, 230, 53, 0.18), transparent 70%),
+    repeating-linear-gradient(180deg, transparent 0 7px, rgba(4, 16, 14, 0.35) 7px 8px) !important;
+  background-size: cover, auto !important;
+  animation: none !important;
+}
+
+/* Kill volt-effect / bolt-family steps() flicker. Grain only. */
+html[data-player-skin="volt"]:root body::after {
+  opacity: 0.28;
+  mix-blend-mode: soft-light;
+  animation: none !important;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 6px, rgba(15, 118, 110, 0.2) 6px 7px),
+    linear-gradient(180deg, transparent 62%, rgba(4, 16, 14, 0.45) 100%);
+}
+
+html[data-player-skin="volt"]:root #main {
+  isolation: isolate;
+  position: relative;
+  clip-path: none;
+  overflow: visible;
+  background: linear-gradient(180deg, rgba(7, 17, 15, 0.2), rgba(7, 17, 15, 0.52) 74%, rgba(4, 16, 14, 0.68)) !important;
+}
+
+html[data-player-skin="volt"]:root #main::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 12%;
+  bottom: 8%;
+  height: 3px;
+  z-index: 0;
+  border: 0;
+  border-radius: 0 8px 8px 0;
+  background: linear-gradient(90deg, transparent, rgba(15, 118, 110, 0.55) 18%, rgba(163, 230, 53, 0.55) 72%, transparent);
+  box-shadow: 0 0 16px rgba(163, 230, 53, 0.18);
+  animation: room-volt-current 3.6s linear infinite;
+  background-size: 220% 100%;
+}
+
+html[data-player-skin="volt"]:root #main::after {
+  animation: none !important;
+  background: none;
+  clip-path: none;
+}
+
+/* ── 3 · HUD · copper fascia, live rail along the lip ────────── */
+
+html[data-player-skin="volt"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  color: var(--volt-ink);
+  border-bottom: 0;
+  border-image: none;
+  border-radius: 0 0 4px 4px;
+  backdrop-filter: none;
+  background:
+    linear-gradient(180deg, rgba(236, 252, 203, 0.06), transparent 28%),
+    repeating-linear-gradient(180deg, #143833 0 6px, #0c2a26 6px 7px),
+    #0f2c28;
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.08),
+    0 3px 0 #0f766e,
+    0 4px 0 #a3e635,
+    0 16px 32px rgba(2, 12, 11, 0.5);
+}
+
+html[data-player-skin="volt"]:root .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 8%;
+  right: 6%;
+  bottom: -4px;
+  height: 3px;
+  z-index: 2;
+  border-radius: 2px 12px 12px 2px;
+  background: linear-gradient(90deg, #115e59 0%, #a3e635 22%, #ecfccb 50%, #a3e635 78%, #0f766e 100%);
+  background-size: 180% 100%;
+  box-shadow: 0 0 12px rgba(163, 230, 53, 0.55), 0 10px 22px rgba(163, 230, 53, 0.18);
+  animation: room-volt-current 2.8s linear infinite;
+}
+
+html[data-player-skin="volt"]:root .top-hud > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-player-skin="volt"]:root .hud-app-name,
+html[data-player-skin="volt"]:root .launcher-title,
+html[data-player-skin="volt"]:root .page-title {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--volt-ink);
+  color: var(--volt-ink);
+  font-family: var(--at-font-display);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 #04100e;
+}
+
+html[data-player-skin="volt"]:root .hud-app-name::before {
+  content: "⌁ ";
+  color: #a3e635;
+  text-shadow: 0 0 8px rgba(163, 230, 53, 0.7);
+}
+
+html[data-player-skin="volt"]:root .hud-app-name::after {
+  content: none !important;
+  animation: none !important;
+}
+
+html[data-player-skin="volt"]:root .hud-intention,
+html[data-player-skin="volt"]:root .hud-now-focus-kicker {
+  color: var(--volt-mute);
+  letter-spacing: 0.08em;
+}
+
+/* Brand jewel is the ceramic insulator the rail threads. */
+html[data-player-skin="volt"]:root .hud-brand-jewel,
+html[data-player-skin="volt"]:root .hud-glyph-btn {
+  position: relative;
+  isolation: isolate;
+  border-radius: 14px 4px 14px 4px;
+  border: 1px solid #115e59;
+  background:
+    linear-gradient(180deg, #1a3d38, #0c2a26);
+  box-shadow: inset 0 1px 0 rgba(236, 252, 203, 0.12), 0 0 0 1px rgba(163, 230, 53, 0.2);
+  transform: none;
+}
+
+html[data-player-skin="volt"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  right: -7px;
+  width: 9px;
+  height: 9px;
+  border-radius: 1px 6px 1px 6px;
+  background: radial-gradient(circle at 40% 40%, #ecfccb, #a3e635 55%, #65a30d);
+  box-shadow: 0 0 10px rgba(163, 230, 53, 0.85);
+  transform: translateY(-50%);
+  animation: room-volt-charge 2.4s ease-in-out infinite;
+}
+
+html[data-player-skin="volt"]:root .top-hud :is(
+  .hud-icon-btn,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-chip,
+  .hud-game-cluster,
+  .hud-game-chip,
+  .hud-model-chip--status,
+  .hud-agent-chip,
+  .loot-profile-chip
+) {
+  color: var(--volt-ink);
+  border: 1px solid rgba(163, 230, 53, 0.22);
+  border-radius: var(--volt-shoe-sm);
+  background: #0c2a26;
+  box-shadow: inset 3px 0 0 #0f766e;
+  animation: none;
+}
+
+html[data-player-skin="volt"]:root .hud-status-pill::before,
+html[data-player-skin="volt"]:root .top-hud .hud-agent-chip::before {
+  border-radius: 1px 4px 1px 4px;
+  background: #a3e635;
+  animation: none !important;
+  box-shadow: 0 0 8px rgba(163, 230, 53, 0.6);
+}
+
+html[data-player-skin="volt"]:root .brand-mark,
+html[data-player-skin="volt"]:root .ws-mark,
+html[data-player-skin="volt"]:root .hud-icon-svg,
+html[data-player-skin="volt"]:root .tab-chip-mark,
+html[data-player-skin="volt"]:root .wp-skin-mark {
+  image-rendering: auto;
+  filter: var(--feel-icon);
+  animation: none !important;
+}
+
+/* ── 4 · Chips · insulators; spark once on hover ─────────────── */
+
+html[data-player-skin="volt"]:root .tab-chip-bar {
+  background: rgba(4, 16, 14, 0.94);
+  border-bottom: 1px solid rgba(15, 118, 110, 0.28);
+  backdrop-filter: none;
+}
+
+html[data-player-skin="volt"]:root .tab-chip,
+html[data-player-skin="volt"]:root .pill,
+html[data-player-skin="volt"]:root .seg-pill-btn,
+html[data-player-skin="volt"]:root .pln-mode-chip {
+  border: 1px solid rgba(15, 118, 110, 0.35);
+  border-radius: var(--volt-shoe-sm);
+  background: #0c2a26;
+  color: #b7c9b0;
+  font-family: var(--at-font-display);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: inset 3px 0 0 #115e59;
+}
+
+html[data-player-skin="volt"]:root .tab-chip:hover:not(.active),
+html[data-player-skin="volt"]:root .pill:hover:not(.active):not([aria-pressed="true"]),
+html[data-player-skin="volt"]:root .seg-pill-btn:hover:not([aria-pressed="true"]) {
+  background: #134e4a;
+  border-color: rgba(163, 230, 53, 0.4);
+  color: var(--volt-ink);
+  transform: none;
+  animation: room-volt-spark 0.32s ease-out 1;
+}
+
+html[data-player-skin="volt"]:root .tab-chip.active,
+html[data-player-skin="volt"]:root .pill.active,
+html[data-player-skin="volt"]:root .pill[aria-pressed="true"] {
+  color: #05211c;
+  background:
+    linear-gradient(90deg, #d9f99d, #a3e635 55%, #65a30d);
+  border-color: #a3e635;
+  box-shadow:
+    inset 3px 0 0 #ecfccb,
+    0 0 12px rgba(163, 230, 53, 0.28);
+}
+
+html[data-player-skin="volt"]:root .tab-chip.active .tab-chip-mark {
+  color: #05211c;
+}
+
+/* ── 5 · Launcher · copper shoes riding the rail ─────────────── */
+
+html[data-player-skin="volt"]:root .launcher-card {
+  overflow: visible;
+  outline: none;
+  clip-path: none;
+  transform: none;
+  border: 1px solid rgba(15, 118, 110, 0.32);
+  border-radius: var(--volt-shoe);
+  background:
+    linear-gradient(90deg, rgba(163, 230, 53, 0.1), transparent 22%),
+    repeating-linear-gradient(180deg, transparent 0 7px, rgba(4, 16, 14, 0.28) 7px 8px),
+    #0f2c28 !important;
+  color: var(--volt-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.08),
+    0 3px 0 #042f2e,
+    0 16px 30px rgba(2, 12, 11, 0.4);
+}
+
+html[data-player-skin="volt"]:root .launcher-card-name,
+html[data-player-skin="volt"]:root .launcher-card-intention,
+html[data-player-skin="volt"]:root .launcher-tile-name {
+  color: inherit;
+}
+
+/* Live rail on the shoe — current travels, does not strobe. */
+html[data-player-skin="volt"]:root .launcher-card::before {
+  left: 14px;
+  top: 12px;
+  width: 36px;
+  height: 3px;
+  border-radius: 1px 8px 8px 1px;
+  background: linear-gradient(90deg, #0f766e, #a3e635 40%, #ecfccb 70%, #a3e635);
+  background-size: 180% 100%;
+  box-shadow: 0 0 10px rgba(163, 230, 53, 0.5);
+  animation: room-volt-current 3.2s linear infinite;
+}
+
+html[data-player-skin="volt"]:root .launcher-card:hover,
+html[data-player-skin="volt"]:root .launcher-card--focused {
+  transform: translateX(4px);
+  border-color: rgba(163, 230, 53, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.12),
+    0 3px 0 #042f2e,
+    0 0 0 1px rgba(163, 230, 53, 0.18),
+    0 18px 34px rgba(2, 12, 11, 0.48);
+}
+
+html[data-player-skin="volt"]:root .card,
+html[data-player-skin="volt"]:root .hub-card,
+html[data-player-skin="volt"]:root .pln-rail-card,
+html[data-player-skin="volt"]:root .evt-card,
+html[data-player-skin="volt"]:root .tsk-row,
+html[data-player-skin="volt"]:root .page-intent {
+  border: 1px solid rgba(15, 118, 110, 0.28);
+  border-radius: var(--volt-shoe-md);
+  background:
+    linear-gradient(90deg, rgba(163, 230, 53, 0.06), transparent 26%),
+    #0f2c28;
+  color: var(--volt-ink);
+  box-shadow: inset 0 1px 0 rgba(236, 252, 203, 0.05), 0 10px 24px rgba(2, 12, 11, 0.28);
+}
+
+/* Glyph: ceramic insulator, copper rail through the waist. */
+html[data-player-skin="volt"]:root .launcher-card-glyph,
+html[data-player-skin="volt"]:root .launcher-tile-glyph,
+html[data-player-skin="volt"]:root .loot-skin-avatar,
+html[data-player-skin="volt"]:root .nav-app-glyph,
+html[data-player-skin="volt"]:root .launcher-custom-app-emoji {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid #115e59;
+  border-radius: 0;
+  transform: none;
+  color: #05211c;
+  background:
+    linear-gradient(180deg, transparent 38%, #a3e635 44%, #ecfccb 50%, #a3e635 56%, transparent 62%),
+    linear-gradient(145deg, #1a5c56 0%, #0f766e 40%, #115e59 70%, #042f2e);
+  box-shadow: 0 0 14px rgba(163, 230, 53, 0.35), inset 0 1px 0 rgba(236, 252, 203, 0.28);
+  clip-path: polygon(28% 0, 72% 0, 100% 28%, 100% 72%, 72% 100%, 28% 100%, 0 72%, 0 28%);
+}
+
+html[data-player-skin="volt"]:root .launcher-card-glyph svg,
+html[data-player-skin="volt"]:root .launcher-tile-glyph svg {
+  filter: brightness(0.18) contrast(1.25);
+}
+
+html[data-player-skin="volt"]:root .launcher-card-glyph::after,
+html[data-player-skin="volt"]:root .launcher-tile-glyph::after {
+  content: "⌁";
+  position: absolute;
+  right: -5px;
+  bottom: -4px;
+  display: grid;
+  width: 14px;
+  height: 14px;
+  place-items: center;
+  border-radius: 1px 6px 1px 6px;
+  background: #04100e;
+  color: #a3e635;
+  font: 800 11px/1 var(--at-font-display), sans-serif;
+  box-shadow: 0 0 8px rgba(163, 230, 53, 0.55);
+}
+
+/* ── 6 · Buttons · contact shoe snaps onto the rail ──────────── */
+
+html[data-player-skin="volt"]:root button.primary,
+html[data-player-skin="volt"]:root .primary,
+html[data-player-skin="volt"]:root .page-intent-primary,
+html[data-player-skin="volt"]:root .agent-pane-chat .agc-send {
+  border: 1px solid rgba(163, 230, 53, 0.55);
+  border-radius: var(--volt-shoe-ctl);
+  background:
+    linear-gradient(180deg, rgba(236, 252, 203, 0.18), transparent 36%),
+    linear-gradient(90deg, #a3e635, #bef264 48%, #65a30d);
+  color: #05211c;
+  font-family: var(--at-font-display);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(236, 252, 203, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.4),
+    0 3px 0 #3f6212,
+    0 8px 16px rgba(163, 230, 53, 0.18);
+  transition: transform 80ms cubic-bezier(0.2, 0.85, 0.25, 1), box-shadow 80ms ease, filter 80ms ease;
+  animation: none;
+}
+
+html[data-player-skin="volt"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="volt"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateX(2px);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.5),
+    0 3px 0 #3f6212,
+    0 0 16px rgba(163, 230, 53, 0.35);
+}
+
+html[data-player-skin="volt"]:root button.primary:active:not(:disabled),
+html[data-player-skin="volt"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translateY(3px) translateX(1px);
+  box-shadow: inset 0 2px 6px rgba(5, 33, 28, 0.35), 0 1px 0 #3f6212;
+  animation: room-volt-snap 0.18s ease-out 1;
+}
+
+html[data-player-skin="volt"]:root button.secondary,
+html[data-player-skin="volt"]:root .ghost-btn {
+  border: 1px solid rgba(15, 118, 110, 0.45);
+  border-radius: var(--volt-shoe-ctl);
+  background: #0c2a26;
+  color: #b7c9b0;
+}
+
+html[data-player-skin="volt"]:root button.secondary:hover:not(:disabled),
+html[data-player-skin="volt"]:root .ghost-btn:hover:not(:disabled) {
+  border-color: rgba(163, 230, 53, 0.45);
+  color: var(--volt-ink);
+  animation: room-volt-spark 0.28s ease-out 1;
+}
+
+html[data-player-skin="volt"]:root #quick-capture-fab.quick-capture-fab {
+  background:
+    linear-gradient(90deg, #a3e635, #bef264 50%, #65a30d) !important;
+  color: #05211c !important;
+  border-color: rgba(163, 230, 53, 0.55) !important;
+  border-radius: var(--volt-shoe) !important;
+  box-shadow: 0 0 16px rgba(163, 230, 53, 0.32), 0 3px 0 #3f6212 !important;
+}
+
+/* ── 7 · Inputs · recessed rail channel ──────────────────────── */
+
+html[data-player-skin="volt"]:root input,
+html[data-player-skin="volt"]:root textarea,
+html[data-player-skin="volt"]:root select,
+html[data-player-skin="volt"]:root .agc-input-zone {
+  border: 1px solid rgba(15, 118, 110, 0.4);
+  border-radius: var(--volt-shoe-sm);
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.38), transparent 42%),
+    #04100e;
+  color: var(--volt-ink);
+  caret-color: #a3e635;
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.5),
+    inset 0 -2px 0 rgba(163, 230, 53, 0.28);
+}
+
+html[data-player-skin="volt"]:root input::placeholder,
+html[data-player-skin="volt"]:root textarea::placeholder {
+  color: #5f746c;
+}
+
+html[data-player-skin="volt"]:root input:focus,
+html[data-player-skin="volt"]:root textarea:focus,
+html[data-player-skin="volt"]:root select:focus,
+html[data-player-skin="volt"]:root .agc-input-zone:focus-within {
+  border-color: rgba(163, 230, 53, 0.7);
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.5),
+    inset 0 -2px 0 #a3e635,
+    0 0 0 3px rgba(163, 230, 53, 0.18);
+}
+
+/* ── 8 · Empty · unpowered rail section ──────────────────────── */
+
+html[data-player-skin="volt"]:root .empty-state {
+  border: 1px dashed rgba(15, 118, 110, 0.45);
+  border-radius: var(--volt-shoe);
+  background:
+    linear-gradient(90deg, rgba(15, 118, 110, 0.08), transparent 36%),
+    repeating-linear-gradient(180deg, transparent 0 7px, rgba(0, 0, 0, 0.28) 7px 8px),
+    #0a1a17;
+  color: #b7c9b0;
+  box-shadow: inset 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+html[data-player-skin="volt"]:root .empty-state::before {
+  content: "⌁";
+  display: block;
+  margin-bottom: 8px;
+  color: #115e59;
+  font-size: 18px;
+  letter-spacing: 0.2em;
+  text-shadow: none;
+  opacity: 0.7;
+}
+
+html[data-player-skin="volt"]:root .empty-state-title {
+  color: var(--volt-ink);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-family: var(--at-font-display);
+}
+
+/* ── 9 · Dialog · booth door under the rail ──────────────────── */
+
+html[data-player-skin="volt"]:root .loot-shell-dialog,
+html[data-player-skin="volt"]:root .command-palette,
+html[data-player-skin="volt"]:root .napkin-capture-dialog,
+html[data-player-skin="volt"]:root .wp-arcade-card,
+html[data-player-skin="volt"]:root dialog {
+  border: 1px solid rgba(163, 230, 53, 0.28);
+  border-radius: var(--volt-booth);
+  background:
+    linear-gradient(180deg, rgba(163, 230, 53, 0.1), transparent 18%),
+    #0c2a26;
+  color: var(--volt-ink);
+  box-shadow:
+    inset 0 3px 0 #a3e635,
+    0 0 22px rgba(163, 230, 53, 0.12),
+    0 28px 60px rgba(2, 12, 11, 0.62);
+}
+
+html[data-player-skin="volt"]:root .loot-shell-backdrop,
+html[data-player-skin="volt"]:root .wp-arcade-overlay {
+  background: rgba(2, 10, 9, 0.8);
+}
+
+html[data-player-skin="volt"]:root .toast-item {
+  border-radius: var(--volt-shoe-sm);
+  background: #0c2a26;
+  color: #ecfccb;
+  border: 1px solid rgba(163, 230, 53, 0.4);
+  box-shadow: inset 3px 0 0 #a3e635, 0 0 14px rgba(163, 230, 53, 0.18);
+  animation: room-volt-spark 0.36s ease-out 1;
+}
+
+html[data-player-skin="volt"]:root .companion-launcher-orb {
+  border-radius: 14px 4px 14px 4px;
+  background: #0c2a26;
+  box-shadow: 0 0 0 1px rgba(163, 230, 53, 0.4), inset 0 0 12px rgba(163, 230, 53, 0.12);
+  animation: room-volt-charge 3.2s ease-in-out infinite;
+}
+
+html[data-player-skin="volt"]:root button:disabled,
+html[data-player-skin="volt"]:root input:disabled,
+html[data-player-skin="volt"]:root textarea:disabled,
+html[data-player-skin="volt"]:root select:disabled,
+html[data-player-skin="volt"]:root [aria-disabled="true"] {
+  border-color: #1a3330;
+  background: #0a1816;
+  color: #4d615c;
+  opacity: 0.58;
+  filter: grayscale(0.55) brightness(0.82);
+  box-shadow: none;
+  text-shadow: none;
+  animation: none !important;
+}
+
+html[data-player-skin="volt"]:root :focus-visible {
+  outline: 2px solid #a3e635;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(163, 230, 53, 0.18);
+}
+
+html[data-player-skin="volt"]:root ::selection {
+  background: rgba(163, 230, 53, 0.4);
+  color: #05211c;
+}
+
+html[data-player-skin="volt"]:root * {
+  scrollbar-color: rgba(163, 230, 53, 0.4) transparent;
+}
+
+/* ── 10 · Home · looking down the live lane ──────────────────── */
+
+html[data-player-skin="volt"]:root[data-app-tab="Home"] body {
+  background-image:
+    linear-gradient(90deg, rgba(4, 16, 14, 0.28), transparent 46%, rgba(7, 17, 15, 0.5)),
+    url("/img/skins/volt.png") !important;
+  background-position: center, 18% 42% !important;
+}
+
+html[data-player-skin="volt"]:root[data-app-tab="Home"] #main {
+  background:
+    linear-gradient(90deg, rgba(4, 16, 14, 0.08), transparent 36%, rgba(7, 17, 15, 0.38)),
+    linear-gradient(180deg, transparent 70%, rgba(163, 230, 53, 0.05) 88%, rgba(4, 16, 14, 0.42)) !important;
+}
+
+html[data-player-skin="volt"]:root[data-app-tab="Home"] .launcher-card {
+  background:
+    linear-gradient(90deg, rgba(163, 230, 53, 0.12), transparent 24%),
+    repeating-linear-gradient(180deg, transparent 0 7px, rgba(0, 0, 0, 0.26) 7px 8px),
+    rgba(15, 44, 40, 0.9) !important;
+}
+
+/* ── 11 · Agent · conductor booth ────────────────────────────── */
+
+html[data-player-skin="volt"]:root[data-app-tab="Agent"] body {
+  background-image:
+    linear-gradient(180deg, rgba(4, 16, 14, 0.62), rgba(4, 16, 14, 0.28) 40%, rgba(4, 16, 14, 0.7)),
+    url("/img/skins/volt.png") !important;
+  background-position: center, 72% 48% !important;
+  background-size: cover, 150% auto !important;
+}
+
+html[data-player-skin="volt"]:root[data-app-tab="Agent"] #main .agent-pane,
+html[data-player-skin="volt"]:root .agent-pane {
+  border: 1px solid rgba(15, 118, 110, 0.4);
+  border-radius: var(--volt-booth);
+  background:
+    radial-gradient(ellipse 70% 28% at 50% 0%, rgba(163, 230, 53, 0.2), transparent 55%),
+    repeating-linear-gradient(180deg, transparent 0 8px, rgba(0, 0, 0, 0.22) 8px 9px),
+    rgba(12, 42, 38, 0.94);
+  color: var(--volt-ink);
+  box-shadow:
+    inset 0 3px 0 #a3e635,
+    inset 0 28px 40px -28px rgba(163, 230, 53, 0.22),
+    inset 0 0 40px rgba(0, 0, 0, 0.35);
+}
+
+html[data-player-skin="volt"]:root .agent-workspace {
+  border-color: rgba(15, 118, 110, 0.28);
+  border-radius: var(--volt-booth);
+}
+
+html[data-player-skin="volt"]:root .agent-bubble,
+html[data-player-skin="volt"]:root .companion-bubble {
+  background: #0f2c28;
+  color: var(--volt-ink);
+  font-family: var(--at-font-ui);
+  border-radius: 4px 16px 10px 4px;
+}
+
+html[data-player-skin="volt"]:root .agent-msg.assistant .agent-bubble,
+html[data-player-skin="volt"]:root .companion-msg-assistant .companion-bubble {
+  border-left: 3px solid #a3e635;
+  background: #0c2a26;
+  color: var(--volt-ink);
+}
+
+html[data-player-skin="volt"]:root .agent-msg.user .agent-bubble {
+  border: 1px solid rgba(163, 230, 53, 0.28);
+  border-radius: 16px 4px 4px 12px;
+  background: #134e4a;
+  color: #ecfccb;
+}
+
+/* ── 12 · Today / Calendar · lane split plaques ──────────────── */
+
+html[data-player-skin="volt"]:root[data-app-tab="Today"] body,
+html[data-player-skin="volt"]:root[data-app-tab="Calendar"] body {
+  background-image:
+    linear-gradient(180deg, rgba(7, 17, 15, 0.42), rgba(7, 17, 15, 0.16) 40%, rgba(7, 17, 15, 0.62)),
+    url("/img/skins/volt.png") !important;
+  background-position: center, 12% 78% !important;
+}
+
+html[data-player-skin="volt"]:root[data-app-tab="Today"] #main,
+html[data-player-skin="volt"]:root[data-app-tab="Calendar"] #main {
+  background: linear-gradient(180deg, rgba(7, 17, 15, 0.24), rgba(7, 17, 15, 0.55)) !important;
+}
+
+html[data-player-skin="volt"]:root[data-app-tab="Today"] #main .tdy-hour-cell,
+html[data-player-skin="volt"]:root[data-app-tab="Calendar"] #main .tdy-hour-cell,
+html[data-player-skin="volt"]:root[data-app-tab="Calendar"] .cal-day,
+html[data-player-skin="volt"]:root[data-app-tab="Calendar"] .cal-hour-cell,
+html[data-player-skin="volt"]:root[data-app-tab="Calendar"] .cal-month-cell:not(.cal-month-cell-pad) {
+  border: 1px solid rgba(15, 118, 110, 0.32);
+  border-radius: var(--at-r-cell);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 42%),
+    #0c2a26;
+  color: var(--volt-ink);
+  box-shadow: inset 3px 0 0 #115e59;
+}
+
+html[data-player-skin="volt"]:root[data-app-tab="Today"] #main .tdy-hour-painted,
+html[data-player-skin="volt"]:root[data-app-tab="Calendar"] #main .tdy-hour-painted,
+html[data-player-skin="volt"]:root[data-app-tab="Calendar"] .cal-day.has-events,
+html[data-player-skin="volt"]:root[data-app-tab="Calendar"] .cal-month-cell-today {
+  border-color: rgba(163, 230, 53, 0.5);
+  background: #134e4a;
+  box-shadow: inset 3px 0 0 #a3e635, inset 0 -8px 14px rgba(163, 230, 53, 0.08);
+}
+
+/* ── 13 · Work surfaces · copper plates in the gym ───────────── */
+
+html[data-player-skin="volt"]:root[data-app-tab="Tasks"] #main .card,
+html[data-player-skin="volt"]:root[data-app-tab="Goals"] #main .card,
+html[data-player-skin="volt"]:root[data-app-tab="Ideas"] #main .card,
+html[data-player-skin="volt"]:root[data-app-tab="Projects"] #main .card {
+  border-radius: var(--volt-shoe-md);
+  background: rgba(15, 44, 40, 0.92);
+  border-color: rgba(15, 118, 110, 0.28);
+}
+
+html[data-player-skin="volt"]:root[data-app-tab="Hub"] #main .hub-card,
+html[data-player-skin="volt"]:root[data-app-tab="Hub"] #main .hub-glance-item {
+  border-radius: var(--volt-shoe-md);
+  background: rgba(15, 44, 40, 0.9);
+  box-shadow: inset 3px 0 0 rgba(163, 230, 53, 0.45);
+}
+
+html[data-player-skin="volt"]:root[data-app-tab="Practice"] body {
+  background-image:
+    linear-gradient(180deg, rgba(4, 16, 14, 0.45), rgba(4, 16, 14, 0.18) 40%, rgba(4, 16, 14, 0.6)),
+    url("/img/skins/volt.png") !important;
+  background-position: center, 48% 38% !important;
+}
+
+html[data-player-skin="volt"]:root[data-app-tab="Practice"] #main .card,
+html[data-player-skin="volt"]:root[data-app-tab="Settings"] #main .card,
+html[data-player-skin="volt"]:root[data-app-tab="About"] #main .card,
+html[data-player-skin="volt"]:root[data-app-tab="Paint"] #main .card,
+html[data-player-skin="volt"]:root[data-app-tab="Parallel"] #main .card {
+  border-radius: var(--volt-shoe-md);
+  background: rgba(12, 42, 38, 0.9);
+  border: 1px solid rgba(15, 118, 110, 0.28);
+}
+
+html[data-player-skin="volt"]:root[data-app-tab="Agent"] body,
+html[data-player-skin="volt"]:root[data-app-tab="Practice"] body {
+  background-color: #07110f !important;
+}
+
+/* ── 14 · Current, snap, spark, charge ───────────────────────── */
+
+@keyframes room-volt-current {
+  0% { background-position: -30% 0; }
+  100% { background-position: 130% 0; }
+}
+
+@keyframes room-volt-charge {
+  0%, 100% { opacity: 0.72; filter: brightness(0.94); }
+  46% { opacity: 1; filter: brightness(1.18); }
+  54% { opacity: 0.88; filter: brightness(1.02); }
+}
+
+@keyframes room-volt-spark {
+  0% { box-shadow: inset 3px 0 0 #115e59; filter: brightness(1); }
+  16% {
+    box-shadow: inset 3px 0 0 #a3e635, 0 0 14px rgba(163, 230, 53, 0.55);
+    filter: brightness(1.35);
+  }
+  100% {
+    box-shadow: inset 3px 0 0 #0f766e;
+    filter: brightness(1);
+  }
+}
+
+@keyframes room-volt-snap {
+  0% { filter: brightness(1.55); }
+  35% { filter: brightness(0.92); }
+  100% { filter: brightness(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="volt"]:root *,
+  html[data-player-skin="volt"]:root *::before,
+  html[data-player-skin="volt"]:root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  html[data-player-skin="volt"]:root .launcher-card:hover,
+  html[data-player-skin="volt"]:root .launcher-card--focused,
+  html[data-player-skin="volt"]:root button.primary:hover:not(:disabled) {
+    transform: none;
+  }
+}

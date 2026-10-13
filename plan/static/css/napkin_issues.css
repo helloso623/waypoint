@@ -1,0 +1,207 @@
+/* Napkin issues 2026-09-16–19: layout + behaviour hooks only.
+   All visual language (colours, radii, plates, skins) lives in atelier.css
+   and world-skins.css — do not add chrome here. */
+
+/* Paint tab: only palette + week grid */
+body.pln-paint-only .pln-today-header,
+body.pln-paint-only .pln-top-pulse,
+body.pln-paint-only .pln-mode-chips,
+body.pln-paint-only .pln-shell,
+body.pln-paint-only .pln-extras,
+body.pln-paint-only .tdy-week-surface,
+body.pln-paint-only .page-intent {
+  display: none !important;
+}
+
+.pln-paint-only-palette {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 10px 12px 4px;
+}
+
+.pln-paint-week-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  flex-wrap: wrap;
+}
+
+.pln-paint-week-picker select {
+  min-width: 160px;
+}
+
+.tdy-week-paint-grid-24 {
+  max-height: min(78vh, 920px);
+  overflow: auto;
+}
+
+.tdy-week-paint-grid-24 .tdy-week-paint-cell {
+  min-height: 22px;
+}
+
+/* Quick capture grows downward */
+.napkin-capture-dialog #quick-capture-details {
+  min-height: 62vh !important;
+}
+
+.napkin-capture-dialog.napkin-gg-doc {
+  max-height: min(96vh, 980px) !important;
+}
+
+.command-palette-overlay:has(.napkin-capture-dialog) {
+  align-items: flex-start;
+  padding-top: 3vh;
+}
+
+.napkin-airlock-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.napkin-entry-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+/* Events inline editors */
+.evt-card .event-title,
+.evt-card .event-description,
+.evt-card .event-url,
+.evt-card .event-location {
+  padding: 6px 8px;
+}
+
+/* Task date drag */
+.tsk-date-dragging { opacity: 0.55; }
+html[data-player-skin] .tsk-date-drop { outline-color: var(--skin-a, var(--accent)); }
+html[data-player-skin] .pln-event-badge.dragging { outline-color: var(--skin-a, var(--accent)); }
+.task-bet { font-size: 11px; }
+
+/* Loot quiet */
+body.loot-quiet .loot-ticket-window { display: none !important; }
+
+/* Alarms — layout */
+.wp-alarm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 240;
+  display: grid;
+  place-items: center;
+  /* tinted from the room's shell so world skins own the scrim too */
+  background: color-mix(in srgb, var(--bg-shell, #080706) 72%, transparent);
+  backdrop-filter: blur(6px);
+}
+.wp-alarm-card {
+  width: min(420px, calc(100vw - 24px));
+  padding: 26px 22px;
+  text-align: center;
+}
+.wp-alarm-math {
+  margin: 12px 0;
+}
+.wp-memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 12px 0;
+}
+.wp-memory-tile {
+  min-height: 52px;
+}
+
+/* Focus drills live in the HUD, not a floating footer */
+.hud-focus-cluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-right: 2px;
+}
+.wp-mini-dock { display: none !important; }
+
+/* Sync */
+.wp-sync-card {
+  margin: 12px 0;
+  padding: 12px;
+}
+.wp-sync-card code {
+  font-size: 11px;
+}
+
+/* Parallel: rounded art frames (chrome in parallel_atelier.css) */
+.rpl-mc-stage-portrait,
+.rpl-inv-inspect-art,
+.rpl-scene-preview {
+  border-radius: 12px;
+}
+
+/* Paste board (Docs / Sheets / Slides-like) — layout */
+.wp-board-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--bg-shell, #080706) 55%, transparent);
+}
+.wp-board {
+  width: min(960px, calc(100vw - 20px));
+  height: min(80vh, 720px);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
+}
+.wp-board-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 10px 12px;
+}
+.wp-board-doc {
+  min-height: 100%;
+  padding: 28px 36px;
+  outline: none;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.wp-board-doc img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+.wp-sheet {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.wp-sheet td {
+  border: 1px solid var(--border);
+  min-width: 88px;
+  height: 28px;
+  padding: 2px 6px;
+}
+.wp-slides {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  min-height: 100%;
+}
+.wp-slide-thumb {
+  padding: 8px;
+  cursor: pointer;
+}
+.wp-slide-stage {
+  padding: 32px;
+  font-size: 28px;
+}
+
+/* Blocked / hard tasks */
+.pln-rail-card[data-blocked="1"],
+.tsk-row-wrap[data-blocked="1"] {
+  opacity: 0.55;
+}
+
+@media (max-width: 820px) {
+  .wp-board { height: 88vh; }
+  .wp-slides { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,670 @@
+/* ═══════════════════════════════════════════════════════════════
+   SIGNAL STATION — radio desk chrome. Player-skin only.
+
+   The object: you are seated at the operator's fascia. Morse
+   paper ticks along the HUD. Chips are P1 phosphor CRT tubes.
+   Home's jewel is a PPI with range rings and a sweep. Agent is
+   the tube you type into. The world already painted the desk
+   photograph, the Home radar stage, the oscilloscope grid.
+   This file hangs the key and the glass on that desk.
+
+   Critique: the object holds only while ticks stay dits and
+   dahs on a tape — not a blinking underscore — and chips stay
+   rectangular CRT glass. It fails if the jewel becomes a
+   parabolic dish, if one cyan lamp does all the talking, or if
+   the body photograph is painted over.
+
+   Not Satellite Ping (parabolic dish, feed horn, white/sky
+   blink on a HUD cluster). Not Cobalt Courier (enamel-blue
+   relay door, bolted steel corners, one cyan lamp). Green
+   phosphor on a radio well. Grid is range rings, not a dish.
+
+   Architecture:
+   - Signature cut: the CRT face. Wide phosphor crown, a tight
+     neck at the foot. Pixel radii. Never 42%/48% ovals.
+   - Signature glyph: PPI — concentric range rings and a sweep
+     wedge. Not a dish bowl. Glyphs may clip. #main and
+     .launcher-card may not.
+   - HUD: Morse tape across the fascia. Place hud.
+   - Chips: phosphor tubes. Place chip.
+   - Home: PPI jewel + glyph sweep. World keeps the stage radar.
+   - Agent: CRT glass, scanlines, keyed caret.
+   - Empty: a dead tube, one waiting tick. Input is a keyed
+     line. Focus is phosphor bloom.
+   - NEVER body { background-image }. The world keeps the desk.
+
+   Loot: colorA #4ade80 · colorB #052e16 · effect signal ·
+   pattern grid · world:true · place hud,page,chip,companion,
+   calendar,pulse.
+   Selectors carry :root to outrank the signal-family stencil
+   (scanlines on body, Morse underscore, zero-radius plates).
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — phosphor, radio well, Morse tape ──────────── */
+
+html[data-player-skin="signalbox"]:root {
+  color-scheme: dark;
+
+  --sb-well: #00150d;
+  --sb-desk: #03160f;
+  --sb-plate: #052e16;
+  --sb-plate-2: #07381c;
+  --sb-phos: #4ade80;
+  --sb-phos-hot: #bbf7d0;
+  --sb-phos-dim: #86efac;
+  --sb-phos-deep: #14532d;
+  --sb-ink: #bbf7d0;
+  --sb-ink-2: #86efac;
+  --sb-mute: #4d7c5a;
+  --sb-hair: rgba(74, 222, 128, 0.32);
+  --sb-glow: rgba(74, 222, 128, 0.5);
+
+  /* CRT face: wide phosphor crown, a tight neck. Nothing else
+     uses 20 / 20 / 4 / 4 over 14 / 14 / 3 / 3. Never 42%/48%. */
+  --sb-r-crt: 20px 20px 4px 4px / 14px 14px 3px 3px;
+  --sb-r-fascia: 2px 2px 9px 2px / 2px 2px 6px 2px;
+  --sb-r-ctl: 2px 2px 6px 2px / 2px 2px 4px 2px;
+  --sb-r-cell: 2px 2px 4px 2px / 2px 2px 3px 2px;
+
+  /* Morse tape — dit dit dah dit, then a letter gap. Not a
+     scanline and not the family's blinking underscore. */
+  --sb-tape:
+    repeating-linear-gradient(
+      90deg,
+      var(--sb-phos) 0 3px,
+      transparent 3px 6px,
+      var(--sb-phos) 6px 9px,
+      transparent 9px 12px,
+      var(--sb-phos) 12px 22px,
+      transparent 22px 26px,
+      var(--sb-phos) 26px 29px,
+      transparent 29px 44px
+    );
+  --sb-scan:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 2px,
+      rgba(0, 21, 13, 0.45) 2px 3px
+    );
+  --sb-rings:
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      transparent 0 7px,
+      rgba(74, 222, 128, 0.28) 7px 8px
+    );
+
+  --sb-font: ui-monospace, "IBM Plex Mono", "Cascadia Mono", "SF Mono", monospace;
+
+  --bg-shell: var(--sb-desk);
+  --bg-content: var(--sb-well);
+  --bg-card: var(--sb-plate);
+  --ink-primary: var(--sb-ink);
+  --ink-secondary: var(--sb-ink-2);
+  --ink-muted: var(--sb-mute);
+  --border: var(--sb-hair);
+  --accent: var(--sb-phos);
+  --ws-accent: var(--sb-phos);
+  --accent-ink: var(--sb-desk);
+
+  --skin-a: #4ade80;
+  --skin-b: #052e16;
+  --at-a: #4ade80;
+  --at-b: #052e16;
+  --feel-a: #4ade80;
+  --feel-b: #052e16;
+  --feel-accent: #4ade80;
+  --feel-ground: #03160f;
+  --feel-paper: #052e16;
+  --feel-ink: #bbf7d0;
+
+  --at-plate: var(--sb-plate);
+  --at-plate-2: var(--sb-plate-2);
+  --at-well: var(--sb-well);
+  --at-ink: var(--sb-ink);
+  --at-ink-2: var(--sb-ink-2);
+  --at-ink-3: var(--sb-mute);
+  --at-hair: var(--sb-hair);
+  --at-hair-2: var(--sb-glow);
+  --at-focus: 0 0 0 3px rgba(74, 222, 128, 0.45);
+  --at-r-plate: var(--sb-r-fascia);
+  --at-r-card: var(--sb-r-fascia);
+  --at-r-ctl: var(--sb-r-ctl);
+  --at-r-chip: var(--sb-r-crt);
+  --at-r-cell: var(--sb-r-cell);
+  --at-font-display: var(--sb-font);
+  --at-font-mono: var(--sb-font);
+  --font-display: var(--sb-font);
+  --font-ui: var(--sb-font);
+
+  --feel-3d:
+    inset 0 0 18px rgba(74, 222, 128, 0.18),
+    0 0 0 1px rgba(74, 222, 128, 0.4);
+  --feel-3d-press:
+    inset 0 2px 10px rgba(0, 21, 13, 0.7),
+    0 0 0 1px var(--sb-phos);
+  --feel-grain: var(--sb-scan);
+  --feel-grain-opacity: 0.4;
+  --feel-grain-blend: multiply;
+  --feel-hud-hair: 2px solid #4ade80;
+  --feel-icon:
+    saturate(1.25) contrast(1.12)
+    drop-shadow(0 0 5px rgba(74, 222, 128, 0.55));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.14em;
+}
+
+/* ── 2 · Kill family — leave the world photograph ───────────── */
+
+html[data-player-skin="signalbox"]:root body::after,
+html[data-player-skin="signalbox"]:root[data-skin-effect="signal"] body::after,
+html[data-player-skin="signalbox"]:root[data-skin-family="signal"] body::after {
+  background-image: none;
+  animation: none;
+  opacity: 0;
+}
+
+html[data-player-skin="signalbox"]:root .app-shell::before {
+  content: none;
+  background: none;
+  animation: none;
+}
+
+html[data-player-skin="signalbox"]:root #main::after {
+  animation: none !important;
+}
+
+html[data-player-skin="signalbox"]:root #main,
+html[data-player-skin="signalbox"]:root .launcher-card {
+  clip-path: none !important;
+}
+
+html[data-player-skin="signalbox"]:root #main::before,
+html[data-player-skin="signalbox"]:root #main::after,
+html[data-player-skin="signalbox"]:root .launcher-card::before,
+html[data-player-skin="signalbox"]:root .launcher-card::after {
+  clip-path: none !important;
+}
+
+/* ── 3 · HUD — Morse tape on the radio fascia ───────────────── */
+
+html[data-player-skin="signalbox"]:root .top-hud,
+html[data-player-skin="signalbox"]:root[data-skin-place~="hud"] .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  color: var(--sb-ink);
+  background:
+    linear-gradient(180deg, rgba(74, 222, 128, 0.08), transparent 40%),
+    var(--sb-plate);
+  border-bottom: 2px solid var(--sb-phos);
+  border-radius: var(--sb-r-fascia);
+  box-shadow:
+    inset 0 1px 0 rgba(187, 247, 208, 0.18),
+    0 0 18px rgba(74, 222, 128, 0.22);
+  backdrop-filter: none;
+}
+
+/* The tape. Dits and dahs travel the fascia. */
+html[data-player-skin="signalbox"]:root .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+  left: 14px;
+  right: 14px;
+  bottom: 3px;
+  height: 5px;
+  border-radius: 1px;
+  background: var(--sb-tape);
+  background-size: 44px 5px;
+  animation: room-signalbox-tape 1.7s linear infinite;
+}
+
+/* Keyer paddle — a vertical tick, dit-dah, not a lamp. */
+html[data-player-skin="signalbox"]:root .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+  left: 8px;
+  top: 22%;
+  width: 3px;
+  height: 38%;
+  border-radius: 1px;
+  background: var(--sb-phos);
+  box-shadow: 0 0 8px var(--sb-glow);
+  animation: room-signalbox-tick 1.6s steps(1) infinite;
+}
+
+html[data-player-skin="signalbox"]:root .top-hud > * {
+  position: relative;
+  z-index: 3;
+}
+
+html[data-player-skin="signalbox"]:root :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--sb-phos-dim);
+  color: var(--sb-phos-dim);
+  font-family: var(--sb-font);
+  font-weight: 750;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(74, 222, 128, 0.45);
+}
+
+/* Replace the family's blinking underscore with a keyed block. */
+html[data-player-skin="signalbox"]:root .hud-app-name::after {
+  content: " ▮";
+  color: var(--sb-phos);
+  animation: room-signalbox-tick 1.6s steps(1) infinite;
+}
+
+html[data-player-skin="signalbox"]:root :is(.hud-intention, .hud-now-focus-kicker) {
+  color: var(--sb-ink-2);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Brand jewel is a PPI, not a dish and not a relay lamp. */
+html[data-player-skin="signalbox"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 2px solid var(--sb-phos);
+  border-radius: 50%;
+  background:
+    var(--sb-rings),
+    radial-gradient(circle at 50% 50%, #07381c 0 18%, var(--sb-well) 62%, #03160f 100%);
+  box-shadow:
+    inset 0 0 10px rgba(74, 222, 128, 0.35),
+    0 0 12px rgba(74, 222, 128, 0.35);
+}
+
+html[data-player-skin="signalbox"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -8%;
+  z-index: 1;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0 82%,
+    rgba(74, 222, 128, 0.18) 90%,
+    rgba(187, 247, 208, 0.7) 100%
+  );
+  animation: room-signalbox-sweep 4.6s linear infinite;
+}
+
+html[data-player-skin="signalbox"]:root :is(
+  .brand-mark,
+  .ws-mark,
+  .hud-icon-svg,
+  .tab-chip-mark,
+  .wp-skin-mark
+) {
+  color: var(--sb-phos);
+  filter: var(--feel-icon);
+}
+
+html[data-player-skin="signalbox"]:root .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-agent-chip,
+  .loot-profile-chip
+) {
+  border-radius: var(--sb-r-ctl);
+  border: 1px solid var(--sb-phos);
+  color: var(--sb-phos-dim);
+  background: var(--sb-well);
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.18);
+}
+
+/* ── 4 · Chips — P1 phosphor CRT tubes ──────────────────────── */
+
+html[data-player-skin="signalbox"]:root[data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .hud-agent-chip,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .tsk-day-chip,
+  .tdy-cat-chip,
+  .pln-mode-chip,
+  .cal-week-chip,
+  .cal-month-chip,
+  .hub-chip
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid var(--sb-phos);
+  border-radius: var(--sb-r-crt);
+  background:
+    var(--sb-scan),
+    radial-gradient(ellipse 80% 70% at 50% 28%, rgba(74, 222, 128, 0.28), transparent 62%),
+    var(--sb-plate);
+  color: var(--sb-phos-hot);
+  font-family: var(--sb-font);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 0 14px rgba(74, 222, 128, 0.22),
+    0 0 10px rgba(74, 222, 128, 0.2);
+}
+
+/* A Morse tick riding the CRT neck. */
+html[data-player-skin="signalbox"]:root[data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill
+)::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  width: 3px;
+  height: 8px;
+  z-index: 1;
+  border-radius: 1px;
+  background: var(--sb-phos);
+  transform: translateY(-50%);
+  box-shadow: 0 0 6px var(--sb-glow);
+  animation: room-signalbox-tick 1.6s steps(1) infinite;
+}
+
+html[data-player-skin="signalbox"]:root[data-skin-place~="chip"] :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active
+) {
+  color: var(--sb-desk);
+  border-color: var(--sb-phos-hot);
+  background:
+    var(--sb-scan),
+    linear-gradient(180deg, var(--sb-phos-hot), var(--sb-phos) 55%, var(--sb-phos-deep));
+  box-shadow:
+    inset 0 1px 0 rgba(187, 247, 208, 0.7),
+    0 0 16px rgba(74, 222, 128, 0.5);
+  animation: room-signalbox-phosphor 2.2s ease-in-out infinite;
+}
+
+html[data-player-skin="signalbox"]:root .tab-chip {
+  border-radius: var(--sb-r-crt);
+  font-family: var(--sb-font);
+}
+
+html[data-player-skin="signalbox"]:root .tab-chip-bar {
+  background: var(--sb-well);
+  border-bottom: 1px dashed var(--sb-phos);
+}
+
+/* ── 5 · Home radar / Agent phosphor ────────────────────────── */
+/* World already sweeps the Home stage and grids #main.
+   Chrome only: PPI on glyphs, CRT glass on Agent. No clip. */
+
+html[data-player-skin="signalbox"]:root[data-app-tab="Home"] :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar
+) {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--sb-phos);
+  border-radius: 50%;
+  color: var(--sb-phos-hot);
+  background:
+    var(--sb-rings),
+    var(--sb-well);
+  box-shadow:
+    0 0 0 3px var(--sb-desk),
+    0 0 0 4px var(--sb-phos),
+    inset 0 0 12px rgba(74, 222, 128, 0.35);
+}
+
+html[data-player-skin="signalbox"]:root[data-app-tab="Home"] :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -6%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0 84%,
+    rgba(74, 222, 128, 0.55) 100%
+  );
+  animation: room-signalbox-sweep 5.2s linear infinite;
+  mix-blend-mode: screen;
+}
+
+html[data-player-skin="signalbox"]:root[data-app-tab="Agent"] .agent-pane {
+  border: 1px solid var(--sb-phos);
+  border-radius: var(--sb-r-fascia);
+  background:
+    var(--sb-scan),
+    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(74, 222, 128, 0.16), transparent 55%),
+    var(--sb-well);
+  box-shadow: inset 0 0 40px rgba(74, 222, 128, 0.14);
+}
+
+html[data-player-skin="signalbox"]:root[data-app-tab="Agent"] .agent-msg.assistant .agent-bubble {
+  border: 1px solid var(--sb-phos);
+  border-radius: var(--sb-r-ctl);
+  background:
+    var(--sb-scan),
+    var(--sb-well);
+  color: var(--sb-phos-dim);
+  font-family: var(--sb-font);
+  text-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+  box-shadow: inset 0 0 22px rgba(74, 222, 128, 0.16);
+}
+
+html[data-player-skin="signalbox"]:root[data-app-tab="Agent"] .agent-msg.user .agent-bubble {
+  border: 1px solid var(--sb-phos-dim);
+  border-radius: var(--sb-r-ctl);
+  background: var(--sb-phos-deep);
+  color: var(--sb-phos-hot);
+  font-family: var(--sb-font);
+}
+
+html[data-player-skin="signalbox"]:root .companion-launcher-orb {
+  border-radius: 50%;
+  border: 2px solid var(--sb-phos);
+  background:
+    var(--sb-rings),
+    var(--sb-plate);
+  box-shadow: 0 0 0 2px var(--sb-desk), 0 0 14px var(--sb-glow);
+  animation: room-signalbox-sweep 6s linear infinite;
+}
+
+/* ── 6 · Empty / input / focus ──────────────────────────────── */
+
+/* Empty: a dead CRT. One tick still waits. */
+html[data-player-skin="signalbox"]:root .empty-state {
+  position: relative;
+  overflow: hidden;
+  border: 1px dashed var(--sb-phos);
+  border-radius: var(--sb-r-crt);
+  background:
+    var(--sb-scan),
+    var(--sb-rings),
+    var(--sb-well);
+  color: var(--sb-ink-2);
+  box-shadow: inset 0 0 28px rgba(74, 222, 128, 0.1);
+  padding: 28px 18px 22px;
+}
+
+html[data-player-skin="signalbox"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 52px;
+  height: 36px;
+  margin: 0 auto 12px;
+  border: 2px solid var(--sb-phos);
+  border-radius: var(--sb-r-crt);
+  background:
+    var(--sb-scan),
+    radial-gradient(ellipse 70% 55% at 50% 30%, rgba(74, 222, 128, 0.2), var(--sb-well));
+  box-shadow: inset 0 0 12px rgba(74, 222, 128, 0.2), 0 0 10px rgba(74, 222, 128, 0.18);
+  animation: room-signalbox-phosphor 3.2s ease-in-out infinite;
+}
+
+html[data-player-skin="signalbox"]:root .empty-state-title {
+  color: var(--sb-phos);
+  font-family: var(--sb-font);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="signalbox"]:root :is(.empty-state-body, .empty-state-hint) {
+  color: var(--sb-ink-2);
+  font-family: var(--sb-font);
+}
+
+/* Input is a keyed line: dark well, Morse foot, phosphor caret. */
+html[data-player-skin="signalbox"]:root :is(
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+) {
+  border: 1px solid var(--sb-phos-deep);
+  border-bottom: 2px solid var(--sb-phos);
+  border-radius: var(--sb-r-ctl);
+  background:
+    var(--sb-scan),
+    var(--sb-well);
+  color: var(--sb-ink);
+  caret-color: var(--sb-phos);
+  font-family: var(--sb-font);
+  text-shadow: 0 0 6px rgba(74, 222, 128, 0.45);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.45);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+html[data-player-skin="signalbox"]:root :is(input, textarea)::placeholder {
+  color: var(--sb-mute);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="signalbox"]:root :is(
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+):focus,
+html[data-player-skin="signalbox"]:root .agc-input-zone:focus-within {
+  outline: none;
+  border-color: var(--sb-phos);
+  border-bottom-color: var(--sb-phos-hot);
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.35),
+    0 0 0 2px var(--sb-desk),
+    0 0 0 4px var(--sb-phos),
+    0 0 16px rgba(74, 222, 128, 0.4);
+}
+
+html[data-player-skin="signalbox"]:root :focus-visible {
+  outline: 2px solid var(--sb-phos);
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 5px var(--sb-desk),
+    0 0 14px rgba(74, 222, 128, 0.45);
+}
+
+html[data-player-skin="signalbox"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: #14532d;
+  background: #022c22;
+  color: #3f6b4e;
+  opacity: 0.5;
+  filter: saturate(0.35);
+  box-shadow: none;
+  animation: none !important;
+  text-shadow: none;
+}
+
+html[data-player-skin="signalbox"]:root ::selection {
+  background: var(--sb-phos);
+  color: var(--sb-desk);
+}
+
+/* ── 7 · Motion — tape, tick, sweep, phosphor ───────────────── */
+
+@keyframes room-signalbox-tape {
+  to { background-position: -44px 0; }
+}
+
+@keyframes room-signalbox-tick {
+  0%, 8% { opacity: 1; }
+  10%, 18% { opacity: 0.12; }
+  20%, 28% { opacity: 1; }
+  30%, 40% { opacity: 0.12; }
+  44%, 70% { opacity: 1; }
+  72%, 100% { opacity: 0.12; }
+}
+
+@keyframes room-signalbox-sweep {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes room-signalbox-phosphor {
+  0%, 100% {
+    box-shadow:
+      inset 0 0 12px rgba(74, 222, 128, 0.22),
+      0 0 8px rgba(74, 222, 128, 0.2);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 22px rgba(74, 222, 128, 0.45),
+      0 0 18px rgba(74, 222, 128, 0.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="signalbox"]:root .top-hud::before,
+  html[data-player-skin="signalbox"]:root .top-hud::after,
+  html[data-player-skin="signalbox"]:root .hud-app-name::after,
+  html[data-player-skin="signalbox"]:root .hud-brand-jewel::after,
+  html[data-player-skin="signalbox"]:root .empty-state::before,
+  html[data-player-skin="signalbox"]:root .companion-launcher-orb,
+  html[data-player-skin="signalbox"]:root[data-app-tab="Home"] :is(
+    .launcher-tile-glyph,
+    .launcher-card-glyph
+  )::after,
+  html[data-player-skin="signalbox"]:root[data-skin-place~="chip"] :is(
+    .tab-chip,
+    .hud-chip,
+    .loot-profile-chip,
+    .app-subnav-pill,
+    .pill
+  ),
+  html[data-player-skin="signalbox"]:root[data-skin-place~="chip"] :is(
+    .tab-chip,
+    .hud-chip,
+    .loot-profile-chip,
+    .app-subnav-pill,
+    .pill
+  )::before {
+    animation: none !important;
+  }
+}

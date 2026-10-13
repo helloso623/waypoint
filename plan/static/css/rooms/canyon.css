@@ -1,0 +1,1278 @@
+/* ═══════════════════════════════════════════════════════════════
+   CANYON GUIDE — every switchback in the red stone.
+
+   The object: a stratified sandstone wall with one trail cut into
+   the cliff. Horizontal sedimentary beds. A pale dusty path that
+   benches at each stratum and folds back. You are standing on the
+   canyon floor looking at the wall — not on a mesa, not in a kiln.
+
+   Not Dune Surveyor (noon plateau, brass theodolite, bleached
+   limestone, mesa-cap radius, un-feathered noon shadow).
+   Not terracotta bricks (masonry, grout, ceramic tiles).
+   Not a rust cart (rivets, scrap, industrial oxide).
+
+   Architecture:
+   - Signature cut: the trail bench. Knife-cut on the cliff side,
+     boot-worn on the trail lip, a hanging-garden undercut below.
+     Never 42%/48% ovals. Never the mesa crown.
+   - Signature glyph: the switchback blaze — a trail climbing the
+     wall in three folds. Glyphs may clip; cards and #main may not.
+   - Cards are strata: stacked bedding planes, one pale trail lip.
+   - Today is the switchback: odd hours bench left, even hours
+     bench right. The now-marker is a cairn on the cut.
+
+   Loot: colorA #fb923c, colorB #9a3412, effect sand.
+   Photograph: /img/skins/canyon.png (red wall, one trail, no people).
+   Selectors carry :root to outrank the dune-family stencil.
+   Never clip-path #main or .launcher-card.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — oxblood wall, sunlit cut, canyon floor ─────── */
+
+html[data-player-skin="canyon"]:root {
+  color-scheme: dark;
+
+  --cn-floor: #1c0a06;
+  --cn-shade: #2a0e08;
+  --cn-deep: #431407;
+  --cn-bed: #5c1d0e;
+  --cn-wall: #7c2d12;
+  --cn-oxblood: #9a3412;
+  --cn-burnt: #c2410c;
+  --cn-sun: #fb923c;
+  --cn-flare: #fdba74;
+  --cn-trail: #fed7aa;
+  --cn-dust: #fde8d0;
+  --cn-rim: #c4a882;
+  --cn-sky: #f4e4c8;
+  --cn-ink: #fde8d0;
+  --cn-ink-2: #e8c4a0;
+  --cn-mute: #c08a62;
+
+  --cn-hair: rgba(253, 232, 208, 0.16);
+  --cn-hair-2: rgba(251, 146, 60, 0.38);
+  --cn-hair-trail: rgba(254, 215, 170, 0.55);
+
+  /* Trail bench: cliff knife, worn lip, hanging-garden undercut. */
+  --cn-r-plate: 1px 24px 8px 16px / 1px 6px 20px 3px;
+  --cn-r-card: 1px 20px 7px 13px / 1px 5px 16px 2px;
+  --cn-r-ctl: 1px 14px 5px 9px / 1px 4px 12px 2px;
+  --cn-r-chip: 1px 11px 4px 8px / 1px 3px 10px 2px;
+  --cn-r-cell: 1px 8px 3px 6px;
+
+  --cn-font-display: "Trebuchet MS", "Gill Sans", "Avenir Next Condensed",
+    "Segoe UI", system-ui, sans-serif;
+  --cn-font-guide: ui-monospace, "SF Mono", "IBM Plex Mono", Menlo, monospace;
+
+  --bg-shell: var(--cn-floor);
+  --bg-content: var(--cn-shade);
+  --bg-card: var(--cn-bed);
+  --bg-card-hover: var(--cn-wall);
+  --ink-primary: var(--cn-ink);
+  --ink-secondary: var(--cn-ink-2);
+  --ink-muted: var(--cn-mute);
+  --border: rgba(154, 52, 18, 0.55);
+  --gridline: rgba(124, 45, 18, 0.4);
+  --accent: var(--cn-sun);
+  --ws-accent: var(--cn-sun);
+  --accent-ink: var(--cn-floor);
+  --glow-accent: rgba(251, 146, 60, 0.28);
+  --glow-violet: rgba(154, 52, 18, 0.22);
+
+  --skin-a: #fb923c;
+  --skin-b: #9a3412;
+  --at-a: #fb923c;
+  --at-b: #9a3412;
+  --feel-a: #fb923c;
+  --feel-b: #9a3412;
+  --feel-accent: #fb923c;
+  --feel-ground: #1c0a06;
+  --feel-paper: #5c1d0e;
+  --feel-ink: #fde8d0;
+
+  --at-plate: var(--cn-bed);
+  --at-plate-2: var(--cn-wall);
+  --at-well: var(--cn-floor);
+  --at-ink: var(--cn-ink);
+  --at-ink-2: var(--cn-ink-2);
+  --at-ink-3: var(--cn-mute);
+  --at-hair: var(--cn-hair);
+  --at-hair-2: var(--cn-hair-2);
+  --at-hair-a: rgba(251, 146, 60, 0.55);
+  --at-tint: rgba(251, 146, 60, 0.12);
+  --at-tint-b: rgba(154, 52, 18, 0.28);
+  --at-focus: 0 0 0 2px var(--cn-trail);
+  --at-gold: var(--cn-sun);
+  --at-gold-soft: var(--cn-flare);
+  --at-inset: inset 0 1px 0 rgba(253, 232, 208, 0.14);
+  --at-rise: 0 18px 36px -22px rgba(12, 4, 2, 0.92);
+  --at-rise-soft: 0 10px 22px -16px rgba(12, 4, 2, 0.8);
+
+  --at-r-plate: var(--cn-r-plate);
+  --at-r-card: var(--cn-r-card);
+  --at-r-ctl: var(--cn-r-ctl);
+  --at-r-chip: var(--cn-r-chip);
+  --at-r-cell: var(--cn-r-cell);
+  --at-font-display: var(--cn-font-display);
+  --at-font-mono: var(--cn-font-guide);
+  --font-display: var(--cn-font-display);
+
+  /* Stone depth: stacked beds, not a noon mesa offset. */
+  --feel-3d:
+    inset 0 1px 0 rgba(253, 232, 208, 0.16),
+    inset 0 -8px 0 rgba(28, 10, 6, 0.35),
+    0 10px 0 #2a0e08,
+    0 18px 28px rgba(12, 4, 2, 0.55);
+  --feel-3d-press:
+    inset 0 3px 6px rgba(28, 10, 6, 0.55),
+    inset 0 -2px 0 rgba(251, 146, 60, 0.12),
+    0 2px 0 #2a0e08,
+    0 6px 12px rgba(12, 4, 2, 0.4);
+  --feel-grain-opacity: 0.34;
+  --feel-grain-blend: overlay;
+  --feel-grain:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 11px,
+      rgba(28, 10, 6, 0.22) 11px 12px,
+      transparent 12px 23px,
+      rgba(253, 186, 116, 0.08) 23px 24px
+    ),
+    radial-gradient(circle at 18% 22%, rgba(254, 215, 170, 0.14) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 72% 64%, rgba(28, 10, 6, 0.28) 0 1px, transparent 1.8px);
+  --feel-grain-size: auto, 27px 21px, 33px 29px;
+  --feel-hud-hair: 2px solid rgba(254, 215, 170, 0.55);
+  --feel-icon:
+    sepia(0.2) saturate(1.18) contrast(1.08)
+    drop-shadow(0 1px 0 rgba(28, 10, 6, 0.7))
+    drop-shadow(0 0 6px rgba(251, 146, 60, 0.28));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.09em;
+  --feel-plate-image:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 10px,
+      rgba(28, 10, 6, 0.16) 10px 11px
+    );
+  --plate-shadow: 0 12px 0 #2a0e08, 0 20px 28px rgba(12, 4, 2, 0.5);
+  --plate-shadow-hover: 0 14px 0 #2a0e08, 0 24px 32px rgba(12, 4, 2, 0.58);
+}
+
+/* ── 2 · Body — standing on the canyon floor, looking at the wall */
+
+html[data-player-skin="canyon"]:root body {
+  background-color: var(--cn-floor) !important;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(28, 10, 6, 0.5) 0%,
+      rgba(67, 20, 7, 0.38) 28%,
+      rgba(28, 10, 6, 0.62) 70%,
+      rgba(28, 10, 6, 0.82) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(28, 10, 6, 0.72) 0%,
+      transparent 16%,
+      transparent 84%,
+      rgba(28, 10, 6, 0.72) 100%
+    ),
+    url("/img/skins/canyon.png") !important;
+  background-position: center, center, center 36% !important;
+  background-size: cover, cover, cover !important;
+  background-attachment: fixed, fixed, fixed !important;
+  color: var(--cn-ink);
+}
+
+/* Heat lifting off the stone. The only screen-blend in the room. */
+html[data-player-skin="canyon"]:root body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.22;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(ellipse 70% 18% at 50% 8%, rgba(251, 146, 60, 0.35), transparent 72%),
+    linear-gradient(180deg, rgba(253, 186, 116, 0.12) 0 14%, transparent 36%);
+  animation: room-canyon-heat 14s ease-in-out infinite;
+}
+
+/* Talus: sand of the canyon floor, falling down the beds. */
+html[data-player-skin="canyon"]:root body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.28;
+  mix-blend-mode: overlay;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 13px,
+      rgba(28, 10, 6, 0.2) 13px 14px,
+      transparent 14px 27px,
+      rgba(254, 215, 170, 0.07) 27px 28px
+    ),
+    radial-gradient(circle at 24% 31%, rgba(254, 215, 170, 0.16) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 81% 58%, rgba(28, 10, 6, 0.3) 0 1px, transparent 1.9px);
+  background-size: auto, 29px 23px, 37px 31px;
+  animation: room-canyon-talus 36s linear infinite;
+}
+
+/* ── 3 · Main — slot walls close in; bedding shows through ───── */
+
+html[data-player-skin="canyon"]:root #main {
+  clip-path: none !important;
+  isolation: isolate;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(28, 10, 6, 0.38) 0%,
+      rgba(67, 20, 7, 0.5) 55%,
+      rgba(28, 10, 6, 0.68) 100%
+    ) !important;
+  border-inline: 1px solid rgba(154, 52, 18, 0.35);
+  box-shadow:
+    inset 36px 0 44px -22px rgba(28, 10, 6, 0.88),
+    inset -36px 0 44px -22px rgba(28, 10, 6, 0.88),
+    inset 0 1px 0 rgba(254, 215, 170, 0.12);
+}
+
+html[data-player-skin="canyon"]:root #main::after {
+  clip-path: none !important;
+  opacity: 0.3;
+  mix-blend-mode: overlay;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 17px,
+      rgba(28, 10, 6, 0.28) 17px 18px,
+      transparent 18px 35px,
+      rgba(251, 146, 60, 0.06) 35px 36px
+    );
+  animation: room-canyon-shadow 28s ease-in-out infinite;
+}
+
+/* ── 4 · HUD — the canyon rim, a ribbon of sky, then the first beds */
+
+html[data-player-skin="canyon"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  min-height: 64px;
+  background:
+    linear-gradient(
+      180deg,
+      #f4e4c8 0 14%,
+      #c4a882 14% 18%,
+      #c2410c 18% 36%,
+      #9a3412 36% 62%,
+      #7c2d12 62% 82%,
+      #431407 82% 100%
+    );
+  border-bottom: 2px solid rgba(254, 215, 170, 0.7);
+  border-radius: 0 0 16px 2px / 0 0 8px 2px;
+  box-shadow:
+    inset 0 1px 0 rgba(253, 232, 208, 0.35),
+    0 10px 0 #2a0e08,
+    0 18px 28px rgba(12, 4, 2, 0.45);
+  backdrop-filter: none;
+  color: var(--cn-ink);
+}
+
+/* Bedding joints along the rim. */
+html[data-player-skin="canyon"]:root .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 18% 0 0 0;
+  z-index: 0;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 9px,
+      rgba(28, 10, 6, 0.28) 9px 10px
+    );
+  opacity: 0.85;
+}
+
+/* The trail cut: a pale dusty path walking the HUD footing. */
+html[data-player-skin="canyon"]:root .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 6%;
+  right: 10%;
+  bottom: -2px;
+  height: 3px;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #fed7aa 12%,
+    #fb923c 38%,
+    #fed7aa 64%,
+    #fb923c 86%,
+    transparent 100%
+  );
+  background-size: 220% 100%;
+  box-shadow: 0 0 8px rgba(251, 146, 60, 0.45);
+  animation: room-canyon-switch 11s linear infinite;
+}
+
+html[data-player-skin="canyon"]:root .top-hud > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-player-skin="canyon"]:root .hud-app-name,
+html[data-player-skin="canyon"]:root .launcher-title,
+html[data-player-skin="canyon"]:root .page-title {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--cn-ink);
+  color: var(--cn-ink);
+  font-family: var(--cn-font-display);
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(28, 10, 6, 0.7);
+}
+
+html[data-player-skin="canyon"]:root .hud-intention,
+html[data-player-skin="canyon"]:root .hud-now-focus-kicker {
+  color: var(--cn-dust);
+  font-family: var(--cn-font-guide);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+}
+
+/* Brand jewel is a cairn: three stacked stones on the rim. */
+html[data-player-skin="canyon"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  border-radius: 2px 8px 2px 6px / 2px 3px 8px 2px;
+  border: 1px solid rgba(254, 215, 170, 0.5);
+  background:
+    linear-gradient(180deg, #fdba74 0 28%, #fb923c 28% 58%, #9a3412 58% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(253, 232, 208, 0.4),
+    0 4px 0 #2a0e08;
+}
+
+html[data-player-skin="canyon"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: -7px;
+  width: 10px;
+  height: 8px;
+  transform: translateX(-50%);
+  border-radius: 2px 6px 1px 4px / 2px 2px 6px 1px;
+  background: linear-gradient(180deg, #fed7aa, #c2410c);
+  box-shadow: 0 1px 0 #2a0e08;
+  animation: room-canyon-cairn 7.4s ease-in-out infinite;
+}
+
+html[data-player-skin="canyon"]:root .brand-mark,
+html[data-player-skin="canyon"]:root .ws-mark,
+html[data-player-skin="canyon"]:root .hud-icon-svg,
+html[data-player-skin="canyon"]:root .tab-chip-mark,
+html[data-player-skin="canyon"]:root .wp-skin-mark {
+  color: var(--cn-sun);
+  filter: var(--feel-icon);
+  image-rendering: auto;
+  transform: none;
+}
+
+html[data-player-skin="canyon"]:root .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-chip,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .hud-model-chip--status,
+  .loot-profile-chip
+) {
+  border: 1px solid rgba(154, 52, 18, 0.55);
+  border-left: 3px solid rgba(254, 215, 170, 0.55);
+  border-radius: var(--cn-r-chip);
+  background:
+    linear-gradient(180deg, rgba(194, 65, 12, 0.55) 0 22%, rgba(92, 29, 14, 0.92) 22% 100%);
+  color: var(--cn-ink);
+  font-family: var(--cn-font-guide);
+  letter-spacing: 0.04em;
+  box-shadow: inset 0 1px 0 rgba(253, 232, 208, 0.12), 0 3px 0 #2a0e08;
+  animation: none;
+}
+
+html[data-player-skin="canyon"]:root .top-hud :is(.hud-icon-btn, .hud-glyph-btn):hover:not(:disabled) {
+  border-color: var(--cn-sun);
+  background: linear-gradient(180deg, rgba(251, 146, 60, 0.45) 0 22%, rgba(124, 45, 18, 0.95) 22% 100%);
+  transform: translateX(3px);
+  box-shadow: inset 0 1px 0 rgba(253, 232, 208, 0.2), 0 4px 0 #2a0e08;
+}
+
+html[data-player-skin="canyon"]:root .hud-status-pill::before,
+html[data-player-skin="canyon"]:root .top-hud .hud-agent-chip::before {
+  border-radius: 1px 4px 1px 3px;
+  background: var(--cn-trail);
+  animation: none !important;
+  box-shadow: 0 0 6px rgba(251, 146, 60, 0.4);
+}
+
+/* ── 5 · Navigation — trail markers on the rim ───────────────── */
+
+html[data-player-skin="canyon"]:root .tab-chip-bar {
+  background: rgba(28, 10, 6, 0.55);
+  border-bottom: 1px solid rgba(154, 52, 18, 0.4);
+  backdrop-filter: none;
+}
+
+html[data-player-skin="canyon"]:root .tab-chip,
+html[data-player-skin="canyon"]:root .app-subnav-pill,
+html[data-player-skin="canyon"]:root .pill,
+html[data-player-skin="canyon"]:root .tsk-day-chip {
+  border: 1px solid rgba(154, 52, 18, 0.45);
+  border-radius: var(--cn-r-chip);
+  background: linear-gradient(180deg, rgba(124, 45, 18, 0.7) 0 26%, rgba(67, 20, 7, 0.9) 26% 100%);
+  color: var(--cn-ink-2);
+  font-family: var(--cn-font-display);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  box-shadow: 0 3px 0 #2a0e08;
+  transition: transform 160ms cubic-bezier(0.2, 0.8, 0.25, 1), box-shadow 160ms ease, border-color 160ms ease;
+}
+
+html[data-player-skin="canyon"]:root .tab-chip:hover:not(.active) {
+  transform: translateX(3px);
+  border-color: var(--cn-sun);
+  color: var(--cn-ink);
+}
+
+html[data-player-skin="canyon"]:root .tab-chip.active,
+html[data-player-skin="canyon"]:root .tab-chip[aria-selected="true"],
+html[data-player-skin="canyon"]:root .app-subnav-pill.active {
+  color: var(--cn-floor);
+  border-color: var(--cn-sun);
+  background: linear-gradient(180deg, #fed7aa 0 24%, #fb923c 24% 72%, #c2410c 72% 100%);
+  box-shadow: 0 3px 0 #7c2d12, inset 0 1px 0 rgba(253, 232, 208, 0.5);
+}
+
+/* ── 6 · Glyph — the switchback blaze ────────────────────────── */
+/* Three folds of trail climbing the wall. Not a dune sun, not a
+   compass rose, not a brick. Glyphs may clip. */
+
+html[data-player-skin="canyon"]:root .launcher-card-glyph,
+html[data-player-skin="canyon"]:root .launcher-tile-glyph,
+html[data-player-skin="canyon"]:root .nav-app-glyph,
+html[data-player-skin="canyon"]:root .loot-skin-avatar {
+  position: relative;
+  overflow: visible;
+  border: none;
+  transform: none;
+  color: var(--cn-floor);
+  clip-path: polygon(
+    10% 94%, 40% 94%, 40% 70%, 80% 70%, 80% 46%, 40% 46%, 40% 22%, 90% 22%, 90% 6%,
+    10% 6%, 10% 58%, 50% 58%, 50% 82%, 10% 82%
+  );
+  background:
+    linear-gradient(180deg, #fed7aa 0 18%, #fb923c 18% 40%, #c2410c 40% 64%, #9a3412 64% 86%, #431407 86% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(253, 232, 208, 0.45),
+    0 6px 0 #2a0e08;
+  filter: none;
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.25, 1), box-shadow 180ms ease;
+}
+
+/* Dust on the blaze — the pale cut through the stone. */
+html[data-player-skin="canyon"]:root .launcher-card-glyph::before,
+html[data-player-skin="canyon"]:root .launcher-tile-glyph::before,
+html[data-player-skin="canyon"]:root .loot-skin-avatar::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 18% 22% 18% 18%;
+  background:
+    linear-gradient(90deg, transparent 0 30%, rgba(254, 215, 170, 0.7) 30% 38%, transparent 38%),
+    linear-gradient(180deg, transparent 0 36%, rgba(254, 215, 170, 0.55) 36% 40%, transparent 40%);
+  clip-path: inherit;
+}
+
+html[data-player-skin="canyon"]:root .launcher-card-glyph::after,
+html[data-player-skin="canyon"]:root .launcher-tile-glyph::after,
+html[data-player-skin="canyon"]:root .loot-skin-avatar::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 22%;
+  top: 10%;
+  width: 8px;
+  height: 8px;
+  border-radius: 1px 4px 1px 3px;
+  background: radial-gradient(circle at 35% 30%, #fde8d0, #fb923c 70%, #9a3412);
+  box-shadow: 0 1px 0 #2a0e08;
+}
+
+html[data-player-skin="canyon"]:root .launcher-custom-app-emoji {
+  clip-path: polygon(
+    10% 94%, 40% 94%, 40% 70%, 80% 70%, 80% 46%, 40% 46%, 40% 22%, 90% 22%, 90% 6%,
+    10% 6%, 10% 58%, 50% 58%, 50% 82%, 10% 82%
+  );
+  background: rgba(154, 52, 18, 0.45);
+  border: 1px solid rgba(254, 215, 170, 0.4);
+}
+
+/* ── 7 · Cards — each plate is one sedimentary bed ───────────── */
+
+html[data-player-skin="canyon"]:root .launcher-grid,
+html[data-player-skin="canyon"]:root .launcher-my-apps-row {
+  position: relative;
+  padding-top: 12px;
+}
+
+html[data-player-skin="canyon"]:root .launcher-card,
+html[data-player-skin="canyon"]:root .card,
+html[data-player-skin="canyon"]:root .hub-card,
+html[data-player-skin="canyon"]:root .pln-rail-card,
+html[data-player-skin="canyon"]:root .evt-card,
+html[data-player-skin="canyon"]:root .tsk-row,
+html[data-player-skin="canyon"]:root .task-row,
+html[data-player-skin="canyon"]:root .napkin-entry,
+html[data-player-skin="canyon"]:root .page-intent,
+html[data-player-skin="canyon"]:root .loot-skin-card,
+html[data-player-skin="canyon"]:root .loot-collection-card {
+  clip-path: none !important;
+  overflow: visible;
+  border: 1px solid rgba(154, 52, 18, 0.5);
+  border-right: 3px solid rgba(254, 215, 170, 0.55);
+  border-radius: var(--cn-r-card);
+  color: var(--cn-ink);
+  background-color: var(--cn-bed);
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      rgba(253, 186, 116, 0.16) 0 9px,
+      transparent 9px 10px,
+      rgba(194, 65, 12, 0.22) 10px 22px,
+      transparent 22px 23px,
+      rgba(154, 52, 18, 0.28) 23px 36px,
+      transparent 36px 37px
+    ),
+    linear-gradient(90deg, rgba(28, 10, 6, 0.35) 0 7%, transparent 22%);
+  box-shadow:
+    inset 0 1px 0 rgba(253, 232, 208, 0.14),
+    0 10px 0 #2a0e08,
+    0 16px 24px rgba(12, 4, 2, 0.45);
+}
+
+html[data-player-skin="canyon"]:root .launcher-card {
+  outline: none;
+  transform: none;
+  background-color: rgba(92, 29, 14, 0.92);
+  transition:
+    transform 180ms cubic-bezier(0.2, 0.8, 0.25, 1),
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+/* Each card is a different bed in the column. */
+html[data-player-skin="canyon"]:root .launcher-card:nth-child(3n+1) {
+  background-color: rgba(124, 45, 18, 0.9);
+}
+html[data-player-skin="canyon"]:root .launcher-card:nth-child(3n+2) {
+  background-color: rgba(92, 29, 14, 0.94);
+}
+html[data-player-skin="canyon"]:root .launcher-card:nth-child(3n) {
+  background-color: rgba(67, 20, 7, 0.94);
+  border-right-color: rgba(251, 146, 60, 0.7);
+}
+
+/* Bedding-plane joint near the crown of the bed. */
+html[data-player-skin="canyon"]:root .launcher-card::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 10px;
+  right: 18px;
+  top: 11px;
+  width: auto;
+  height: 2px;
+  border-radius: 0;
+  opacity: 0.7;
+  background-color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    rgba(28, 10, 6, 0.55),
+    rgba(254, 215, 170, 0.35) 70%,
+    transparent
+  );
+}
+
+/* The trail cut: a pale dusty scratch that lights on hover. */
+html[data-player-skin="canyon"]:root .launcher-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 12px 11px 22%;
+  right: 12px;
+  bottom: 11px;
+  width: auto;
+  height: 3px;
+  aspect-ratio: auto;
+  border-radius: 0 2px 2px 0;
+  opacity: 0.4;
+  transform: none;
+  background-color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    #fed7aa 18%,
+    #fb923c 55%,
+    #fed7aa 88%,
+    transparent
+  );
+  transition: opacity 180ms ease;
+}
+
+html[data-player-skin="canyon"]:root .launcher-card-name,
+html[data-player-skin="canyon"]:root .launcher-tile-name {
+  color: var(--cn-ink);
+  font-family: var(--cn-font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(28, 10, 6, 0.65);
+}
+
+html[data-player-skin="canyon"]:root .launcher-card-intention,
+html[data-player-skin="canyon"]:root .launcher-card-sub,
+html[data-player-skin="canyon"]:root .launcher-card-stats {
+  color: var(--cn-ink-2);
+  font-family: var(--cn-font-guide);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Step onto the trail. The bed does not rise; the lip catches light. */
+html[data-player-skin="canyon"]:root .launcher-card:hover,
+html[data-player-skin="canyon"]:root .launcher-card--focused {
+  transform: translateX(4px);
+  border-color: var(--cn-sun);
+  border-right-color: var(--cn-trail);
+  filter: none;
+  box-shadow:
+    inset 0 1px 0 rgba(253, 232, 208, 0.22),
+    inset -10px 0 0 rgba(254, 215, 170, 0.12),
+    0 12px 0 #2a0e08,
+    0 20px 28px rgba(12, 4, 2, 0.55);
+}
+
+html[data-player-skin="canyon"]:root .launcher-card:hover::after,
+html[data-player-skin="canyon"]:root .launcher-card--focused::after {
+  opacity: 1;
+  transform: none;
+}
+
+html[data-player-skin="canyon"]:root .launcher-card:hover .launcher-card-glyph,
+html[data-player-skin="canyon"]:root .launcher-card--focused .launcher-card-glyph,
+html[data-player-skin="canyon"]:root .launcher-card:hover .launcher-tile-glyph,
+html[data-player-skin="canyon"]:root .launcher-card--focused .launcher-tile-glyph {
+  transform: translateX(3px);
+  box-shadow:
+    inset 0 1px 0 rgba(253, 232, 208, 0.55),
+    0 7px 0 #2a0e08;
+}
+
+html[data-player-skin="canyon"]:root .card:hover,
+html[data-player-skin="canyon"]:root .hub-card:hover {
+  border-color: var(--cn-sun);
+  box-shadow:
+    inset 0 1px 0 rgba(253, 232, 208, 0.18),
+    0 12px 0 #2a0e08,
+    0 18px 26px rgba(12, 4, 2, 0.5);
+}
+
+/* ── 8 · Buttons — trail blazes cut into the wall ────────────── */
+
+html[data-player-skin="canyon"]:root button.primary,
+html[data-player-skin="canyon"]:root .primary,
+html[data-player-skin="canyon"]:root .agent-pane-chat .agc-send {
+  position: relative;
+  border: 1px solid #c2410c;
+  border-right: 3px solid #fed7aa;
+  border-radius: var(--cn-r-ctl);
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 6px,
+      rgba(28, 10, 6, 0.18) 6px 7px
+    ),
+    linear-gradient(180deg, #fdba74 0 22%, #fb923c 22% 70%, #c2410c 70% 100%);
+  color: var(--cn-floor);
+  font-family: var(--cn-font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(253, 232, 208, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(253, 232, 208, 0.4),
+    0 6px 0 #7c2d12,
+    0 12px 18px rgba(12, 4, 2, 0.4);
+  transition:
+    transform 150ms cubic-bezier(0.2, 0.8, 0.25, 1),
+    box-shadow 150ms ease,
+    filter 150ms ease;
+}
+
+html[data-player-skin="canyon"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="canyon"]:root .primary:hover:not(:disabled),
+html[data-player-skin="canyon"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  transform: translateX(3px);
+  filter: brightness(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(253, 232, 208, 0.5),
+    0 7px 0 #7c2d12,
+    0 14px 22px rgba(251, 146, 60, 0.28);
+}
+
+html[data-player-skin="canyon"]:root button.primary:active:not(:disabled),
+html[data-player-skin="canyon"]:root .primary:active:not(:disabled),
+html[data-player-skin="canyon"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translate(2px, 4px);
+  filter: brightness(0.97);
+  box-shadow:
+    inset 0 2px 4px rgba(28, 10, 6, 0.35),
+    0 2px 0 #7c2d12,
+    0 6px 10px rgba(12, 4, 2, 0.4);
+}
+
+html[data-player-skin="canyon"]:root button.secondary,
+html[data-player-skin="canyon"]:root .secondary,
+html[data-player-skin="canyon"]:root .ghost-btn {
+  border: 1px solid rgba(154, 52, 18, 0.5);
+  border-right: 2px solid rgba(254, 215, 170, 0.4);
+  border-radius: var(--cn-r-ctl);
+  background: linear-gradient(180deg, rgba(124, 45, 18, 0.7) 0 24%, rgba(67, 20, 7, 0.92) 24% 100%);
+  color: var(--cn-ink-2);
+  font-family: var(--cn-font-display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 3px 0 #2a0e08;
+  transition: transform 150ms cubic-bezier(0.2, 0.8, 0.25, 1), box-shadow 150ms ease;
+}
+
+html[data-player-skin="canyon"]:root button.secondary:hover:not(:disabled),
+html[data-player-skin="canyon"]:root .secondary:hover:not(:disabled),
+html[data-player-skin="canyon"]:root .ghost-btn:hover:not(:disabled) {
+  transform: translateX(3px);
+  border-color: var(--cn-sun);
+  color: var(--cn-ink);
+  box-shadow: 0 4px 0 #2a0e08;
+}
+
+html[data-player-skin="canyon"]:root button.secondary:active:not(:disabled),
+html[data-player-skin="canyon"]:root .ghost-btn:active:not(:disabled) {
+  transform: translate(2px, 3px);
+  box-shadow: 0 1px 0 #2a0e08;
+}
+
+/* ── 9 · Empty / input / focus / disabled ────────────────────── */
+
+html[data-player-skin="canyon"]:root input,
+html[data-player-skin="canyon"]:root textarea,
+html[data-player-skin="canyon"]:root select,
+html[data-player-skin="canyon"]:root .agc-input-zone,
+html[data-player-skin="canyon"]:root [contenteditable="true"] {
+  border: 1px solid rgba(154, 52, 18, 0.5);
+  border-bottom: 2px solid rgba(254, 215, 170, 0.45);
+  border-radius: var(--cn-r-ctl);
+  background-color: rgba(28, 10, 6, 0.78);
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 11px,
+      rgba(154, 52, 18, 0.18) 11px 12px
+    ),
+    linear-gradient(180deg, rgba(194, 65, 12, 0.16) 0%, rgba(28, 10, 6, 0) 36%);
+  color: var(--cn-ink);
+  font-family: var(--cn-font-guide);
+  caret-color: var(--cn-sun);
+  box-shadow: inset 0 2px 0 rgba(28, 10, 6, 0.45);
+  transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+html[data-player-skin="canyon"]:root input::placeholder,
+html[data-player-skin="canyon"]:root textarea::placeholder {
+  color: rgba(192, 138, 98, 0.7);
+  letter-spacing: 0.04em;
+}
+
+html[data-player-skin="canyon"]:root input:focus,
+html[data-player-skin="canyon"]:root textarea:focus,
+html[data-player-skin="canyon"]:root select:focus,
+html[data-player-skin="canyon"]:root .agc-input-zone:focus-within,
+html[data-player-skin="canyon"]:root [contenteditable="true"]:focus {
+  outline: none;
+  background-color: rgba(44, 14, 8, 0.92);
+  border-color: var(--cn-sun);
+  border-bottom-color: var(--cn-trail);
+  box-shadow:
+    inset 0 2px 0 rgba(28, 10, 6, 0.35),
+    0 0 0 2px rgba(254, 215, 170, 0.35),
+    0 8px 18px -10px rgba(251, 146, 60, 0.55);
+}
+
+html[data-player-skin="canyon"]:root :focus-visible {
+  outline: 2px solid var(--cn-trail);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(251, 146, 60, 0.18);
+}
+
+/* Empty: an uncut wall. The trail has not been cut yet. */
+html[data-player-skin="canyon"]:root .empty-state {
+  position: relative;
+  border: 1.5px dashed rgba(254, 215, 170, 0.4);
+  border-right: 3px dashed rgba(251, 146, 60, 0.45);
+  border-radius: var(--cn-r-plate);
+  background-color: rgba(28, 10, 6, 0.78);
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      rgba(154, 52, 18, 0.22) 0 12px,
+      transparent 12px 13px,
+      rgba(124, 45, 18, 0.18) 13px 26px,
+      transparent 26px 27px
+    ),
+    linear-gradient(180deg, rgba(194, 65, 12, 0.16) 0%, transparent 40%);
+  color: var(--cn-ink-2);
+  padding: 28px 20px 24px;
+  box-shadow: inset 0 1px 0 rgba(253, 232, 208, 0.08), 0 10px 0 #2a0e08;
+}
+
+html[data-player-skin="canyon"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 20px;
+  margin: 0 0 10px;
+  background: linear-gradient(180deg, #fed7aa 0 30%, #fb923c 30% 68%, #9a3412 68% 100%);
+  clip-path: polygon(
+    8% 92%, 38% 92%, 38% 68%, 78% 68%, 78% 44%, 38% 44%, 38% 20%, 88% 20%, 88% 8%,
+    8% 8%, 8% 56%, 50% 56%, 50% 80%, 8% 80%
+  );
+}
+
+html[data-player-skin="canyon"]:root .empty-state-title {
+  color: var(--cn-trail);
+  font-family: var(--cn-font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="canyon"]:root .empty-state-body,
+html[data-player-skin="canyon"]:root .empty-state-hint {
+  color: var(--cn-ink-2);
+}
+
+/* Sun-bleached stone, still a bed — not greyed out. */
+html[data-player-skin="canyon"]:root button:disabled,
+html[data-player-skin="canyon"]:root input:disabled,
+html[data-player-skin="canyon"]:root select:disabled,
+html[data-player-skin="canyon"]:root textarea:disabled,
+html[data-player-skin="canyon"]:root [aria-disabled="true"] {
+  opacity: 0.58;
+  cursor: not-allowed;
+  color: rgba(192, 138, 98, 0.75);
+  border-color: rgba(154, 52, 18, 0.28);
+  box-shadow: none;
+  filter: saturate(0.55);
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent 0 10px,
+    rgba(192, 138, 98, 0.08) 10px 11px
+  );
+}
+
+/* ── 10 · Dialogs — an alcove cut into the wall ──────────────── */
+
+html[data-player-skin="canyon"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .launcher-search-panel,
+  .launcher-dock-panel,
+  .companion-panel,
+  .wf-code-modal,
+  .rich-fs-modal,
+  .wp-board,
+  .wp-alarm-card,
+  dialog
+) {
+  border-radius: var(--cn-r-plate);
+  background-color: rgba(44, 14, 8, 0.96);
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 14px,
+      rgba(28, 10, 6, 0.28) 14px 15px
+    ),
+    linear-gradient(180deg, rgba(251, 146, 60, 0.12) 0%, rgba(28, 10, 6, 0) 28%);
+  color: var(--cn-ink);
+  border: 1px solid rgba(154, 52, 18, 0.55);
+  border-top: 3px solid rgba(254, 215, 170, 0.6);
+  border-right: 3px solid rgba(251, 146, 60, 0.4);
+  box-shadow:
+    0 14px 0 #2a0e08,
+    0 40px 70px -28px rgba(12, 4, 2, 0.95);
+}
+
+html[data-player-skin="canyon"]:root :is(
+  .loot-chest-overlay,
+  .command-palette-overlay,
+  .launcher-search-overlay,
+  .wf-code-modal-overlay,
+  .wp-board-overlay,
+  .rit-overlay,
+  .wp-alarm-overlay,
+  .wp-arcade-overlay
+) {
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgba(251, 146, 60, 0.12) 0%, rgba(28, 10, 6, 0) 62%),
+    rgba(28, 10, 6, 0.88);
+  backdrop-filter: blur(3px);
+}
+
+html[data-player-skin="canyon"]:root .toast,
+html[data-player-skin="canyon"]:root .toast-item {
+  border: 1px solid #c2410c;
+  border-right: 3px solid #fed7aa;
+  border-radius: var(--cn-r-ctl);
+  background: linear-gradient(180deg, #fdba74 0 26%, #fb923c 26% 100%);
+  color: var(--cn-floor);
+  font-family: var(--cn-font-guide);
+  box-shadow: 0 6px 0 #7c2d12;
+}
+
+html[data-player-skin="canyon"]:root .toast-item {
+  animation: room-canyon-switch-in 340ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
+}
+
+html[data-player-skin="canyon"]:root .loot-shell-brand > span {
+  background: linear-gradient(180deg, #fed7aa 0%, #fb923c 50%, #9a3412 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: none;
+  filter: none;
+}
+
+/* ── 11 · Companion — a sunlit stone on the trail ────────────── */
+
+html[data-player-skin="canyon"]:root .companion-launcher {
+  background: rgba(28, 10, 6, 0.9);
+  border: 1px solid rgba(154, 52, 18, 0.5);
+  border-radius: var(--cn-r-plate);
+  box-shadow: 0 14px 28px -16px rgba(12, 4, 2, 0.95);
+}
+
+html[data-player-skin="canyon"]:root .companion-launcher-orb {
+  border-radius: 2px 10px 3px 8px / 2px 4px 12px 3px;
+  border: 2px solid rgba(254, 215, 170, 0.7);
+  background:
+    radial-gradient(circle at 34% 28%, #fde8d0 0%, #fb923c 36%, #9a3412 78%, #431407 100%);
+  box-shadow:
+    0 0 12px rgba(251, 146, 60, 0.5),
+    0 8px 0 #2a0e08;
+  animation: room-canyon-stone 6.8s ease-in-out infinite;
+}
+
+html[data-player-skin="canyon"]:root .companion-launcher:hover .companion-launcher-orb {
+  box-shadow:
+    0 0 18px rgba(251, 146, 60, 0.75),
+    0 8px 0 #2a0e08;
+}
+
+/* ── 12 · Agent bubbles — notes left in the shade of a ledge ─── */
+
+html[data-player-skin="canyon"]:root .agent-bubble {
+  background: rgba(67, 20, 7, 0.92);
+  color: var(--cn-ink);
+  border-left: 3px solid rgba(254, 215, 170, 0.55);
+  border-radius: var(--cn-r-card);
+}
+
+html[data-player-skin="canyon"]:root .agent-msg.assistant .agent-bubble {
+  background: rgba(92, 29, 14, 0.94);
+  border-left: 3px solid #fb923c;
+}
+
+html[data-player-skin="canyon"]:root .agent-msg.user .agent-bubble {
+  background: linear-gradient(180deg, rgba(251, 146, 60, 0.28) 0 22%, rgba(124, 45, 18, 0.92) 22% 100%);
+  color: var(--cn-ink);
+  border-left: none;
+  border-right: 3px solid #fed7aa;
+}
+
+/* ═══ 13 · Per-tab rooms ═══════════════════════════════════════ */
+
+/* Home · standing back: the whole wall, the one trail visible. */
+html[data-player-skin="canyon"]:root[data-app-tab="Home"] body {
+  background-position: center, center, center 32% !important;
+  background-size: cover, cover, cover !important;
+}
+html[data-player-skin="canyon"]:root[data-app-tab="Home"] #main {
+  background-color: rgba(28, 10, 6, 0.32);
+}
+html[data-player-skin="canyon"]:root[data-app-tab="Home"] :is(.launcher-cinematic, .launcher-ambient) {
+  opacity: 0.28;
+  filter: saturate(0.85) sepia(0.12);
+}
+
+/* Today · THE SWITCHBACK PATH.
+   Odd hours bench to the left wall; even hours fold back to the
+   right. Painted hours are sunlit trail. The now-marker is a cairn. */
+html[data-player-skin="canyon"]:root[data-app-tab="Today"] body {
+  background-size: cover, cover, 160% auto !important;
+  background-position: center, center, 50% 28% !important;
+}
+html[data-player-skin="canyon"]:root[data-app-tab="Today"] #main {
+  clip-path: none !important;
+  background-color: rgba(28, 10, 6, 0.72);
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 26px,
+      rgba(154, 52, 18, 0.16) 26px 27px
+    ),
+    linear-gradient(90deg, rgba(28, 10, 6, 0.45) 0 8%, transparent 22%, transparent 78%, rgba(28, 10, 6, 0.45) 92%);
+  box-shadow:
+    inset 0 2px 0 rgba(254, 215, 170, 0.4),
+    inset 28px 0 36px -20px rgba(28, 10, 6, 0.8),
+    inset -28px 0 36px -20px rgba(28, 10, 6, 0.8);
+}
+
+html[data-player-skin="canyon"]:root[data-app-tab="Today"] .tdy-hour-row {
+  border-bottom: 1px solid rgba(154, 52, 18, 0.22);
+}
+
+html[data-player-skin="canyon"]:root[data-app-tab="Today"] .tdy-hour-time {
+  color: var(--cn-mute);
+  font-family: var(--cn-font-guide);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+}
+
+html[data-player-skin="canyon"]:root[data-app-tab="Today"] .tdy-hour-cell,
+html[data-player-skin="canyon"]:root[data-app-tab="Calendar"] .tdy-hour-cell,
+html[data-player-skin="canyon"]:root[data-app-tab="Calendar"] .cal-hour-cell {
+  border-radius: var(--cn-r-cell);
+  border: 1px solid rgba(154, 52, 18, 0.4);
+  background-color: rgba(67, 20, 7, 0.55);
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 7px,
+      rgba(28, 10, 6, 0.2) 7px 8px
+    );
+  color: var(--cn-ink);
+  transition: margin 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+/* Odd hours: the trail benches against the left wall. */
+html[data-player-skin="canyon"]:root[data-app-tab="Today"] .tdy-hour-row:nth-child(odd) .tdy-hour-cell {
+  margin-left: 2%;
+  margin-right: 22%;
+  border-left: 3px solid rgba(254, 215, 170, 0.7);
+  border-right-color: rgba(154, 52, 18, 0.25);
+}
+
+/* Even hours: the trail folds back against the right wall. */
+html[data-player-skin="canyon"]:root[data-app-tab="Today"] .tdy-hour-row:nth-child(even) .tdy-hour-cell {
+  margin-left: 18%;
+  margin-right: 4%;
+  border-right: 3px solid rgba(254, 215, 170, 0.7);
+  border-left-color: rgba(154, 52, 18, 0.25);
+}
+
+html[data-player-skin="canyon"]:root[data-app-tab="Today"] .tdy-hour-cell:hover {
+  background-color: rgba(124, 45, 18, 0.7);
+  border-color: var(--cn-sun);
+}
+
+html[data-player-skin="canyon"]:root[data-app-tab="Today"] .tdy-hour-painted,
+html[data-player-skin="canyon"]:root[data-app-tab="Calendar"] .tdy-hour-painted,
+html[data-player-skin="canyon"]:root[data-app-tab="Calendar"] .cal-hour-painted {
+  background-color: rgba(194, 65, 12, 0.72) !important;
+  background-image:
+    linear-gradient(90deg, rgba(254, 215, 170, 0.35) 0%, rgba(251, 146, 60, 0.4) 36%, rgba(154, 52, 18, 0.35) 100%) !important;
+  border-color: rgba(251, 146, 60, 0.6) !important;
+  color: var(--cn-floor) !important;
+  box-shadow: inset 0 1px 0 rgba(253, 232, 208, 0.25) !important;
+}
+
+html[data-player-skin="canyon"]:root[data-app-tab="Today"] .tdy-now-marker {
+  background: var(--cn-trail);
+  box-shadow:
+    0 0 10px rgba(251, 146, 60, 0.8),
+    0 3px 0 #7c2d12;
+}
+
+html[data-player-skin="canyon"]:root[data-app-tab="Today"] .tdy-now-marker::before {
+  background: var(--cn-sun);
+  box-shadow: 0 0 8px #fb923c;
+  border-radius: 1px 4px 1px 3px;
+}
+
+html[data-player-skin="canyon"]:root[data-app-tab="Today"] .tdy-cat-chip {
+  border-radius: var(--cn-r-chip);
+  border: 1px solid rgba(154, 52, 18, 0.45);
+  background: rgba(67, 20, 7, 0.75);
+}
+
+html[data-player-skin="canyon"]:root[data-app-tab="Today"] .tdy-cat-chip.tdy-cat-armed {
+  border-color: var(--cn-sun);
+  box-shadow: 0 0 8px rgba(251, 146, 60, 0.4);
+}
+
+html[data-player-skin="canyon"]:root[data-app-tab="Today"] #tdy-completion-bar {
+  background: linear-gradient(90deg, #9a3412 0%, #c2410c 40%, #fb923c 78%, #fed7aa 100%);
+  box-shadow: 0 0 8px rgba(251, 146, 60, 0.45);
+}
+
+/* Calendar · a geologic column of days. */
+html[data-player-skin="canyon"]:root[data-app-tab="Calendar"] #main {
+  clip-path: none !important;
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 28px,
+      rgba(154, 52, 18, 0.16) 28px 29px
+    );
+}
+html[data-player-skin="canyon"]:root[data-app-tab="Calendar"] #main .cal-day,
+html[data-player-skin="canyon"]:root[data-app-tab="Calendar"] #main .cal-month-cell {
+  border-radius: var(--cn-r-cell);
+  border: 1px solid rgba(154, 52, 18, 0.4);
+  background: rgba(67, 20, 7, 0.7);
+  color: var(--cn-ink);
+}
+html[data-player-skin="canyon"]:root[data-app-tab="Calendar"] #main .cal-month-daynum,
+html[data-player-skin="canyon"]:root[data-app-tab="Calendar"] #main .cal-week-day-head {
+  font-family: var(--cn-font-guide);
+  font-variant-numeric: tabular-nums;
+  color: var(--cn-trail);
+}
+html[data-player-skin="canyon"]:root[data-app-tab="Calendar"] #main .cal-month-cell-today,
+html[data-player-skin="canyon"]:root[data-app-tab="Calendar"] #main .cal-week-day-today {
+  border-color: var(--cn-sun);
+  box-shadow: inset -3px 0 0 var(--cn-trail);
+}
+
+/* Tasks · beds laid in a column, each with a trail lip. */
+html[data-player-skin="canyon"]:root[data-app-tab="Tasks"] body {
+  background-position: center, center, center 58% !important;
+}
+html[data-player-skin="canyon"]:root[data-app-tab="Tasks"] #main .card,
+html[data-player-skin="canyon"]:root[data-app-tab="Tasks"] #main .tsk-row {
+  border-left: 1px solid rgba(154, 52, 18, 0.4);
+  border-right: 3px solid rgba(254, 215, 170, 0.5);
+  box-shadow: 0 6px 0 #2a0e08;
+}
+
+/* Agent · shade under a ledge. */
+html[data-player-skin="canyon"]:root[data-app-tab="Agent"] #main .agent-pane {
+  border: 1px solid rgba(154, 52, 18, 0.45);
+  border-top: 3px solid rgba(254, 215, 170, 0.5);
+  border-radius: var(--cn-r-plate);
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 16px,
+      rgba(28, 10, 6, 0.22) 16px 17px
+    ),
+    linear-gradient(180deg, rgba(92, 29, 14, 0.9) 0 58%, rgba(44, 14, 8, 0.95) 100%);
+  box-shadow: inset 0 3px 0 rgba(28, 10, 6, 0.3), 0 10px 0 #2a0e08;
+}
+
+html[data-player-skin="canyon"]:root[data-app-tab="Hub"] #main .hub-card,
+html[data-player-skin="canyon"]:root[data-app-tab="Hub"] #main .hub-glance-item,
+html[data-player-skin="canyon"]:root[data-app-tab="Practice"] #main .card,
+html[data-player-skin="canyon"]:root[data-app-tab="Settings"] #main .card,
+html[data-player-skin="canyon"]:root[data-app-tab="Paint"] #main .card,
+html[data-player-skin="canyon"]:root[data-app-tab="Projects"] #main .card,
+html[data-player-skin="canyon"]:root[data-app-tab="Parallel"] #main .card,
+html[data-player-skin="canyon"]:root[data-app-tab="Goals"] #main .card {
+  border-radius: var(--cn-r-card);
+  border: 1px solid rgba(154, 52, 18, 0.45);
+  border-right: 3px solid rgba(254, 215, 170, 0.45);
+  background-color: rgba(92, 29, 14, 0.86);
+  color: var(--cn-ink);
+  box-shadow: 0 8px 0 #2a0e08;
+}
+
+/* ── 14 · Motion ─────────────────────────────────────────────── */
+
+/* Heat lifting off the wall. Almost still. */
+@keyframes room-canyon-heat {
+  0%, 100% { opacity: 0.16; transform: translateY(0) scaleY(1); }
+  50% { opacity: 0.28; transform: translateY(-2px) scaleY(1.08); }
+}
+
+/* Talus drifting down the bedding planes. */
+@keyframes room-canyon-talus {
+  0% { background-position: 0 0, 0 0, 0 0; }
+  100% { background-position: 0 96px, 0 69px, 0 117px; }
+}
+
+/* The sun's shadow walking down the cliff. */
+@keyframes room-canyon-shadow {
+  0%, 100% { opacity: 0.24; filter: brightness(1); }
+  50% { opacity: 0.38; filter: brightness(1.08); }
+}
+
+/* Dust walking the trail cut along the rim. */
+@keyframes room-canyon-switch {
+  0% { background-position: 0 0; }
+  100% { background-position: 220% 0; }
+}
+
+/* A cairn settling on the ledge. Transform keeps the rim stone centered. */
+@keyframes room-canyon-cairn {
+  0%, 100% { transform: translateX(-50%) translateY(0); filter: brightness(1); }
+  50% { transform: translateX(-50%) translateY(-1px); filter: brightness(1.08); }
+}
+
+/* Sun walking a trail stone. No translate — the orb keeps its seat. */
+@keyframes room-canyon-stone {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.1); }
+}
+
+/* A toast arriving the way a boot finds the next bench. */
+@keyframes room-canyon-switch-in {
+  0% { transform: translateX(-14px); opacity: 0; }
+  62% { transform: translateX(3px); opacity: 1; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="canyon"]:root *,
+  html[data-player-skin="canyon"]:root *::before,
+  html[data-player-skin="canyon"]:root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  html[data-player-skin="canyon"]:root .launcher-card:hover,
+  html[data-player-skin="canyon"]:root .launcher-card--focused,
+  html[data-player-skin="canyon"]:root button.primary:hover:not(:disabled) {
+    transform: none;
+  }
+}

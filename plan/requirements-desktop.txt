@@ -1,0 +1,4 @@
+# Only needed to run desktop.py (native window client). Not installed in the
+# server container -- pywebview needs native GUI libs that a headless VM doesn't have.
+-r requirements.txt
+pywebview

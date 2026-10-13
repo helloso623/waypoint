@@ -1,0 +1,1165 @@
+/* ═══════════════════════════════════════════════════════════════
+   TROPIC COURIER — warm dispatches across island routes.
+
+   The object: a coconut-wood courier hut in palm shade. Not a
+   coral reef, not a lagoon wake, not a beach-dune. A clerk's
+   post: vertical coconut planks, a thatch eave on the trade-wind
+   side, and one green frond shadow laid across the fascia. Teal
+   water exists only as a thin mail slot — lagoon as a letterbox,
+   never as a landscape.
+
+   Architecture:
+   - Coconut timber: warm husk-brown boards, vertical grain, a
+     squared post on the left of every plate.
+   - Thatch eave: the roof overhangs long and shallow to the
+     right. That is the room's cut — not a mesa cap, not a petal.
+   - One frond: a single palm leaflet fan from the upper left.
+     Green is this shadow, not a jungle wash.
+   - Mail slot: a 3px teal slit. HUD foot, card sill, input
+     baseline, empty waiting mouth. Tide lives only here.
+
+   Palette:
+   - Ground: hut shade (#1a110c → #2c1c14).
+   - Wood: coconut timber (#6b4228, #8a5a36, #c4a07a).
+   - Paper: dispatch cream (#f3e6c8).
+   - One accent: frond #4ade80 (loot colorA).
+   - Slot water: #0f766e (loot colorB), wet only inside the slit.
+   Not candy. Not gore. Not reef polyp. Not noon sand.
+
+   Selectors carry [data-player-skin="tropic"]:root to outrank
+   family stencils. Never clip #main or .launcher-card. Glyphs
+   may clip. No  oval calendar cells.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — coconut post, thatch eave, one slot ───────── */
+
+html[data-player-skin="tropic"]:root {
+  color-scheme: dark;
+
+  --tr-shade: #1a110c;
+  --tr-shade-2: #22160f;
+  --tr-plank: #2c1c14;
+  --tr-plank-2: #3a2518;
+  --tr-timber: #6b4228;
+  --tr-timber-hi: #8a5a36;
+  --tr-husk: #c4a07a;
+  --tr-husk-deep: #4a2c1a;
+  --tr-paper: #f3e6c8;
+  --tr-paper-2: #e8d4a8;
+  --tr-ink: #f6edd8;
+  --tr-ink-2: #d7c4a4;
+  --tr-ink-3: #a89074;
+  --tr-frond: #4ade80;
+  --tr-frond-deep: #166534;
+  --tr-slot: #0f766e;
+  --tr-slot-wet: #2dd4bf;
+  --tr-slot-deep: #115e59;
+
+  --tr-hair: rgba(196, 160, 122, 0.22);
+  --tr-hair-2: rgba(196, 160, 122, 0.38);
+  --tr-frond-cast: rgba(22, 101, 52, 0.34);
+
+  /* Thatch-eave / post: tight coconut post on the left, long
+     shallow eave on the top-right, plank sill underfoot.
+     Elliptical slash so the overhang reads as roof, not a pill. */
+  --tr-r-hut: 3px 36px 8px 3px / 14px 7px 8px 11px;
+  --tr-r-card: 3px 28px 7px 3px / 12px 6px 7px 10px;
+  --tr-r-ctl: 2px 18px 5px 2px / 9px 5px 5px 8px;
+  --tr-r-chip: 2px 14px 4px 2px / 8px 4px 4px 7px;
+  --tr-r-cell: 2px 11px 4px 2px / 7px 4px 4px 6px;
+  --tr-r-slot: 1px 1px 1px 1px;
+
+  --tr-font-stamp: "Trebuchet MS", "Gill Sans", "Segoe UI", system-ui, sans-serif;
+  --tr-font-slip: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+
+  --tr-grain:
+    repeating-linear-gradient(92deg,
+      transparent 0 11px,
+      rgba(196, 160, 122, 0.06) 11px 12px,
+      transparent 12px 23px),
+    repeating-linear-gradient(8deg,
+      transparent 0 31px,
+      rgba(26, 17, 12, 0.28) 31px 32px);
+
+  --bg-shell: var(--tr-shade);
+  --bg-content: var(--tr-shade-2);
+  --bg-card: var(--tr-plank);
+  --bg-card-hover: var(--tr-plank-2);
+  --ink-primary: var(--tr-ink);
+  --ink-secondary: var(--tr-ink-2);
+  --ink-muted: var(--tr-ink-3);
+  --border: rgba(196, 160, 122, 0.28);
+  --gridline: rgba(107, 66, 40, 0.35);
+  --accent: var(--tr-frond);
+  --ws-accent: var(--tr-frond);
+  --accent-ink: #0b1f14;
+
+  --skin-a: #4ade80;
+  --skin-b: #0f766e;
+  --at-a: #4ade80;
+  --at-b: #0f766e;
+  --feel-a: #4ade80;
+  --feel-b: #0f766e;
+  --feel-accent: #4ade80;
+  --feel-ground: #1a110c;
+  --feel-paper: #2c1c14;
+  --feel-ink: #f6edd8;
+
+  --at-plate: var(--tr-plank);
+  --at-plate-2: var(--tr-plank-2);
+  --at-well: var(--tr-shade);
+  --at-ink: var(--tr-ink);
+  --at-ink-2: var(--tr-ink-2);
+  --at-ink-3: var(--tr-ink-3);
+  --at-hair: var(--tr-hair);
+  --at-hair-2: var(--tr-hair-2);
+  --at-hair-a: rgba(74, 222, 128, 0.4);
+  --at-tint: rgba(74, 222, 128, 0.08);
+  --at-tint-b: rgba(15, 118, 110, 0.22);
+  --at-focus: 0 0 0 3px rgba(15, 118, 110, 0.38);
+  --at-rise: 0 18px 36px -22px rgba(10, 6, 4, 0.92);
+  --at-rise-soft: 0 10px 22px -16px rgba(10, 6, 4, 0.78);
+  --at-inset: inset 0 1px 0 rgba(243, 230, 200, 0.14);
+  --at-r-plate: var(--tr-r-hut);
+  --at-r-card: var(--tr-r-card);
+  --at-r-ctl: var(--tr-r-ctl);
+  --at-r-chip: var(--tr-r-chip);
+  --at-r-cell: var(--tr-r-cell);
+  --at-font-display: var(--tr-font-stamp);
+
+  --font-display: var(--tr-font-stamp);
+
+  --feel-3d:
+    inset 0 1px 0 rgba(243, 230, 200, 0.16),
+    inset 0 -2px 0 rgba(26, 17, 12, 0.7),
+    0 4px 0 #120c08,
+    0 10px 18px rgba(8, 5, 3, 0.4);
+  --feel-3d-press:
+    inset 0 2px 5px rgba(26, 17, 12, 0.72),
+    0 1px 0 #120c08,
+    0 3px 8px rgba(8, 5, 3, 0.32);
+  --feel-grain-opacity: 0.32;
+  --feel-grain-blend: soft-light;
+  --feel-grain: var(--tr-grain);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 3px solid var(--tr-slot);
+  --feel-icon: sepia(0.35) saturate(0.9) contrast(1.08)
+    drop-shadow(0 1px 0 rgba(26, 17, 12, 0.7));
+  --feel-title-tracking: 0.07em;
+  --feel-title-case: none;
+}
+
+/* ── 2 · Body — inside the hut, shade on coconut boards ─────── */
+
+html[data-player-skin="tropic"]:root body {
+  background-color: var(--tr-shade) !important;
+  background-image:
+    linear-gradient(180deg,
+      rgba(26, 17, 12, 0.55) 0 18%,
+      rgba(44, 28, 20, 0.28) 46%,
+      rgba(18, 12, 8, 0.72) 100%),
+    repeating-linear-gradient(92deg,
+      #2c1c14 0 13px,
+      #24170f 13px 14px,
+      #332016 14px 27px),
+    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(196, 160, 122, 0.12), transparent 70%) !important;
+  background-position: center, 0 0, center top !important;
+  background-size: 100% 100%, 28px 100%, 100% 100% !important;
+  background-attachment: fixed !important;
+  color: var(--ink-primary);
+}
+
+/* ONE frond shadow: a leaflet fan from the upper left, nothing else green. */
+html[data-player-skin="tropic"]:root body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  background:
+    linear-gradient(124deg, rgba(22, 101, 52, 0.45) 0 2.4%, transparent 2.8%),
+    repeating-linear-gradient(124deg,
+      transparent 0 14px,
+      rgba(22, 101, 52, 0.38) 14px 19px,
+      transparent 19px 26px);
+  -webkit-mask-image: radial-gradient(ellipse 58% 72% at 0% 0%, #000 0 46%, transparent 72%);
+  mask-image: radial-gradient(ellipse 58% 72% at 0% 0%, #000 0 46%, transparent 72%);
+  animation: room-tropic-frond 14s ease-in-out infinite alternate;
+}
+
+/* Thatch light leaks — warm, fibrous, never a water caustic. */
+html[data-player-skin="tropic"]:root body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.22;
+  mix-blend-mode: soft-light;
+  background:
+    repeating-linear-gradient(96deg, transparent 0 7px, rgba(243, 230, 200, 0.07) 7px 8px),
+    radial-gradient(circle at 18% 12%, rgba(196, 160, 122, 0.16) 0 1px, transparent 1.6px) 0 0 / 27px 31px,
+    radial-gradient(circle at 72% 64%, rgba(26, 17, 12, 0.3) 0 1px, transparent 1.5px) 0 0 / 35px 29px;
+  animation: room-tropic-thatch 22s ease-in-out infinite;
+}
+
+/* ── 3 · Main — the dispatch counter, no clip ───────────────── */
+
+html[data-player-skin="tropic"]:root #main {
+  clip-path: none !important;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(34, 22, 15, 0.62) 0%, rgba(18, 12, 8, 0.82) 100%),
+    repeating-linear-gradient(92deg,
+      rgba(196, 160, 122, 0.04) 0 12px,
+      transparent 12px 24px) !important;
+  border-inline: 1px solid rgba(196, 160, 122, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(243, 230, 200, 0.08),
+    inset 0 -3px 0 rgba(15, 118, 110, 0.35);
+}
+
+html[data-player-skin="tropic"]:root #main::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 3px;
+  z-index: 1;
+  clip-path: none !important;
+  background: linear-gradient(180deg, var(--tr-slot-wet) 0 1px, var(--tr-slot) 1px 2px, var(--tr-slot-deep) 2px 3px);
+  opacity: 0.85;
+  animation: room-tropic-slot 6.4s ease-in-out infinite;
+}
+
+/* ── 4 · Top HUD — hut fascia, thatch lip, mail slot ────────── */
+
+html[data-player-skin="tropic"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  background:
+    linear-gradient(180deg, rgba(196, 160, 122, 0.18) 0 7px, transparent 7px),
+    repeating-linear-gradient(92deg,
+      #3a2518 0 14px,
+      #2c1c14 14px 15px,
+      #442c1c 15px 29px),
+    linear-gradient(180deg, #5a3824 0%, #3a2518 55%, #24170f 100%);
+  border-bottom: 3px solid var(--tr-slot);
+  border-radius: 0 0 8px 3px;
+  color: var(--tr-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(243, 230, 200, 0.22),
+    inset 0 -1px 0 rgba(15, 118, 110, 0.55),
+    0 8px 20px rgba(10, 6, 4, 0.45);
+  backdrop-filter: blur(8px);
+}
+
+/* Thatch fibers along the crown of the fascia. */
+html[data-player-skin="tropic"]:root .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 9px;
+  z-index: 0;
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(196, 160, 122, 0.08) 0 3px,
+      rgba(26, 17, 12, 0.35) 3px 4px,
+      rgba(138, 90, 54, 0.4) 4px 7px);
+  opacity: 0.9;
+}
+
+/* The mail slot itself: teal water, thin, breathing. */
+html[data-player-skin="tropic"]:root .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: -3px;
+  height: 3px;
+  z-index: 2;
+  border-radius: var(--tr-r-slot);
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--tr-slot-deep) 8%,
+    var(--tr-slot-wet) 36%,
+    var(--tr-slot) 50%,
+    var(--tr-slot-wet) 64%,
+    var(--tr-slot-deep) 92%,
+    transparent 100%);
+  box-shadow: 0 0 8px rgba(45, 212, 191, 0.35);
+  animation: room-tropic-slot 6.4s ease-in-out infinite;
+}
+
+html[data-player-skin="tropic"]:root .top-hud > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-player-skin="tropic"]:root .hud-app-name,
+html[data-player-skin="tropic"]:root .launcher-title,
+html[data-player-skin="tropic"]:root .page-title {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: currentColor;
+  color: var(--tr-paper);
+  font-family: var(--tr-font-stamp);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-shadow: 0 1px 0 rgba(26, 17, 12, 0.8);
+}
+
+html[data-player-skin="tropic"]:root .hud-intention,
+html[data-player-skin="tropic"]:root .hud-now-focus-kicker {
+  color: var(--tr-ink-2);
+  font-family: var(--tr-font-slip);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+/* Coconut-eye jewel: three pores, not a sun and not a lamp. */
+html[data-player-skin="tropic"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  border-radius: 46% 40% 50% 44% / 40% 46% 50% 44%;
+  border: 1px solid var(--tr-husk-deep);
+  background:
+    radial-gradient(circle at 38% 28%, rgba(243, 230, 200, 0.35) 0 8%, transparent 18%),
+    radial-gradient(circle at 36% 34%, #2a1810 0 7%, transparent 8%),
+    radial-gradient(circle at 52% 30%, #2a1810 0 6%, transparent 7%),
+    radial-gradient(circle at 44% 44%, #2a1810 0 5%, transparent 6%),
+    linear-gradient(160deg, #c4a07a 0%, #8a5a36 46%, #4a2c1a 100%);
+  box-shadow: inset 0 1px 0 rgba(243, 230, 200, 0.3), 0 2px 0 #120c08;
+}
+
+html[data-player-skin="tropic"]:root .brand-mark,
+html[data-player-skin="tropic"]:root .ws-mark,
+html[data-player-skin="tropic"]:root .hud-icon-svg,
+html[data-player-skin="tropic"]:root .tab-chip-mark,
+html[data-player-skin="tropic"]:root .wp-skin-mark {
+  color: var(--tr-frond);
+  filter: var(--feel-icon);
+}
+
+html[data-player-skin="tropic"]:root :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-chip,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .hud-model-chip--status,
+  .loot-profile-chip
+) {
+  background:
+    linear-gradient(180deg, rgba(243, 230, 200, 0.1) 0%, transparent 40%),
+    #2c1c14;
+  color: var(--tr-ink);
+  border: 1px solid rgba(196, 160, 122, 0.32);
+  border-bottom: 2px solid rgba(15, 118, 110, 0.55);
+  border-radius: var(--tr-r-chip);
+  box-shadow: inset 0 1px 0 rgba(243, 230, 200, 0.1);
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+html[data-player-skin="tropic"]:root :is(.hud-icon-btn, .hud-glyph-btn):hover:not(:disabled) {
+  background: #3a2518;
+  border-color: rgba(74, 222, 128, 0.45);
+  transform: translateY(-1px);
+}
+
+html[data-player-skin="tropic"]:root :is(.hud-icon-btn, .hud-glyph-btn):active:not(:disabled) {
+  transform: translateY(2px);
+}
+
+/* ── 5 · Navigation & tab chips — route stamps ──────────────── */
+
+html[data-player-skin="tropic"]:root .tab-chip-bar {
+  background: rgba(18, 12, 8, 0.92);
+  border-bottom: 1px solid rgba(15, 118, 110, 0.35);
+}
+
+html[data-player-skin="tropic"]:root .tab-chip,
+html[data-player-skin="tropic"]:root .app-subnav-pill,
+html[data-player-skin="tropic"]:root .pill,
+html[data-player-skin="tropic"]:root .tsk-day-chip {
+  border: 1px solid rgba(196, 160, 122, 0.26);
+  border-radius: var(--tr-r-chip);
+  background: #24170f;
+  color: var(--tr-ink-2);
+  font-family: var(--tr-font-stamp);
+  letter-spacing: 0.05em;
+  box-shadow: inset 0 1px 0 rgba(243, 230, 200, 0.06);
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+html[data-player-skin="tropic"]:root .tab-chip:hover {
+  background: #332016;
+  color: var(--tr-ink);
+  border-color: rgba(74, 222, 128, 0.35);
+  transform: translateY(-1px);
+}
+
+html[data-player-skin="tropic"]:root .tab-chip.active,
+html[data-player-skin="tropic"]:root .tab-chip[aria-selected="true"],
+html[data-player-skin="tropic"]:root .app-subnav-pill.active {
+  background:
+    linear-gradient(180deg, rgba(74, 222, 128, 0.16) 0%, transparent 38%),
+    #3a2518;
+  color: var(--tr-paper);
+  border-color: rgba(74, 222, 128, 0.55);
+  border-bottom: 2px solid var(--tr-slot);
+  box-shadow:
+    inset 0 1px 0 rgba(243, 230, 200, 0.16),
+    0 3px 0 #120c08;
+}
+
+/* ── 6 · Launcher & cards — coconut planks with a slot sill ─── */
+
+html[data-player-skin="tropic"]:root .launcher-grid,
+html[data-player-skin="tropic"]:root .launcher-my-apps-row {
+  position: relative;
+  padding-top: 12px;
+}
+
+html[data-player-skin="tropic"]:root .launcher-card,
+html[data-player-skin="tropic"]:root .card,
+html[data-player-skin="tropic"]:root .hub-card,
+html[data-player-skin="tropic"]:root .pln-rail-card,
+html[data-player-skin="tropic"]:root .evt-card,
+html[data-player-skin="tropic"]:root .tsk-row,
+html[data-player-skin="tropic"]:root .task-row,
+html[data-player-skin="tropic"]:root .napkin-entry,
+html[data-player-skin="tropic"]:root .page-intent {
+  clip-path: none !important;
+  overflow: visible;
+  border: 1px solid rgba(196, 160, 122, 0.3);
+  border-bottom: 3px solid rgba(15, 118, 110, 0.7);
+  border-radius: var(--tr-r-card);
+  color: var(--tr-ink);
+  background-color: rgba(44, 28, 20, 0.92);
+  background-image:
+    linear-gradient(180deg, rgba(196, 160, 122, 0.1) 0 10%, transparent 11%),
+    repeating-linear-gradient(92deg,
+      rgba(196, 160, 122, 0.05) 0 12px,
+      transparent 12px 24px),
+    linear-gradient(176deg, #3a2518 0 62%, #2c1c14 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(243, 230, 200, 0.14),
+    0 4px 0 #120c08,
+    0 12px 22px rgba(8, 5, 3, 0.32);
+}
+
+html[data-player-skin="tropic"]:root .launcher-card {
+  outline: none;
+  transform: none;
+  transition:
+    transform 200ms cubic-bezier(0.2, 0.8, 0.25, 1),
+    box-shadow 200ms ease,
+    border-color 180ms ease;
+}
+
+/* Mail slot on every dispatch board — not a gold hairline. */
+html[data-player-skin="tropic"]:root .launcher-card::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  top: auto;
+  bottom: 8px;
+  width: auto;
+  height: 3px;
+  border-radius: var(--tr-r-slot);
+  opacity: 0.9;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--tr-slot-wet) 18%,
+    var(--tr-slot) 50%,
+    var(--tr-slot-wet) 82%,
+    transparent);
+  box-shadow: 0 0 6px rgba(45, 212, 191, 0.25);
+  animation: room-tropic-slot 6.4s ease-in-out infinite;
+}
+
+/* One coconut-eye fastener instead of a duotone bleed disc. */
+html[data-player-skin="tropic"]:root .launcher-card::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  bottom: auto;
+  width: 11px;
+  height: 11px;
+  aspect-ratio: auto;
+  border-radius: 46% 40% 50% 44% / 40% 46% 50% 44%;
+  opacity: 0.9;
+  transform: none;
+  background:
+    radial-gradient(circle at 40% 36%, #2a1810 0 22%, transparent 24%),
+    linear-gradient(150deg, #c4a07a, #6b4228 70%, #4a2c1a);
+  box-shadow: 0 1px 0 #120c08, inset 0 1px 0 rgba(243, 230, 200, 0.3);
+  filter: none;
+}
+
+html[data-player-skin="tropic"]:root .launcher-card-name,
+html[data-player-skin="tropic"]:root .launcher-tile-name {
+  color: var(--tr-paper);
+  font-family: var(--tr-font-stamp);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+html[data-player-skin="tropic"]:root .launcher-card-intention,
+html[data-player-skin="tropic"]:root .launcher-card-sub,
+html[data-player-skin="tropic"]:root .launcher-card-stats {
+  color: var(--tr-ink-2);
+  font-family: var(--tr-font-slip);
+}
+
+/* A letter lifting toward the slot — not a reef surge, not a noon traverse. */
+html[data-player-skin="tropic"]:root .launcher-card:hover,
+html[data-player-skin="tropic"]:root .launcher-card--focused {
+  transform: translateY(-2px);
+  border-color: rgba(74, 222, 128, 0.45);
+  border-bottom-color: var(--tr-slot-wet);
+  box-shadow:
+    inset 0 1px 0 rgba(243, 230, 200, 0.22),
+    0 6px 0 #120c08,
+    0 16px 28px rgba(8, 5, 3, 0.4),
+    0 0 16px rgba(15, 118, 110, 0.18);
+}
+
+html[data-player-skin="tropic"]:root .card:hover,
+html[data-player-skin="tropic"]:root .hub-card:hover {
+  border-color: rgba(74, 222, 128, 0.4);
+  border-bottom-color: var(--tr-slot-wet);
+}
+
+/* ── 7 · Glyph — coconut husk with three pores and a mail slot ─ */
+
+html[data-player-skin="tropic"]:root .launcher-card-glyph,
+html[data-player-skin="tropic"]:root .launcher-tile-glyph,
+html[data-player-skin="tropic"]:root .nav-app-glyph,
+html[data-player-skin="tropic"]:root .loot-skin-avatar {
+  position: relative;
+  overflow: visible;
+  border: 2px solid var(--tr-husk-deep);
+  border-radius: 46% 40% 50% 44% / 40% 46% 50% 44%;
+  clip-path: polygon(50% 0%, 86% 16%, 100% 54%, 84% 92%, 50% 100%, 16% 92%, 0% 54%, 14% 16%);
+  color: var(--tr-paper);
+  background:
+    radial-gradient(circle at 36% 32%, #2a1810 0 6%, transparent 7%),
+    radial-gradient(circle at 52% 28%, #2a1810 0 5%, transparent 6%),
+    radial-gradient(circle at 44% 41%, #2a1810 0 5%, transparent 6%),
+    radial-gradient(circle at 40% 22%, rgba(243, 230, 200, 0.45) 0 10%, transparent 22%),
+    linear-gradient(155deg, #d4b08a 0%, #8a5a36 44%, #4a2c1a 100%);
+  box-shadow:
+    inset 0 1px 2px rgba(243, 230, 200, 0.4),
+    inset 0 -3px 6px rgba(26, 17, 12, 0.55),
+    0 4px 0 #120c08;
+  filter: none;
+  transform: none;
+}
+
+/* Teal mail slot cut through the lower third of the husk. */
+html[data-player-skin="tropic"]:root .launcher-card-glyph::after,
+html[data-player-skin="tropic"]:root .launcher-tile-glyph::after,
+html[data-player-skin="tropic"]:root .loot-skin-avatar::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: auto;
+  bottom: 22%;
+  width: auto;
+  height: 3px;
+  border-radius: var(--tr-r-slot);
+  background: linear-gradient(90deg, var(--tr-slot-deep), var(--tr-slot-wet) 40%, var(--tr-slot) 60%, var(--tr-slot-deep));
+  box-shadow: 0 0 6px rgba(45, 212, 191, 0.55);
+  animation: room-tropic-slot 5.6s ease-in-out infinite;
+}
+
+html[data-player-skin="tropic"]:root .launcher-custom-app-emoji {
+  clip-path: polygon(50% 0%, 86% 16%, 100% 54%, 84% 92%, 50% 100%, 16% 92%, 0% 54%, 14% 16%);
+  background: rgba(107, 66, 40, 0.55);
+  border: 1px solid rgba(15, 118, 110, 0.45);
+}
+
+/* ── 8 · Buttons — a wooden stamp that posts into the slot ──── */
+
+html[data-player-skin="tropic"]:root button.primary,
+html[data-player-skin="tropic"]:root .primary,
+html[data-player-skin="tropic"]:root .agent-pane-chat .agc-send {
+  position: relative;
+  background-color: var(--tr-timber);
+  background-image:
+    linear-gradient(180deg, rgba(243, 230, 200, 0.22) 0%, transparent 36%),
+    repeating-linear-gradient(92deg, transparent 0 9px, rgba(26, 17, 12, 0.18) 9px 10px),
+    linear-gradient(180deg, #8a5a36 0%, #6b4228 58%, #4a2c1a 100%);
+  color: var(--tr-paper);
+  border: 1px solid #4a2c1a;
+  border-bottom: 3px solid var(--tr-slot);
+  border-radius: var(--tr-r-ctl);
+  font-family: var(--tr-font-stamp);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 0 rgba(26, 17, 12, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(243, 230, 200, 0.22),
+    0 4px 0 #120c08,
+    0 8px 16px rgba(8, 5, 3, 0.32);
+  transition:
+    transform 150ms cubic-bezier(0.2, 0.8, 0.3, 1),
+    box-shadow 150ms ease,
+    filter 150ms ease,
+    border-bottom-color 150ms ease;
+}
+
+html[data-player-skin="tropic"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="tropic"]:root .primary:hover:not(:disabled),
+html[data-player-skin="tropic"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+  border-bottom-color: var(--tr-slot-wet);
+  box-shadow:
+    inset 0 1px 0 rgba(243, 230, 200, 0.3),
+    0 5px 0 #120c08,
+    0 10px 18px rgba(8, 5, 3, 0.38);
+}
+
+html[data-player-skin="tropic"]:root button.primary:active:not(:disabled),
+html[data-player-skin="tropic"]:root .primary:active:not(:disabled),
+html[data-player-skin="tropic"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translateY(4px);
+  filter: brightness(0.96);
+  box-shadow:
+    inset 0 2px 4px rgba(26, 17, 12, 0.6),
+    0 1px 0 #120c08;
+  animation: room-tropic-post 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+html[data-player-skin="tropic"]:root button.secondary,
+html[data-player-skin="tropic"]:root .secondary,
+html[data-player-skin="tropic"]:root .ghost-btn {
+  background: #24170f;
+  color: var(--tr-ink-2);
+  border: 1px solid rgba(196, 160, 122, 0.3);
+  border-bottom: 2px solid rgba(15, 118, 110, 0.4);
+  border-radius: var(--tr-r-ctl);
+  font-family: var(--tr-font-stamp);
+  letter-spacing: 0.04em;
+  transition: transform 150ms ease, border-color 150ms ease;
+}
+
+html[data-player-skin="tropic"]:root button.secondary:hover:not(:disabled),
+html[data-player-skin="tropic"]:root .secondary:hover:not(:disabled),
+html[data-player-skin="tropic"]:root .ghost-btn:hover:not(:disabled) {
+  background: #332016;
+  color: var(--tr-paper);
+  border-color: rgba(74, 222, 128, 0.4);
+  transform: translateY(-1px);
+}
+
+/* ── 9 · Inputs, focus, empty — a slip into the slot ────────── */
+
+html[data-player-skin="tropic"]:root input,
+html[data-player-skin="tropic"]:root textarea,
+html[data-player-skin="tropic"]:root select,
+html[data-player-skin="tropic"]:root .agc-input-zone,
+html[data-player-skin="tropic"]:root [contenteditable="true"] {
+  background-color: #1e140e;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 22px, rgba(196, 160, 122, 0.08) 22px 23px),
+    linear-gradient(180deg, rgba(243, 230, 200, 0.06) 0%, transparent 40%);
+  color: var(--tr-paper);
+  caret-color: var(--tr-slot-wet);
+  border: 1px solid rgba(196, 160, 122, 0.32);
+  border-bottom: 3px solid var(--tr-slot);
+  border-radius: var(--tr-r-ctl);
+  font-family: var(--tr-font-slip);
+  box-shadow: inset 0 2px 6px rgba(10, 6, 4, 0.55);
+  transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+html[data-player-skin="tropic"]:root input::placeholder,
+html[data-player-skin="tropic"]:root textarea::placeholder {
+  color: rgba(168, 144, 116, 0.75);
+  font-style: italic;
+}
+
+html[data-player-skin="tropic"]:root input:focus,
+html[data-player-skin="tropic"]:root textarea:focus,
+html[data-player-skin="tropic"]:root select:focus,
+html[data-player-skin="tropic"]:root .agc-input-zone:focus-within,
+html[data-player-skin="tropic"]:root [contenteditable="true"]:focus {
+  outline: none;
+  background-color: #2a1c14;
+  border-color: rgba(74, 222, 128, 0.45);
+  border-bottom-color: var(--tr-slot-wet);
+  box-shadow:
+    inset 0 2px 6px rgba(10, 6, 4, 0.45),
+    0 0 0 3px rgba(15, 118, 110, 0.28),
+    0 6px 16px -8px rgba(45, 212, 191, 0.4);
+}
+
+html[data-player-skin="tropic"]:root :focus-visible {
+  outline: 2px solid var(--tr-slot-wet);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(15, 118, 110, 0.22);
+}
+
+html[data-player-skin="tropic"]:root button:disabled,
+html[data-player-skin="tropic"]:root input:disabled,
+html[data-player-skin="tropic"]:root select:disabled,
+html[data-player-skin="tropic"]:root textarea:disabled,
+html[data-player-skin="tropic"]:root [aria-disabled="true"] {
+  opacity: 1;
+  cursor: not-allowed;
+  color: #8a7460;
+  border-color: rgba(196, 160, 122, 0.16);
+  border-bottom-color: rgba(15, 118, 110, 0.18);
+  background: #24190f;
+  background-image: none;
+  filter: saturate(0.35) brightness(0.92);
+  box-shadow: none;
+  text-shadow: none;
+}
+
+/* Empty state — the slot is open and nothing has arrived. */
+html[data-player-skin="tropic"]:root .empty-state {
+  position: relative;
+  border: 1px dashed rgba(196, 160, 122, 0.45);
+  border-bottom: 3px solid rgba(15, 118, 110, 0.7);
+  border-radius: var(--tr-r-hut);
+  background-color: rgba(34, 22, 15, 0.88);
+  background-image:
+    linear-gradient(180deg, rgba(22, 101, 52, 0.1) 0%, transparent 36%),
+    repeating-linear-gradient(92deg, rgba(196, 160, 122, 0.05) 0 12px, transparent 12px 24px);
+  color: var(--tr-ink-2);
+  padding: 26px 20px 22px;
+  box-shadow: inset 0 0 0 4px rgba(18, 12, 8, 0.5);
+}
+
+html[data-player-skin="tropic"]:root .empty-state-title {
+  color: var(--tr-paper);
+  font-family: var(--tr-font-stamp);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+html[data-player-skin="tropic"]:root .empty-state-body,
+html[data-player-skin="tropic"]:root .empty-state-hint {
+  color: var(--tr-ink-2);
+  font-family: var(--tr-font-slip);
+}
+
+/* ── 10 · Dialogs, overlays, toasts ─────────────────────────── */
+
+html[data-player-skin="tropic"]:root :is(
+  .loot-shell-dialog,
+  .napkin-capture-dialog,
+  .launcher-search-panel,
+  .launcher-dock-panel,
+  .companion-panel,
+  .wf-code-modal,
+  .rich-fs-modal,
+  .wp-board,
+  .command-palette,
+  .wp-alarm-card,
+  dialog
+) {
+  border-radius: var(--tr-r-hut);
+  background-color: rgba(44, 28, 20, 0.96);
+  background-image:
+    linear-gradient(180deg, rgba(196, 160, 122, 0.12) 0%, transparent 22%),
+    repeating-linear-gradient(92deg, rgba(196, 160, 122, 0.05) 0 13px, transparent 13px 26px);
+  color: var(--tr-ink);
+  border: 1px solid rgba(196, 160, 122, 0.38);
+  border-bottom: 4px solid var(--tr-slot);
+  box-shadow: 0 36px 70px -28px rgba(8, 5, 3, 0.95);
+}
+
+html[data-player-skin="tropic"]:root :is(
+  .loot-chest-overlay,
+  .command-palette-overlay,
+  .launcher-search-overlay,
+  .wf-code-modal-overlay,
+  .wp-board-overlay,
+  .rit-overlay,
+  .wp-alarm-overlay,
+  .wp-arcade-overlay
+) {
+  background:
+    radial-gradient(120% 70% at 0% 0%, rgba(22, 101, 52, 0.22) 0%, transparent 55%),
+    rgba(18, 12, 8, 0.88);
+  backdrop-filter: blur(5px);
+}
+
+html[data-player-skin="tropic"]:root .toast,
+html[data-player-skin="tropic"]:root .toast-item {
+  border: 1px solid rgba(196, 160, 122, 0.4);
+  border-bottom: 3px solid var(--tr-slot);
+  border-radius: var(--tr-r-ctl);
+  background:
+    linear-gradient(180deg, var(--tr-paper) 0 72%, var(--tr-paper-2) 100%);
+  color: #2a1810;
+  font-family: var(--tr-font-slip);
+  box-shadow: 0 4px 0 #120c08, 0 10px 18px rgba(8, 5, 3, 0.35);
+  animation: room-tropic-dispatch 340ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+html[data-player-skin="tropic"]:root .loot-shell-brand > span {
+  background: linear-gradient(180deg, #d4b08a 0%, #4ade80 55%, #0f766e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+html[data-player-skin="tropic"]:root .loot-skin-card,
+html[data-player-skin="tropic"]:root .loot-collection-card {
+  border-radius: var(--tr-r-card);
+  border: 1px solid rgba(196, 160, 122, 0.3);
+  border-bottom: 3px solid rgba(15, 118, 110, 0.65);
+  background: linear-gradient(176deg, #3a2518 0 64%, #2c1c14 100%);
+  color: var(--tr-ink);
+}
+
+/* ── 11 · Companion — a coconut at the hut door ─────────────── */
+
+html[data-player-skin="tropic"]:root .companion-launcher {
+  background: rgba(34, 22, 15, 0.92);
+  border: 1px solid rgba(196, 160, 122, 0.4);
+  border-radius: 46% 40% 50% 44% / 40% 46% 50% 44%;
+  box-shadow: 0 14px 28px -16px rgba(8, 5, 3, 0.9);
+}
+
+html[data-player-skin="tropic"]:root .companion-launcher-orb {
+  border-radius: 46% 40% 50% 44% / 40% 46% 50% 44%;
+  background:
+    radial-gradient(circle at 36% 30%, #2a1810 0 6%, transparent 7%),
+    radial-gradient(circle at 50% 26%, #2a1810 0 5%, transparent 6%),
+    radial-gradient(circle at 41% 40%, #2a1810 0 5%, transparent 6%),
+    radial-gradient(circle at 38% 22%, rgba(243, 230, 200, 0.5) 0 12%, transparent 24%),
+    linear-gradient(155deg, #d4b08a 0%, #8a5a36 50%, #0f766e 92%);
+  box-shadow:
+    0 0 12px rgba(15, 118, 110, 0.45),
+    0 3px 0 #120c08;
+  animation: room-tropic-seal 7.2s ease-in-out infinite alternate;
+}
+
+html[data-player-skin="tropic"]:root .companion-launcher:hover .companion-launcher-orb {
+  box-shadow:
+    0 0 18px rgba(45, 212, 191, 0.55),
+    0 3px 0 #120c08;
+}
+
+/* ── 12 · Agent bubbles — folded dispatch slips ─────────────── */
+
+html[data-player-skin="tropic"]:root .agent-bubble {
+  background: rgba(44, 28, 20, 0.94);
+  color: var(--tr-ink);
+  border-left: 3px solid rgba(15, 118, 110, 0.7);
+  border-radius: var(--tr-r-card);
+}
+
+html[data-player-skin="tropic"]:root .agent-msg.assistant .agent-bubble {
+  background: rgba(44, 28, 20, 0.96);
+  border-left: 3px solid var(--tr-slot);
+}
+
+html[data-player-skin="tropic"]:root .agent-msg.user .agent-bubble {
+  background: linear-gradient(180deg, rgba(243, 230, 200, 0.94) 0 78%, var(--tr-paper-2) 100%);
+  color: #2a1810;
+  border-right: 3px solid var(--tr-frond-deep);
+  border-left: none;
+  font-family: var(--tr-font-slip);
+}
+
+/* ═══ 13 · Per-tab rooms ═══════════════════════════════════════ */
+
+/* Home · standing at the dispatch counter */
+html[data-player-skin="tropic"]:root[data-app-tab="Home"] body {
+  background-position: center, 0 0, center top !important;
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Home"] #main {
+  clip-path: none !important;
+  background-color: rgba(34, 22, 15, 0.46);
+  box-shadow:
+    inset 0 1px 0 rgba(243, 230, 200, 0.08),
+    inset 0 -3px 0 rgba(15, 118, 110, 0.45);
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Home"] :is(.launcher-cinematic, .launcher-ambient) {
+  opacity: 0.28;
+  filter: saturate(0.7) sepia(0.15);
+}
+
+/* Today · island-route tickets filed in the slot */
+html[data-player-skin="tropic"]:root[data-app-tab="Today"] #main,
+html[data-player-skin="tropic"]:root[data-app-tab="Calendar"] #main {
+  clip-path: none !important;
+  color: #2a1810;
+  background-image:
+    linear-gradient(90deg, transparent 0 28px, rgba(15, 118, 110, 0.45) 28px 31px, transparent 31px),
+    repeating-linear-gradient(180deg, #f3e6c8 0 28px, #e8d4a8 28px 29px);
+  background-repeat: no-repeat, repeat;
+  box-shadow:
+    inset 0 0 0 8px #2c1c14,
+    inset 0 0 0 11px rgba(15, 118, 110, 0.55);
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Today"] #main .page-title,
+html[data-player-skin="tropic"]:root[data-app-tab="Calendar"] #main .page-title {
+  color: #4a2c1a;
+  text-shadow: none;
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Today"] .tdy-hour-row {
+  border-bottom: 1px solid rgba(107, 66, 40, 0.22);
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Today"] .tdy-hour-time {
+  color: #6b4228;
+  font-family: var(--tr-font-stamp);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Today"] #main .tdy-hour-cell,
+html[data-player-skin="tropic"]:root[data-app-tab="Calendar"] #main .tdy-hour-cell,
+html[data-player-skin="tropic"]:root[data-app-tab="Calendar"] #main .cal-hour-cell {
+  border: 1px solid rgba(107, 66, 40, 0.28);
+  border-left: 3px solid var(--tr-slot);
+  border-radius: var(--tr-r-cell);
+  background: rgba(243, 230, 200, 0.88);
+  color: #2a1810;
+  font-family: var(--tr-font-slip);
+  box-shadow: inset 0 1px 0 rgba(255, 252, 244, 0.6);
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Today"] #main .tdy-hour-cell:hover {
+  background: #f8efd8;
+  border-left-color: var(--tr-slot-wet);
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Today"] #main .tdy-hour-painted,
+html[data-player-skin="tropic"]:root[data-app-tab="Calendar"] #main .tdy-hour-painted,
+html[data-player-skin="tropic"]:root[data-app-tab="Calendar"] #main .cal-hour-painted {
+  background: linear-gradient(90deg, rgba(74, 222, 128, 0.28) 0%, rgba(243, 230, 200, 0.92) 28%) !important;
+  border-left: 3px solid var(--tr-frond) !important;
+  border-color: rgba(22, 101, 52, 0.4) !important;
+  color: #1a110c;
+  box-shadow: inset 0 0 10px rgba(22, 101, 52, 0.12);
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Today"] .tdy-now-marker {
+  background: var(--tr-slot);
+  box-shadow: 0 0 12px rgba(45, 212, 191, 0.8), 0 0 22px rgba(15, 118, 110, 0.5);
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Today"] .tdy-now-marker::before {
+  background: var(--tr-slot-wet);
+  box-shadow: 0 0 8px var(--tr-slot);
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Today"] .tdy-cat-chip {
+  border-radius: var(--tr-r-chip);
+  border: 1px solid rgba(196, 160, 122, 0.35);
+  background: #3a2518;
+  color: var(--tr-paper);
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Today"] .tdy-cat-chip.tdy-cat-armed {
+  border-color: var(--tr-frond);
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.35);
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Today"] #tdy-completion-bar {
+  background: linear-gradient(90deg, var(--tr-slot-deep) 0%, var(--tr-slot) 55%, var(--tr-frond) 100%);
+  box-shadow: 0 0 8px rgba(15, 118, 110, 0.45);
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Calendar"] #main .cal-day,
+html[data-player-skin="tropic"]:root[data-app-tab="Calendar"] #main .cal-month-cell {
+  border-radius: var(--tr-r-cell);
+  border: 1px solid rgba(107, 66, 40, 0.26);
+  background: rgba(243, 230, 200, 0.82);
+  color: #2a1810;
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Calendar"] #main .cal-month-daynum,
+html[data-player-skin="tropic"]:root[data-app-tab="Calendar"] #main .cal-week-day-head {
+  font-family: var(--tr-font-stamp);
+  font-variant-numeric: tabular-nums;
+  color: #4a2c1a;
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Calendar"] #main .cal-month-cell-today,
+html[data-player-skin="tropic"]:root[data-app-tab="Calendar"] #main .cal-week-day-today {
+  border-color: var(--tr-slot);
+  box-shadow: inset 0 -3px 0 var(--tr-frond);
+}
+
+/* Tasks · parcels on the plank counter */
+html[data-player-skin="tropic"]:root[data-app-tab="Tasks"] #main :is(.card, .task-row, .tsk-row) {
+  border-radius: var(--tr-r-card);
+  border: 1px solid rgba(196, 160, 122, 0.3);
+  border-left: 3px solid var(--tr-slot);
+  background-color: rgba(44, 28, 20, 0.9);
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Tasks"] input[type="checkbox"] {
+  border-radius: 46% 40% 50% 44% / 40% 46% 50% 44%;
+  border: 1.5px solid rgba(196, 160, 122, 0.55);
+  background: #24170f;
+  accent-color: var(--tr-frond);
+}
+
+/* Agent · the back room, one slot lamp */
+html[data-player-skin="tropic"]:root[data-app-tab="Agent"] #main .agent-pane {
+  border-radius: var(--tr-r-hut);
+  background-color: rgba(26, 17, 12, 0.94);
+  background-image:
+    linear-gradient(90deg, rgba(22, 101, 52, 0.1) 0%, transparent 16%),
+    linear-gradient(180deg, rgba(15, 118, 110, 0.12) 0 4px, transparent 4px);
+  border: 1px solid rgba(196, 160, 122, 0.28);
+  border-bottom: 3px solid var(--tr-slot);
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Agent"] .agent-splitter {
+  background: linear-gradient(180deg, rgba(74, 222, 128, 0.45), rgba(15, 118, 110, 0.55));
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Agent"] .agent-live-dot {
+  background: var(--tr-slot-wet);
+  box-shadow: 0 0 10px rgba(45, 212, 191, 0.85);
+  animation: room-tropic-slot 2.6s ease-in-out infinite;
+}
+
+/* Hub · neighboring island posts */
+html[data-player-skin="tropic"]:root[data-app-tab="Hub"] #main :is(.hub-card, .hub-glance-item) {
+  border-radius: var(--tr-r-card);
+  border: 1px solid rgba(196, 160, 122, 0.28);
+  border-bottom: 3px solid rgba(15, 118, 110, 0.55);
+  background-color: rgba(44, 28, 20, 0.88);
+  transition: transform 200ms ease, border-color 180ms ease;
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Hub"] #main .hub-card:hover {
+  transform: translateY(-2px);
+  border-bottom-color: var(--tr-slot-wet);
+}
+
+/* Practice · sorting table */
+html[data-player-skin="tropic"]:root[data-app-tab="Practice"] #main .card {
+  border-radius: var(--tr-r-card);
+  border: 1px dashed rgba(196, 160, 122, 0.4);
+  border-bottom: 3px solid rgba(15, 118, 110, 0.45);
+  background-color: rgba(44, 28, 20, 0.84);
+}
+
+html[data-player-skin="tropic"]:root[data-app-tab="Practice"] #main .card:hover {
+  border-color: rgba(74, 222, 128, 0.45);
+}
+
+/* Settings / Paint / Parallel / Projects · clerk's ledger desk */
+html[data-player-skin="tropic"]:root[data-app-tab="Settings"] #main .card,
+html[data-player-skin="tropic"]:root[data-app-tab="Paint"] #main .card,
+html[data-player-skin="tropic"]:root[data-app-tab="Parallel"] #main .card,
+html[data-player-skin="tropic"]:root[data-app-tab="Projects"] #main .card,
+html[data-player-skin="tropic"]:root[data-app-tab="Goals"] #main .card,
+html[data-player-skin="tropic"]:root[data-app-tab="About"] #main .card {
+  border-radius: var(--tr-r-card);
+  border: 1px solid rgba(196, 160, 122, 0.28);
+  border-left: 3px solid var(--tr-slot);
+  background-color: rgba(44, 28, 20, 0.88);
+}
+
+/* ── 14 · Keyframes — prefixed room-tropic-* ────────────────── */
+
+/* The one frond sways in shade. Slow. Not a wake. */
+@keyframes room-tropic-frond {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0.5; }
+  50% { transform: translate3d(1.4%, 0.6%, 0) rotate(1.2deg); opacity: 0.62; }
+  100% { transform: translate3d(-0.8%, 0.3%, 0) rotate(-0.6deg); opacity: 0.54; }
+}
+
+/* Water in the mail slot only — a contained tide. */
+@keyframes room-tropic-slot {
+  0%, 100% { opacity: 0.72; filter: brightness(0.96); }
+  45% { opacity: 1; filter: brightness(1.12); }
+  55% { opacity: 0.88; filter: brightness(1.02); }
+}
+
+/* Light leaking through thatch fibers. */
+@keyframes room-tropic-thatch {
+  0%, 100% { opacity: 0.18; }
+  50% { opacity: 0.28; }
+}
+
+/* Coconut pores catching shade. */
+@keyframes room-tropic-seal {
+  0% { filter: brightness(0.97); }
+  100% { filter: brightness(1.06); }
+}
+
+/* A letter settling into the slot. */
+@keyframes room-tropic-dispatch {
+  0% { transform: translateY(-10px); opacity: 0; }
+  62% { transform: translateY(2px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Primary press: the stamp posts through the slot. */
+@keyframes room-tropic-post {
+  0% { border-bottom-color: var(--tr-slot-wet); }
+  100% { border-bottom-color: var(--tr-slot-deep); }
+}
+
+/* ── 15 · Accessibility — reduced motion ────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="tropic"]:root body::before,
+  html[data-player-skin="tropic"]:root body::after,
+  html[data-player-skin="tropic"]:root #main::after,
+  html[data-player-skin="tropic"]:root .top-hud::after,
+  html[data-player-skin="tropic"]:root .companion-launcher-orb,
+  html[data-player-skin="tropic"]:root .launcher-card::before,
+  html[data-player-skin="tropic"]:root .launcher-card-glyph::after,
+  html[data-player-skin="tropic"]:root .launcher-tile-glyph::after,
+  html[data-player-skin="tropic"]:root .loot-skin-avatar::after,
+  html[data-player-skin="tropic"]:root .agent-live-dot,
+  html[data-player-skin="tropic"]:root .toast-item {
+    animation: none !important;
+  }
+
+  html[data-player-skin="tropic"]:root .launcher-card,
+  html[data-player-skin="tropic"]:root button.primary,
+  html[data-player-skin="tropic"]:root .primary,
+  html[data-player-skin="tropic"]:root .tab-chip,
+  html[data-player-skin="tropic"]:root[data-app-tab="Hub"] #main .hub-card {
+    transition: none !important;
+  }
+
+  html[data-player-skin="tropic"]:root .launcher-card:hover,
+  html[data-player-skin="tropic"]:root button.primary:hover,
+  html[data-player-skin="tropic"]:root .primary:hover,
+  html[data-player-skin="tropic"]:root button.primary:active,
+  html[data-player-skin="tropic"]:root .primary:active,
+  html[data-player-skin="tropic"]:root .tab-chip:hover,
+  html[data-player-skin="tropic"]:root[data-app-tab="Hub"] #main .hub-card:hover {
+    transform: none !important;
+  }
+}

@@ -1,0 +1,56 @@
+/* Gold Standard — gilding leaf on bole.
+   Cross-hatch leaf, not yellow fill. Iowan, 8px leaf tiles. */
+
+html[data-player-skin="gold"] {
+  --at-r-plate: 8px;
+  --at-r-card: 8px;
+  --at-r-ctl: 6px;
+  --at-r-chip: 6px;
+  --at-r-cell: 6px;
+  --at-font-display: "Iowan Old Style", Palatino, serif;
+  --bg-shell: #1c1206;
+  --bg-card: #2a1a08;
+  --ink-primary: #fff7ed;
+  --accent: #fde047;
+  --accent-ink: #3a1d04;
+}
+
+html[data-player-skin="gold"] body {
+  background:
+    repeating-linear-gradient(45deg, rgba(253, 224, 71, 0.05) 0 6px, transparent 6px 12px),
+    #1c1206 !important;
+}
+html[data-player-skin="gold"] body::after {
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  background: repeating-linear-gradient(-45deg, rgba(253, 224, 71, 0.12) 0 2px, transparent 2px 10px);
+  animation: room-gold-leaf 14s linear infinite;
+}
+
+html[data-player-skin="gold"] .top-hud { background: #2a1a08; border-bottom: 2px solid #fde047; }
+html[data-player-skin="gold"] .hud-app-name { font-family: var(--at-font-display); }
+
+html[data-player-skin="gold"] .launcher-card {
+  border-radius: 8px;
+  padding: 19px 17px 15px;
+  background: #2a1a08;
+  border: 1px solid #a16207;
+  box-shadow: inset 0 1px 0 rgba(253, 224, 71, 0.35);
+}
+html[data-player-skin="gold"] button.primary,
+html[data-player-skin="gold"] .tab-chip.active {
+  background: #fde047;
+  color: #3a1d04;
+  border: 1px solid #a16207;
+  font-weight: 750;
+}
+
+html[data-player-skin="gold"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 6px; }
+html[data-player-skin="gold"][data-app-tab="Tasks"] .tsk-row { border-radius: 8px; }
+html[data-player-skin="gold"][data-app-tab="Agent"] .agent-bubble { border-radius: 8px; }
+
+@keyframes room-gold-leaf { to { background-position: 24px 0; } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="gold"] body::after { animation: none; }
+}

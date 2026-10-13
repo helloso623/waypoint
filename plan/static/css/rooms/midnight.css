@@ -1,0 +1,81 @@
+/* Midnight Crown — blue-hour city grid.
+   Sodium-vapor street lattice, IBM Plex Mono, 2px crown.
+   Quiet hour: every path is a dashed street. */
+
+html[data-player-skin="midnight"] {
+  --at-r-plate: 2px;
+  --at-r-card: 2px;
+  --at-r-ctl: 2px;
+  --at-r-chip: 2px;
+  --at-r-cell: 2px;
+  --at-font-display: "IBM Plex Mono", ui-monospace, monospace;
+  --at-font-ui: "IBM Plex Mono", ui-monospace, monospace;
+  --bg-shell: #070b16;
+  --bg-card: #111827;
+  --ink-primary: #e0e7ff;
+  --accent: #818cf8;
+  --accent-ink: #070b16;
+  --midnight-sodium: #fbbf24;
+}
+
+html[data-player-skin="midnight"] body {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 47px, rgba(129, 140, 248, 0.08) 47px 48px),
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(251, 191, 36, 0.06) 31px 32px),
+    #070b16 !important;
+}
+html[data-player-skin="midnight"] body::after {
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  background: radial-gradient(circle at 20% 10%, rgba(251, 191, 36, 0.35), transparent 18%);
+  animation: room-midnight-sodium 3.6s steps(2, end) infinite;
+}
+
+html[data-player-skin="midnight"] .top-hud {
+  background: #0b1020;
+  border-bottom: 2px solid #818cf8;
+  font-family: var(--at-font-display);
+}
+html[data-player-skin="midnight"] .hud-app-name {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+html[data-player-skin="midnight"] .launcher-card {
+  border-radius: 2px;
+  padding: 14px 12px;
+  background: #111827;
+  border: 1px dashed rgba(129, 140, 248, 0.4);
+}
+html[data-player-skin="midnight"] button.primary,
+html[data-player-skin="midnight"] .tab-chip.active {
+  background: #818cf8;
+  color: #070b16;
+  border: 1px solid #6366f1;
+  font-family: var(--at-font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+html[data-player-skin="midnight"][data-app-tab="Today"] #main .tdy-hour-cell {
+  border-radius: 2px;
+  border-style: dashed;
+}
+html[data-player-skin="midnight"][data-app-tab="Tasks"] .tsk-row {
+  border-radius: 2px;
+  border-left: 3px solid #fbbf24;
+}
+html[data-player-skin="midnight"][data-app-tab="Agent"] .agent-bubble {
+  border-radius: 2px;
+  font-family: var(--at-font-display);
+}
+
+@keyframes room-midnight-sodium {
+  50% { opacity: 0.08; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="midnight"] body::after { animation: none; }
+}

@@ -1,0 +1,71 @@
+/* Arcade Specter — vector CRT persistence.
+   Phosphor ghost, scanlines, cabinet bezel before Cabinet Night.
+   Cyan on purple, not a full world remake. */
+
+html[data-player-skin="arcade"] {
+  --at-r-plate: 0 0 16px 16px;
+  --at-r-card: 0 0 16px 16px;
+  --at-r-ctl: 0;
+  --at-r-chip: 0;
+  --at-r-cell: 0;
+  --at-font-display: "IBM Plex Mono", ui-monospace, monospace;
+  --bg-shell: #1a0533;
+  --bg-card: #2e1065;
+  --ink-primary: #ecfeff;
+  --accent: #22d3ee;
+  --accent-ink: #2e1065;
+}
+
+html[data-player-skin="arcade"] body {
+  background: #1a0533 !important;
+}
+html[data-player-skin="arcade"] body::after {
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background: repeating-linear-gradient(180deg, transparent 0 3px, rgba(0, 0, 0, 0.45) 3px 4px);
+  animation: room-arcade-roll 8s linear infinite;
+}
+
+html[data-player-skin="arcade"] .top-hud {
+  background: #2e1065;
+  border-bottom: 3px solid #22d3ee;
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.25);
+}
+html[data-player-skin="arcade"] .hud-app-name {
+  font-family: var(--at-font-display);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 11px;
+  text-shadow: 0 0 8px #22d3ee;
+  animation: room-arcade-glow 2.2s ease-in-out infinite;
+}
+
+html[data-player-skin="arcade"] .launcher-card {
+  border-radius: 0 0 16px 16px;
+  padding: 12px 12px 18px;
+  background: #2e1065;
+  border: 2px solid #9333ea;
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.18);
+}
+html[data-player-skin="arcade"] button.primary,
+html[data-player-skin="arcade"] .tab-chip.active {
+  background: #22d3ee;
+  color: #2e1065;
+  border: 2px solid #9333ea;
+  font-family: var(--at-font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+}
+
+html[data-player-skin="arcade"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 0; border-style: solid; }
+html[data-player-skin="arcade"][data-app-tab="Tasks"] .tsk-row { border-radius: 0; border-left: 3px solid #22d3ee; }
+html[data-player-skin="arcade"][data-app-tab="Agent"] .agent-bubble { border-radius: 0; font-family: var(--at-font-display); }
+
+@keyframes room-arcade-roll { to { background-position: 0 12px; } }
+@keyframes room-arcade-glow { 50% { text-shadow: 0 0 14px #a5f3fc; } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="arcade"] body::after,
+  html[data-player-skin="arcade"] .hud-app-name { animation: none; }
+}

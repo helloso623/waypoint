@@ -1,0 +1,825 @@
+/* Mist Walker — walking before the fog lifts.
+   Not a sky, storm, ice sheet, or cloud bank: depth falls away in quiet
+   layers and a single cool marker holds the route. */
+
+html[data-player-skin="mist"] {
+  color-scheme: dark;
+
+  --mist-void: #161d26;
+  --mist-ground: #202a35;
+  --mist-near: #2b3744;
+  --mist-card: #303d4a;
+  --mist-edge: #536273;
+  --mist-far: #8491a0;
+  --mist-walk: #cbd5e1;
+  --mist-post: #475569;
+  --mist-marker: #d8f4ef;
+  --mist-marker-deep: #86bbb2;
+
+  --skin-a: #cbd5e1;
+  --skin-b: #475569;
+  --feel-a: #cbd5e1;
+  --feel-b: #475569;
+  --bg-shell: var(--mist-void);
+  --bg-content: var(--mist-ground);
+  --bg-card: var(--mist-card);
+  --bg-card-hover: #374654;
+  --ink-primary: #f1f5f9;
+  --ink-secondary: #cbd5e1;
+  --ink-muted: #aab7c4;
+  --border: rgba(203, 213, 225, 0.18);
+  --gridline: rgba(203, 213, 225, 0.11);
+  --accent: var(--mist-marker);
+  --ws-accent: var(--mist-marker);
+  --accent-ink: #10201f;
+
+  --at-plate: var(--mist-card);
+  --at-plate-2: #283541;
+  --at-well: #111820;
+  --at-ink: #f1f5f9;
+  --at-ink-2: #cbd5e1;
+  --at-ink-3: #aab7c4;
+  --at-hair: rgba(203, 213, 225, 0.11);
+  --at-hair-2: rgba(203, 213, 225, 0.19);
+  --at-hair-a: rgba(216, 244, 239, 0.4);
+  --at-tint: rgba(203, 213, 225, 0.08);
+  --at-tint-b: rgba(71, 85, 105, 0.2);
+  --at-focus: 0 0 0 3px rgba(216, 244, 239, 0.28);
+  --at-rise: 0 16px 36px rgba(8, 12, 17, 0.34);
+  --at-rise-soft: 0 8px 22px rgba(8, 12, 17, 0.25);
+  --at-inset: inset 0 1px 0 rgba(241, 245, 249, 0.08);
+
+  /* A path bends away: sharp arrival, long soft departure. */
+  --mist-turn-lg: 3px 23px 4px 31px / 3px 10px 4px 19px;
+  --mist-turn-md: 3px 16px 3px 22px / 3px 8px 3px 14px;
+  --mist-turn-sm: 2px 10px 2px 14px / 2px 6px 2px 10px;
+  --at-r-plate: var(--mist-turn-lg);
+  --at-r-card: var(--mist-turn-md);
+  --at-r-ctl: var(--mist-turn-sm);
+  --at-r-chip: 2px 12px 2px 16px / 2px 6px 2px 10px;
+  --at-r-cell: 2px 9px 2px 12px;
+
+  --feel-3d: 0 1px 0 rgba(241, 245, 249, 0.08) inset, 0 10px 20px rgba(8, 12, 17, 0.24);
+  --feel-3d-press: 0 1px 0 rgba(241, 245, 249, 0.05) inset, 0 3px 8px rgba(8, 12, 17, 0.3);
+  --feel-grain-opacity: 0.15;
+  --feel-grain-blend: soft-light;
+  --feel-grain:
+    linear-gradient(102deg, transparent 0 38%, rgba(203, 213, 225, 0.06) 50%, transparent 68%),
+    radial-gradient(ellipse 80% 26% at 8% 72%, rgba(203, 213, 225, 0.07), transparent 72%);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 1px solid rgba(203, 213, 225, 0.1);
+  --feel-icon: grayscale(0.35) brightness(1.16) drop-shadow(0 0 4px rgba(216, 244, 239, 0.16));
+  --feel-title-tracking: 0.035em;
+}
+
+/* Photograph of the trail, then a dark readable wash so type holds. */
+html[data-player-skin="mist"] body {
+  background-color: var(--mist-void) !important;
+  background-image:
+    radial-gradient(ellipse 92% 64% at 50% 42%, rgba(22, 29, 38, 0.46), rgba(14, 18, 24, 0.78) 78%),
+    linear-gradient(180deg, rgba(22, 29, 38, 0.58) 0%, rgba(22, 29, 38, 0.36) 42%, rgba(12, 16, 22, 0.76) 100%),
+    url("/img/skins/mist.png") !important;
+  background-size: cover, cover, cover;
+  background-position: center, center, 62% 46%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--ink-primary);
+}
+
+/* Shallow, slow foreground veil; the air does not become a whiteout. */
+html[data-player-skin="mist"] body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.18;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(ellipse 62% 20% at -12% 63%, rgba(203, 213, 225, 0.26), transparent 72%),
+    radial-gradient(ellipse 56% 17% at 112% 38%, rgba(203, 213, 225, 0.16), transparent 70%);
+  animation: room-mist-veil 18s ease-in-out infinite alternate;
+}
+
+html[data-player-skin="mist"] #main {
+  isolation: isolate;
+  background:
+    linear-gradient(104deg, rgba(203, 213, 225, 0.035), transparent 29%),
+    radial-gradient(ellipse 76% 31% at 50% 103%, rgba(203, 213, 225, 0.07), transparent 70%),
+    rgba(22, 29, 38, 0.3) !important;
+  border-inline: 1px solid rgba(203, 213, 225, 0.07);
+}
+
+/* The HUD is only a near edge in the mist, held by a dissolving hairline. */
+html[data-player-skin="mist"] .top-hud {
+  border-bottom: 1px solid rgba(203, 213, 225, 0.1);
+  background: linear-gradient(180deg, rgba(43, 55, 68, 0.93), rgba(27, 36, 46, 0.91));
+  box-shadow: inset 0 -1px 0 rgba(241, 245, 249, 0.035), 0 8px 24px rgba(8, 12, 17, 0.18);
+}
+
+html[data-player-skin="mist"] :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: currentColor;
+  color: #f1f5f9;
+  letter-spacing: 0.035em;
+  text-shadow: 0 1px 8px rgba(8, 12, 17, 0.5);
+}
+
+html[data-player-skin="mist"] .hud-intention {
+  color: var(--mist-walk);
+}
+
+/* The room's glyph is a waypost: post, small cap, one lit reflector. */
+html[data-player-skin="mist"] :is(.launcher-tile-glyph, .launcher-card-glyph, .loot-skin-avatar) {
+  position: relative;
+  overflow: visible;
+  border: 1px solid rgba(203, 213, 225, 0.23);
+  border-radius: 2px 13px 2px 19px;
+  background:
+    linear-gradient(90deg, transparent 41%, var(--mist-post) 43% 56%, transparent 57%),
+    linear-gradient(180deg, rgba(216, 244, 239, 0.22), rgba(71, 85, 105, 0.42));
+  color: #f1f5f9;
+  box-shadow: inset 0 1px 0 rgba(241, 245, 249, 0.16);
+}
+
+html[data-player-skin="mist"] :is(.launcher-tile-glyph, .launcher-card-glyph, .loot-skin-avatar)::after {
+  content: "";
+  position: absolute;
+  top: 19%;
+  left: 39%;
+  width: 20%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--mist-marker);
+  box-shadow: 0 0 7px 2px rgba(216, 244, 239, 0.72);
+  animation: room-mist-marker 4.8s ease-in-out infinite;
+}
+
+html[data-player-skin="mist"] :is(
+  .top-hud .hud-icon-btn,
+  .top-hud .hud-glyph-btn,
+  .top-hud .hud-status-pill,
+  .top-hud .hud-game-chip,
+  .top-hud .hud-model-chip--status,
+  .top-hud .hud-agent-chip
+) {
+  border: 1px solid rgba(203, 213, 225, 0.16);
+  border-radius: var(--mist-turn-sm);
+  background: rgba(22, 29, 38, 0.5);
+  color: #e2e8f0;
+  box-shadow: none;
+}
+
+html[data-player-skin="mist"] :is(.top-hud .hud-icon-btn, .top-hud .hud-glyph-btn):hover:not(:disabled) {
+  border-color: rgba(216, 244, 239, 0.55);
+  background: rgba(43, 55, 68, 0.92);
+  box-shadow: 0 0 12px rgba(216, 244, 239, 0.14);
+}
+
+html[data-player-skin="mist"] .tab-chip-bar {
+  background: rgba(22, 29, 38, 0.84);
+  border-bottom-color: rgba(203, 213, 225, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+html[data-player-skin="mist"] .tab-chip,
+html[data-player-skin="mist"] .loot-profile-chip,
+html[data-player-skin="mist"] .app-subnav-pill,
+html[data-player-skin="mist"] .pill {
+  border: 1px solid rgba(203, 213, 225, 0.16);
+  border-radius: var(--mist-turn-sm);
+  background: rgba(43, 55, 68, 0.68);
+  color: var(--mist-walk);
+  box-shadow: none;
+}
+
+html[data-player-skin="mist"] :is(.tab-chip.active, .app-subnav-pill.active) {
+  border-color: var(--mist-marker);
+  background: linear-gradient(110deg, #e3f7f3, #b8ddd7);
+  color: #132421;
+  box-shadow: 0 0 14px rgba(216, 244, 239, 0.2);
+}
+
+/* Cards are readable near objects, deliberately quieter as a group. */
+html[data-player-skin="mist"] :is(.launcher-card, .card, .hub-card, .pln-rail-card, .evt-card, .tsk-row) {
+  border: 1px solid rgba(203, 213, 225, 0.15);
+  border-radius: var(--mist-turn-md);
+  background:
+    linear-gradient(112deg, rgba(203, 213, 225, 0.06), transparent 31%),
+    rgba(43, 55, 68, 0.78);
+  color: var(--ink-primary);
+  box-shadow: inset 0 1px 0 rgba(241, 245, 249, 0.07), 0 10px 24px rgba(8, 12, 17, 0.18);
+}
+
+html[data-player-skin="mist"] .launcher-card::before {
+  width: 12px;
+  height: 2px;
+  border-radius: 0;
+  background: var(--mist-marker);
+  box-shadow: 0 0 6px rgba(216, 244, 239, 0.48);
+}
+
+html[data-player-skin="mist"] :is(.launcher-card:hover, .launcher-card--focused, .card:hover) {
+  border-color: rgba(203, 213, 225, 0.31);
+  background-color: rgba(55, 70, 84, 0.88);
+  box-shadow: inset 0 1px 0 rgba(241, 245, 249, 0.1), 0 14px 28px rgba(8, 12, 17, 0.24);
+}
+
+html[data-player-skin="mist"] button.primary,
+html[data-player-skin="mist"] .agent-pane-chat .agc-send {
+  border: 1px solid #b9e5dd;
+  border-radius: var(--mist-turn-sm);
+  background: linear-gradient(165deg, #e3f7f3, #afd8d1);
+  color: #132421;
+  font-weight: 700;
+  box-shadow: 0 5px 15px rgba(8, 12, 17, 0.28);
+}
+
+html[data-player-skin="mist"] button.primary:hover:not(:disabled),
+html[data-player-skin="mist"] .agent-pane-chat .agc-send:hover:not(:disabled) {
+  background: #e7fbf7;
+  box-shadow: 0 0 17px rgba(216, 244, 239, 0.31), 0 6px 16px rgba(8, 12, 17, 0.28);
+  transform: translateY(-1px);
+}
+
+html[data-player-skin="mist"] button.secondary,
+html[data-player-skin="mist"] .ghost-btn {
+  border: 1px solid rgba(203, 213, 225, 0.2);
+  border-radius: var(--mist-turn-sm);
+  background: rgba(43, 55, 68, 0.78);
+  color: #e2e8f0;
+}
+
+html[data-player-skin="mist"] :is(input, textarea, select, .agc-input-zone) {
+  border: 1px solid rgba(203, 213, 225, 0.28);
+  border-radius: var(--mist-turn-sm);
+  background:
+    linear-gradient(180deg, rgba(203, 213, 225, 0.05), transparent 38%),
+    rgba(17, 24, 32, 0.82);
+  color: #f1f5f9;
+  caret-color: var(--mist-marker);
+  box-shadow: inset 0 2px 7px rgba(8, 12, 17, 0.36);
+}
+
+html[data-player-skin="mist"] :is(input, textarea)::placeholder {
+  color: #aab7c4;
+  opacity: 1;
+}
+
+html[data-player-skin="mist"] :is(input, textarea, select):focus {
+  border-color: var(--mist-marker);
+  outline: none;
+  box-shadow: inset 0 2px 7px rgba(8, 12, 17, 0.36), 0 0 0 3px rgba(216, 244, 239, 0.2);
+}
+
+html[data-player-skin="mist"] .empty-state {
+  border: 1px dashed rgba(203, 213, 225, 0.28);
+  border-radius: var(--mist-turn-lg);
+  background: radial-gradient(ellipse 55% 55% at 50% 12%, rgba(203, 213, 225, 0.1), transparent 72%), rgba(43, 55, 68, 0.55);
+  color: #dbe4ed;
+  box-shadow: inset 0 0 0 1px rgba(241, 245, 249, 0.04);
+}
+
+html[data-player-skin="mist"] .empty-state::before {
+  content: "╽";
+  display: block;
+  margin-bottom: 7px;
+  color: var(--mist-marker);
+  font-size: 25px;
+  line-height: 0.8;
+  text-shadow: 0 0 10px rgba(216, 244, 239, 0.5);
+}
+
+html[data-player-skin="mist"] :is(.loot-shell-dialog, .command-palette, .napkin-capture-dialog, dialog) {
+  border: 1px solid rgba(203, 213, 225, 0.25);
+  border-radius: var(--mist-turn-lg);
+  background:
+    linear-gradient(112deg, rgba(203, 213, 225, 0.08), transparent 29%),
+    #24303c;
+  color: #f1f5f9;
+  box-shadow: inset 0 1px 0 rgba(241, 245, 249, 0.1), 0 26px 58px rgba(8, 12, 17, 0.57);
+}
+
+/* The marker found: sharp arrival, long soft rest. */
+html[data-player-skin="mist"] .toast,
+html[data-player-skin="mist"] .toast-item {
+  border: 1px solid #b9e5dd;
+  border-left: 3px solid var(--mist-marker);
+  border-radius: var(--mist-turn-sm);
+  background: linear-gradient(110deg, #e7fbf7 0 62%, #c8e8e2 100%);
+  color: #132421;
+  box-shadow: 0 0 16px rgba(216, 244, 239, 0.22), 0 10px 22px rgba(8, 12, 17, 0.28);
+}
+
+html[data-player-skin="mist"] .toast-item {
+  animation: room-mist-find 520ms cubic-bezier(0.16, 0.84, 0.22, 1) both;
+}
+
+html[data-player-skin="mist"] :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: rgba(203, 213, 225, 0.1);
+  background: rgba(43, 55, 68, 0.45);
+  color: #8e9ba9;
+  opacity: 0.58;
+  box-shadow: none;
+}
+
+/* The marker is what was found: it must survive the entire veil. */
+html[data-player-skin="mist"] :focus-visible {
+  outline: 2px solid var(--mist-marker);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(216, 244, 239, 0.2), 0 0 18px rgba(216, 244, 239, 0.34);
+}
+
+/* Companion orb is the close waypost — a post, one reflector. */
+html[data-player-skin="mist"] .companion-launcher {
+  background: rgba(22, 29, 38, 0.88);
+  border: 1px solid rgba(203, 213, 225, 0.18);
+  border-radius: var(--mist-turn-lg);
+  box-shadow: 0 16px 32px rgba(8, 12, 17, 0.4);
+}
+
+html[data-player-skin="mist"] .companion-launcher-orb {
+  border-radius: 3px 10px 3px 14px / 3px 6px 3px 10px;
+  border: 1px solid rgba(203, 213, 225, 0.42);
+  background:
+    radial-gradient(circle at 50% 28%, #f4fffc 0 18%, transparent 36%),
+    linear-gradient(180deg, #d8f4ef 0 22%, #86bbb2 22% 38%, #475569 38% 100%);
+  box-shadow:
+    0 0 14px rgba(216, 244, 239, 0.42),
+    inset 0 1px 0 rgba(241, 245, 249, 0.35);
+  animation: room-mist-marker 4.8s ease-in-out infinite;
+}
+
+html[data-player-skin="mist"] .companion-launcher:hover .companion-launcher-orb {
+  box-shadow:
+    0 0 20px rgba(216, 244, 239, 0.62),
+    inset 0 1px 0 rgba(241, 245, 249, 0.45);
+}
+
+/* Pulse row: a short stretch of trail, each feeling a waypost. */
+html[data-player-skin="mist"] .pln-pulse-compact {
+  border: 1px solid rgba(203, 213, 225, 0.16);
+  border-radius: var(--mist-turn-md);
+  background:
+    linear-gradient(90deg, rgba(216, 244, 239, 0.08), transparent 18%),
+    rgba(32, 42, 53, 0.82);
+  box-shadow: inset 0 1px 0 rgba(241, 245, 249, 0.06);
+}
+
+html[data-player-skin="mist"] .pln-pulse-compact .pls-h-btn {
+  border-radius: 2px 8px 2px 10px / 2px 5px 2px 7px;
+  box-shadow: 0 0 0 1px rgba(203, 213, 225, 0.12);
+}
+
+html[data-player-skin="mist"] .pln-pulse-compact .pls-h-btn.pls-selected {
+  outline: 2px solid var(--mist-marker);
+  outline-offset: 1px;
+  box-shadow: 0 0 10px rgba(216, 244, 239, 0.36);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Per-tab rooms — each a different distance into the fog.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Home · the near clearing. One marker close, the path still underfoot. */
+html[data-player-skin="mist"][data-app-tab="Home"] #main {
+  background:
+    radial-gradient(ellipse 28% 36% at 78% 34%, rgba(216, 244, 239, 0.14), transparent 70%),
+    radial-gradient(ellipse 54% 22% at 36% 88%, rgba(203, 213, 225, 0.08), transparent 72%),
+    linear-gradient(104deg, rgba(203, 213, 225, 0.06), transparent 34%),
+    rgba(22, 29, 38, 0.28) !important;
+}
+
+html[data-player-skin="mist"][data-app-tab="Home"] .launcher-card {
+  background:
+    linear-gradient(112deg, rgba(216, 244, 239, 0.07), transparent 28%),
+    rgba(43, 55, 68, 0.86);
+}
+
+html[data-player-skin="mist"][data-app-tab="Home"] .launcher-card:first-child::before,
+html[data-player-skin="mist"][data-app-tab="Home"] .launcher-card--focused::before {
+  width: 16px;
+  height: 3px;
+  background: var(--mist-marker);
+  box-shadow: 0 0 10px rgba(216, 244, 239, 0.7);
+}
+
+html[data-player-skin="mist"][data-app-tab="Home"] .pln-pulse-compact {
+  border-left: 3px solid var(--mist-marker);
+}
+
+/* Today · hour cells are fading wayposts.
+   Near hours stay sharp. Later hours dissolve. Not a painted slab. */
+html[data-player-skin="mist"][data-app-tab="Today"] #main {
+  background:
+    linear-gradient(180deg, rgba(216, 244, 239, 0.05) 0 18px, transparent 90px),
+    linear-gradient(90deg, rgba(22, 29, 38, 0.18) 0 7%, transparent 22%, transparent 78%, rgba(22, 29, 38, 0.28) 94%),
+    rgba(22, 29, 38, 0.42) !important;
+}
+
+html[data-player-skin="mist"][data-app-tab="Today"] .tdy-hour-row {
+  border-bottom: 1px solid rgba(203, 213, 225, 0.06);
+}
+
+html[data-player-skin="mist"][data-app-tab="Today"] .tdy-hour-time {
+  color: #aab7c4;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 6px rgba(8, 12, 17, 0.45);
+}
+
+html[data-player-skin="mist"][data-app-tab="Today"] :is(.tdy-hour-cell, .cal-hour-cell) {
+  border: 1px solid rgba(203, 213, 225, 0.2);
+  border-left: 3px solid rgba(216, 244, 239, 0.62);
+  border-radius: var(--mist-turn-sm);
+  background:
+    linear-gradient(90deg, rgba(216, 244, 239, 0.08), transparent 22%),
+    rgba(43, 55, 68, 0.78);
+  color: #f1f5f9;
+  box-shadow: inset 0 1px 0 rgba(241, 245, 249, 0.06);
+}
+
+html[data-player-skin="mist"][data-app-tab="Today"] .tdy-hour-row:nth-child(n+9) :is(.tdy-hour-cell, .cal-hour-cell) {
+  border-color: rgba(203, 213, 225, 0.12);
+  border-left-color: rgba(203, 213, 225, 0.28);
+  background: rgba(43, 55, 68, 0.52);
+  color: #dbe4ed;
+}
+
+html[data-player-skin="mist"][data-app-tab="Today"] .tdy-hour-row:nth-child(n+17) :is(.tdy-hour-cell, .cal-hour-cell) {
+  border-color: rgba(203, 213, 225, 0.07);
+  border-left-color: rgba(203, 213, 225, 0.14);
+  background: rgba(32, 42, 53, 0.28);
+  color: #aab7c4;
+  opacity: 0.62;
+}
+
+html[data-player-skin="mist"][data-app-tab="Today"] :is(.tdy-hour-painted, .cal-hour-painted) {
+  border-color: rgba(216, 244, 239, 0.45);
+  border-left-color: var(--mist-marker);
+  background:
+    linear-gradient(90deg, rgba(216, 244, 239, 0.22), transparent 36%),
+    rgba(55, 70, 84, 0.88);
+  color: #f1f5f9;
+  box-shadow: inset 3px 0 0 var(--mist-marker), 0 0 12px rgba(216, 244, 239, 0.16);
+}
+
+html[data-player-skin="mist"][data-app-tab="Today"] .tdy-now-marker {
+  background: var(--mist-marker);
+  box-shadow: 0 0 12px rgba(216, 244, 239, 0.7);
+}
+
+html[data-player-skin="mist"][data-app-tab="Today"] #tdy-completion-bar {
+  background: linear-gradient(90deg, #86bbb2, var(--mist-marker));
+  box-shadow: 0 0 8px rgba(216, 244, 239, 0.28);
+}
+
+/* Calendar · distant cairns in fog.
+   Softer than Today. A stacked stone, not a painted waypost. */
+html[data-player-skin="mist"][data-app-tab="Calendar"] #main {
+  background:
+    radial-gradient(ellipse 70% 40% at 50% 8%, rgba(203, 213, 225, 0.07), transparent 68%),
+    linear-gradient(180deg, rgba(22, 29, 38, 0.22), rgba(22, 29, 38, 0.5)),
+    rgba(22, 29, 38, 0.48) !important;
+}
+
+html[data-player-skin="mist"][data-app-tab="Calendar"] :is(.cal-day, .cal-week-day, .cal-hour-cell) {
+  border: 1px solid rgba(203, 213, 225, 0.08);
+  border-radius: 3px 11px 3px 14px / 3px 6px 3px 9px;
+  background: rgba(43, 55, 68, 0.32);
+  color: #dbe4ed;
+  box-shadow: 3px 4px 0 -2px rgba(32, 42, 53, 0.4);
+}
+
+html[data-player-skin="mist"][data-app-tab="Calendar"] .cal-month-cell:not(.cal-month-cell-pad) {
+  border: 1px solid rgba(203, 213, 225, 0.08);
+  border-radius: 3px 11px 3px 14px / 3px 6px 3px 9px;
+  background: rgba(43, 55, 68, 0.26);
+  color: #c5d0db;
+  box-shadow:
+    4px 5px 0 -3px rgba(32, 42, 53, 0.38),
+    7px 8px 0 -5px rgba(32, 42, 53, 0.18);
+}
+
+html[data-player-skin="mist"][data-app-tab="Calendar"] .cal-month-cell-pad {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  opacity: 0.28;
+}
+
+html[data-player-skin="mist"][data-app-tab="Calendar"] :is(.cal-month-daynum, .cal-week-day-head) {
+  color: #aab7c4;
+  letter-spacing: 0.04em;
+}
+
+html[data-player-skin="mist"][data-app-tab="Calendar"] .cal-month-cell-today,
+html[data-player-skin="mist"][data-app-tab="Calendar"] .cal-week-day-today {
+  border-color: rgba(216, 244, 239, 0.38);
+  background: rgba(43, 55, 68, 0.42);
+  color: #f1f5f9;
+  box-shadow:
+    inset 0 0 0 1px rgba(216, 244, 239, 0.28),
+    0 0 14px rgba(216, 244, 239, 0.12),
+    4px 5px 0 -3px rgba(32, 42, 53, 0.3);
+}
+
+html[data-player-skin="mist"][data-app-tab="Calendar"] :is(.tdy-hour-painted, .cal-hour-painted) {
+  border-color: rgba(216, 244, 239, 0.22);
+  background: rgba(55, 70, 84, 0.4);
+  color: #e2e8f0;
+  box-shadow: inset 0 -2px 0 rgba(216, 244, 239, 0.35);
+}
+
+/* Tasks · stacked trail notes that fade at the far edge. */
+html[data-player-skin="mist"][data-app-tab="Tasks"] #main {
+  background:
+    linear-gradient(180deg, rgba(203, 213, 225, 0.05) 0 20px, transparent 80px),
+    linear-gradient(90deg, transparent 0 62%, rgba(22, 29, 38, 0.28) 100%),
+    rgba(22, 29, 38, 0.4) !important;
+}
+
+html[data-player-skin="mist"][data-app-tab="Tasks"] #main :is(.card, .tsk-row, .task-row) {
+  border: 1px solid rgba(203, 213, 225, 0.16);
+  border-left: 2px solid rgba(203, 213, 225, 0.34);
+  border-radius: 2px 18px 3px 4px / 2px 10px 3px 4px;
+  background:
+    linear-gradient(90deg, rgba(203, 213, 225, 0.07) 0 12%, transparent 38%),
+    rgba(43, 55, 68, 0.8);
+  box-shadow: inset 0 1px 0 rgba(241, 245, 249, 0.06), 0 8px 18px rgba(8, 12, 17, 0.16);
+}
+
+html[data-player-skin="mist"][data-app-tab="Tasks"] #main :is(.card, .tsk-row, .task-row):nth-child(n+4) {
+  border-color: rgba(203, 213, 225, 0.1);
+  background: rgba(43, 55, 68, 0.52);
+  color: #dbe4ed;
+}
+
+html[data-player-skin="mist"][data-app-tab="Tasks"] #main :is(.card, .tsk-row, .task-row):nth-child(n+8) {
+  border-color: rgba(203, 213, 225, 0.06);
+  background: rgba(32, 42, 53, 0.32);
+  color: #aab7c4;
+  opacity: 0.7;
+}
+
+html[data-player-skin="mist"][data-app-tab="Tasks"] input[type="checkbox"] {
+  accent-color: var(--mist-marker-deep);
+}
+
+/* Goals · a single distant cairn. More void. One lit mark. */
+html[data-player-skin="mist"][data-app-tab="Goals"] #main {
+  background:
+    radial-gradient(circle 7px at 78% 22%, rgba(216, 244, 239, 0.55), transparent 8px),
+    radial-gradient(ellipse 18% 14% at 78% 24%, rgba(216, 244, 239, 0.08), transparent 70%),
+    radial-gradient(ellipse 80% 50% at 50% 60%, rgba(14, 18, 24, 0.2), rgba(14, 18, 24, 0.62) 80%),
+    rgba(16, 21, 28, 0.58) !important;
+}
+
+html[data-player-skin="mist"][data-app-tab="Goals"] #main .card,
+html[data-player-skin="mist"][data-app-tab="Goals"] #main .goal-card {
+  border: 1px solid rgba(203, 213, 225, 0.08);
+  border-radius: var(--mist-turn-lg);
+  background: rgba(32, 42, 53, 0.36);
+  color: #dbe4ed;
+  box-shadow: none;
+}
+
+html[data-player-skin="mist"][data-app-tab="Goals"] #main .goal-card:first-child,
+html[data-player-skin="mist"][data-app-tab="Goals"] #main .card:first-of-type {
+  border-color: rgba(216, 244, 239, 0.32);
+  background:
+    radial-gradient(circle 5px at 94% 18%, var(--mist-marker), transparent 6px),
+    rgba(43, 55, 68, 0.58);
+  box-shadow: 0 0 18px rgba(216, 244, 239, 0.08);
+}
+
+html[data-player-skin="mist"][data-app-tab="Goals"] #main .goal-progress-bar {
+  background: rgba(22, 29, 38, 0.55);
+}
+
+html[data-player-skin="mist"][data-app-tab="Goals"] #main .goal-progress-ring-value {
+  stroke: var(--mist-marker);
+}
+
+/* Agent · the pane is the fog just ahead of the walker. */
+html[data-player-skin="mist"][data-app-tab="Agent"] #main {
+  background:
+    linear-gradient(180deg, rgba(203, 213, 225, 0.06), transparent 28%),
+    rgba(22, 29, 38, 0.38) !important;
+}
+
+html[data-player-skin="mist"][data-app-tab="Agent"] #main .agent-pane {
+  border: 1px solid rgba(203, 213, 225, 0.14);
+  border-radius: var(--mist-turn-lg);
+  background:
+    linear-gradient(180deg, rgba(203, 213, 225, 0.1) 0%, transparent 22%),
+    radial-gradient(ellipse 47% 30% at 68% 14%, rgba(216, 244, 239, 0.06), transparent 72%),
+    #202a35;
+  box-shadow:
+    inset 0 1px 0 rgba(241, 245, 249, 0.07),
+    inset 0 -40px 50px rgba(14, 18, 24, 0.28);
+}
+
+html[data-player-skin="mist"] .agent-msg.assistant .agent-bubble {
+  border: 1px solid rgba(203, 213, 225, 0.16);
+  border-radius: var(--mist-turn-md);
+  background: #2b3744;
+  color: #f1f5f9;
+}
+
+html[data-player-skin="mist"] .agent-msg.user .agent-bubble {
+  border: 1px solid rgba(185, 229, 221, 0.6);
+  border-radius: 19px 3px 22px 3px / 12px 3px 14px 3px;
+  background: #d4ebe7;
+  color: #132421;
+  box-shadow: 0 0 12px rgba(216, 244, 239, 0.18);
+}
+
+html[data-player-skin="mist"][data-app-tab="Agent"] .agent-live-dot {
+  background: var(--mist-marker);
+  box-shadow: 0 0 8px rgba(216, 244, 239, 0.7);
+  animation: room-mist-marker 3.6s ease-in-out infinite;
+}
+
+/* Hub · a near stone table in the clearing. Flat. Grounded. Close. */
+html[data-player-skin="mist"][data-app-tab="Hub"] #main {
+  background:
+    linear-gradient(180deg, transparent 0 18%, rgba(71, 85, 105, 0.22) 38% 62%, transparent 82%),
+    radial-gradient(ellipse 70% 28% at 50% 58%, rgba(203, 213, 225, 0.08), transparent 72%),
+    rgba(22, 29, 38, 0.36) !important;
+}
+
+html[data-player-skin="mist"][data-app-tab="Hub"] #main :is(.hub-card, .hub-glance-item) {
+  border: 1px solid rgba(203, 213, 225, 0.2);
+  border-top: 2px solid rgba(203, 213, 225, 0.28);
+  border-radius: 4px 14px 4px 8px / 4px 7px 4px 6px;
+  background:
+    linear-gradient(180deg, rgba(203, 213, 225, 0.1) 0 18%, transparent 42%),
+    rgba(48, 61, 74, 0.92);
+  box-shadow:
+    inset 0 1px 0 rgba(241, 245, 249, 0.12),
+    0 12px 8px -8px rgba(8, 12, 17, 0.4);
+}
+
+html[data-player-skin="mist"][data-app-tab="Hub"] #main .hub-glance-value {
+  color: var(--mist-marker);
+  text-shadow: 0 0 10px rgba(216, 244, 239, 0.28);
+}
+
+/* Practice · drill cards as damp map scraps. */
+html[data-player-skin="mist"][data-app-tab="Practice"] #main {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 27px, rgba(203, 213, 225, 0.04) 27px 28px),
+    repeating-linear-gradient(90deg, transparent 0 27px, rgba(203, 213, 225, 0.03) 27px 28px),
+    rgba(22, 29, 38, 0.4) !important;
+}
+
+html[data-player-skin="mist"][data-app-tab="Practice"] #main .card {
+  border: 1px dashed rgba(203, 213, 225, 0.28);
+  border-radius: 2px 20px 3px 12px / 2px 8px 3px 14px;
+  background:
+    linear-gradient(118deg, rgba(203, 213, 225, 0.12) 0 8%, transparent 22%),
+    repeating-linear-gradient(0deg, transparent 0 13px, rgba(203, 213, 225, 0.04) 13px 14px),
+    rgba(43, 55, 68, 0.7);
+  box-shadow: inset 0 0 0 1px rgba(241, 245, 249, 0.04), 0 8px 18px rgba(8, 12, 17, 0.16);
+}
+
+html[data-player-skin="mist"][data-app-tab="Practice"] #main .card:hover {
+  border-style: solid;
+  border-color: rgba(216, 244, 239, 0.35);
+}
+
+/* Settings / About · a closed map case. Quieter. Contained. */
+html[data-player-skin="mist"][data-app-tab="Settings"] #main,
+html[data-player-skin="mist"][data-app-tab="About"] #main {
+  background:
+    linear-gradient(180deg, rgba(32, 42, 53, 0.35) 0 48px, transparent 120px),
+    rgba(22, 29, 38, 0.5) !important;
+}
+
+html[data-player-skin="mist"][data-app-tab="Settings"] #main .card,
+html[data-player-skin="mist"][data-app-tab="About"] #main .card {
+  border: 1px solid rgba(203, 213, 225, 0.12);
+  border-top: 3px solid rgba(71, 85, 105, 0.7);
+  border-radius: 3px 8px 3px 8px / 3px 5px 3px 5px;
+  background:
+    linear-gradient(180deg, rgba(71, 85, 105, 0.28) 0 10px, transparent 10px),
+    rgba(32, 42, 53, 0.86);
+  box-shadow: inset 0 1px 0 rgba(241, 245, 249, 0.05);
+}
+
+/* Paint · wet fog on glass. One pale streak, not a rainbow. */
+html[data-player-skin="mist"][data-app-tab="Paint"] #main {
+  background:
+    linear-gradient(118deg, transparent 0 38%, rgba(216, 244, 239, 0.09) 46%, transparent 52%),
+    rgba(22, 29, 38, 0.44) !important;
+}
+
+html[data-player-skin="mist"][data-app-tab="Paint"] #main .card {
+  position: relative;
+  border: 1px solid rgba(203, 213, 225, 0.22);
+  border-radius: 4px 16px 4px 12px / 4px 8px 4px 10px;
+  background:
+    linear-gradient(118deg, transparent 0 42%, rgba(216, 244, 239, 0.14) 48%, transparent 54%),
+    rgba(43, 55, 68, 0.62);
+  backdrop-filter: blur(3px);
+  box-shadow: inset 0 1px 0 rgba(241, 245, 249, 0.14);
+}
+
+html[data-player-skin="mist"][data-app-tab="Paint"] #main .card::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 8% 18% auto auto;
+  width: 38%;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(216, 244, 239, 0.38);
+  transform: rotate(-18deg);
+  animation: room-mist-streak 9s ease-in-out infinite alternate;
+}
+
+html[data-player-skin="mist"][data-app-tab="Paint"] :is(.tdy-cat-swatch, .sp-paint-bar-chips) {
+  filter: saturate(0.7) brightness(1.05);
+}
+
+/* Parallel / Projects · two diverging paths. Left sharper, right dissolving. */
+html[data-player-skin="mist"][data-app-tab="Parallel"] #main,
+html[data-player-skin="mist"][data-app-tab="Projects"] #main {
+  background:
+    linear-gradient(104deg, rgba(203, 213, 225, 0.1) 0 28%, transparent 46%),
+    linear-gradient(252deg, rgba(22, 29, 38, 0.08) 0 30%, transparent 52%),
+    rgba(22, 29, 38, 0.4) !important;
+}
+
+html[data-player-skin="mist"][data-app-tab="Parallel"] #main .card:nth-child(odd),
+html[data-player-skin="mist"][data-app-tab="Projects"] #main .card:nth-child(odd),
+html[data-player-skin="mist"][data-app-tab="Projects"] #main .prj-tile:nth-child(odd) {
+  border: 1px solid rgba(203, 213, 225, 0.22);
+  border-left: 3px solid rgba(216, 244, 239, 0.5);
+  border-radius: 2px 14px 3px 18px / 2px 8px 3px 12px;
+  background:
+    linear-gradient(104deg, rgba(216, 244, 239, 0.08), transparent 32%),
+    rgba(43, 55, 68, 0.84);
+  opacity: 1;
+}
+
+html[data-player-skin="mist"][data-app-tab="Parallel"] #main .card:nth-child(even),
+html[data-player-skin="mist"][data-app-tab="Projects"] #main .card:nth-child(even),
+html[data-player-skin="mist"][data-app-tab="Projects"] #main .prj-tile:nth-child(even) {
+  border: 1px solid rgba(203, 213, 225, 0.1);
+  border-right: 2px dashed rgba(203, 213, 225, 0.18);
+  border-radius: 14px 2px 18px 3px / 8px 2px 12px 3px;
+  background: rgba(32, 42, 53, 0.42);
+  color: #c5d0db;
+  opacity: 0.72;
+}
+
+html[data-player-skin="mist"][data-app-tab="Projects"] #main .prj-progress-fill {
+  background: linear-gradient(90deg, #86bbb2, var(--mist-marker));
+}
+
+@keyframes room-mist-veil {
+  0% { transform: translate3d(-1.5%, -0.5%, 0); opacity: 0.12; }
+  100% { transform: translate3d(1.5%, 0.8%, 0); opacity: 0.22; }
+}
+
+@keyframes room-mist-marker {
+  0%, 100% { opacity: 0.72; box-shadow: 0 0 6px 1px rgba(216, 244, 239, 0.56); }
+  50% { opacity: 1; box-shadow: 0 0 10px 3px rgba(216, 244, 239, 0.82); }
+}
+
+/* Sharp find, then a long soft settle — the same turn as the radii. */
+@keyframes room-mist-find {
+  0% { transform: translateX(-10px); opacity: 0; filter: blur(2px); }
+  38% { transform: translateX(2px); opacity: 1; filter: blur(0); }
+  100% { transform: translateX(0); opacity: 1; filter: blur(0); }
+}
+
+@keyframes room-mist-streak {
+  0% { opacity: 0.22; transform: rotate(-18deg) translateX(0); }
+  100% { opacity: 0.48; transform: rotate(-18deg) translateX(8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="mist"] body::after,
+  html[data-player-skin="mist"] :is(.launcher-tile-glyph, .launcher-card-glyph, .loot-skin-avatar)::after,
+  html[data-player-skin="mist"] .companion-launcher-orb,
+  html[data-player-skin="mist"] .toast-item,
+  html[data-player-skin="mist"] .agent-live-dot,
+  html[data-player-skin="mist"][data-app-tab="Paint"] #main .card::after {
+    animation: none !important;
+  }
+
+  html[data-player-skin="mist"] button.primary:hover:not(:disabled),
+  html[data-player-skin="mist"] .agent-pane-chat .agc-send:hover:not(:disabled) {
+    transform: none;
+  }
+}

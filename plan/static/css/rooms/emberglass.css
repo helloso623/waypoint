@@ -1,0 +1,940 @@
+/* ═══════════════════════════════════════════════════════════════
+   EMBERGLASS — a hot glass window for the HUD.
+
+   The object: one sheet of glass, still plastic from the glory hole,
+   set in a dark iron sash. You are indoors, looking *through* the
+   pane. Rose heat lives in the glass. Ember glow comes from behind
+   it, not from a fire you are standing in. Diagonal striae are the
+   gather's stretch marks — the loot pattern, kept on the glass.
+
+   Place is hud,chip. The transom and the lites are the room.
+   Cards, calendar, and tab pages stay quiet. Companion is not a
+   kiln, not a lighthouse. Never clip #main or .launcher-card.
+   No 42%/48% ovals. Selectors carry :root to outrank the flame
+   family's forged-steel stencil.
+
+   Not Kiln Fire (black brick courses, orange soak, last firing).
+   Not magma / Magmaheart / Cinderfall (lava on the page, rivers,
+   falling specks). Not Stained Glass chapel (gold leading, jewel
+   tesserae, liturgy). One hue family: rose glass over ember iron.
+   Loot: colorA #fb7185, colorB #9a3412, effect ember, pattern diagonal.
+   Photograph: /img/skins/emberglass.png
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — iron sash, rose pane, ember through ───────── */
+
+html[data-player-skin="emberglass"]:root {
+  color-scheme: dark;
+
+  --eg-room: #120807;
+  --eg-well: #1a0c0a;
+  --eg-iron: #2a120e;
+  --eg-sash: #3d1a12;
+  --eg-ember: #9a3412;
+  --eg-coal: #7f1d1d;
+  --eg-rose: #fb7185;
+  --eg-glass: #fda4af;
+  --eg-glint: #ffe4e6;
+  --eg-ink: #ffe4e6;
+  --eg-ink-2: #fecdd3;
+  --eg-mute: #d4a39a;
+
+  --eg-hair: rgba(255, 228, 230, 0.16);
+  --eg-hair-2: rgba(251, 113, 133, 0.38);
+  --eg-through: rgba(251, 113, 133, 0.28);
+
+  /* Signature cut: glass sag. Top corners still square against the
+     iron sash; the bottom has slumped from residual heat, the trailing
+     foot more than the leading. Nothing else uses 2 / 5 / 23 / 10
+     with a 17px slumped vertical. Never 42%/48%. */
+  --eg-r-pane: 2px 5px 23px 10px / 2px 4px 17px 8px;
+  --eg-r-card: 2px 4px 18px 8px / 2px 3px 13px 6px;
+  --eg-r-ctl: 2px 4px 14px 7px / 2px 3px 11px 5px;
+  --eg-r-chip: 2px 3px 13px 6px / 2px 3px 10px 5px;
+  --eg-r-cell: 2px 3px 9px 5px / 2px 2px 7px 4px;
+
+  /* Diagonal heat striae — the gather stretched, then froze. */
+  --eg-striae:
+    repeating-linear-gradient(
+      -32deg,
+      transparent 0 8px,
+      rgba(251, 113, 133, 0.14) 8px 9px,
+      transparent 9px 19px,
+      rgba(154, 52, 18, 0.2) 19px 20px
+    );
+  --eg-striae-soft:
+    repeating-linear-gradient(
+      -32deg,
+      transparent 0 11px,
+      rgba(251, 113, 133, 0.08) 11px 12px,
+      transparent 12px 24px,
+      rgba(154, 52, 18, 0.12) 24px 25px
+    );
+
+  --bg-shell: var(--eg-room);
+  --bg-content: var(--eg-well);
+  --bg-card: var(--eg-iron);
+  --bg-card-hover: var(--eg-sash);
+  --ink-primary: var(--eg-ink);
+  --ink-secondary: var(--eg-ink-2);
+  --ink-muted: var(--eg-mute);
+  --border: rgba(154, 52, 18, 0.45);
+  --gridline: rgba(61, 26, 18, 0.45);
+  --accent: var(--eg-rose);
+  --ws-accent: var(--eg-rose);
+  --accent-ink: var(--eg-well);
+
+  /* Loot catalog source of truth. */
+  --skin-a: #fb7185;
+  --skin-b: #9a3412;
+  --at-a: #fb7185;
+  --at-b: #9a3412;
+  --feel-a: #fb7185;
+  --feel-b: #9a3412;
+  --feel-accent: var(--eg-rose);
+  --feel-ground: var(--eg-room);
+  --feel-paper: var(--eg-iron);
+  --feel-ink: var(--eg-ink);
+
+  --at-plate: var(--eg-iron);
+  --at-plate-2: var(--eg-sash);
+  --at-well: var(--eg-well);
+  --at-ink: var(--eg-ink);
+  --at-ink-2: var(--eg-ink-2);
+  --at-ink-3: var(--eg-mute);
+  --at-hair: var(--eg-hair);
+  --at-hair-2: var(--eg-hair-2);
+  --at-hair-a: rgba(251, 113, 133, 0.55);
+  --at-tint: rgba(251, 113, 133, 0.1);
+  --at-tint-b: rgba(154, 52, 18, 0.28);
+  --at-focus: 0 0 0 2px var(--eg-glint);
+  --at-gold: var(--eg-rose);
+  --at-gold-soft: var(--eg-glass);
+  --at-inset: inset 0 1px 0 rgba(255, 228, 230, 0.22);
+  --at-rise: 0 18px 36px -22px rgba(8, 3, 2, 0.9);
+  --at-rise-soft: 0 10px 22px -16px rgba(8, 3, 2, 0.75);
+  --at-r-plate: var(--eg-r-pane);
+  --at-r-card: var(--eg-r-card);
+  --at-r-ctl: var(--eg-r-ctl);
+  --at-r-chip: var(--eg-r-chip);
+  --at-r-cell: var(--eg-r-cell);
+
+  --eg-font: "Avenir Next Condensed", "Gill Sans", "Franklin Gothic Medium",
+    "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--eg-font);
+  --at-font-display: var(--eg-font);
+
+  /* A pane in a sash, not forged-steel hammer press. */
+  --feel-3d:
+    inset 0 1px 0 rgba(255, 228, 230, 0.28),
+    inset 0 -10px 14px rgba(154, 52, 18, 0.22),
+    0 0 0 1px #1a0c0a,
+    0 8px 18px rgba(8, 3, 2, 0.45);
+  --feel-3d-press:
+    inset 0 3px 8px rgba(18, 8, 7, 0.55),
+    inset 0 1px 0 rgba(255, 228, 230, 0.12),
+    0 0 0 1px #1a0c0a;
+  --feel-grain-opacity: 0.22;
+  --feel-grain-blend: overlay;
+  --feel-grain: var(--eg-striae-soft);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 1px solid rgba(251, 113, 133, 0.45);
+  --feel-icon:
+    sepia(0.08) saturate(1.12) contrast(1.06)
+    drop-shadow(0 0 6px rgba(251, 113, 133, 0.45));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.12em;
+  --feel-plate-image:
+    linear-gradient(180deg, rgba(255, 228, 230, 0.1), transparent 36%),
+    var(--eg-striae-soft);
+}
+
+/* ── 2 · Body — indoor dark, one window of heat. Not magma. ─── */
+
+html[data-player-skin="emberglass"]:root body {
+  background-color: var(--eg-room) !important;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(154, 52, 18, 0.22) 0%,
+      rgba(18, 8, 7, 0.55) 18%,
+      rgba(18, 8, 7, 0.88) 100%
+    ),
+    radial-gradient(ellipse 70% 22% at 50% 0%, rgba(251, 113, 133, 0.18), transparent 72%),
+    url("/img/skins/emberglass.png") !important;
+  background-position: center, center, center 18% !important;
+  background-size: cover, cover, cover !important;
+  background-attachment: fixed, fixed, fixed !important;
+  color: var(--eg-ink);
+}
+
+/* Ember through the glass — the only screen-blend in the room. */
+html[data-player-skin="emberglass"]:root body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.2;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(ellipse 62% 16% at 50% 4%, rgba(251, 113, 133, 0.4), transparent 70%),
+    linear-gradient(180deg, rgba(253, 164, 175, 0.1) 0 10%, transparent 28%);
+  animation: room-emberglass-glow 8.4s ease-in-out infinite;
+}
+
+/* Heat striae over the interior, kept quiet. Place is not page. */
+html[data-player-skin="emberglass"]:root body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+  background: var(--eg-striae-soft);
+  animation: room-emberglass-striae 36s linear infinite;
+}
+
+html[data-player-skin="emberglass"]:root #main {
+  clip-path: none !important;
+  isolation: isolate;
+  position: relative;
+  background: color-mix(in srgb, var(--eg-room) 46%, transparent) !important;
+  border-inline: 1px solid rgba(61, 26, 18, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 228, 230, 0.06);
+}
+
+/* Kill the flame-family stepped ember on #main. Place is not page. */
+html[data-player-skin="emberglass"]:root #main::before,
+html[data-player-skin="emberglass"]:root #main::after {
+  animation: none !important;
+  background: none !important;
+  clip-path: none !important;
+}
+
+/* Cards stay quiet. Neutralize the flame 40% blob; do not dress them
+   as windows. Place is hud,chip. */
+html[data-player-skin="emberglass"]:root .launcher-card {
+  clip-path: none !important;
+  border-radius: var(--eg-r-card);
+}
+
+/* ── 3 · HUD — the transom: iron sash, one molten pane ──────── */
+
+html[data-player-skin="emberglass"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  min-height: 64px;
+  color: var(--eg-ink);
+  border-bottom: 3px solid #1a0c0a;
+  border-radius: 0 0 23px 10px / 0 0 17px 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 228, 230, 0.22) 0 8%, transparent 28%),
+    var(--eg-striae),
+    linear-gradient(
+      180deg,
+      #fda4af 0 12%,
+      #fb7185 12% 46%,
+      #9a3412 46% 78%,
+      #3d1a12 78% 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 228, 230, 0.4),
+    inset 0 -12px 18px rgba(154, 52, 18, 0.28),
+    0 0 0 1px #1a0c0a,
+    0 10px 24px rgba(8, 3, 2, 0.5),
+    0 0 28px rgba(251, 113, 133, 0.18);
+  backdrop-filter: none;
+}
+
+/* Iron mullion: one transom bar, not gold chapel leading. */
+html[data-player-skin="emberglass"]:root .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  background:
+    linear-gradient(90deg, transparent 0 49.2%, #1a0c0a 49.2% 50.8%, transparent 50.8%),
+    linear-gradient(180deg, transparent 0 46%, #1a0c0a 46% 50%, transparent 50%);
+  opacity: 0.72;
+  mix-blend-mode: multiply;
+}
+
+/* Ember walking *through* the pane — heat behind the glass. */
+html[data-player-skin="emberglass"]:root .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: -12%;
+  top: 0;
+  width: 34%;
+  height: 100%;
+  z-index: 0;
+  background: linear-gradient(
+    108deg,
+    transparent 0%,
+    rgba(255, 228, 230, 0.18) 36%,
+    rgba(251, 113, 133, 0.28) 50%,
+    transparent 72%
+  );
+  animation: room-emberglass-caustic 7.2s ease-in-out infinite;
+}
+
+html[data-player-skin="emberglass"]:root .top-hud > * {
+  position: relative;
+  z-index: 2;
+}
+
+html[data-player-skin="emberglass"]:root .hud-app-name,
+html[data-player-skin="emberglass"]:root .launcher-title,
+html[data-player-skin="emberglass"]:root .page-title {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--eg-ink);
+  color: var(--eg-ink);
+  font-family: var(--eg-font);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(18, 8, 7, 0.7), 0 0 12px rgba(251, 113, 133, 0.28);
+}
+
+/* A small lite beside the name — the transom's first pane. */
+html[data-player-skin="emberglass"]:root .hud-app-name::before {
+  content: "";
+  display: inline-block;
+  width: 0.72em;
+  height: 0.72em;
+  margin-right: 0.45em;
+  vertical-align: -0.08em;
+  border: 1.5px solid #1a0c0a;
+  border-radius: 1px 2px 5px 2px / 1px 2px 4px 2px;
+  background:
+    linear-gradient(135deg, rgba(255, 228, 230, 0.7) 0 18%, transparent 40%),
+    linear-gradient(180deg, #fda4af, #fb7185 55%, #9a3412);
+  box-shadow: inset 0 1px 0 rgba(255, 228, 230, 0.45), 0 0 6px rgba(251, 113, 133, 0.4);
+  animation: room-emberglass-glow 5.6s ease-in-out infinite;
+}
+
+html[data-player-skin="emberglass"]:root .hud-app-name::after {
+  content: none !important;
+  animation: none !important;
+}
+
+html[data-player-skin="emberglass"]:root .hud-intention,
+html[data-player-skin="emberglass"]:root .hud-now-focus-kicker {
+  color: var(--eg-ink-2);
+  font-family: var(--eg-font);
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+}
+
+html[data-player-skin="emberglass"]:root :is(
+  .brand-mark,
+  .ws-mark,
+  .hud-icon-svg,
+  .tab-chip-mark,
+  .hud-metric-mark,
+  .wp-skin-mark
+) {
+  color: var(--eg-rose);
+  filter: var(--feel-icon);
+  image-rendering: auto;
+  animation: none;
+  transform: none;
+}
+
+/* Brand jewel: a bullseye roundel of hot glass in an iron collar.
+   Not a gem cabochon, not a cairn, not a kiln mouth. */
+html[data-player-skin="emberglass"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border-radius: 50%;
+  border: 2px solid #1a0c0a;
+  background:
+    radial-gradient(circle at 34% 28%, var(--eg-glint) 0 10%, var(--eg-rose) 22%, var(--eg-ember) 62%, #1a0c0a 78%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 228, 230, 0.45),
+    0 0 0 2px #3d1a12,
+    0 0 14px rgba(251, 113, 133, 0.5);
+  animation: room-emberglass-glow 5.6s ease-in-out infinite;
+}
+
+html[data-player-skin="emberglass"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 22%;
+  border: 1px solid rgba(26, 12, 10, 0.55);
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 32%, rgba(255, 228, 230, 0.35), transparent 58%);
+}
+
+html[data-player-skin="emberglass"]:root .tab-chip-bar {
+  overflow: visible;
+  background: color-mix(in srgb, var(--eg-room) 88%, var(--eg-sash));
+  border-bottom: 1px solid #1a0c0a;
+  box-shadow: inset 0 1px 0 rgba(255, 228, 230, 0.06);
+  backdrop-filter: none;
+}
+
+/* ── 4 · Chips — each lite is a small pane in the sash ──────── */
+
+html[data-player-skin="emberglass"]:root :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .hud-model-chip--status,
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .tsk-day-chip,
+  .tsk-keyword-chip,
+  .tsk-bucket-chip,
+  .tsk-due-chip,
+  .tsk-bar-chip,
+  .hub-chip,
+  .nts-chip,
+  .pln-mode-chip,
+  .pln-commit-chip,
+  .pln-keyword-chip,
+  .tdy-cat-chip,
+  .tdy-week-chip,
+  .today-day-chip,
+  .cal-week-chip,
+  .cal-month-chip,
+  .repo-cat-chip,
+  .agc-followup-chip,
+  .quick-capture-chip,
+  .game-stamp-chip
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid #1a0c0a;
+  border-radius: var(--eg-r-chip);
+  background:
+    linear-gradient(165deg, rgba(255, 228, 230, 0.28) 0 16%, transparent 40%),
+    var(--eg-striae-soft),
+    linear-gradient(180deg, #fb7185 0 36%, #9a3412 36% 100%);
+  color: var(--eg-ink);
+  font-family: var(--eg-font);
+  letter-spacing: 0.04em;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 228, 230, 0.32),
+    inset 0 -8px 10px rgba(154, 52, 18, 0.28),
+    0 0 0 1px rgba(61, 26, 18, 0.7),
+    0 0 10px rgba(251, 113, 133, 0.12);
+  transition:
+    transform 150ms cubic-bezier(0.2, 0.8, 0.25, 1),
+    box-shadow 150ms ease,
+    filter 150ms ease,
+    border-color 150ms ease;
+  animation: none;
+}
+
+/* Surface caustic on every lite — heat through the glass, not a trail. */
+html[data-player-skin="emberglass"]:root :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .tsk-day-chip,
+  .tsk-keyword-chip,
+  .tsk-bucket-chip,
+  .hub-chip,
+  .nts-chip,
+  .pln-mode-chip,
+  .tdy-cat-chip,
+  .today-day-chip,
+  .repo-cat-chip,
+  .quick-capture-chip
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 2px 18% auto 8%;
+  height: 2px;
+  z-index: 1;
+  border-radius: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 228, 230, 0.7), transparent);
+  opacity: 0.7;
+  animation: room-emberglass-glint 4.8s ease-in-out infinite;
+}
+
+html[data-player-skin="emberglass"]:root :is(
+  .tab-chip:hover:not(.active):not(:disabled),
+  .hud-chip:hover:not(:disabled),
+  .hud-icon-btn:hover:not(:disabled),
+  .hud-glyph-btn:hover:not(:disabled),
+  .hud-status-pill:hover:not(:disabled),
+  .hud-metric:hover:not(:disabled),
+  .app-subnav-pill:hover:not(.active),
+  .pill:hover,
+  .tsk-day-chip:hover,
+  .hub-chip:hover,
+  .nts-chip:hover,
+  .pln-mode-chip:hover,
+  .tdy-cat-chip:hover,
+  .loot-profile-chip:hover
+) {
+  border-color: var(--eg-rose);
+  color: var(--eg-glint);
+  filter: brightness(1.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 228, 230, 0.45),
+    0 0 0 1px #1a0c0a,
+    0 0 16px rgba(251, 113, 133, 0.35);
+}
+
+html[data-player-skin="emberglass"]:root :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active,
+  .tsk-day-chip-active,
+  .tsk-day-chip.active,
+  .hub-chip.active,
+  .nts-chip.active,
+  .pln-mode-chip-active,
+  .tdy-cat-armed,
+  .today-day-chip-selected,
+  .tdy-week-chip-selected,
+  .loot-profile-chip--complete
+) {
+  border-color: var(--eg-glint);
+  background:
+    linear-gradient(165deg, rgba(255, 228, 230, 0.4) 0 20%, transparent 46%),
+    var(--eg-striae),
+    linear-gradient(180deg, #ffe4e6 0 22%, #fb7185 22% 62%, #9a3412 62% 100%);
+  color: var(--eg-well);
+  font-weight: 700;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 0 0 1px #1a0c0a,
+    0 0 18px rgba(251, 113, 133, 0.45);
+}
+
+html[data-player-skin="emberglass"]:root :is(
+  .tab-chip:active:not(:disabled),
+  .hud-icon-btn:active:not(:disabled),
+  .hud-glyph-btn:active:not(:disabled),
+  .hud-chip:active:not(:disabled)
+) {
+  transform: translateY(1px);
+  box-shadow: var(--feel-3d-press);
+  filter: brightness(0.96);
+}
+
+html[data-player-skin="emberglass"]:root .tab-chip.active .tab-chip-mark {
+  color: var(--eg-well);
+  opacity: 1;
+}
+
+html[data-player-skin="emberglass"]:root .hud-status-pill::before,
+html[data-player-skin="emberglass"]:root .top-hud .hud-agent-chip::before {
+  border-radius: 1px 2px 4px 2px;
+  background: var(--eg-glint);
+  animation: room-emberglass-glow 2.8s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(251, 113, 133, 0.7);
+}
+
+/* ── 5 · Glyph — four-lite sash, sagged from heat ───────────── */
+/* Glyphs may clip. Cards and #main may not. Not a flame chamfer,
+   not a chapel rose, not a kiln mouth. */
+
+html[data-player-skin="emberglass"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .nav-app-glyph,
+  .loot-skin-avatar
+) {
+  position: relative;
+  overflow: visible;
+  border: 2px solid #1a0c0a;
+  border-radius: 0;
+  transform: none;
+  color: var(--eg-well);
+  clip-path: polygon(
+    7% 5%, 93% 5%, 96% 16%, 96% 84%, 86% 97%, 14% 97%, 4% 84%, 4% 16%
+  );
+  background:
+    linear-gradient(165deg, rgba(255, 228, 230, 0.45) 0 16%, transparent 36%),
+    linear-gradient(180deg, #fda4af 0 22%, #fb7185 22% 58%, #9a3412 58% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 228, 230, 0.4),
+    0 0 12px rgba(251, 113, 133, 0.35);
+  filter: none;
+}
+
+/* Iron cross: two mullions dividing the four lites. */
+html[data-player-skin="emberglass"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar
+)::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 0 46%, #1a0c0a 46% 54%, transparent 54%),
+    linear-gradient(180deg, transparent 0 46%, #1a0c0a 46% 54%, transparent 54%);
+  opacity: 0.92;
+}
+
+html[data-player-skin="emberglass"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 14%;
+  top: 12%;
+  width: 28%;
+  height: 22%;
+  background: linear-gradient(135deg, rgba(255, 228, 230, 0.7), transparent 70%);
+  clip-path: inherit;
+  animation: room-emberglass-glint 5.2s ease-in-out infinite;
+}
+
+html[data-player-skin="emberglass"]:root .launcher-custom-app-emoji {
+  clip-path: polygon(
+    7% 5%, 93% 5%, 96% 16%, 96% 84%, 86% 97%, 14% 97%, 4% 84%, 4% 16%
+  );
+  background: rgba(154, 52, 18, 0.45);
+  border: 1px solid rgba(251, 113, 133, 0.4);
+}
+
+/* ── 6 · Buttons — iron latch on a pane, not a hammer press ─── */
+
+html[data-player-skin="emberglass"]:root button.primary,
+html[data-player-skin="emberglass"]:root .primary,
+html[data-player-skin="emberglass"]:root .agent-pane-chat .agc-send {
+  position: relative;
+  border: 1px solid #1a0c0a;
+  border-radius: var(--eg-r-ctl);
+  background:
+    linear-gradient(165deg, rgba(255, 228, 230, 0.35) 0 18%, transparent 40%),
+    linear-gradient(180deg, #fda4af 0 28%, #fb7185 28% 68%, #9a3412 68% 100%);
+  color: var(--eg-well);
+  font-family: var(--eg-font);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255, 228, 230, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 228, 230, 0.4),
+    0 0 0 1px #3d1a12,
+    0 6px 0 #1a0c0a,
+    0 0 14px rgba(251, 113, 133, 0.2);
+  animation: none;
+  transition:
+    transform 150ms cubic-bezier(0.2, 0.8, 0.25, 1),
+    box-shadow 150ms ease,
+    filter 150ms ease;
+}
+
+html[data-player-skin="emberglass"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="emberglass"]:root .primary:hover:not(:disabled),
+html[data-player-skin="emberglass"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 228, 230, 0.5),
+    0 0 0 1px #3d1a12,
+    0 7px 0 #1a0c0a,
+    0 0 18px rgba(251, 113, 133, 0.35);
+}
+
+html[data-player-skin="emberglass"]:root button.primary:active:not(:disabled),
+html[data-player-skin="emberglass"]:root .primary:active:not(:disabled),
+html[data-player-skin="emberglass"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translateY(3px);
+  filter: brightness(0.96);
+  box-shadow:
+    inset 0 2px 6px rgba(18, 8, 7, 0.4),
+    0 1px 0 #1a0c0a;
+}
+
+html[data-player-skin="emberglass"]:root :is(button.secondary, .secondary, .ghost-btn) {
+  border: 1px solid rgba(154, 52, 18, 0.5);
+  border-radius: var(--eg-r-ctl);
+  background: linear-gradient(180deg, rgba(61, 26, 18, 0.85), rgba(26, 12, 10, 0.92));
+  color: var(--eg-ink-2);
+  font-family: var(--eg-font);
+  letter-spacing: 0.05em;
+  box-shadow: inset 0 1px 0 rgba(255, 228, 230, 0.08), 0 3px 0 #1a0c0a;
+}
+
+html[data-player-skin="emberglass"]:root :is(button.secondary, .ghost-btn):hover:not(:disabled) {
+  border-color: var(--eg-rose);
+  color: var(--eg-ink);
+}
+
+/* ── 7 · Empty / input / focus / disabled ───────────────────── */
+
+html[data-player-skin="emberglass"]:root :is(
+  input,
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+) {
+  border: 1px solid rgba(154, 52, 18, 0.5);
+  border-bottom: 2px solid rgba(251, 113, 133, 0.45);
+  border-radius: var(--eg-r-ctl);
+  background-color: rgba(18, 8, 7, 0.82);
+  background-image:
+    var(--eg-striae-soft),
+    linear-gradient(180deg, rgba(251, 113, 133, 0.08) 0%, transparent 36%);
+  color: var(--eg-ink);
+  caret-color: var(--eg-rose);
+  font-family: var(--eg-font);
+  box-shadow: inset 0 2px 8px rgba(8, 3, 2, 0.55);
+  transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+html[data-player-skin="emberglass"]:root :is(input, textarea)::placeholder {
+  color: rgba(212, 163, 154, 0.7);
+  letter-spacing: 0.04em;
+}
+
+html[data-player-skin="emberglass"]:root :is(
+  input,
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+):focus,
+html[data-player-skin="emberglass"]:root .agc-input-zone:focus-within {
+  outline: none;
+  background-color: rgba(26, 12, 10, 0.92);
+  border-color: var(--eg-rose);
+  border-bottom-color: var(--eg-glint);
+  box-shadow:
+    inset 0 2px 8px rgba(8, 3, 2, 0.45),
+    0 0 0 2px rgba(251, 113, 133, 0.28),
+    0 8px 18px -10px rgba(251, 113, 133, 0.55);
+}
+
+html[data-player-skin="emberglass"]:root :focus-visible {
+  outline: 2px solid var(--eg-rose);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(251, 113, 133, 0.18);
+}
+
+/* Empty: a sash waiting for its gather. The pane is dark, unlit. */
+html[data-player-skin="emberglass"]:root .empty-state {
+  position: relative;
+  border: 1.5px dashed rgba(251, 113, 133, 0.4);
+  border-radius: var(--eg-r-pane);
+  background-color: rgba(18, 8, 7, 0.82);
+  background-image:
+    linear-gradient(90deg, transparent 0 49%, rgba(26, 12, 10, 0.7) 49% 51%, transparent 51%),
+    linear-gradient(180deg, transparent 0 47%, rgba(26, 12, 10, 0.7) 47% 53%, transparent 53%),
+    var(--eg-striae-soft);
+  color: var(--eg-ink-2);
+  padding: 28px 20px 24px;
+  box-shadow: inset 0 1px 0 rgba(255, 228, 230, 0.08), 0 0 0 1px #1a0c0a;
+}
+
+html[data-player-skin="emberglass"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 22px;
+  margin: 0 0 10px;
+  border: 1.5px solid #1a0c0a;
+  background:
+    linear-gradient(90deg, transparent 0 46%, #1a0c0a 46% 54%, transparent 54%),
+    linear-gradient(180deg, transparent 0 46%, #1a0c0a 46% 54%, transparent 54%),
+    linear-gradient(180deg, rgba(251, 113, 133, 0.35), rgba(154, 52, 18, 0.4));
+  clip-path: polygon(
+    7% 5%, 93% 5%, 96% 16%, 96% 84%, 86% 97%, 14% 97%, 4% 84%, 4% 16%
+  );
+}
+
+html[data-player-skin="emberglass"]:root .empty-state-title {
+  color: var(--eg-rose);
+  font-family: var(--eg-font);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="emberglass"]:root .empty-state-body,
+html[data-player-skin="emberglass"]:root .empty-state-hint {
+  color: var(--eg-ink-2);
+}
+
+html[data-player-skin="emberglass"]:root :is(
+  button:disabled,
+  input:disabled,
+  select:disabled,
+  textarea:disabled,
+  [aria-disabled="true"]
+) {
+  opacity: 0.58;
+  cursor: not-allowed;
+  color: rgba(212, 163, 154, 0.75);
+  border-color: rgba(154, 52, 18, 0.28);
+  box-shadow: none;
+  filter: saturate(0.4);
+  animation: none;
+}
+
+html[data-player-skin="emberglass"]:root :is(
+  button:disabled,
+  [aria-disabled="true"]
+)::after {
+  display: none;
+}
+
+/* ── 8 · Dialogs — a sash of glass, still, not a kiln ───────── */
+
+html[data-player-skin="emberglass"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .launcher-search-panel,
+  .launcher-dock-panel,
+  .companion-panel,
+  .wf-code-modal,
+  .rich-fs-modal,
+  .wp-board,
+  .wp-alarm-card,
+  dialog
+) {
+  border-radius: var(--eg-r-pane);
+  background-color: rgba(26, 12, 10, 0.96);
+  background-image:
+    linear-gradient(180deg, rgba(251, 113, 133, 0.1) 0%, transparent 28%),
+    var(--eg-striae-soft);
+  color: var(--eg-ink);
+  border: 1px solid rgba(154, 52, 18, 0.5);
+  border-top: 3px solid rgba(251, 113, 133, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 228, 230, 0.12),
+    0 0 0 1px #1a0c0a,
+    0 28px 56px -24px rgba(8, 3, 2, 0.95);
+}
+
+html[data-player-skin="emberglass"]:root :is(
+  .loot-chest-overlay,
+  .command-palette-overlay,
+  .launcher-search-overlay,
+  .wf-code-modal-overlay,
+  .wp-board-overlay,
+  .rit-overlay,
+  .wp-alarm-overlay,
+  .wp-arcade-overlay
+) {
+  background:
+    radial-gradient(120% 50% at 50% 0%, rgba(251, 113, 133, 0.12) 0%, rgba(18, 8, 7, 0) 58%),
+    rgba(18, 8, 7, 0.88);
+  backdrop-filter: blur(3px);
+}
+
+html[data-player-skin="emberglass"]:root .toast,
+html[data-player-skin="emberglass"]:root .toast-item {
+  border: 1px solid #1a0c0a;
+  border-radius: var(--eg-r-chip);
+  background: linear-gradient(180deg, #fda4af 0 28%, #fb7185 28% 100%);
+  color: var(--eg-well);
+  font-family: var(--eg-font);
+  box-shadow: 0 0 0 1px #3d1a12, 0 0 14px rgba(251, 113, 133, 0.35);
+}
+
+html[data-player-skin="emberglass"]:root .toast-item {
+  animation: room-emberglass-pane-in 340ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
+}
+
+html[data-player-skin="emberglass"]:root .loot-shell-brand > span {
+  background: linear-gradient(180deg, #ffe4e6 0%, #fb7185 50%, #9a3412 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: none;
+  filter: none;
+}
+
+/* ── 9 · Motion ─────────────────────────────────────────────── */
+
+/* Ember glow through the pane. Almost still. */
+@keyframes room-emberglass-glow {
+  0%, 100% { filter: brightness(0.96); opacity: 0.88; }
+  50% { filter: brightness(1.1); opacity: 1; }
+}
+
+/* Heat striae walking the gather's stretch. */
+@keyframes room-emberglass-striae {
+  0% { background-position: 0 0; }
+  100% { background-position: 44px 72px; }
+}
+
+/* A caustic sliding across the transom. */
+@keyframes room-emberglass-caustic {
+  0%, 100% { transform: translateX(0); opacity: 0.35; }
+  50% { transform: translateX(210%); opacity: 0.7; }
+}
+
+/* Surface glint on a lite. */
+@keyframes room-emberglass-glint {
+  0%, 100% { opacity: 0.4; transform: translateX(0); }
+  50% { opacity: 0.9; transform: translateX(6px); }
+}
+
+/* A toast arriving the way a pane takes heat. */
+@keyframes room-emberglass-pane-in {
+  0% { transform: translateY(-8px) scaleY(0.96); opacity: 0; filter: brightness(1.2); }
+  62% { transform: translateY(1px) scaleY(1.02); opacity: 1; filter: brightness(1.06); }
+  100% { transform: translateY(0) scaleY(1); opacity: 1; filter: brightness(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="emberglass"]:root *,
+  html[data-player-skin="emberglass"]:root *::before,
+  html[data-player-skin="emberglass"]:root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html[data-player-skin="emberglass"]:root .top-hud::after {
+    transform: none;
+    opacity: 0.4;
+    left: 28%;
+  }
+
+  html[data-player-skin="emberglass"]:root button.primary:hover:not(:disabled),
+  html[data-player-skin="emberglass"]:root button.primary:active:not(:disabled),
+  html[data-player-skin="emberglass"]:root :is(
+    .tab-chip,
+    .hud-chip,
+    .hud-icon-btn
+  ):active:not(:disabled) {
+    transform: none;
+  }
+}

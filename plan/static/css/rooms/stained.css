@@ -1,0 +1,76 @@
+/* Stained Glass — gothic rose-window tracery.
+   Gold leading. Jewels stay in the glass, never on type.
+   Night chapel. Golden-ratio petal count (8). */
+
+html[data-player-skin="stained"] {
+  --at-r-plate: 0 26px 16px 0;
+  --at-r-card: 0 26px 16px 0;
+  --at-r-ctl: 0 12px 8px 0;
+  --at-r-chip: 0 10px 6px 0;
+  --at-r-cell: 0 8px 6px 0;
+  --at-font-display: "Iowan Old Style", Palatino, serif;
+  --bg-shell: #1a1030;
+  --bg-card: #241544;
+  --ink-primary: #fef3c7;
+  --accent: #c9a227;
+  --accent-ink: #1a1030;
+}
+
+html[data-player-skin="stained"] body {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(201, 162, 39, 0.2), transparent 42%),
+    #1a1030 !important;
+}
+html[data-player-skin="stained"] body::after {
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background:
+    repeating-conic-gradient(from 0deg at 50% 0%, transparent 0 40deg, rgba(201, 162, 39, 0.12) 40deg 45deg);
+}
+
+html[data-player-skin="stained"] .top-hud {
+  background: #241544;
+  border-bottom: 3px double #c9a227;
+}
+html[data-player-skin="stained"] .top-hud::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  border: 2px solid #c9a227;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    conic-gradient(#7c3aed, #c9a227, #1d4ed8, #c9a227, #7c3aed);
+  animation: room-stained-jewel 10s linear infinite;
+}
+html[data-player-skin="stained"] .hud-app-name,
+html[data-player-skin="stained"] .launcher-card-name {
+  font-family: var(--at-font-display);
+}
+
+html[data-player-skin="stained"] .launcher-card {
+  border-radius: 0 26px 16px 0;
+  padding: 20px 14px 24px;
+  background: #241544;
+  border: 2px solid #c9a227;
+}
+html[data-player-skin="stained"] button.primary,
+html[data-player-skin="stained"] .tab-chip.active {
+  background: #c9a227;
+  color: #1a1030;
+  border: 1px solid #6b21a8;
+}
+
+html[data-player-skin="stained"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 0 8px 6px 0; }
+html[data-player-skin="stained"][data-app-tab="Tasks"] .tsk-row { border-radius: 0 18px 12px 0; }
+html[data-player-skin="stained"][data-app-tab="Agent"] .agent-bubble { border-radius: 0 20px 14px 0; }
+
+@keyframes room-stained-jewel { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="stained"] .top-hud::before { animation: none; }
+}

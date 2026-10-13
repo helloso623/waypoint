@@ -1,0 +1,90 @@
+/* ── skin-spectacle · rarity wants you to chase it ─────────────
+   Epic+ skins get living chrome. Mythic and legendary go further.
+   Copy stays above veils. Hour cells never become 999px stadiums.
+   Trailblazer / no player-skin is untouched.
+   ═══════════════════════════════════════════════════════════ */
+
+html[data-player-skin][data-skin-rarity="epic"] .launcher-card {
+  background-image:
+    linear-gradient(115deg, transparent 0 38%, color-mix(in srgb, var(--accent) 18%, transparent) 46%, transparent 54%),
+    var(--card-bg, none);
+  background-size: 220% 100%, auto;
+  animation: wp-spec-sheen 7.5s ease-in-out infinite;
+}
+html[data-player-skin][data-skin-rarity="epic"] .tab-chip.active {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+html[data-player-skin][data-skin-rarity="mythic"] .top-hud {
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--accent) 55%, transparent),
+    0 12px 28px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+html[data-player-skin][data-skin-rarity="mythic"] .launcher-card-glyph,
+html[data-player-skin][data-skin-rarity="mythic"] .launcher-tile-glyph {
+  animation: wp-spec-orbit 5.6s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--accent) 45%, transparent));
+}
+html[data-player-skin][data-skin-rarity="mythic"] button.primary {
+  animation: wp-spec-pulse 3.8s ease-in-out infinite;
+}
+
+html[data-player-skin][data-skin-rarity="legendary"] .tab-chip-bar {
+  position: relative;
+}
+html[data-player-skin][data-skin-rarity="legendary"] .tab-chip-bar::after {
+  content: "";
+  position: absolute;
+  inset: auto 8% -1px 8%;
+  height: 2px;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: wp-spec-scan 4.4s linear infinite;
+}
+html[data-player-skin][data-skin-rarity="legendary"] .launcher-card {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent),
+    0 16px 40px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+html[data-player-skin][data-skin-rarity="legendary"] .hud-app-name {
+  text-shadow: 0 0 12px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+html[data-player-skin][data-skin-rarity="epic"][data-app-tab="Today"] .tdy-hour-painted,
+html[data-player-skin][data-skin-rarity="mythic"][data-app-tab="Today"] .tdy-hour-painted,
+html[data-player-skin][data-skin-rarity="legendary"][data-app-tab="Today"] .tdy-hour-painted {
+  animation: wp-spec-cell 6s ease-in-out infinite;
+}
+
+@keyframes wp-spec-sheen {
+  0%, 100% { background-position: 120% 0, 0 0; }
+  50% { background-position: -20% 0, 0 0; }
+}
+@keyframes wp-spec-orbit {
+  50% { transform: translateY(-2px) scale(1.04); }
+}
+@keyframes wp-spec-pulse {
+  50% { filter: brightness(1.08); }
+}
+@keyframes wp-spec-scan {
+  0% { transform: translateX(-8%); opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { transform: translateX(8%); opacity: 0.2; }
+}
+@keyframes wp-spec-cell {
+  50% { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin][data-skin-rarity="epic"] .launcher-card,
+  html[data-player-skin][data-skin-rarity="mythic"] .launcher-card-glyph,
+  html[data-player-skin][data-skin-rarity="mythic"] .launcher-tile-glyph,
+  html[data-player-skin][data-skin-rarity="mythic"] button.primary,
+  html[data-player-skin][data-skin-rarity="legendary"] .tab-chip-bar::after,
+  html[data-player-skin][data-skin-rarity="epic"][data-app-tab="Today"] .tdy-hour-painted,
+  html[data-player-skin][data-skin-rarity="mythic"][data-app-tab="Today"] .tdy-hour-painted,
+  html[data-player-skin][data-skin-rarity="legendary"][data-app-tab="Today"] .tdy-hour-painted {
+    animation: none;
+  }
+}

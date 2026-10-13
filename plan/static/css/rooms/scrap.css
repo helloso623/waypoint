@@ -1,0 +1,942 @@
+/* ═══════════════════════════════════════════════════════════════
+   SCRAP TINKERER — a working compass from spare parts.
+
+   The object: a homemade bearing, not a shop. Overlapping salvage
+   plates (tin lid, aluminum patch, greasy chassis) are riveted into
+   a rose that actually points. One honest rivet holds the stack;
+   glyphs are washers, the hole still in them. The needle is a
+   hacksaw sliver that hunts, then settles — loot effect `signal`
+   as a radio ping from that pivot, never Morse phosphor, never a
+   scanline.
+
+   Not Slate Mechanic (honed bench, steel rule, hex bolt).
+   Not Brutalist Plinth (raw concrete, formwork).
+   Not Steel Foundry (brushed mill ingots, specular light).
+   No rust-cart orange, no four-corner fastener grid.
+
+   Loot: colorA pewter #c4b5a5 · colorB oily chassis #3f3a36.
+   Radius: asymmetric junk — each corner from a different donor.
+   Cards sit slightly rotated, mismatched. Never clip #main or
+   .launcher-card. No 42%/48% ovals. Selectors carry :root so this
+   room outranks scrap-family stencils and the generic signal dash.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens ─────────────────────────────────────────────── */
+
+html[data-player-skin="scrap"]:root {
+  color-scheme: dark;
+
+  --sc-well: #141210;
+  --sc-chassis: #3f3a36;
+  --sc-plate: #2a2623;
+  --sc-plate-2: #35302c;
+  --sc-plate-3: #221e1c;
+  --sc-seam: #1c1917;
+  --sc-pewter: #c4b5a5;
+  --sc-pewter-hi: #ddd2c6;
+  --sc-pewter-dim: #8a7d72;
+  --sc-oil: #5c534c;
+  --sc-ink: #f0e8df;
+  --sc-ink-2: #cfc4b8;
+  --sc-ink-3: #9a9086;
+  --sc-rivet: #b8a090;
+  --sc-rivet-hi: #eee4d8;
+  --sc-ping: rgba(196, 181, 165, 0.42);
+
+  --skin-a: #c4b5a5;
+  --skin-b: #3f3a36;
+  --at-a: #c4b5a5;
+  --at-b: #3f3a36;
+  --feel-a: #c4b5a5;
+  --feel-b: #3f3a36;
+  --feel-accent: #c4b5a5;
+  --feel-ground: #141210;
+  --feel-paper: #2a2623;
+  --feel-ink: #f0e8df;
+
+  --bg-shell: #141210;
+  --bg-content: #1c1917;
+  --bg-card: #2a2623;
+  --bg-card-hover: #35302c;
+  --ink-primary: #f0e8df;
+  --ink-secondary: #cfc4b8;
+  --ink-muted: #9a9086;
+  --border: color-mix(in srgb, var(--sc-pewter) 22%, transparent);
+  --gridline: color-mix(in srgb, var(--sc-pewter) 12%, transparent);
+  --accent: var(--sc-pewter);
+  --ws-accent: var(--sc-pewter);
+  --accent-ink: #141210;
+
+  --at-plate: #2a2623;
+  --at-plate-2: #35302c;
+  --at-well: #141210;
+  --at-ink: #f0e8df;
+  --at-ink-2: #cfc4b8;
+  --at-ink-3: #9a9086;
+  --at-hair: rgba(196, 181, 165, 0.16);
+  --at-hair-2: rgba(196, 181, 165, 0.3);
+  --at-hair-a: rgba(196, 181, 165, 0.52);
+  --at-focus: 0 0 0 2px #c4b5a5;
+  --at-font-mono: ui-monospace, "IBM Plex Mono", "Cascadia Mono", monospace;
+  --at-font-ui: "Avenir Next Condensed", "Barlow Condensed", "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--at-font-ui);
+  --font-ui: var(--at-font-ui);
+
+  /* Asymmetric junk: one sheared corner, one swollen gasket, one
+     almost-square snip, one torn lip. Not 10px 2px (family stencil),
+     not 0, not a mesa cap, not a contact shoe. */
+  --sc-r-plate: 14px 3px 21px 6px / 5px 17px 4px 12px;
+  --sc-r-card: 11px 2px 18px 5px / 4px 14px 3px 10px;
+  --sc-r-card-alt: 3px 16px 4px 13px / 12px 3px 15px 5px;
+  --sc-r-ctl: 8px 2px 13px 4px / 3px 10px 2px 8px;
+  --sc-r-chip: 7px 1px 11px 3px / 2px 8px 2px 6px;
+  --sc-r-cell: 5px 1px 9px 3px / 2px 7px 2px 5px;
+  --sc-r-dialog: 16px 4px 22px 7px / 6px 18px 5px 13px;
+  --at-r-plate: var(--sc-r-plate);
+  --at-r-card: var(--sc-r-card);
+  --at-r-ctl: var(--sc-r-ctl);
+  --at-r-chip: var(--sc-r-chip);
+  --at-r-cell: var(--sc-r-cell);
+
+  /* Stacked plates, proud of the chassis — collage, not a mill edge. */
+  --feel-3d:
+    inset 0 1px 0 rgba(221, 210, 198, 0.2),
+    3px 4px 0 var(--sc-seam),
+    0 10px 18px rgba(10, 8, 7, 0.42);
+  --feel-3d-press:
+    inset 0 2px 4px rgba(10, 8, 7, 0.55),
+    1px 1px 0 var(--sc-seam);
+
+  /* Plate seams at odd donor angles — not stone fleck, not mill brush,
+     not a field of fake rivets. */
+  --feel-grain-opacity: 0.28;
+  --feel-grain-blend: overlay;
+  --feel-grain:
+    repeating-linear-gradient(17deg, transparent 0 11px, rgba(196, 181, 165, 0.07) 11px 12px),
+    repeating-linear-gradient(-9deg, transparent 0 23px, rgba(20, 18, 16, 0.32) 23px 24px);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 1px solid color-mix(in srgb, var(--sc-pewter) 28%, var(--sc-chassis));
+  --feel-icon: sepia(0.18) contrast(1.08) saturate(0.72)
+    drop-shadow(0 1px 0 rgba(20, 18, 16, 0.55));
+  --feel-title-case: none;
+  --feel-title-tracking: 0.04em;
+
+  --sc-washer:
+    radial-gradient(circle at 50% 50%,
+      var(--sc-well) 0 22%,
+      var(--sc-chassis) 23% 26%,
+      var(--sc-pewter-dim) 27% 38%,
+      var(--sc-pewter) 45% 62%,
+      var(--sc-pewter-hi) 68% 72%,
+      var(--sc-seam) 78% 100%);
+  --sc-rivet-dome:
+    radial-gradient(circle at 34% 30%,
+      var(--sc-rivet-hi) 0 14%,
+      var(--sc-rivet) 22%,
+      var(--sc-pewter-dim) 58%,
+      var(--sc-seam) 72%);
+}
+
+/* ── 2 · Body — overlapping salvage, looking down on the rose ─ */
+
+html[data-player-skin="scrap"]:root body {
+  background-color: var(--sc-well) !important;
+  background-image:
+    linear-gradient(107deg,
+      transparent 0 31%,
+      rgba(196, 181, 165, 0.08) 31% 32%,
+      transparent 32% 63%,
+      rgba(63, 58, 54, 0.45) 63% 64%,
+      transparent 64%),
+    linear-gradient(-21deg,
+      transparent 0 18%,
+      rgba(53, 48, 44, 0.55) 18% 46%,
+      transparent 46% 71%,
+      rgba(196, 181, 165, 0.05) 71% 72%,
+      transparent 72%),
+    linear-gradient(164deg, #141210 0%, #241f1c 38%, #1c1917 70%, #12100e 100%) !important;
+  background-attachment: fixed, fixed, fixed !important;
+  color: var(--sc-ink);
+}
+
+/* Slow plate-shuffle: seams drift the way stacked tin settles. */
+html[data-player-skin="scrap"]:root body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.26;
+  mix-blend-mode: overlay;
+  background:
+    repeating-linear-gradient(17deg, transparent 0 11px, rgba(196, 181, 165, 0.08) 11px 12px),
+    repeating-linear-gradient(-9deg, transparent 0 23px, rgba(20, 18, 16, 0.36) 23px 24px);
+  animation: room-scrap-shuffle 28s linear infinite;
+}
+
+html[data-player-skin="scrap"]:root #main {
+  clip-path: none;
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  background:
+    radial-gradient(circle at 50% 36%,
+      transparent 0 34%,
+      rgba(196, 181, 165, 0.05) 35% 36%,
+      transparent 37% 54%,
+      rgba(196, 181, 165, 0.04) 55% 56%,
+      transparent 57%),
+    color-mix(in srgb, var(--sc-plate-3) 72%, transparent) !important;
+  box-shadow: inset 0 1px 0 rgba(196, 181, 165, 0.08);
+}
+
+html[data-player-skin="scrap"]:root #main::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 7% 11%;
+  z-index: 0;
+  border: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%,
+      transparent 0 61%,
+      rgba(196, 181, 165, 0.1) 62% 64%,
+      transparent 65%);
+  box-shadow: none;
+}
+
+html[data-player-skin="scrap"]:root #main::after {
+  animation: none;
+  background: none;
+  clip-path: none;
+}
+
+/* ── 3 · HUD — two mismatched plates, one rivet, one needle ─── */
+
+html[data-player-skin="scrap"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border-image: none;
+  border-bottom: 1px solid var(--sc-seam);
+  border-radius: 0 0 14px 5px / 0 0 6px 12px;
+  background:
+    linear-gradient(180deg, rgba(221, 210, 198, 0.1), transparent 28%),
+    linear-gradient(102deg, var(--sc-plate-2) 0 37%, var(--sc-plate) 37% 61%, var(--sc-chassis) 61% 62%, var(--sc-plate-3) 62%);
+  color: var(--sc-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(221, 210, 198, 0.18),
+    4px 5px 0 var(--sc-seam),
+    0 12px 22px rgba(10, 8, 7, 0.4);
+}
+
+/* Second donor plate, peeking — collage, not a second accent. */
+html[data-player-skin="scrap"]:root .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 18px;
+  right: 52px;
+  top: 5px;
+  bottom: 7px;
+  z-index: 0;
+  border: 1px solid rgba(196, 181, 165, 0.18);
+  border-radius: 3px 15px 4px 11px / 11px 3px 14px 4px;
+  background: linear-gradient(108deg, rgba(196, 181, 165, 0.06), transparent 55%);
+  box-shadow: 6px 5px 0 color-mix(in srgb, var(--sc-seam) 80%, transparent);
+}
+
+/* Hacksaw needle hunting along the fascia. */
+html[data-player-skin="scrap"]:root .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 46%;
+  bottom: -2px;
+  width: 2px;
+  height: 22px;
+  z-index: 2;
+  border-radius: 1px 1px 0 0;
+  background: linear-gradient(180deg, var(--sc-pewter-hi), var(--sc-pewter) 40%, var(--sc-seam));
+  transform-origin: 50% 100%;
+  box-shadow: 0 0 0 1px var(--sc-seam);
+  animation: room-scrap-needle 7.2s ease-in-out infinite;
+}
+
+html[data-player-skin="scrap"]:root .top-hud > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-player-skin="scrap"]:root .hud-app-name,
+html[data-player-skin="scrap"]:root .launcher-title,
+html[data-player-skin="scrap"]:root .page-title {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--sc-ink);
+  color: var(--sc-ink);
+  font-family: var(--at-font-ui);
+  font-weight: 740;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  text-shadow: 0 1px 0 var(--sc-seam);
+}
+
+html[data-player-skin="scrap"]:root .hud-app-name::before {
+  content: "◎ ";
+  color: var(--sc-pewter);
+  font-size: 0.82em;
+}
+
+html[data-player-skin="scrap"]:root .hud-app-name::after {
+  content: none !important;
+  animation: none !important;
+}
+
+html[data-player-skin="scrap"]:root .hud-intention,
+html[data-player-skin="scrap"]:root .hud-now-focus-kicker {
+  color: var(--sc-ink-2);
+  letter-spacing: 0.03em;
+}
+
+/* The one honest rivet: a dome head, not a hex, not a four-corner set. */
+html[data-player-skin="scrap"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  border-radius: 50%;
+  border: 1px solid var(--sc-pewter-dim);
+  background: var(--sc-rivet-dome);
+  box-shadow:
+    inset 0 1px 0 rgba(238, 228, 216, 0.45),
+    inset 0 -2px 0 var(--sc-seam),
+    0 2px 0 var(--sc-well);
+  animation: room-scrap-rivet 5.6s ease-in-out infinite;
+}
+
+html[data-player-skin="scrap"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 32%;
+  border-radius: 50%;
+  background: var(--sc-well);
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.55), 0 0 0 1px var(--sc-pewter-dim);
+}
+
+html[data-player-skin="scrap"]:root .brand-mark,
+html[data-player-skin="scrap"]:root .ws-mark,
+html[data-player-skin="scrap"]:root .hud-icon-svg,
+html[data-player-skin="scrap"]:root .wp-skin-mark,
+html[data-player-skin="scrap"]:root .tab-chip-mark {
+  filter: var(--feel-icon);
+  image-rendering: auto;
+  animation: none !important;
+}
+
+html[data-player-skin="scrap"]:root :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-chip,
+  .hud-metric,
+  .hud-game-cluster,
+  .hud-game-chip,
+  .hud-model-chip--status,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .loot-profile-chip
+) {
+  color: var(--sc-ink);
+  border: 1px solid color-mix(in srgb, var(--sc-pewter) 24%, transparent);
+  border-radius: var(--sc-r-ctl);
+  background: linear-gradient(180deg, var(--sc-plate-2), var(--sc-plate));
+  box-shadow: inset 0 1px 0 rgba(221, 210, 198, 0.12), 2px 2px 0 var(--sc-seam);
+  animation: none;
+}
+
+html[data-player-skin="scrap"]:root :is(.hud-icon-btn, .hud-glyph-btn):hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--sc-pewter) 55%, transparent);
+  filter: brightness(1.07);
+}
+
+html[data-player-skin="scrap"]:root :is(.hud-icon-btn, .hud-glyph-btn):active:not(:disabled) {
+  animation: room-scrap-rivet 180ms ease-out;
+}
+
+html[data-player-skin="scrap"]:root .tab-chip-bar {
+  background: color-mix(in srgb, var(--sc-well) 92%, var(--sc-chassis));
+  border-bottom: 1px solid var(--sc-seam);
+}
+
+html[data-player-skin="scrap"]:root .tab-chip,
+html[data-player-skin="scrap"]:root .pill,
+html[data-player-skin="scrap"]:root .seg-pill-btn,
+html[data-player-skin="scrap"]:root .pln-mode-chip {
+  border: 1px solid color-mix(in srgb, var(--sc-pewter) 18%, transparent);
+  border-radius: var(--sc-r-chip);
+  background: var(--sc-plate);
+  color: var(--sc-ink-2);
+  font-family: var(--at-font-ui);
+  letter-spacing: 0.04em;
+  text-transform: none;
+  box-shadow: 2px 2px 0 var(--sc-seam);
+}
+
+html[data-player-skin="scrap"]:root .tab-chip:nth-child(odd) {
+  border-radius: 7px 1px 11px 3px / 2px 8px 2px 6px;
+}
+html[data-player-skin="scrap"]:root .tab-chip:nth-child(even) {
+  border-radius: 2px 10px 3px 8px / 8px 2px 9px 2px;
+}
+
+html[data-player-skin="scrap"]:root .tab-chip.active,
+html[data-player-skin="scrap"]:root .pill.active,
+html[data-player-skin="scrap"]:root .pill[aria-pressed="true"] {
+  color: var(--sc-well);
+  border-color: var(--sc-pewter-hi);
+  background: linear-gradient(180deg, var(--sc-pewter-hi), var(--sc-pewter) 70%, var(--sc-pewter-dim));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 2px 2px 0 var(--sc-seam);
+}
+
+/* ── 4 · Launcher — mismatched salvage lids, one rivet each ─── */
+
+html[data-player-skin="scrap"]:root .launcher-card {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  outline: none;
+  clip-path: none;
+  border: 1px solid color-mix(in srgb, var(--sc-pewter) 22%, transparent);
+  border-radius: var(--sc-r-card);
+  background:
+    linear-gradient(108deg, rgba(196, 181, 165, 0.07) 0 28%, transparent 29%),
+    linear-gradient(180deg, var(--sc-plate-2), var(--sc-plate) 72%);
+  color: var(--sc-ink);
+  box-shadow: var(--feel-3d);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 180ms ease;
+}
+
+html[data-player-skin="scrap"]:root .launcher-card:nth-child(4n+1) {
+  transform: rotate(-0.85deg);
+  border-radius: 14px 2px 20px 5px / 5px 16px 3px 11px;
+}
+html[data-player-skin="scrap"]:root .launcher-card:nth-child(4n+2) {
+  transform: rotate(0.55deg);
+  border-radius: var(--sc-r-card-alt);
+}
+html[data-player-skin="scrap"]:root .launcher-card:nth-child(4n+3) {
+  transform: rotate(-0.35deg);
+  border-radius: 8px 18px 3px 12px / 14px 4px 16px 3px;
+}
+html[data-player-skin="scrap"]:root .launcher-card:nth-child(4n+4) {
+  transform: rotate(0.9deg);
+  border-radius: 4px 11px 17px 2px / 10px 3px 6px 14px;
+}
+
+/* The one rivet — a dome, not a hex, not a Morse dash. */
+html[data-player-skin="scrap"]:root .launcher-card::before {
+  content: "";
+  left: 10px;
+  top: 10px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--sc-rivet-dome);
+  box-shadow:
+    0 1px 0 var(--sc-well),
+    inset 0 1px 0 rgba(238, 228, 216, 0.5),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+  opacity: 1;
+  animation: room-scrap-ping 3.8s ease-out infinite;
+}
+
+html[data-player-skin="scrap"]:root .launcher-card:nth-child(even)::before {
+  left: auto;
+  right: 10px;
+}
+
+/* Spare-part needle, hunting from the far corner. */
+html[data-player-skin="scrap"]:root .launcher-card::after {
+  content: "";
+  right: 16px;
+  bottom: 12px;
+  left: auto;
+  top: auto;
+  width: 2px;
+  height: 18px;
+  aspect-ratio: auto;
+  border-radius: 1px 1px 0 0;
+  background: linear-gradient(180deg, var(--sc-pewter-hi), var(--sc-chassis));
+  transform-origin: 50% 90%;
+  opacity: 0.85;
+  animation: room-scrap-needle 6.4s ease-in-out infinite;
+}
+
+html[data-player-skin="scrap"]:root .launcher-card:hover,
+html[data-player-skin="scrap"]:root .launcher-card--focused {
+  border-color: color-mix(in srgb, var(--sc-pewter) 52%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(221, 210, 198, 0.24),
+    4px 6px 0 var(--sc-seam),
+    0 14px 22px rgba(10, 8, 7, 0.5);
+}
+
+html[data-player-skin="scrap"]:root .launcher-card:nth-child(4n+1):hover,
+html[data-player-skin="scrap"]:root .launcher-card:nth-child(4n+1).launcher-card--focused {
+  transform: rotate(-0.85deg) translateY(-2px);
+}
+html[data-player-skin="scrap"]:root .launcher-card:nth-child(4n+2):hover,
+html[data-player-skin="scrap"]:root .launcher-card:nth-child(4n+2).launcher-card--focused {
+  transform: rotate(0.55deg) translateY(-2px);
+}
+html[data-player-skin="scrap"]:root .launcher-card:nth-child(4n+3):hover,
+html[data-player-skin="scrap"]:root .launcher-card:nth-child(4n+3).launcher-card--focused {
+  transform: rotate(-0.35deg) translateY(-2px);
+}
+html[data-player-skin="scrap"]:root .launcher-card:nth-child(4n+4):hover,
+html[data-player-skin="scrap"]:root .launcher-card:nth-child(4n+4).launcher-card--focused {
+  transform: rotate(0.9deg) translateY(-2px);
+}
+
+html[data-player-skin="scrap"]:root .launcher-card-name,
+html[data-player-skin="scrap"]:root .launcher-tile-name {
+  color: var(--sc-ink);
+}
+html[data-player-skin="scrap"]:root .launcher-card-intention,
+html[data-player-skin="scrap"]:root .launcher-card-sub {
+  color: var(--sc-ink-2);
+}
+
+/* Glyphs are washers: a stamped disc with the hole still in it. */
+html[data-player-skin="scrap"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .nav-app-glyph,
+  .launcher-custom-app-emoji,
+  .loot-skin-avatar,
+  .wp-skin-mark
+) {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid var(--sc-pewter-dim);
+  border-radius: 50%;
+  clip-path: none;
+  color: var(--sc-well);
+  background: var(--sc-washer);
+  box-shadow:
+    inset 0 1px 0 rgba(238, 228, 216, 0.28),
+    inset 0 -2px 0 var(--sc-seam),
+    0 2px 0 var(--sc-well);
+  transform: rotate(-7deg);
+}
+
+html[data-player-skin="scrap"]:root .launcher-card:nth-child(even) .launcher-card-glyph,
+html[data-player-skin="scrap"]:root .launcher-tile:nth-child(even) .launcher-tile-glyph {
+  transform: rotate(9deg);
+}
+
+html[data-player-skin="scrap"]:root .launcher-card-glyph::after,
+html[data-player-skin="scrap"]:root .launcher-tile-glyph::after {
+  content: "◎";
+  position: absolute;
+  right: -4px;
+  bottom: -5px;
+  display: grid;
+  width: 15px;
+  height: 15px;
+  place-items: center;
+  border: 1px solid var(--sc-pewter-dim);
+  border-radius: 50%;
+  background: var(--sc-plate-3);
+  color: var(--sc-pewter);
+  font: 700 9px/1 var(--at-font-ui), sans-serif;
+  box-shadow: 0 1px 0 var(--sc-well);
+}
+
+html[data-player-skin="scrap"]:root .launcher-card-glyph svg,
+html[data-player-skin="scrap"]:root .launcher-tile-glyph svg {
+  filter: brightness(0.22) contrast(1.2) sepia(0.15);
+}
+
+/* ── 5 · Buttons — a plate you press; the rivet stays put ───── */
+
+html[data-player-skin="scrap"]:root button.primary,
+html[data-player-skin="scrap"]:root .primary,
+html[data-player-skin="scrap"]:root .page-intent-primary,
+html[data-player-skin="scrap"]:root .agent-pane-chat .agc-send {
+  position: relative;
+  border: 1px solid var(--sc-pewter-dim);
+  border-radius: var(--sc-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(238, 228, 216, 0.22), transparent 34%),
+    linear-gradient(180deg, var(--sc-pewter-hi), var(--sc-pewter) 58%, var(--sc-pewter-dim));
+  color: var(--sc-well);
+  font-family: var(--at-font-ui);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  text-shadow: 0 1px 0 rgba(238, 228, 216, 0.35);
+  box-shadow: var(--feel-3d);
+  animation: none;
+  transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+}
+
+html[data-player-skin="scrap"]:root button.primary::before,
+html[data-player-skin="scrap"]:root .agent-pane-chat .agc-send::before {
+  content: "◎";
+  margin-right: 6px;
+  opacity: 0.55;
+  font-size: 0.85em;
+}
+
+html[data-player-skin="scrap"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="scrap"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.05);
+  transform: rotate(-0.4deg) translateY(-1px);
+}
+
+html[data-player-skin="scrap"]:root button.primary:active:not(:disabled),
+html[data-player-skin="scrap"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: rotate(0.6deg) translateY(2px);
+  box-shadow: var(--feel-3d-press);
+  animation: room-scrap-rivet 180ms ease-out;
+}
+
+html[data-player-skin="scrap"]:root :is(button.secondary, .ghost-btn, .pill) {
+  border: 1px solid color-mix(in srgb, var(--sc-pewter) 26%, transparent);
+  border-radius: var(--sc-r-ctl);
+  background: var(--sc-plate);
+  color: var(--sc-ink-2);
+  box-shadow: inset 0 1px 0 rgba(221, 210, 198, 0.08), 2px 2px 0 var(--sc-seam);
+}
+
+html[data-player-skin="scrap"]:root button.secondary:hover:not(:disabled),
+html[data-player-skin="scrap"]:root .ghost-btn:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--sc-pewter) 50%, transparent);
+  color: var(--sc-ink);
+}
+
+html[data-player-skin="scrap"]:root #quick-capture-fab.quick-capture-fab {
+  background: linear-gradient(180deg, var(--sc-pewter-hi), var(--sc-pewter-dim)) !important;
+  color: var(--sc-well) !important;
+  border-color: var(--sc-pewter-dim) !important;
+  border-radius: var(--sc-r-card) !important;
+  box-shadow: 3px 4px 0 var(--sc-seam) !important;
+}
+
+/* ── 6 · Generic plates ─────────────────────────────────────── */
+
+html[data-player-skin="scrap"]:root :is(
+  .card,
+  .hub-card,
+  .pln-rail-card,
+  .evt-card,
+  .tsk-row,
+  .task-row,
+  .hub-glance-item,
+  .page-intent
+) {
+  border: 1px solid color-mix(in srgb, var(--sc-pewter) 16%, transparent);
+  border-radius: var(--sc-r-plate);
+  background:
+    linear-gradient(108deg, rgba(196, 181, 165, 0.05), transparent 32%),
+    var(--sc-plate);
+  color: var(--sc-ink);
+  box-shadow: inset 0 1px 0 rgba(221, 210, 198, 0.1), 3px 3px 0 var(--sc-seam);
+}
+
+html[data-player-skin="scrap"]:root :is(.card, .hub-card):hover {
+  border-color: color-mix(in srgb, var(--sc-pewter) 38%, transparent);
+}
+
+html[data-player-skin="scrap"]:root :is(.loot-skin-card, .loot-collection-card) {
+  border: 1px solid color-mix(in srgb, var(--sc-pewter) 22%, transparent);
+  border-radius: var(--sc-r-card);
+  background: var(--sc-plate);
+  color: var(--sc-ink);
+}
+
+/* ── 7 · Empty / input / focus / disabled ───────────────────── */
+
+html[data-player-skin="scrap"]:root .empty-state {
+  position: relative;
+  border: 1px dashed color-mix(in srgb, var(--sc-pewter) 40%, transparent);
+  border-radius: var(--sc-r-plate);
+  background:
+    radial-gradient(circle at 18px 18px, transparent 0 6px, var(--sc-pewter-dim) 7px 8px, transparent 9px),
+    radial-gradient(circle at calc(100% - 22px) calc(100% - 18px), transparent 0 5px, rgba(196, 181, 165, 0.35) 6px 7px, transparent 8px),
+    var(--sc-plate-3);
+  color: var(--sc-ink-2);
+  box-shadow: inset 0 0 0 4px var(--sc-well), 3px 4px 0 var(--sc-seam);
+}
+
+html[data-player-skin="scrap"]:root .empty-state::before {
+  content: "◎";
+  display: block;
+  margin-bottom: 8px;
+  color: var(--sc-pewter-dim);
+  font: 700 18px/1 var(--at-font-ui), sans-serif;
+  opacity: 0.7;
+}
+
+html[data-player-skin="scrap"]:root .empty-state-title {
+  color: var(--sc-ink);
+  letter-spacing: 0.04em;
+}
+
+html[data-player-skin="scrap"]:root :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]) {
+  border: 1px solid color-mix(in srgb, var(--sc-pewter) 26%, transparent);
+  border-radius: var(--sc-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 40%),
+    var(--sc-well);
+  color: var(--sc-ink);
+  caret-color: var(--sc-pewter-hi);
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px var(--sc-seam);
+}
+
+html[data-player-skin="scrap"]:root :is(input, textarea)::placeholder {
+  color: var(--sc-ink-3);
+}
+
+html[data-player-skin="scrap"]:root :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]):focus,
+html[data-player-skin="scrap"]:root .agc-input-zone:focus-within {
+  border-color: var(--sc-pewter);
+  outline: none;
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.5),
+    0 0 0 3px var(--sc-well),
+    0 0 0 5px color-mix(in srgb, var(--sc-pewter) 55%, transparent);
+}
+
+html[data-player-skin="scrap"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .wp-alarm-card,
+  dialog
+) {
+  border: 1px solid color-mix(in srgb, var(--sc-pewter) 32%, transparent);
+  border-radius: var(--sc-r-dialog);
+  background:
+    linear-gradient(108deg, rgba(196, 181, 165, 0.08), transparent 36%),
+    var(--sc-plate-2);
+  color: var(--sc-ink);
+  box-shadow:
+    inset 0 0 0 1px var(--sc-seam),
+    6px 8px 0 var(--sc-well),
+    0 28px 56px rgba(8, 6, 5, 0.62);
+}
+
+html[data-player-skin="scrap"]:root .toast-item {
+  border: 1px solid var(--sc-pewter-dim);
+  border-radius: var(--sc-r-chip);
+  background: linear-gradient(135deg, var(--sc-pewter), var(--sc-chassis));
+  color: var(--sc-well);
+  box-shadow: 3px 3px 0 var(--sc-seam);
+  animation: room-scrap-ping 0.9s ease-out 1;
+}
+
+html[data-player-skin="scrap"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: #4a4540;
+  background: #221e1c;
+  color: #6e6862;
+  opacity: 0.58;
+  filter: grayscale(0.45) saturate(0.5);
+  box-shadow: none;
+  cursor: not-allowed;
+  animation: none !important;
+}
+
+/* Focus is a washer: inner hole, then the rim. */
+html[data-player-skin="scrap"]:root :focus-visible {
+  outline: 2px solid var(--sc-pewter-hi);
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 5px var(--sc-well),
+    0 0 0 6px var(--sc-pewter-dim);
+}
+
+html[data-player-skin="scrap"]:root ::selection {
+  background: color-mix(in srgb, var(--sc-pewter) 45%, transparent);
+  color: var(--sc-well);
+}
+
+html[data-player-skin="scrap"]:root * {
+  scrollbar-color: color-mix(in srgb, var(--sc-pewter) 40%, transparent) transparent;
+}
+
+/* ── 8 · Agent, calendar, per-tab plating ───────────────────── */
+
+html[data-player-skin="scrap"]:root[data-app-tab="Home"] #main {
+  background:
+    radial-gradient(circle at 50% 22%,
+      transparent 0 16%,
+      rgba(196, 181, 165, 0.07) 17% 18%,
+      transparent 19% 40%,
+      rgba(196, 181, 165, 0.05) 41% 43%,
+      transparent 44%),
+    color-mix(in srgb, var(--sc-plate-3) 68%, transparent) !important;
+}
+
+html[data-player-skin="scrap"]:root[data-app-tab="Agent"] #main .agent-pane,
+html[data-player-skin="scrap"]:root .agent-pane {
+  border: 1px solid color-mix(in srgb, var(--sc-pewter) 20%, transparent);
+  border-radius: var(--sc-r-plate);
+  background:
+    radial-gradient(ellipse 55% 28% at 50% 0%, rgba(196, 181, 165, 0.14), transparent 70%),
+    repeating-linear-gradient(17deg, transparent 0 19px, rgba(196, 181, 165, 0.04) 19px 20px),
+    var(--sc-well);
+  color: var(--sc-ink);
+  box-shadow: inset 0 1px 0 rgba(221, 210, 198, 0.1), inset 0 -3px 0 var(--sc-seam);
+}
+
+html[data-player-skin="scrap"]:root .agent-msg.assistant .agent-bubble {
+  border: 1px solid color-mix(in srgb, var(--sc-pewter) 16%, transparent);
+  border-radius: var(--sc-r-card);
+  background: var(--sc-plate);
+  color: var(--sc-ink);
+}
+
+html[data-player-skin="scrap"]:root .agent-msg.user .agent-bubble {
+  border: 1px solid var(--sc-pewter-dim);
+  border-radius: 3px 16px 5px 12px / 12px 3px 14px 4px;
+  background: color-mix(in srgb, var(--sc-pewter) 22%, var(--sc-plate));
+  color: var(--sc-ink);
+}
+
+html[data-player-skin="scrap"]:root[data-app-tab="Today"] #main .tdy-hour-cell,
+html[data-player-skin="scrap"]:root[data-app-tab="Calendar"] #main .tdy-hour-cell,
+html[data-player-skin="scrap"]:root[data-app-tab="Calendar"] .cal-day,
+html[data-player-skin="scrap"]:root[data-app-tab="Calendar"] .cal-hour-cell,
+html[data-player-skin="scrap"]:root[data-app-tab="Calendar"] .cal-month-cell:not(.cal-month-cell-pad) {
+  border: 1px solid color-mix(in srgb, var(--sc-pewter) 20%, transparent);
+  border-style: solid;
+  border-radius: var(--sc-r-cell);
+  background:
+    linear-gradient(180deg, rgba(221, 210, 198, 0.06), transparent 40%),
+    var(--sc-plate);
+  color: var(--sc-ink-2);
+  box-shadow: 2px 2px 0 var(--sc-seam);
+}
+
+html[data-player-skin="scrap"]:root[data-app-tab="Calendar"] .cal-month-cell:nth-child(odd) {
+  border-radius: 5px 1px 9px 3px / 2px 7px 2px 5px;
+}
+html[data-player-skin="scrap"]:root[data-app-tab="Calendar"] .cal-month-cell:nth-child(even) {
+  border-radius: 2px 8px 3px 6px / 7px 2px 8px 2px;
+}
+
+html[data-player-skin="scrap"]:root :is(.tdy-hour-painted, .cal-hour-painted),
+html[data-player-skin="scrap"]:root[data-app-tab="Calendar"] .cal-month-cell-today {
+  border-color: var(--sc-pewter-hi);
+  background: color-mix(in srgb, var(--sc-pewter) 28%, var(--sc-plate));
+  color: var(--sc-ink);
+  box-shadow: inset 3px 0 0 var(--sc-pewter-hi), 2px 2px 0 var(--sc-seam);
+}
+
+html[data-player-skin="scrap"]:root :is(.cal-week-chip, .cal-month-chip) {
+  border-radius: var(--sc-r-chip);
+  border: 1px solid color-mix(in srgb, var(--sc-pewter) 22%, transparent);
+  background: var(--sc-plate-2);
+  color: var(--sc-ink-2);
+}
+
+html[data-player-skin="scrap"]:root[data-app-tab="Tasks"] #main :is(.card, .tsk-row, .task-row),
+html[data-player-skin="scrap"]:root[data-app-tab="Goals"] #main .card,
+html[data-player-skin="scrap"]:root[data-app-tab="Projects"] #main .card,
+html[data-player-skin="scrap"]:root[data-app-tab="Parallel"] #main .card {
+  border-left: 3px solid var(--sc-pewter-dim);
+  background:
+    linear-gradient(90deg, rgba(196, 181, 165, 0.08), transparent 22%),
+    var(--sc-plate);
+}
+
+html[data-player-skin="scrap"]:root[data-app-tab="Hub"] #main :is(.hub-card, .hub-glance-item),
+html[data-player-skin="scrap"]:root:is(
+  [data-app-tab="Practice"],
+  [data-app-tab="Settings"],
+  [data-app-tab="About"],
+  [data-app-tab="Paint"]
+) #main .card {
+  border-radius: var(--sc-r-card);
+  background:
+    linear-gradient(108deg, rgba(196, 181, 165, 0.06), transparent 30%),
+    var(--sc-plate);
+}
+
+html[data-player-skin="scrap"]:root .companion-launcher-orb {
+  border-radius: 50%;
+  background: var(--sc-washer);
+  box-shadow:
+    inset 0 1px 0 rgba(238, 228, 216, 0.28),
+    0 0 0 1px var(--sc-pewter-dim),
+    0 3px 0 var(--sc-well);
+  animation: room-scrap-needle 8s ease-in-out infinite;
+}
+
+/* ── 9 · Motion — a homemade needle hunts, a rivet catches light */
+
+@keyframes room-scrap-needle {
+  0%, 100% { transform: rotate(-8deg); }
+  18% { transform: rotate(5deg); }
+  44% { transform: rotate(-3deg); }
+  67% { transform: rotate(7deg); }
+  86% { transform: rotate(-5deg); }
+}
+
+@keyframes room-scrap-ping {
+  0% {
+    box-shadow:
+      0 1px 0 var(--sc-well),
+      inset 0 1px 0 rgba(238, 228, 216, 0.5),
+      0 0 0 0 var(--sc-ping);
+  }
+  55% {
+    box-shadow:
+      0 1px 0 var(--sc-well),
+      inset 0 1px 0 rgba(238, 228, 216, 0.5),
+      0 0 0 9px rgba(196, 181, 165, 0);
+  }
+  100% {
+    box-shadow:
+      0 1px 0 var(--sc-well),
+      inset 0 1px 0 rgba(238, 228, 216, 0.5),
+      0 0 0 0 rgba(196, 181, 165, 0);
+  }
+}
+
+@keyframes room-scrap-rivet {
+  0%, 100% { filter: brightness(0.97); }
+  40% { filter: brightness(1.08); }
+  55% { filter: brightness(0.94); }
+}
+
+@keyframes room-scrap-shuffle {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 36px 14px, -22px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="scrap"]:root *,
+  html[data-player-skin="scrap"]:root *::before,
+  html[data-player-skin="scrap"]:root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  html[data-player-skin="scrap"]:root .launcher-card:hover,
+  html[data-player-skin="scrap"]:root .launcher-card--focused,
+  html[data-player-skin="scrap"]:root button.primary:hover:not(:disabled) {
+    transform: none;
+  }
+}

@@ -1,0 +1,887 @@
+/* ── bronze · Bronze Pathfinder — a hanging medal with a compass inside ──
+   Old-world metal for a new expedition. The room is a sand-cast bronze
+   compass that has been struck as a medal: thick bezel, eight-point rose,
+   a north needle that hunts. It is not copper's weathered field plate
+   (no verdigris), not gold standard (no yellow polish), not a brass bell.
+   Loot: colorA #b45309, colorB #713f12, effect sand.
+   Photograph: /img/skins/bronze.png (cast bronze compass bezel, no text).
+
+   Signature cut: the hanging medal. Shallow crown for the ribbon loop,
+   heavy elliptical foot for the weight of the casting —
+   30px 30px 22px 22px / 13px 13px 42px 42px.
+   Not dune's mesa (38 38 4 4), not cobalt's relay (9 5 10 4),
+   not storm's anvil (36 54 8 16).
+   Signature object: the eight-point compass rose with a north fleur.
+   Signature edge: the HUD is a cast rim, the inside of the bezel.
+   Signature control: a struck coin — elliptical face, raised lip, die press.
+   Never clip-path #main or .launcher-card.
+   ══════════════════════════════════════════════════════════════ */
+
+html[data-player-skin="bronze"] {
+  color-scheme: dark;
+
+  --bz-cast: #b45309;
+  --bz-umbra: #713f12;
+  --bz-hi: #e08a3a;
+  --bz-mid: #9a4d12;
+  --bz-lo: #4a2a0e;
+  --bz-well: #1c1008;
+  --bz-black: #120a06;
+  --bz-plate: #2a170c;
+  --bz-plate-2: #36200f;
+  --bz-sand: #c4a06a;
+  --bz-cream: #f3e4c8;
+  --bz-dim: #c9a57a;
+  --bz-mute: #8d6a45;
+
+  --skin-a: #b45309;
+  --skin-b: #713f12;
+  --feel-a: #b45309;
+  --feel-b: #713f12;
+
+  --bg-shell: var(--bz-black);
+  --bg-content: var(--bz-well);
+  --bg-card: var(--bz-plate);
+  --bg-card-hover: var(--bz-plate-2);
+  --ink-primary: var(--bz-cream);
+  --ink-secondary: var(--bz-dim);
+  --ink-muted: var(--bz-mute);
+  --border: rgba(180, 83, 9, 0.34);
+  --gridline: rgba(180, 83, 9, 0.12);
+  --accent: var(--bz-cast);
+  --ws-accent: var(--bz-cast);
+  --accent-ink: var(--bz-black);
+
+  --at-a: var(--bz-cast);
+  --at-b: var(--bz-umbra);
+  --at-plate: var(--bz-plate);
+  --at-plate-2: var(--bz-plate-2);
+  --at-well: var(--bz-black);
+  --at-ink: var(--bz-cream);
+  --at-ink-2: var(--bz-dim);
+  --at-ink-3: var(--bz-mute);
+  --at-hair: rgba(180, 83, 9, 0.22);
+  --at-hair-2: rgba(180, 83, 9, 0.38);
+  --at-hair-a: rgba(180, 83, 9, 0.62);
+  --at-focus: var(--bz-hi);
+  --at-gold: var(--bz-cast);
+  --at-gold-soft: var(--bz-hi);
+  --at-inset:
+    inset 0 1px 0 rgba(243, 228, 200, 0.16),
+    inset 0 -3px 0 rgba(18, 10, 6, 0.72);
+  --at-rise:
+    0 6px 0 #120a06,
+    0 16px 28px rgba(8, 4, 2, 0.42);
+  --at-rise-soft:
+    0 4px 0 #120a06,
+    0 10px 18px rgba(8, 4, 2, 0.32);
+
+  /* hanging medal: shallow ribbon crown, heavy cast foot */
+  --bz-r-plate: 36px 36px 26px 26px / 16px 16px 50px 50px;
+  --bz-r-card: 30px 30px 22px 22px / 13px 13px 42px 42px;
+  --bz-r-ctl: 48px / 18px;
+  --bz-r-chip: 36px / 14px;
+  --bz-r-cell: 18px 18px 14px 14px / 8px 8px 22px 22px;
+  --at-r-plate: var(--bz-r-plate);
+  --at-r-card: var(--bz-r-card);
+  --at-r-ctl: var(--bz-r-ctl);
+  --at-r-chip: var(--bz-r-chip);
+  --at-r-cell: var(--bz-r-cell);
+
+  --bz-font-display: "Trajan Pro", "Cinzel", "Palatino Linotype",
+    "Book Antiqua", Georgia, serif;
+  --bz-font-figure: ui-monospace, "IBM Plex Mono", "Cascadia Mono", monospace;
+  --at-font-display: var(--bz-font-display);
+  --at-font-mono: var(--bz-font-figure);
+
+  --feel-3d:
+    inset 0 1px 0 rgba(243, 228, 200, 0.22),
+    inset 0 -2px 0 rgba(74, 42, 14, 0.85),
+    0 5px 0 #120a06,
+    0 10px 18px rgba(8, 4, 2, 0.4);
+  --feel-3d-press:
+    inset 0 3px 5px rgba(18, 10, 6, 0.78),
+    inset 0 -1px 0 rgba(224, 138, 58, 0.18),
+    0 1px 0 #120a06,
+    0 3px 6px rgba(8, 4, 2, 0.32);
+  --feel-grain-opacity: 0.38;
+  --feel-grain-blend: multiply;
+  --feel-grain:
+    repeating-linear-gradient(18deg, transparent 0 3px, rgba(113, 63, 18, 0.14) 3px 4px),
+    radial-gradient(circle at 28% 22%, rgba(180, 83, 9, 0.08) 0 1px, transparent 2px),
+    radial-gradient(circle at 71% 64%, rgba(18, 10, 6, 0.22) 0 1.2px, transparent 2.2px);
+  --feel-grain-size: auto, 17px 13px, 23px 19px;
+  --feel-hud-hair: 3px solid #4a2a0e;
+  --feel-icon: sepia(0.42) saturate(0.92) contrast(1.14)
+    drop-shadow(0 1px 0 rgba(243, 228, 200, 0.18));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.14em;
+  --plate-shadow: var(--at-rise-soft);
+  --plate-shadow-hover: var(--at-rise);
+}
+
+/* The photograph is the bezel itself, held close, sanded by handling.
+   Overlay keeps the room in the casting, not in a museum vitrine. */
+html[data-player-skin="bronze"] body {
+  background-color: var(--bz-black) !important;
+  background-image:
+    linear-gradient(180deg,
+      rgba(18, 10, 6, 0.62) 0 18%,
+      rgba(28, 16, 8, 0.5) 46%,
+      rgba(18, 10, 6, 0.72) 100%),
+    url("/img/skins/bronze.png") !important;
+  background-position: center, center 36%;
+  background-size: cover, cover;
+  background-attachment: fixed, fixed;
+  color: var(--bz-cream);
+}
+
+/* Sand in the casting: grit walking the metal, never a green bloom. */
+html[data-player-skin="bronze"] body::after {
+  opacity: 0.32;
+  mix-blend-mode: multiply;
+  background:
+    repeating-linear-gradient(17deg, transparent 0 3px, rgba(113, 63, 18, 0.16) 3px 4px),
+    radial-gradient(circle at 22% 18%, rgba(180, 83, 9, 0.1) 0 1px, transparent 2px),
+    radial-gradient(circle at 78% 62%, rgba(18, 10, 6, 0.28) 0 1.4px, transparent 2.4px);
+  background-size: auto, 19px 15px, 27px 21px;
+  animation: room-bronze-sand 22s linear infinite;
+}
+
+html[data-player-skin="bronze"] #main {
+  clip-path: none;
+  isolation: isolate;
+  border-inline: 1px solid rgba(180, 83, 9, 0.16);
+  background:
+    radial-gradient(ellipse 70% 40% at 50% -8%, rgba(180, 83, 9, 0.1), transparent 62%),
+    linear-gradient(180deg, rgba(42, 23, 12, 0.42), rgba(18, 10, 6, 0.58));
+  box-shadow:
+    inset 0 1px 0 rgba(243, 228, 200, 0.08),
+    inset 0 0 0 8px rgba(18, 10, 6, 0.28);
+}
+
+html[data-player-skin="bronze"] #main::after {
+  clip-path: none;
+}
+
+/* ── HUD · the cast rim ──────────────────────────────────────
+   You are looking into the compass housing. A thick bronze lip,
+   an inner step, and degree ticks struck into the metal — not
+   printed, not a horizon line. The lower edge is the hanging
+   medal's weight. */
+
+html[data-player-skin="bronze"] .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  min-height: 64px;
+  border-image: none;
+  border-bottom: 4px solid #4a2a0e;
+  border-radius: 0 0 46px 46px / 0 0 20px 20px;
+  background:
+    radial-gradient(ellipse 90% 80% at 50% 120%, rgba(18, 10, 6, 0.55), transparent 58%),
+    linear-gradient(180deg,
+      #8a4a14 0 12%,
+      #6e3910 12% 38%,
+      #4a2a0e 38% 72%,
+      #2a170c 72% 100%);
+  color: var(--bz-cream);
+  box-shadow:
+    inset 0 1px 0 rgba(243, 228, 200, 0.28),
+    inset 0 -4px 0 rgba(18, 10, 6, 0.55),
+    0 8px 0 #120a06,
+    0 16px 28px rgba(8, 4, 2, 0.46);
+  backdrop-filter: none;
+}
+
+/* Inner bezel: a second cast step, riveted at four stations. */
+html[data-player-skin="bronze"] .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 7px 16px 10px;
+  z-index: 0;
+  border: 2px solid rgba(224, 138, 58, 0.38);
+  border-radius: 0 0 34px 34px / 0 0 14px 14px;
+  box-shadow:
+    inset 0 0 0 1px rgba(18, 10, 6, 0.45),
+    inset 0 1px 0 rgba(243, 228, 200, 0.12);
+  background:
+    radial-gradient(circle at 8px 8px, #e08a3a 0 1.4px, #713f12 1.8px 3px, transparent 3.4px) left top / 16px 16px no-repeat,
+    radial-gradient(circle at calc(100% - 8px) 8px, #e08a3a 0 1.4px, #713f12 1.8px 3px, transparent 3.4px) right top / 16px 16px no-repeat;
+}
+
+/* Degree ticks struck along the inner lip. Light crawls the rim. */
+html[data-player-skin="bronze"] .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 6px;
+  height: 9px;
+  z-index: 0;
+  border-radius: 0 0 20px 20px / 0 0 8px 8px;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(243, 228, 200, 0.55) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(90deg, rgba(224, 138, 58, 0.85) 0 1.5px, transparent 1.5px 45px);
+  background-repeat: repeat-x, repeat-x;
+  background-size: 100% 5px, 100% 9px;
+  background-position: 0 100%, 0 100%;
+  opacity: 0.72;
+  animation: room-bronze-rim 9.6s ease-in-out infinite;
+}
+
+html[data-player-skin="bronze"] .top-hud > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-player-skin="bronze"] :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: currentColor;
+  color: var(--bz-cream);
+  font-family: var(--bz-font-display);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 #120a06, 0 0 12px rgba(180, 83, 9, 0.18);
+}
+
+html[data-player-skin="bronze"] .hud-app-name::before {
+  content: "N  ";
+  color: var(--bz-hi);
+  font-family: var(--bz-font-figure);
+  font-size: 0.72em;
+  letter-spacing: 0.18em;
+  font-weight: 800;
+}
+
+html[data-player-skin="bronze"] .hud-intention {
+  color: var(--bz-sand);
+  font-family: var(--bz-font-figure);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+}
+
+html[data-player-skin="bronze"] :is(.brand-mark, .ws-mark, .hud-icon-svg, .tab-chip-mark) {
+  filter: var(--feel-icon);
+}
+
+/* The jewel is the compass rose, not a lamp and not a sun. */
+html[data-player-skin="bronze"] .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  border-radius: 50%;
+  border: 2px solid #4a2a0e;
+  background:
+    radial-gradient(circle at 36% 30%, #f3e4c8 0 8%, #e08a3a 16%, #b45309 42%, #713f12 72%, #2a170c 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(243, 228, 200, 0.4),
+    0 0 0 2px #1c1008,
+    0 2px 0 #120a06;
+}
+
+html[data-player-skin="bronze"] .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -8px;
+  z-index: -1;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(from -11deg,
+      #e08a3a 0deg 8deg,
+      transparent 8deg 45deg),
+    radial-gradient(circle at 50% 50%,
+      transparent 0 42%,
+      #713f12 46%,
+      #b45309 58%,
+      #4a2a0e 74%,
+      #1c1008 78%);
+  -webkit-mask: radial-gradient(circle, transparent 0 38%, #000 42% 100%);
+  mask: radial-gradient(circle, transparent 0 38%, #000 42% 100%);
+  box-shadow: 0 0 0 1px #120a06;
+  animation: room-bronze-needle 8.4s ease-in-out infinite;
+}
+
+html[data-player-skin="bronze"] .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-chip,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .loot-profile-chip
+) {
+  border: 1px solid rgba(180, 83, 9, 0.48);
+  border-radius: var(--bz-r-chip);
+  background:
+    linear-gradient(180deg, rgba(243, 228, 200, 0.14), transparent 46%),
+    radial-gradient(ellipse 80% 60% at 50% 0%, #6e3910, #2a170c);
+  color: var(--bz-cream);
+  font-family: var(--bz-font-figure);
+  letter-spacing: 0.06em;
+  box-shadow:
+    inset 0 1px 0 rgba(243, 228, 200, 0.16),
+    inset 0 -2px 0 #120a06;
+}
+
+html[data-player-skin="bronze"] .top-hud :is(.hud-icon-btn, .hud-glyph-btn):hover:not(:disabled) {
+  border-color: var(--bz-hi);
+  background: linear-gradient(180deg, #8a4a14, #4a2a0e);
+  transform: translateY(-1px);
+}
+
+html[data-player-skin="bronze"] .tab-chip-bar {
+  background: rgba(18, 10, 6, 0.94);
+  border-bottom: 1px solid rgba(180, 83, 9, 0.28);
+}
+
+html[data-player-skin="bronze"] .tab-chip,
+html[data-player-skin="bronze"] .app-subnav-pill,
+html[data-player-skin="bronze"] .pill,
+html[data-player-skin="bronze"] .tsk-day-chip {
+  border: 1px solid rgba(180, 83, 9, 0.3);
+  border-radius: var(--bz-r-chip);
+  background: #2a170c;
+  color: var(--bz-dim);
+  font-family: var(--bz-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: inset 0 1px 0 rgba(243, 228, 200, 0.08);
+}
+
+html[data-player-skin="bronze"] .tab-chip.active,
+html[data-player-skin="bronze"] .app-subnav-pill.active {
+  border-color: var(--bz-hi);
+  background:
+    linear-gradient(180deg, rgba(243, 228, 200, 0.2), transparent 38%),
+    linear-gradient(180deg, #c26a1a, #b45309 58%, #713f12);
+  color: #fff6e4;
+  box-shadow: inset 0 -2px 0 #4a2a0e, 0 2px 0 #120a06;
+}
+
+/* ── the eight-point rose ────────────────────────────────────
+   A struck medal, read from above. Eight thick points, not a
+   theodolite's fine ticks, not a hanging plumb. North is a
+   fleur standing on the crown. */
+
+html[data-player-skin="bronze"] :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar,
+  .wp-skin-mark
+) {
+  position: relative;
+  overflow: visible;
+  border: 3px solid #4a2a0e;
+  border-radius: 50%;
+  color: #fff6e4;
+  background:
+    radial-gradient(circle at 50% 46%,
+      #f3e4c8 0 16%, #e08a3a 28%, transparent 30%),
+    repeating-conic-gradient(from -11.25deg,
+      #e08a3a 0deg 7deg, #713f12 7deg 45deg),
+    radial-gradient(circle at 34% 28%, #e08a3a 0 12%, #b45309 40%, #4a2a0e 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(243, 228, 200, 0.32),
+    inset 0 -4px 0 #1c1008,
+    0 0 0 2px #b45309,
+    0 4px 0 #120a06;
+  filter: none;
+}
+
+html[data-player-skin="bronze"] :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar
+)::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  width: 10px;
+  height: 12px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #fff6e4 0 30%, #e08a3a 31% 68%, #713f12 69% 100%);
+  clip-path: polygon(50% 0, 0 100%, 100% 100%);
+  filter: drop-shadow(0 1px 0 #120a06);
+}
+
+html[data-player-skin="bronze"] .launcher-tile-glyph::after,
+html[data-player-skin="bronze"] .launcher-card-glyph::after {
+  content: "✸";
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  display: grid;
+  width: 17px;
+  height: 17px;
+  place-items: center;
+  border: 1px solid #e08a3a;
+  border-radius: 50%;
+  background: #1c1008;
+  color: #e08a3a;
+  font: 800 9px/1 var(--bz-font-figure);
+  box-shadow: 0 1px 0 #120a06, inset 0 1px 0 rgba(243, 228, 200, 0.16);
+}
+
+/* Cards are hanging medals: ribbon crown, cast weight at the foot. */
+html[data-player-skin="bronze"] :is(
+  .launcher-card,
+  .card,
+  .hub-card,
+  .pln-rail-card,
+  .evt-card,
+  .tsk-row,
+  .task-row
+) {
+  clip-path: none;
+  border: 1px solid rgba(180, 83, 9, 0.38);
+  border-top: 2px solid rgba(224, 138, 58, 0.55);
+  border-radius: var(--bz-r-card);
+  background:
+    radial-gradient(ellipse 80% 28% at 50% 0%, rgba(243, 228, 200, 0.12), transparent 58%),
+    repeating-linear-gradient(18deg, transparent 0 11px, rgba(180, 83, 9, 0.05) 11px 12px),
+    linear-gradient(180deg, #3d2410 0 58%, #2a170c 100%);
+  color: var(--bz-cream);
+  box-shadow:
+    inset 0 1px 0 rgba(243, 228, 200, 0.16),
+    inset 0 -3px 0 #120a06,
+    0 6px 0 #120a06,
+    0 14px 24px rgba(8, 4, 2, 0.34);
+  overflow: visible;
+}
+
+html[data-player-skin="bronze"] .launcher-card {
+  clip-path: none;
+  outline: 1px solid rgba(180, 83, 9, 0.14);
+  outline-offset: 4px;
+  transform: none;
+  transition: transform 160ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 160ms ease, border-color 160ms ease;
+}
+
+/* Ribbon loop at the crown of every medal. */
+html[data-player-skin="bronze"] .launcher-card::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 18px;
+  height: 8px;
+  transform: translateX(-50%);
+  border: 2px solid #e08a3a;
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  background: transparent;
+  opacity: 0.85;
+  box-shadow: 0 1px 0 #120a06;
+}
+
+/* A short bearing scale on the medal's foot, read when you lift it. */
+html[data-player-skin="bronze"] .launcher-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 18px 10px 18px;
+  right: 18px;
+  bottom: 10px;
+  width: auto;
+  height: 7px;
+  aspect-ratio: auto;
+  border-radius: 0 0 12px 12px / 0 0 6px 6px;
+  opacity: 0.45;
+  transform: none;
+  background-color: transparent;
+  background-image: repeating-linear-gradient(90deg,
+    rgba(243, 228, 200, 0.55) 0 1px, transparent 1px 8px);
+  transition: opacity 160ms ease;
+}
+
+html[data-player-skin="bronze"] :is(.launcher-card-name, .launcher-tile-name, .empty-state-title) {
+  color: var(--bz-cream);
+  font-family: var(--bz-font-display);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="bronze"] :is(.launcher-card-intention, .launcher-card-sub, .launcher-card-stats) {
+  color: var(--bz-dim);
+  font-family: var(--bz-font-figure);
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-player-skin="bronze"] :is(.launcher-card:hover, .launcher-card--focused, .card:hover) {
+  border-color: rgba(224, 138, 58, 0.7);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(243, 228, 200, 0.22),
+    inset 0 -3px 0 #120a06,
+    0 8px 0 #120a06,
+    0 18px 28px rgba(8, 4, 2, 0.4);
+}
+
+html[data-player-skin="bronze"] .launcher-card:hover::after,
+html[data-player-skin="bronze"] .launcher-card--focused::after {
+  opacity: 0.95;
+}
+
+html[data-player-skin="bronze"] .launcher-card:hover .launcher-card-glyph,
+html[data-player-skin="bronze"] .launcher-card--focused .launcher-card-glyph {
+  animation: room-bronze-needle 1.6s ease-in-out 1;
+}
+
+/* ── struck coin ─────────────────────────────────────────────
+   Primary controls are coins under the die. Hover lifts the
+   piece; press is the strike — the face sinks, the rim holds. */
+
+html[data-player-skin="bronze"] button.primary,
+html[data-player-skin="bronze"] .agent-pane-chat .agc-send {
+  position: relative;
+  border: 2px solid #e08a3a;
+  border-radius: var(--bz-r-ctl);
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 18%, rgba(243, 228, 200, 0.28), transparent 52%),
+    linear-gradient(180deg, #d47a24 0 34%, #b45309 35% 68%, #713f12 69% 100%);
+  color: #fff6e4;
+  font-family: var(--bz-font-display);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 #4a2a0e;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 246, 228, 0.35),
+    inset 0 -3px 0 #4a2a0e,
+    0 5px 0 #120a06,
+    0 8px 14px rgba(8, 4, 2, 0.36);
+  transition: transform 140ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 140ms ease, filter 140ms ease;
+}
+
+html[data-player-skin="bronze"] button.primary:hover:not(:disabled),
+html[data-player-skin="bronze"] .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+html[data-player-skin="bronze"] button.primary:active:not(:disabled),
+html[data-player-skin="bronze"] .agent-pane-chat .agc-send:active:not(:disabled) {
+  filter: brightness(0.94);
+  transform: translateY(4px) scale(0.985);
+  box-shadow: var(--feel-3d-press);
+  animation: room-bronze-strike 220ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+html[data-player-skin="bronze"] :is(button.secondary, .ghost-btn) {
+  border: 1px solid rgba(180, 83, 9, 0.4);
+  border-radius: var(--bz-r-ctl);
+  background: #2a170c;
+  color: var(--bz-dim);
+  font-family: var(--bz-font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: inset 0 1px 0 rgba(243, 228, 200, 0.08);
+}
+
+html[data-player-skin="bronze"] :is(button.secondary, .ghost-btn):hover:not(:disabled) {
+  border-color: var(--bz-cast);
+  color: var(--bz-cream);
+}
+
+/* Recessed legend plate. Focus locks the needle — a warm ring, not neon. */
+html[data-player-skin="bronze"] :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]) {
+  border: 1px solid rgba(180, 83, 9, 0.4);
+  border-bottom: 2px solid #713f12;
+  border-radius: var(--bz-r-ctl);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 22px, rgba(180, 83, 9, 0.06) 22px 23px),
+    #1c1008;
+  color: var(--bz-cream);
+  font-family: var(--bz-font-figure);
+  caret-color: var(--bz-hi);
+  box-shadow:
+    inset 0 3px 8px rgba(8, 4, 2, 0.7),
+    0 1px 0 rgba(243, 228, 200, 0.08);
+}
+
+html[data-player-skin="bronze"] :is(input, textarea)::placeholder {
+  color: var(--bz-mute);
+  letter-spacing: 0.04em;
+}
+
+html[data-player-skin="bronze"] :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]):focus {
+  outline: none;
+  border-color: var(--bz-cast);
+  border-bottom-color: var(--bz-hi);
+  box-shadow:
+    inset 0 3px 8px rgba(8, 4, 2, 0.7),
+    0 0 0 2px rgba(180, 83, 9, 0.28),
+    0 2px 0 rgba(224, 138, 58, 0.35);
+}
+
+/* Empty: a compass with no fix. Inner ring, north fleur, no bearing. */
+html[data-player-skin="bronze"] .empty-state {
+  position: relative;
+  border: 2px dashed rgba(180, 83, 9, 0.48);
+  border-radius: var(--bz-r-card);
+  background:
+    radial-gradient(circle at 50% 28%, rgba(180, 83, 9, 0.16), transparent 28%),
+    repeating-conic-gradient(from 0deg,
+      rgba(180, 83, 9, 0.14) 0deg 2deg, transparent 2deg 45deg),
+    #2a170c;
+  color: var(--bz-dim);
+  box-shadow:
+    inset 0 0 0 6px #1c1008,
+    inset 0 0 0 7px rgba(180, 83, 9, 0.22);
+}
+
+html[data-player-skin="bronze"] .empty-state::before {
+  content: "✸";
+  display: block;
+  margin-bottom: 8px;
+  color: var(--bz-cast);
+  font: 800 18px/1 var(--bz-font-figure);
+  text-align: center;
+}
+
+html[data-player-skin="bronze"] .empty-state-title {
+  color: var(--bz-cream);
+}
+
+html[data-player-skin="bronze"] :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .wp-alarm-card,
+  dialog
+) {
+  border: 2px solid #9a4d12;
+  border-radius: var(--bz-r-plate);
+  background:
+    radial-gradient(ellipse 70% 24% at 50% 0%, rgba(224, 138, 58, 0.16), transparent 58%),
+    linear-gradient(180deg, #2a170c, #1c1008);
+  color: var(--bz-cream);
+  box-shadow:
+    inset 0 0 0 3px #120a06,
+    inset 0 1px 0 rgba(243, 228, 200, 0.14),
+    0 0 0 7px rgba(18, 10, 6, 0.82),
+    0 24px 56px rgba(8, 4, 2, 0.64);
+}
+
+html[data-player-skin="bronze"] .toast-item {
+  border: 1px solid #e08a3a;
+  border-radius: var(--bz-r-ctl);
+  background: linear-gradient(135deg, #b45309, #713f12);
+  color: #fff6e4;
+  font-family: var(--bz-font-figure);
+  box-shadow: 0 4px 0 #1c1008;
+  animation: room-bronze-strike 280ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+html[data-player-skin="bronze"] :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: #56321f;
+  background: #24150d;
+  color: #755b47;
+  opacity: 0.66;
+  filter: saturate(0.32);
+  box-shadow: inset 0 2px 3px rgba(8, 4, 2, 0.5);
+  text-shadow: none;
+}
+
+html[data-player-skin="bronze"] :focus-visible {
+  outline: 2px solid #e08a3a;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(180, 83, 9, 0.22);
+}
+
+html[data-player-skin="bronze"] .companion-launcher-orb {
+  border-radius: 50%;
+  border: 2px solid #4a2a0e;
+  background:
+    repeating-conic-gradient(from -11deg, #e08a3a 0deg 8deg, #713f12 8deg 45deg),
+    radial-gradient(circle at 36% 30%, #f3e4c8 0 10%, #b45309 38%, #2a170c 74%);
+  box-shadow:
+    inset 0 -2px 0 #120a06,
+    0 0 0 2px #b45309,
+    0 5px 12px rgba(8, 4, 2, 0.46);
+  animation: room-bronze-needle 7.2s ease-in-out infinite;
+}
+
+/* Home: looking down into the housing. Rose in the well, sand on the floor. */
+html[data-player-skin="bronze"][data-app-tab="Home"] #main {
+  clip-path: none;
+  background:
+    repeating-conic-gradient(from 0deg at 50% 18%,
+      rgba(180, 83, 9, 0.1) 0deg 2deg, transparent 2deg 45deg),
+    radial-gradient(ellipse 54% 28% at 50% 8%, rgba(180, 83, 9, 0.14), transparent 70%),
+    repeating-linear-gradient(18deg, transparent 0 17px, rgba(180, 83, 9, 0.04) 17px 18px),
+    #1c1008;
+  box-shadow:
+    inset 0 0 0 12px rgba(18, 10, 6, 0.5),
+    inset 0 0 0 13px rgba(180, 83, 9, 0.18);
+}
+
+/* Today & Calendar: the bearing log — ruled plates, not notebook paper. */
+html[data-player-skin="bronze"][data-app-tab="Today"] #main,
+html[data-player-skin="bronze"][data-app-tab="Calendar"] #main {
+  clip-path: none;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 47px, rgba(180, 83, 9, 0.1) 47px 48px),
+    repeating-linear-gradient(0deg, transparent 0 29px, rgba(113, 63, 18, 0.16) 29px 30px),
+    #1a0e07;
+}
+
+html[data-player-skin="bronze"][data-app-tab="Today"] #main .tdy-hour-cell,
+html[data-player-skin="bronze"][data-app-tab="Calendar"] #main .tdy-hour-cell,
+html[data-player-skin="bronze"][data-app-tab="Calendar"] :is(.cal-day, .cal-hour-cell),
+html[data-player-skin="bronze"][data-app-tab="Calendar"] .cal-month-cell:not(.cal-month-cell-pad) {
+  border: 1px solid rgba(180, 83, 9, 0.3);
+  border-radius: var(--bz-r-cell);
+  background:
+    linear-gradient(180deg, rgba(243, 228, 200, 0.07), transparent 40%),
+    #2a170c;
+  color: var(--bz-cream);
+  font-family: var(--bz-font-figure);
+  font-variant-numeric: tabular-nums;
+  box-shadow: inset 0 -2px 0 #120a06;
+}
+
+html[data-player-skin="bronze"][data-app-tab="Today"] #main .tdy-hour-painted,
+html[data-player-skin="bronze"][data-app-tab="Calendar"] #main .tdy-hour-painted,
+html[data-player-skin="bronze"][data-app-tab="Calendar"] .cal-month-cell-today {
+  border-color: var(--bz-cast);
+  background: linear-gradient(145deg, #b45309, #713f12);
+  color: #fff6e4;
+  box-shadow: inset 3px 0 0 #e08a3a, inset 0 -2px 0 #1c1008;
+}
+
+html[data-player-skin="bronze"][data-app-tab="Calendar"] :is(.cal-month-daynum, .cal-week-day-head) {
+  font-family: var(--bz-font-figure);
+  font-variant-numeric: tabular-nums;
+  color: var(--bz-sand);
+}
+
+html[data-player-skin="bronze"][data-app-tab="Calendar"] :is(.cal-week-chip, .cal-month-chip) {
+  border-radius: var(--bz-r-chip);
+  border: 1px solid rgba(180, 83, 9, 0.34);
+  background: #2a170c;
+  color: var(--bz-cream);
+}
+
+/* Agent: the chart table under one warm inspection lamp. */
+html[data-player-skin="bronze"][data-app-tab="Agent"] #main .agent-pane {
+  border: 1px solid rgba(180, 83, 9, 0.34);
+  border-radius: var(--bz-r-plate);
+  background:
+    radial-gradient(ellipse 55% 28% at 50% 0%, rgba(180, 83, 9, 0.22), transparent 70%),
+    repeating-linear-gradient(90deg, transparent 0 36px, rgba(180, 83, 9, 0.05) 36px 37px),
+    #120a06;
+  box-shadow: inset 0 1px 0 rgba(243, 228, 200, 0.08), inset 0 -3px 0 #0c0704;
+}
+
+html[data-player-skin="bronze"] .agent-msg.assistant .agent-bubble {
+  border: 1px solid rgba(180, 83, 9, 0.28);
+  border-radius: var(--bz-r-card);
+  background: #2a170c;
+  color: var(--bz-cream);
+}
+
+html[data-player-skin="bronze"] .agent-msg.user .agent-bubble {
+  border: 1px solid #c26a1a;
+  border-radius: 26px 26px 18px 18px / 12px 12px 36px 36px;
+  background: #6e3910;
+  color: #fff6e4;
+}
+
+html[data-player-skin="bronze"][data-app-tab="Tasks"] #main :is(.card, .tsk-row, .task-row),
+html[data-player-skin="bronze"][data-app-tab="Projects"] #main .card,
+html[data-player-skin="bronze"][data-app-tab="Parallel"] #main .card,
+html[data-player-skin="bronze"][data-app-tab="Goals"] #main .card {
+  border-left: 3px solid #b45309;
+  background:
+    linear-gradient(90deg, rgba(180, 83, 9, 0.1), transparent 22%),
+    #2a170c;
+}
+
+html[data-player-skin="bronze"][data-app-tab="Hub"] #main :is(.hub-card, .hub-glance-item),
+html[data-player-skin="bronze"][data-app-tab="Practice"] #main .card,
+html[data-player-skin="bronze"][data-app-tab="Settings"] #main .card,
+html[data-player-skin="bronze"][data-app-tab="Paint"] #main .card {
+  border-radius: var(--bz-r-card);
+  border-color: rgba(180, 83, 9, 0.3);
+  background:
+    radial-gradient(ellipse 70% 24% at 50% 0%, rgba(243, 228, 200, 0.08), transparent 60%),
+    #2a170c;
+}
+
+html[data-player-skin="bronze"] :is(.loot-skin-card, .loot-collection-card) {
+  border: 1px solid rgba(180, 83, 9, 0.32);
+  border-radius: var(--bz-r-card);
+  background: #2a170c;
+  color: var(--bz-cream);
+}
+
+/* ── motion ────────────────────────────────────────────────── */
+
+/* grit walking the casting */
+@keyframes room-bronze-sand {
+  0% { background-position: 0 0, 0 0, 0 0; }
+  100% { background-position: 48px 18px, -22px 14px, 16px -20px; }
+}
+
+/* the needle hunts, then settles on north */
+@keyframes room-bronze-needle {
+  0%, 100% { transform: rotate(-3deg); filter: brightness(0.98); }
+  38% { transform: rotate(4deg); filter: brightness(1.06); }
+  62% { transform: rotate(-1deg); filter: brightness(1.02); }
+}
+
+/* light crawling the inner lip of the bezel */
+@keyframes room-bronze-rim {
+  0%, 100% { opacity: 0.58; filter: brightness(0.96); }
+  50% { opacity: 0.88; filter: brightness(1.08); }
+}
+
+/* the die comes down */
+@keyframes room-bronze-strike {
+  0% { transform: translateY(0) scale(1); }
+  40% { transform: translateY(5px) scale(0.975); }
+  100% { transform: translateY(4px) scale(0.985); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="bronze"] body::after,
+  html[data-player-skin="bronze"] .top-hud::after,
+  html[data-player-skin="bronze"] .hud-brand-jewel::after,
+  html[data-player-skin="bronze"] .companion-launcher-orb,
+  html[data-player-skin="bronze"] .launcher-card:hover .launcher-card-glyph,
+  html[data-player-skin="bronze"] .toast-item,
+  html[data-player-skin="bronze"] button.primary:active:not(:disabled) {
+    animation: none !important;
+  }
+
+  html[data-player-skin="bronze"] button.primary:hover:not(:disabled),
+  html[data-player-skin="bronze"] .launcher-card:hover,
+  html[data-player-skin="bronze"] .launcher-card--focused {
+    transform: none;
+  }
+
+  html[data-player-skin="bronze"] *,
+  html[data-player-skin="bronze"] *::before,
+  html[data-player-skin="bronze"] *::after {
+    transition-duration: 0.01ms !important;
+  }
+}

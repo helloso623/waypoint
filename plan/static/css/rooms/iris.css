@@ -1,0 +1,697 @@
+/* ═══════════════════════════════════════════════════════════════
+   IRIS SEEKER — one violet bloom standing before indigo distance.
+
+   The object: a single iris flower at the horizon line, seen at
+   dusk. One dark indigo ground holds everything; one lilac-violet
+   light moves across it like weather. The HUD is the horizon
+   itself — a level hairline with a ringed sun / eye resting on it
+   that slowly seeks left to right, tracking the shifting color.
+   Cards are beds the bloom stands in; they sway from the stem
+   (bottom origin), never hang from a rod. Glyphs are filled iris
+   petals with a darker beard stripe, never outline icons.
+
+   One ground: indigo distance (#1b1847 → #100e2a).
+   One accent: lilac-violet bloom (#c084fc deepening to #4f46e5).
+   Indigo-tinted whites are neutral paper, not a second chroma.
+   No teal curtain, no crystal facet, no hanging wisteria, no
+   rainbow — marks never hue-rotate here.
+
+   Selectors carry [data-player-skin="iris"] so this room outranks
+   the family stencils in skin-pass.css / skin-feels.css. Never
+   clip #main or .launcher-card. Photo: /img/skins/iris.png.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — indigo distance, one violet light ──────────── */
+
+html[data-player-skin="iris"]:root {
+  --room-iris-ground: #1b1847;
+  --room-iris-panel: #232055;
+  --room-iris-panel-2: #1e1c4e;
+  --room-iris-well: #100e2a;
+  --room-iris-night: #0d0b24;
+  --room-iris-bloom: #c084fc;
+  --room-iris-bloom-hot: #ddb4ff;
+  --room-iris-bloom-deep: #4f46e5;
+  --room-iris-paper: #ece7ff;
+  --room-iris-paper-2: #c3bce8;
+  --room-iris-muted: #a09bc9;
+  --room-iris-hair: rgba(192, 132, 252, 0.24);
+  --room-iris-hair-2: rgba(192, 132, 252, 0.44);
+  --room-iris-wash: rgba(79, 70, 229, 0.22);
+
+  --bg-shell: #0d0b24;
+  --bg-content: #141233;
+  --bg-card: #232055;
+  --ink-primary: #ece7ff;
+  --ink-secondary: #c3bce8;
+  --ink-muted: #a09bc9;
+  --border: #38336e;
+  --accent: #c084fc;
+  --ws-accent: #c084fc;
+  --accent-ink: #1c1040;
+  --at-ink: #ece7ff;
+
+  /* Loot catalog source of truth: lilac over indigo. */
+  --skin-a: #c084fc;
+  --skin-b: #4f46e5;
+  --at-a: #c084fc;
+  --at-b: #4f46e5;
+  --feel-a: #c084fc;
+  --feel-b: #4f46e5;
+  --feel-accent: #c084fc;
+  --feel-ground: #0d0b24;
+  --feel-paper: #232055;
+  --feel-ink: #ece7ff;
+
+  --at-plate: #232055;
+  --at-plate-2: #1e1c4e;
+  --at-well: #100e2a;
+  --at-hair: rgba(195, 188, 232, 0.16);
+  --at-hair-2: rgba(195, 188, 232, 0.28);
+  --at-hair-a: rgba(192, 132, 252, 0.4);
+  --at-tint: rgba(192, 132, 252, 0.1);
+  --at-tint-b: rgba(79, 70, 229, 0.22);
+  --at-focus: 0 0 0 4px rgba(192, 132, 252, 0.2);
+  --at-rise: 0 26px 54px -30px rgba(8, 6, 26, 0.95);
+  --at-rise-soft: 0 14px 30px -20px rgba(8, 6, 26, 0.85);
+  --at-inset: inset 0 1px 0 rgba(236, 231, 255, 0.12);
+
+  /* The room's signature: a petal arch — broad round crown,
+     pinched narrow foot. Nothing else in the catalog uses it. */
+  --room-iris-petal-lg: 30px 30px 10px 10px;
+  --room-iris-petal-md: 24px 24px 8px 8px;
+  --room-iris-petal-sm: 18px 18px 6px 6px;
+  --room-iris-petal-chip: 999px;
+  --at-r-plate: var(--room-iris-petal-lg);
+  --at-r-card: var(--room-iris-petal-md);
+  --at-r-ctl: var(--room-iris-petal-sm);
+  --at-r-chip: 999px;
+  --at-r-cell: 16px 16px 6px 6px;
+
+  --font-display: "Avenir Next", "Segoe UI Variable Display", "Inter", system-ui, sans-serif;
+  --at-font-display: "Avenir Next", "Segoe UI Variable Display", "Inter", system-ui, sans-serif;
+
+  /* skin-feels grain hooks — low violet mist over distance. */
+  --feel-3d: inset 0 1px 0 rgba(236, 231, 255, 0.12), 0 20px 38px -26px rgba(8, 6, 26, 0.92);
+  --feel-3d-press: inset 0 3px 8px -3px rgba(8, 6, 26, 0.7);
+  --feel-grain-opacity: 0.3;
+  --feel-grain-blend: screen;
+  --feel-grain: radial-gradient(ellipse 70% 36% at 50% 30%, rgba(192, 132, 252, 0.08), transparent 70%);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 1px solid rgba(192, 132, 252, 0.32);
+  --feel-icon: none;
+  --feel-plate-image: linear-gradient(180deg, rgba(192, 132, 252, 0.12), transparent 56%);
+  --feel-title-tracking: 0.08em;
+  --feel-title-case: uppercase;
+}
+
+/* ── 2 · The photograph — one bloom, dark indigo ground ──────── */
+
+html[data-player-skin="iris"]:root body {
+  background-color: #0d0b24 !important;
+  background-image:
+    linear-gradient(180deg, rgba(13, 11, 36, 0.72) 0%, rgba(13, 11, 36, 0.3) 36%, rgba(13, 11, 36, 0.86) 100%),
+    url("/img/skins/iris.png") !important;
+  background-size: cover, cover !important;
+  background-position: center, center 30% !important;
+  background-attachment: fixed, fixed !important;
+  background-repeat: no-repeat !important;
+  color: #ece7ff;
+  animation: none;
+}
+
+/* Shifting color over the horizon: a slow violet wash that seeks. */
+html[data-player-skin="iris"]:root body::before {
+  content: "";
+  position: fixed;
+  inset: -4% -12% -4% -12%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+  background-image:
+    radial-gradient(ellipse 46% 30% at 32% 34%, rgba(192, 132, 252, 0.22), transparent 70%),
+    radial-gradient(ellipse 52% 34% at 68% 30%, rgba(79, 70, 229, 0.24), transparent 70%),
+    linear-gradient(180deg, transparent 0 58%, rgba(27, 24, 71, 0.5) 76%, transparent 96%);
+  background-size: 130% 100%, 130% 100%, 100% 100%;
+  animation: room-iris-bloom-drift 36s ease-in-out infinite;
+}
+
+/* A held-back veil so copy stays readable under the bloom. */
+html[data-player-skin="iris"]:root body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  background: url("/img/skins/iris.png") center 24% / cover no-repeat;
+  -webkit-mask-image: linear-gradient(180deg, #000 0 34%, rgba(0, 0, 0, 0.3) 58%, transparent 80%);
+  mask-image: linear-gradient(180deg, #000 0 34%, rgba(0, 0, 0, 0.3) 58%, transparent 80%);
+  animation: room-iris-veil-sway 52s ease-in-out infinite;
+}
+
+/* ── 3 · #main — the indigo plain below the horizon ──────────── */
+
+html[data-player-skin="iris"]:root #main {
+  position: relative;
+  isolation: isolate;
+  border-top: 1px solid rgba(192, 132, 252, 0.32);
+  background-color: rgba(13, 11, 36, 0.52);
+  background-image:
+    linear-gradient(180deg, rgba(192, 132, 252, 0.1), rgba(13, 11, 36, 0) 30%),
+    linear-gradient(0deg, rgba(79, 70, 229, 0.14), rgba(13, 11, 36, 0) 34%);
+  box-shadow: inset 0 1px 0 rgba(236, 231, 255, 0.1);
+}
+html[data-player-skin="iris"]:root #main::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.3;
+  mix-blend-mode: screen;
+  background: radial-gradient(ellipse 70% 36% at 50% 30%, rgba(192, 132, 252, 0.08), transparent 70%);
+  background-size: auto;
+  animation: none;
+}
+
+/* ── 4 · The HUD is a horizon with a ringed sun / eye ────────── */
+
+html[data-player-skin="iris"]:root .top-hud {
+  color: #ece7ff;
+  border-bottom: 1px solid rgba(192, 132, 252, 0.34);
+  border-image: none;
+  padding-top: 10px;
+  padding-bottom: 12px;
+  background-color: rgba(13, 11, 36, 0.94);
+  background-image:
+    /* the ringed eye: one violet ring resting on the horizon */
+    radial-gradient(circle at 50% 118%, transparent 0 22px, rgba(221, 180, 255, 0.9) 22px 24px, rgba(192, 132, 252, 0.35) 24px 30px, transparent 31px),
+    radial-gradient(circle at 50% 118%, rgba(192, 132, 252, 0.4) 0 20px, rgba(79, 70, 229, 0.16) 20px 26px, transparent 30px),
+    /* the horizon hairline */
+    linear-gradient(180deg, transparent 0 88%, rgba(221, 180, 255, 0.55) 88% 89.5%, rgba(27, 24, 71, 0) 89.5%),
+    linear-gradient(180deg, rgba(192, 132, 252, 0.14), rgba(13, 11, 36, 0) 70%);
+  background-repeat: no-repeat;
+  box-shadow: 0 16px 34px -24px rgba(6, 4, 20, 0.95);
+}
+
+/* The seeking ring: a small eye that travels the horizon line. */
+html[data-player-skin="iris"]:root .top-hud::after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  bottom: 5px;
+  width: 13px;
+  height: 13px;
+  pointer-events: none;
+  border: 2px solid rgba(221, 180, 255, 0.95);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #c084fc 0 2px, rgba(79, 70, 229, 0.6) 3px 4px, transparent 5px);
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.8), 0 0 26px -4px rgba(192, 132, 252, 0.5);
+  animation: room-iris-seek 21s ease-in-out infinite;
+}
+html[data-player-skin="iris"]:root .hud-app-name {
+  color: #ece7ff;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 12px;
+  animation: none;
+}
+html[data-player-skin="iris"]:root .hud-app-name::before {
+  content: "◉ ";
+  color: #c084fc;
+  text-shadow: 0 0 8px rgba(192, 132, 252, 0.7);
+}
+html[data-player-skin="iris"]:root .hud-intention,
+html[data-player-skin="iris"]:root .hud-now-focus-kicker {
+  color: #c3bce8;
+  letter-spacing: 0.04em;
+}
+html[data-player-skin="iris"]:root .hud-chip,
+html[data-player-skin="iris"]:root .hud-status-pill,
+html[data-player-skin="iris"]:root .hud-metric,
+html[data-player-skin="iris"]:root .hud-calm-pill,
+html[data-player-skin="iris"]:root .tab-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(195, 188, 232, 0.24);
+  background: rgba(13, 11, 36, 0.55);
+  color: #c3bce8;
+}
+html[data-player-skin="iris"]:root .tab-chip.active,
+html[data-player-skin="iris"]:root .tab-chip[aria-selected="true"] {
+  border-color: rgba(192, 132, 252, 0.7);
+  background: rgba(192, 132, 252, 0.14);
+  color: #ece7ff;
+}
+/* One light only — never a rainbow. */
+html[data-player-skin="iris"]:root .ws-mark,
+html[data-player-skin="iris"]:root .hud-icon-svg,
+html[data-player-skin="iris"]:root .tab-chip-mark,
+html[data-player-skin="iris"]:root .launcher-tile-glyph svg,
+html[data-player-skin="iris"]:root .wp-skin-mark {
+  filter: none;
+  animation: none;
+}
+
+/* ── 5 · Launcher — beds the bloom stands in ─────────────────── */
+
+html[data-player-skin="iris"]:root .launcher-grid,
+html[data-player-skin="iris"]:root .launcher-my-apps-row {
+  position: relative;
+  padding-top: 16px;
+  background-image:
+    linear-gradient(90deg, transparent, rgba(192, 132, 252, 0.4) 20%, rgba(192, 132, 252, 0.4) 80%, transparent),
+    linear-gradient(180deg, rgba(192, 132, 252, 0.12), rgba(13, 11, 36, 0) 60%);
+  background-repeat: no-repeat;
+  background-size: 100% 1px, 100% 18px;
+  background-position: 0 0, 0 1px;
+}
+html[data-player-skin="iris"]:root .launcher-card {
+  border-radius: 24px 24px 8px 8px;
+  color: #ece7ff;
+  background-color: rgba(30, 28, 78, 0.9);
+  background-image:
+    linear-gradient(180deg, rgba(192, 132, 252, 0.16), rgba(192, 132, 252, 0) 38%),
+    linear-gradient(0deg, rgba(13, 11, 36, 0.55), rgba(13, 11, 36, 0) 32%),
+    radial-gradient(ellipse 60% 26% at 50% 0%, rgba(192, 132, 252, 0.16), transparent 70%);
+  border: 1px solid rgba(192, 132, 252, 0.2);
+  border-top: 2px solid rgba(221, 180, 255, 0.55);
+  box-shadow:
+    0 24px 44px -30px rgba(6, 4, 20, 0.95),
+    inset 0 -26px 34px -30px rgba(79, 70, 229, 0.55);
+  transform-origin: 50% 100%;
+  transition:
+    transform 300ms cubic-bezier(0.22, 0.72, 0.3, 1),
+    box-shadow 260ms ease,
+    border-color 220ms ease;
+}
+/* Rooted at the stem, so the bloom sways rather than hangs. */
+html[data-player-skin="iris"]:root .launcher-card:hover {
+  transform: translateY(-2px) rotate(-0.4deg);
+  border-color: rgba(192, 132, 252, 0.5);
+  box-shadow:
+    0 30px 52px -30px rgba(6, 4, 20, 0.98),
+    inset 0 -30px 38px -30px rgba(192, 132, 252, 0.4);
+}
+html[data-player-skin="iris"]:root .launcher-card--focused {
+  border-color: #c084fc;
+  box-shadow: 0 0 0 1px rgba(192, 132, 252, 0.5), 0 24px 44px -30px rgba(6, 4, 20, 0.95);
+}
+html[data-player-skin="iris"]:root .launcher-card-name {
+  color: #ece7ff;
+  letter-spacing: 0.02em;
+}
+html[data-player-skin="iris"]:root .launcher-card-intention {
+  color: #c3bce8;
+}
+
+/* ── 6 · Glyphs — filled iris petals with a beard stripe ─────── */
+
+html[data-player-skin="iris"]:root .launcher-card-glyph,
+html[data-player-skin="iris"]:root .launcher-tile-glyph,
+html[data-player-skin="iris"]:root .nav-app-glyph {
+  position: relative;
+  border: none;
+  border-radius: 64% 36% 62% 38% / 70% 60% 40% 30%;
+  background:
+    radial-gradient(circle at 50% 68%, rgba(76, 53, 171, 0.85) 0 18%, transparent 19%),
+    linear-gradient(160deg, #ddb4ff 0%, #c084fc 38%, #7c5cf0 68%, #4f46e5 100%);
+  color: #1c1040;
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, 0.45),
+    inset 0 -4px 8px rgba(29, 18, 80, 0.5),
+    0 6px 14px -8px rgba(79, 70, 229, 0.8);
+}
+html[data-player-skin="iris"]:root .launcher-card-glyph::after,
+html[data-player-skin="iris"]:root .launcher-tile-glyph::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 3px;
+  height: 44%;
+  transform: translateX(-50%) rotate(4deg);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(76, 53, 171, 0.7));
+  opacity: 0.8;
+}
+html[data-player-skin="iris"]:root .launcher-custom-app-emoji {
+  border-radius: 64% 36% 62% 38% / 70% 60% 40% 30%;
+  background: rgba(192, 132, 252, 0.18);
+  border: 1px solid rgba(192, 132, 252, 0.3);
+}
+
+/* ── 7 · Primary button — the heart of the bloom ─────────────── */
+
+html[data-player-skin="iris"]:root button.primary,
+html[data-player-skin="iris"]:root .primary {
+  background-color: #c084fc;
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(28, 16, 64, 0.24)),
+    radial-gradient(ellipse 80% 90% at 50% 0%, rgba(221, 180, 255, 0.7), transparent 60%);
+  color: #1c1040;
+  border: 1px solid #8b5cf0;
+  border-radius: 18px 18px 6px 6px;
+  font-weight: 700;
+  transform-origin: 50% 100%;
+  transition:
+    box-shadow 240ms ease,
+    transform 150ms ease,
+    filter 200ms ease;
+}
+html[data-player-skin="iris"]:root button.primary:hover,
+html[data-player-skin="iris"]:root .primary:hover {
+  filter: brightness(1.07);
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 1px rgba(192, 132, 252, 0.45), 0 14px 30px -16px rgba(192, 132, 252, 0.9);
+}
+html[data-player-skin="iris"]:root button.primary:active,
+html[data-player-skin="iris"]:root .primary:active {
+  transform: translateY(2px) scaleY(0.97);
+  box-shadow: inset 0 3px 8px -3px rgba(28, 16, 64, 0.6);
+}
+
+/* ── 8 · Controls, inputs, focus, disabled ───────────────────── */
+
+html[data-player-skin="iris"]:root button.secondary,
+html[data-player-skin="iris"]:root .secondary {
+  background: transparent;
+  color: #c3bce8;
+  border: 1px solid rgba(195, 188, 232, 0.26);
+  border-bottom-color: rgba(192, 132, 252, 0.4);
+  border-radius: 18px 18px 6px 6px;
+}
+html[data-player-skin="iris"]:root button.secondary:hover,
+html[data-player-skin="iris"]:root .secondary:hover {
+  color: #ece7ff;
+  border-color: rgba(192, 132, 252, 0.55);
+}
+
+html[data-player-skin="iris"]:root input,
+html[data-player-skin="iris"]:root textarea,
+html[data-player-skin="iris"]:root select {
+  background-color: rgba(16, 14, 42, 0.78);
+  background-image: linear-gradient(180deg, rgba(192, 132, 252, 0.07), rgba(16, 14, 42, 0) 36%);
+  color: #ece7ff;
+  caret-color: #c084fc;
+  border: 1px solid rgba(195, 188, 232, 0.22);
+  border-bottom: 2px solid rgba(192, 132, 252, 0.38);
+  border-radius: 18px 18px 6px 6px;
+  transition:
+    border-bottom-color 220ms ease,
+    box-shadow 220ms ease,
+    background-color 220ms ease;
+}
+html[data-player-skin="iris"]:root input:focus,
+html[data-player-skin="iris"]:root textarea:focus,
+html[data-player-skin="iris"]:root select:focus {
+  outline: none;
+  border-bottom-color: #c084fc;
+  background-color: rgba(30, 28, 78, 0.9);
+  box-shadow: 0 10px 24px -16px #c084fc, inset 0 1px 0 rgba(236, 231, 255, 0.1);
+}
+html[data-player-skin="iris"]:root input::placeholder,
+html[data-player-skin="iris"]:root textarea::placeholder {
+  color: rgba(160, 155, 201, 0.6);
+}
+
+html[data-player-skin="iris"]:root :focus-visible {
+  outline: 2px solid #c084fc;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 7px rgba(192, 132, 252, 0.14);
+}
+
+/* Wilted: the same petal gone grey-violet, holding its shape. */
+html[data-player-skin="iris"]:root button:disabled,
+html[data-player-skin="iris"]:root input:disabled,
+html[data-player-skin="iris"]:root select:disabled,
+html[data-player-skin="iris"]:root textarea:disabled,
+html[data-player-skin="iris"]:root [aria-disabled="true"] {
+  opacity: 0.62;
+  cursor: not-allowed;
+  color: rgba(195, 188, 232, 0.6);
+  border: 1px solid rgba(195, 188, 232, 0.16);
+  box-shadow: none;
+  background-color: rgba(20, 18, 51, 0.7);
+  background-image: linear-gradient(180deg, rgba(195, 188, 232, 0.06), transparent 50%);
+  filter: saturate(0.45);
+}
+
+/* ── 9 · Empty state — one horizon, one waiting bloom ────────── */
+
+html[data-player-skin="iris"]:root .empty-state {
+  border: 1px dashed rgba(192, 132, 252, 0.45);
+  border-top: 2px solid rgba(221, 180, 255, 0.55);
+  border-radius: 24px 24px 8px 8px;
+  background-color: rgba(20, 18, 51, 0.74);
+  background-image:
+    linear-gradient(180deg, rgba(192, 132, 252, 0.1), rgba(20, 18, 51, 0) 36%),
+    linear-gradient(
+      180deg,
+      transparent 0 64%,
+      rgba(221, 180, 255, 0.28) 64% 64.6%,
+      transparent 64.6%
+    ),
+    radial-gradient(ellipse 34% 22% at 50% 64%, rgba(192, 132, 252, 0.2), transparent 70%);
+  padding: 26px 18px 22px;
+}
+html[data-player-skin="iris"]:root .empty-state::before {
+  content: "◉";
+  display: block;
+  margin-bottom: 6px;
+  color: #c084fc;
+  font-size: 15px;
+  text-shadow: 0 0 10px rgba(192, 132, 252, 0.7);
+}
+html[data-player-skin="iris"]:root .empty-state-title {
+  color: #ddb4ff;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+}
+html[data-player-skin="iris"]:root .empty-state-body,
+html[data-player-skin="iris"]:root .empty-state-hint {
+  color: #c3bce8;
+}
+
+/* ── 10 · Dialogs — night glass under the bloom ──────────────── */
+
+html[data-player-skin="iris"]:root .loot-shell-dialog,
+html[data-player-skin="iris"]:root .napkin-capture-dialog,
+html[data-player-skin="iris"]:root .launcher-search-panel,
+html[data-player-skin="iris"]:root .launcher-dock-panel,
+html[data-player-skin="iris"]:root .companion-panel,
+html[data-player-skin="iris"]:root .wf-code-modal,
+html[data-player-skin="iris"]:root .rich-fs-modal,
+html[data-player-skin="iris"]:root .wp-board {
+  border-radius: 30px 30px 10px 10px;
+  background-color: #1e1c4e;
+  background-image:
+    linear-gradient(180deg, rgba(192, 132, 252, 0.14), rgba(30, 28, 78, 0) 30%),
+    radial-gradient(ellipse 56% 22% at 50% 0%, rgba(192, 132, 252, 0.16), transparent 70%);
+  color: #ece7ff;
+  border: 1px solid rgba(192, 132, 252, 0.24);
+  border-top: 2px solid rgba(221, 180, 255, 0.5);
+  box-shadow: 0 50px 100px -46px rgba(4, 2, 16, 0.94);
+  animation: room-iris-rise 320ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
+}
+html[data-player-skin="iris"]:root .loot-chest-overlay,
+html[data-player-skin="iris"]:root .command-palette-overlay,
+html[data-player-skin="iris"]:root .launcher-search-overlay,
+html[data-player-skin="iris"]:root .wf-code-modal-overlay,
+html[data-player-skin="iris"]:root .wp-board-overlay,
+html[data-player-skin="iris"]:root .rit-overlay,
+html[data-player-skin="iris"]:root .wp-alarm-overlay,
+html[data-player-skin="iris"]:root .wp-arcade-overlay {
+  background:
+    radial-gradient(120% 80% at 50% 0, rgba(192, 132, 252, 0.12), rgba(8, 6, 26, 0) 60%),
+    rgba(8, 6, 26, 0.88);
+  backdrop-filter: blur(3px);
+}
+
+/* ── 11 · Companion orb — the seeking eye ────────────────────── */
+
+html[data-player-skin="iris"]:root .companion-launcher {
+  background: rgba(13, 11, 36, 0.9);
+  border: 1px solid rgba(192, 132, 252, 0.32);
+  border-radius: 30px 30px 10px 10px;
+  box-shadow: 0 18px 36px -22px rgba(6, 4, 20, 0.95);
+}
+html[data-player-skin="iris"]:root .companion-launcher-orb {
+  border-radius: 50%;
+  border: 2px solid rgba(221, 180, 255, 0.85);
+  background:
+    radial-gradient(circle at 50% 50%, #ddb4ff 0 12%, #c084fc 16%, #4f46e5 52%, #141233 74%),
+    #1b1847;
+  box-shadow:
+    0 0 14px rgba(192, 132, 252, 0.6),
+    0 0 34px -6px rgba(192, 132, 252, 0.45);
+  animation: room-iris-ring-pulse 6s ease-in-out infinite;
+}
+html[data-player-skin="iris"]:root .companion-launcher:hover .companion-launcher-orb {
+  box-shadow:
+    0 0 20px rgba(192, 132, 252, 0.85),
+    0 0 50px -6px rgba(192, 132, 252, 0.6);
+}
+
+/* ── 12 · Plates and copy that must stay readable ────────────── */
+
+html[data-player-skin="iris"]:root .card,
+html[data-player-skin="iris"]:root .hub-card,
+html[data-player-skin="iris"]:root .page-intent,
+html[data-player-skin="iris"]:root .napkin-entry,
+html[data-player-skin="iris"]:root .task-row {
+  background-color: rgba(30, 28, 78, 0.86);
+  color: #ece7ff;
+  border-color: rgba(192, 132, 252, 0.2);
+  border-radius: 24px 24px 8px 8px;
+}
+html[data-player-skin="iris"]:root .agent-bubble {
+  background: rgba(30, 28, 78, 0.94);
+  color: #ece7ff;
+  border-left: 2px solid rgba(192, 132, 252, 0.6);
+  border-radius: 18px 18px 6px 6px;
+}
+html[data-player-skin="iris"]:root .loot-shell-brand > span {
+  background: linear-gradient(180deg, #ddb4ff, #c084fc 50%, #4f46e5);
+  animation: none;
+  filter: none;
+}
+
+/* ═══ 13 · Per-tab rooms — one bloom, three distances ══════════ */
+
+/* Home · standing back: the whole horizon, bloom centered. */
+html[data-player-skin="iris"]:root[data-app-tab="Home"] body {
+  background-position: center, center 30% !important;
+  background-size: cover, cover !important;
+}
+html[data-player-skin="iris"]:root[data-app-tab="Home"] #main {
+  background-color: rgba(13, 11, 36, 0.36);
+  border-top-color: rgba(192, 132, 252, 0.22);
+}
+
+/* Today · close to the petals: the wash fills the frame. */
+html[data-player-skin="iris"]:root[data-app-tab="Today"] body {
+  background-size: cover, 170% auto !important;
+  background-position: center, 60% 22% !important;
+}
+html[data-player-skin="iris"]:root[data-app-tab="Today"] #main {
+  background-color: rgba(13, 11, 36, 0.6);
+}
+html[data-player-skin="iris"]:root[data-app-tab="Today"] .tdy-hour-cell {
+  border-radius: 16px 16px 6px 6px;
+  border-color: rgba(195, 188, 232, 0.26);
+  background-color: rgba(30, 28, 78, 0.55);
+  background-image: linear-gradient(180deg, rgba(192, 132, 252, 0.12), rgba(13, 11, 36, 0) 56%);
+}
+html[data-player-skin="iris"]:root[data-app-tab="Today"] .tdy-now-marker {
+  background: #c084fc;
+  box-shadow: 0 0 14px rgba(192, 132, 252, 0.9);
+}
+
+/* Agent · inside the bloom: one violet pool over the thread. */
+html[data-player-skin="iris"]:root[data-app-tab="Agent"] body {
+  background-position: center, center 18% !important;
+  background-size: cover, 128% auto !important;
+}
+html[data-player-skin="iris"]:root[data-app-tab="Agent"] #main .agent-pane {
+  border-radius: 24px 24px 8px 8px;
+  background-color: rgba(20, 18, 51, 0.9);
+  background-image:
+    radial-gradient(ellipse 60% 30% at 50% 0%, rgba(192, 132, 252, 0.2), transparent 68%),
+    linear-gradient(180deg, rgba(192, 132, 252, 0.08), rgba(20, 18, 51, 0) 30%);
+  border: 1px solid rgba(192, 132, 252, 0.2);
+}
+
+/* Hub · a bed of blooms: every card carries the horizon line. */
+html[data-player-skin="iris"]:root[data-app-tab="Hub"] #main .hub-card,
+html[data-player-skin="iris"]:root[data-app-tab="Hub"] #main .hub-glance-item {
+  border-radius: 24px 24px 8px 8px;
+  border: 1px solid rgba(192, 132, 252, 0.18);
+  border-top: 2px solid rgba(221, 180, 255, 0.5);
+  background-color: rgba(30, 28, 78, 0.86);
+  background-image: linear-gradient(180deg, rgba(192, 132, 252, 0.12), rgba(20, 18, 51, 0) 38%);
+}
+
+/* Practice · dusk drills under a dimmed bloom. */
+html[data-player-skin="iris"]:root[data-app-tab="Practice"] #main .card {
+  border: 1px dashed rgba(192, 132, 252, 0.4);
+  border-radius: 24px 24px 8px 8px;
+  background-color: rgba(13, 11, 36, 0.8);
+}
+html[data-player-skin="iris"]:root[data-app-tab="Practice"] #main .card:hover {
+  border-color: rgba(192, 132, 252, 0.72);
+}
+
+/* Calendar · the seeker's ledger — each day a petal in a row. */
+html[data-player-skin="iris"]:root[data-app-tab="Calendar"] #main .cal-month-cell,
+html[data-player-skin="iris"]:root[data-app-tab="Calendar"] #main .cal-day-panel {
+  border-radius: 16px 16px 6px 6px;
+  border-top: 2px solid rgba(221, 180, 255, 0.4);
+  border-left: 1px solid rgba(192, 132, 252, 0.16);
+  background-color: rgba(20, 18, 51, 0.78);
+  background-image: linear-gradient(180deg, rgba(192, 132, 252, 0.1), rgba(13, 11, 36, 0) 58%);
+}
+
+/* Settings · the stem row — every row rooted at the foot. */
+html[data-player-skin="iris"]:root[data-app-tab="Settings"] #main .card {
+  border-radius: 24px 24px 8px 8px;
+  border-bottom: 2px solid rgba(192, 132, 252, 0.3);
+  background-color: rgba(20, 18, 51, 0.84);
+  background-image: linear-gradient(0deg, rgba(192, 132, 252, 0.1), rgba(13, 11, 36, 0) 30%);
+}
+
+/* ── 14 · Motion — slow tracking, never busy ─────────────────── */
+
+@keyframes room-iris-bloom-drift {
+  0%, 100% { background-position: 0 0, 100% 0, 0 0; opacity: 0.55; }
+  50% { background-position: 60px 0, -60px 0, 0 0; opacity: 0.68; }
+}
+@keyframes room-iris-veil-sway {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.03); opacity: 0.16; }
+  50% { transform: translate3d(-1.4%, 0.6%, 0) scale(1.06); opacity: 0.22; }
+}
+@keyframes room-iris-seek {
+  0%, 100% { left: 12%; }
+  50% { left: calc(88% - 13px); }
+}
+@keyframes room-iris-ring-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.07); opacity: 1; }
+}
+@keyframes room-iris-rise {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="iris"]:root body::before,
+  html[data-player-skin="iris"]:root body::after,
+  html[data-player-skin="iris"]:root #main::after,
+  html[data-player-skin="iris"]:root .top-hud::after,
+  html[data-player-skin="iris"]:root .companion-launcher-orb,
+  html[data-player-skin="iris"]:root .loot-shell-dialog,
+  html[data-player-skin="iris"]:root .napkin-capture-dialog,
+  html[data-player-skin="iris"]:root .launcher-search-panel,
+  html[data-player-skin="iris"]:root .launcher-dock-panel,
+  html[data-player-skin="iris"]:root .companion-panel,
+  html[data-player-skin="iris"]:root .wf-code-modal,
+  html[data-player-skin="iris"]:root .rich-fs-modal,
+  html[data-player-skin="iris"]:root .wp-board {
+    animation: none !important;
+  }
+  html[data-player-skin="iris"]:root .top-hud::after { left: 50%; }
+  html[data-player-skin="iris"]:root .launcher-card,
+  html[data-player-skin="iris"]:root button.primary,
+  html[data-player-skin="iris"]:root .primary {
+    transition: none;
+  }
+  html[data-player-skin="iris"]:root .launcher-card:hover,
+  html[data-player-skin="iris"]:root button.primary:hover,
+  html[data-player-skin="iris"]:root .primary:hover,
+  html[data-player-skin="iris"]:root button.primary:active,
+  html[data-player-skin="iris"]:root .primary:active {
+    transform: none;
+  }
+}

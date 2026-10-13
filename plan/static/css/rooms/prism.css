@@ -1,0 +1,106 @@
+/* Prism Sovereign — dispersion optics.
+   One triangular prism on the HUD splits a single beam into
+   wavelength bands. Today hours are the spectrum path (Snell),
+   not a rainbow curtain on type. Cyan ink on magenta glass. */
+
+html[data-player-skin="prism"] {
+  --at-r-plate: 0 28px 0 8px;
+  --at-r-card: 0 28px 0 8px;
+  --at-r-ctl: 0 10px 0 4px;
+  --at-r-chip: 0 8px 0 4px;
+  --at-r-cell: 4px 8px 4px 2px;
+  --at-font-display: "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  --at-font-ui: "Inter", system-ui, sans-serif;
+  --bg-shell: #04161c;
+  --bg-card: #0a2a32;
+  --ink-primary: #f5e8ff;
+  --ink-secondary: #d8b4fe;
+  --accent: #e879f9;
+  --accent-ink: #041e24;
+  --prism-cyan: #22d3ee;
+}
+
+html[data-player-skin="prism"] body {
+  background:
+    radial-gradient(ellipse 48% 36% at 78% 12%, rgba(232, 121, 249, 0.22), transparent 62%),
+    linear-gradient(180deg, #062028, #041016) !important;
+  color: var(--ink-primary);
+}
+html[data-player-skin="prism"] body::after {
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background:
+    repeating-linear-gradient(118deg,
+      transparent 0 18px,
+      rgba(34, 211, 238, 0.05) 18px 19px,
+      transparent 19px 37px,
+      rgba(232, 121, 249, 0.05) 37px 38px);
+  animation: room-prism-disperse 18s linear infinite;
+}
+
+html[data-player-skin="prism"] .top-hud {
+  isolation: isolate;
+  background: linear-gradient(90deg, #04161c, #0a2e38 55%, #04161c);
+  border-bottom: 1px solid rgba(34, 211, 238, 0.35);
+}
+html[data-player-skin="prism"] .top-hud::before {
+  content: "";
+  position: absolute;
+  left: 46%;
+  bottom: -7px;
+  width: 22px;
+  height: 18px;
+  pointer-events: none;
+  background: linear-gradient(135deg, transparent 42%, rgba(245, 232, 255, 0.92) 42% 58%, transparent 58%);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  filter: drop-shadow(10px 4px 0 rgba(232, 121, 249, 0.45)) drop-shadow(-8px 6px 0 rgba(34, 211, 238, 0.4));
+  animation: room-prism-wobble 7s ease-in-out infinite;
+}
+html[data-player-skin="prism"] .hud-app-name {
+  font-family: var(--at-font-display);
+  letter-spacing: 0.08em;
+}
+
+html[data-player-skin="prism"] .launcher-card {
+  border-radius: 0 28px 0 8px;
+  padding: 26px 16px 14px;
+  background:
+    linear-gradient(118deg, rgba(232, 121, 249, 0.16), transparent 42%, rgba(34, 211, 238, 0.12)),
+    #0a2a32;
+  border: 1px solid rgba(232, 121, 249, 0.28);
+}
+html[data-player-skin="prism"] button.primary,
+html[data-player-skin="prism"] .tab-chip.active {
+  background: #e879f9;
+  color: #041e24;
+  border: 1px solid #0e7490;
+}
+
+html[data-player-skin="prism"][data-app-tab="Today"] #main .tdy-hour-cell {
+  border-radius: 4px 8px 4px 2px;
+  border-left: 3px solid color-mix(in srgb, #e879f9 55%, #22d3ee);
+}
+html[data-player-skin="prism"][data-app-tab="Today"] .tdy-hour-row:nth-child(3n) .tdy-hour-cell { border-left-color: #e879f9; }
+html[data-player-skin="prism"][data-app-tab="Today"] .tdy-hour-row:nth-child(3n+1) .tdy-hour-cell { border-left-color: #22d3ee; }
+html[data-player-skin="prism"][data-app-tab="Today"] .tdy-hour-row:nth-child(3n+2) .tdy-hour-cell { border-left-color: #a78bfa; }
+
+html[data-player-skin="prism"][data-app-tab="Tasks"] .tsk-row {
+  border-radius: 0 16px 0 6px;
+  border-left: 4px solid #22d3ee;
+}
+html[data-player-skin="prism"][data-app-tab="Agent"] .agent-msg.assistant .agent-bubble {
+  border-left: 3px solid #e879f9;
+  background: #0a2a32;
+}
+
+@keyframes room-prism-disperse {
+  to { background-position: 80px 40px; }
+}
+@keyframes room-prism-wobble {
+  50% { transform: rotate(8deg) translateY(-1px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="prism"] body::after,
+  html[data-player-skin="prism"] .top-hud::before { animation: none; }
+}

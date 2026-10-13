@@ -1,0 +1,601 @@
+/* ═══════════════════════════════════════════════════════════════
+   SLATE MECHANIC — a honed slate bench, one steel rule, one bolt.
+
+   The object: a workbench top ground flat from split slate, still
+   showing the grain of the stone under the honing. Two slabs meet
+   at an oil-dark joint. A machinist's steel rule lies across the
+   surface — the room's only bright line, repeated in miniature as
+   a tick-scale on every plate's top edge. A single hex bolt sits
+   seated flush in its socket near the HUD mark; every small control
+   is cut to the same hex, because that is what actually gets turned
+   on a bench like this. Nothing here is decorative: no rainbow
+   glow (loot effect is `none`), no spare-parts collage, no chalk,
+   no raw poured concrete. Two tones only — colorA steel #94a3b8,
+   colorB oil-joint #334155 — laid over near-black honed stone.
+
+   Radius is hard and slightly uneven, like a chisel-split edge —
+   not the 0 that Honeycomb already claims. Buttons and hex plates
+   seat into their socket on press; they do not lift or bounce.
+   Photograph: /img/skins/slate.png (a bench with the rule and the
+   one bolt, no clutter, no scrap). Never clip #main or .launcher-card.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens ─────────────────────────────────────────────── */
+
+html[data-player-skin="slate"]:root {
+  color-scheme: dark;
+
+  --sl-bench: #171c22;
+  --sl-bench-2: #1c2229;
+  --sl-plate: #232a32;
+  --sl-plate-hi: #2a323b;
+  --sl-joint: #0d1115;
+  --sl-steel: #94a3b8;
+  --sl-steel-hi: #d3dbe4;
+  --sl-steel-dim: #64748b;
+  --sl-oil: #334155;
+  --sl-ink: #e7ebf0;
+  --sl-ink-2: #a9b3bf;
+  --sl-ink-3: #74808d;
+
+  /* the room's one signature cut: hard, slightly uneven, split stone */
+  --sl-hex: polygon(26% 3%, 74% 3%, 98% 50%, 74% 97%, 26% 97%, 2% 50%);
+  --sl-r-plate: 3px 1px 4px 2px;
+  --sl-r-card: 3px 1px 4px 2px;
+  --sl-r-ctl: 2px 1px 3px 1px;
+  --sl-r-chip: 2px 1px 2px 1px;
+  --sl-r-cell: 1px 2px 1px 2px;
+  --sl-r-dialog: 4px 1px 5px 2px;
+
+  --bg-shell: var(--sl-bench);
+  --bg-content: var(--sl-bench-2);
+  --bg-card: var(--sl-plate);
+  --bg-card-hover: var(--sl-plate-hi);
+  --ink-primary: var(--sl-ink);
+  --ink-secondary: var(--sl-ink-2);
+  --ink-muted: var(--sl-ink-3);
+  --border: color-mix(in srgb, var(--sl-oil) 62%, var(--sl-steel) 10%);
+  --gridline: color-mix(in srgb, var(--sl-oil) 45%, transparent);
+  --accent: var(--sl-steel);
+  --ws-accent: var(--sl-steel);
+  --accent-ink: var(--sl-joint);
+
+  --at-a: var(--sl-steel);
+  --at-b: var(--sl-oil);
+  --at-plate: var(--sl-plate);
+  --at-plate-2: var(--sl-plate-hi);
+  --at-well: var(--sl-joint);
+  --at-ink: var(--sl-ink);
+  --at-ink-2: var(--sl-ink-2);
+  --at-ink-3: var(--sl-ink-3);
+  --at-hair: color-mix(in srgb, var(--sl-steel) 20%, transparent);
+  --at-hair-2: color-mix(in srgb, var(--sl-steel) 32%, transparent);
+  --at-hair-a: color-mix(in srgb, var(--sl-steel) 45%, var(--sl-oil));
+  --at-r-plate: var(--sl-r-plate);
+  --at-r-card: var(--sl-r-card);
+  --at-r-ctl: var(--sl-r-ctl);
+  --at-r-chip: var(--sl-r-chip);
+  --at-r-cell: var(--sl-r-cell);
+  --at-font-mono: ui-monospace, "IBM Plex Mono", "Cascadia Mono", monospace;
+
+  /* the tick-scale: a rule's minor and major graduations, laid flat */
+  --sl-ticks:
+    repeating-linear-gradient(90deg, transparent 0 7px, color-mix(in srgb, var(--sl-steel) 38%, transparent) 7px 8px, transparent 8px 24px),
+    repeating-linear-gradient(90deg, transparent 0 23px, color-mix(in srgb, var(--sl-steel-hi) 65%, transparent) 23px 25px, transparent 25px 72px);
+
+  --feel-3d:
+    inset 0 1px 0 color-mix(in srgb, var(--sl-steel) 14%, transparent),
+    0 2px 0 var(--sl-joint),
+    0 8px 16px rgba(3, 5, 7, 0.5);
+  --feel-3d-press:
+    inset 0 2px 4px var(--sl-joint),
+    0 1px 0 var(--sl-joint);
+  --feel-grain-opacity: 0.16;
+  --feel-grain-blend: multiply;
+  --feel-grain:
+    repeating-linear-gradient(3deg, transparent 0 3px, rgba(0, 0, 0, 0.14) 3px 4px),
+    repeating-linear-gradient(93deg, transparent 0 5px, rgba(255, 255, 255, 0.03) 5px 6px);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 1px solid color-mix(in srgb, var(--sl-steel) 30%, var(--sl-oil));
+  --feel-icon: grayscale(0.5) contrast(1.08) brightness(1.02);
+  --feel-title-case: none;
+  --feel-title-tracking: 0.01em;
+}
+
+/* ── 2 · Body — the bench itself ───────────────────────────── */
+
+html[data-player-skin="slate"]:root body {
+  background-color: var(--sl-bench) !important;
+  background-image:
+    linear-gradient(180deg, rgba(13, 17, 21, 0.82) 0%, rgba(13, 17, 21, 0.5) 40%, rgba(13, 17, 21, 0.86) 100%),
+    url("/img/skins/slate.png") !important;
+  background-position: center, center !important;
+  background-size: cover, cover !important;
+  background-attachment: fixed, fixed !important;
+  color: var(--sl-ink);
+}
+
+/* honed stone fleck, held nearly still — a bench does not shimmer */
+html[data-player-skin="slate"]:root body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.14;
+  mix-blend-mode: overlay;
+  background:
+    repeating-linear-gradient(4deg, transparent 0 3px, rgba(0, 0, 0, 0.16) 3px 4px),
+    repeating-linear-gradient(94deg, transparent 0 5px, rgba(255, 255, 255, 0.035) 5px 6px);
+  animation: room-slate-grain 30s linear infinite;
+}
+
+html[data-player-skin="slate"]:root #main {
+  clip-path: none;
+  position: relative;
+  isolation: isolate;
+  background: color-mix(in srgb, var(--sl-bench-2) 88%, transparent) !important;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--sl-steel) 8%, transparent);
+}
+html[data-player-skin="slate"]:root #main::after {
+  animation: none;
+  background: none;
+  clip-path: none;
+}
+
+/* ── 3 · Top HUD — the rule laid across the bench edge ──────── */
+
+html[data-player-skin="slate"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--sl-plate) 92%, var(--sl-steel) 8%), var(--sl-bench) 80%);
+  border-bottom: 1px solid var(--sl-joint);
+  border-radius: 0;
+  box-shadow:
+    inset 0 -1px 0 var(--sl-joint),
+    0 6px 18px rgba(3, 5, 7, 0.42);
+  color: var(--sl-ink);
+}
+
+/* the steel rule itself: one bright hairline with real graduations */
+html[data-player-skin="slate"]:root .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: -1px;
+  height: 3px;
+  z-index: 1;
+  background:
+    var(--sl-ticks),
+    linear-gradient(90deg, transparent, var(--sl-steel-hi) 12%, var(--sl-steel-hi) 88%, transparent);
+  background-size: 72px 100%, 72px 100%, 100% 100%;
+  opacity: 0.85;
+  animation: room-slate-glint 16s ease-in-out infinite;
+}
+
+html[data-player-skin="slate"]:root .hud-app-name {
+  background: none;
+  color: var(--sl-ink);
+  letter-spacing: 0.01em;
+}
+html[data-player-skin="slate"]:root .hud-app-name::before {
+  content: "⬡ ";
+  color: var(--sl-steel);
+}
+html[data-player-skin="slate"]:root .hud-intention {
+  color: var(--sl-ink-2);
+}
+
+/* the one bolt: a hex head seated flush, no shine loop, no spin */
+html[data-player-skin="slate"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  border-radius: 0;
+  clip-path: var(--sl-hex);
+  background:
+    radial-gradient(circle at 34% 28%, color-mix(in srgb, var(--sl-steel-hi) 70%, transparent), transparent 46%),
+    linear-gradient(155deg, var(--sl-steel), var(--sl-steel-dim) 55%, var(--sl-oil));
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 30%, transparent),
+    inset 0 -2px 0 var(--sl-joint);
+}
+html[data-player-skin="slate"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 28%;
+  border-radius: 50%;
+  background: var(--sl-joint);
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+html[data-player-skin="slate"]:root .brand-mark,
+html[data-player-skin="slate"]:root .ws-mark,
+html[data-player-skin="slate"]:root .hud-icon-svg,
+html[data-player-skin="slate"]:root .wp-skin-mark,
+html[data-player-skin="slate"]:root .tab-chip-mark {
+  filter: var(--feel-icon);
+  animation: none;
+}
+
+html[data-player-skin="slate"]:root :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-chip,
+  .hud-metric,
+  .hud-game-cluster,
+  .hud-game-chip,
+  .hud-model-chip--status,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .loot-profile-chip
+) {
+  color: var(--sl-ink);
+  border: 1px solid color-mix(in srgb, var(--sl-steel) 22%, transparent);
+  border-radius: var(--sl-r-ctl);
+  background: linear-gradient(180deg, var(--sl-plate-hi), var(--sl-plate));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--sl-steel) 12%, transparent);
+  transition: border-color 140ms ease, filter 140ms ease;
+}
+html[data-player-skin="slate"]:root :is(.hud-icon-btn, .hud-glyph-btn) {
+  clip-path: var(--sl-hex);
+  border-radius: 0;
+}
+html[data-player-skin="slate"]:root :is(.hud-icon-btn, .hud-glyph-btn):hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--sl-steel) 55%, transparent);
+  filter: brightness(1.08);
+}
+html[data-player-skin="slate"]:root :is(.hud-icon-btn, .hud-glyph-btn):active:not(:disabled) {
+  animation: room-slate-seat 160ms ease-out;
+}
+
+html[data-player-skin="slate"]:root .tab-chip-bar {
+  background: var(--sl-bench);
+  border-bottom: 1px solid var(--sl-joint);
+}
+html[data-player-skin="slate"]:root .tab-chip {
+  border: 1px solid color-mix(in srgb, var(--sl-steel) 16%, transparent);
+  border-radius: var(--sl-r-chip);
+  background: var(--sl-plate);
+  color: var(--sl-ink-2);
+}
+html[data-player-skin="slate"]:root .tab-chip.active {
+  color: var(--sl-joint);
+  border-color: var(--sl-steel-hi);
+  background: linear-gradient(180deg, var(--sl-steel-hi), var(--sl-steel) 70%, var(--sl-steel-dim));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 1px 0 var(--sl-joint);
+}
+
+/* ── 4 · Launcher — gauge plates on the bench, one bolt each ── */
+
+html[data-player-skin="slate"]:root .launcher-card {
+  position: relative;
+  clip-path: none;
+  border-radius: var(--sl-r-card);
+  border: 1px solid color-mix(in srgb, var(--sl-steel) 16%, transparent);
+  border-bottom: 2px solid var(--sl-joint);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--sl-steel) 5%, transparent) 0 3px, transparent 3px 20%),
+    var(--sl-plate);
+  color: var(--sl-ink);
+  box-shadow: var(--feel-3d);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+/* the tick-scale run along the top edge — a rule laid on the plate */
+html[data-player-skin="slate"]:root .launcher-card::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 30px;
+  top: 0;
+  width: auto;
+  height: 2px;
+  border-radius: 0;
+  background: var(--sl-ticks);
+  background-size: 40px 100%, 40px 100%;
+  opacity: 0.55;
+}
+
+/* the seated bolt: a small hex head at the plate's corner */
+html[data-player-skin="slate"]:root .launcher-card::after {
+  content: "";
+  right: 9px;
+  bottom: 9px;
+  width: 11px;
+  height: 11px;
+  border-radius: 0;
+  clip-path: var(--sl-hex);
+  background: linear-gradient(155deg, var(--sl-steel-hi), var(--sl-steel-dim) 60%, var(--sl-oil));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+html[data-player-skin="slate"]:root .launcher-card:hover,
+html[data-player-skin="slate"]:root .launcher-card--focused {
+  border-color: color-mix(in srgb, var(--sl-steel) 45%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--sl-steel) 18%, transparent),
+    0 2px 0 var(--sl-joint),
+    0 10px 20px rgba(3, 5, 7, 0.55);
+}
+html[data-player-skin="slate"]:root .launcher-card-name {
+  color: var(--sl-ink);
+}
+html[data-player-skin="slate"]:root .launcher-card-intention {
+  color: var(--sl-ink-2);
+}
+
+html[data-player-skin="slate"]:root :is(.launcher-card-glyph, .launcher-tile-glyph, .nav-app-glyph) {
+  position: relative;
+  border-radius: 0;
+  clip-path: var(--sl-hex);
+  color: var(--sl-joint);
+  background:
+    radial-gradient(circle at 32% 26%, color-mix(in srgb, #fff 55%, transparent), transparent 44%),
+    linear-gradient(155deg, var(--sl-steel-hi), var(--sl-steel) 52%, var(--sl-oil));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), inset 0 -2px 0 var(--sl-joint);
+}
+html[data-player-skin="slate"]:root .launcher-custom-app-emoji {
+  border-radius: 0;
+  clip-path: var(--sl-hex);
+  background: color-mix(in srgb, var(--sl-steel) 20%, var(--sl-plate));
+}
+
+/* ── 5 · Buttons — bolts that seat, never bounce ─────────────── */
+
+html[data-player-skin="slate"]:root button.primary,
+html[data-player-skin="slate"]:root .agent-pane-chat .agc-send {
+  position: relative;
+  border: 1px solid var(--sl-steel-dim);
+  border-radius: var(--sl-r-ctl);
+  background: linear-gradient(180deg, var(--sl-steel-hi), var(--sl-steel) 55%, var(--sl-steel-dim));
+  color: var(--sl-joint);
+  font-weight: 700;
+  letter-spacing: 0.015em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: var(--feel-3d);
+  transition: filter 120ms ease, box-shadow 120ms ease;
+}
+html[data-player-skin="slate"]:root button.primary::before,
+html[data-player-skin="slate"]:root .agent-pane-chat .agc-send::before {
+  content: "⬡";
+  margin-right: 6px;
+  opacity: 0.55;
+  font-size: 0.9em;
+}
+html[data-player-skin="slate"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="slate"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+html[data-player-skin="slate"]:root button.primary:active:not(:disabled),
+html[data-player-skin="slate"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  box-shadow: var(--feel-3d-press);
+  animation: room-slate-seat 160ms ease-out;
+}
+
+html[data-player-skin="slate"]:root button.secondary,
+html[data-player-skin="slate"]:root .ghost-btn,
+html[data-player-skin="slate"]:root .pill {
+  border: 1px solid color-mix(in srgb, var(--sl-steel) 24%, transparent);
+  border-radius: var(--sl-r-ctl);
+  background: var(--sl-plate);
+  color: var(--sl-ink-2);
+}
+html[data-player-skin="slate"]:root button.secondary:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--sl-steel) 50%, transparent);
+  color: var(--sl-ink);
+}
+
+/* ── 6 · Generic plates — cards, rows, hub items ─────────────── */
+
+html[data-player-skin="slate"]:root :is(
+  .card,
+  .hub-card,
+  .pln-rail-card,
+  .evt-card,
+  .tsk-row,
+  .hub-glance-item
+) {
+  border: 1px solid color-mix(in srgb, var(--sl-steel) 14%, transparent);
+  border-radius: var(--sl-r-plate);
+  background: var(--sl-plate);
+  color: var(--sl-ink);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--sl-steel) 8%, transparent), 0 2px 0 var(--sl-joint);
+}
+html[data-player-skin="slate"]:root :is(.card, .hub-card):hover {
+  border-color: color-mix(in srgb, var(--sl-steel) 34%, transparent);
+}
+
+/* ── 7 · Empty / input / focus / disabled ────────────────────── */
+
+html[data-player-skin="slate"]:root .empty-state {
+  position: relative;
+  border: 1px dashed color-mix(in srgb, var(--sl-steel) 30%, transparent);
+  border-radius: var(--sl-r-plate);
+  background: var(--sl-bench-2);
+  color: var(--sl-ink-2);
+  box-shadow: inset 0 0 0 1px var(--sl-joint);
+}
+html[data-player-skin="slate"]:root .empty-state::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 0;
+  height: 2px;
+  background: var(--sl-ticks);
+  background-size: 40px 100%, 40px 100%;
+  opacity: 0.4;
+}
+html[data-player-skin="slate"]:root .empty-state-title {
+  color: var(--sl-ink);
+}
+
+html[data-player-skin="slate"]:root :is(input, textarea, select, .agc-input-zone) {
+  border: 1px solid color-mix(in srgb, var(--sl-steel) 22%, transparent);
+  border-radius: var(--sl-r-ctl);
+  background: var(--sl-joint);
+  color: var(--sl-ink);
+  caret-color: var(--sl-steel-hi);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+html[data-player-skin="slate"]:root :is(input, textarea)::placeholder {
+  color: var(--sl-ink-3);
+}
+html[data-player-skin="slate"]:root :is(input, textarea, select):focus {
+  border-color: var(--sl-steel-hi);
+  outline: none;
+  box-shadow:
+    inset 0 2px 5px rgba(0, 0, 0, 0.4),
+    0 0 0 2px color-mix(in srgb, var(--sl-steel) 30%, transparent);
+}
+
+html[data-player-skin="slate"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog
+) {
+  border-radius: var(--sl-r-dialog);
+  border: 1px solid color-mix(in srgb, var(--sl-steel) 24%, transparent);
+  border-top: 2px solid var(--sl-steel-dim);
+  background: var(--sl-bench-2);
+  color: var(--sl-ink);
+  box-shadow:
+    inset 0 0 0 1px var(--sl-joint),
+    0 30px 60px rgba(2, 3, 4, 0.6);
+}
+
+html[data-player-skin="slate"]:root .toast-item {
+  border-radius: var(--sl-r-chip);
+  border: 1px solid var(--sl-steel-dim);
+  background: linear-gradient(90deg, var(--sl-steel), var(--sl-steel-dim));
+  color: var(--sl-joint);
+}
+
+html[data-player-skin="slate"]:root :is(button:disabled, input:disabled, textarea:disabled, select:disabled, [aria-disabled="true"]) {
+  opacity: 0.5;
+  filter: grayscale(0.55) saturate(0.6);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+html[data-player-skin="slate"]:root :focus-visible {
+  outline: 2px solid var(--sl-steel-hi);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--sl-steel) 26%, transparent);
+}
+
+html[data-player-skin="slate"]:root :is(.loot-skin-avatar, .wp-skin-mark) {
+  border-radius: 0;
+  clip-path: var(--sl-hex);
+  filter: none;
+}
+
+/* ── 8 · Agent, calendar, per-tab plating ────────────────────── */
+
+html[data-player-skin="slate"]:root[data-app-tab="Agent"] #main .agent-pane {
+  border: 1px solid color-mix(in srgb, var(--sl-steel) 16%, transparent);
+  border-radius: var(--sl-r-plate);
+  background: var(--sl-bench-2);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--sl-steel) 8%, transparent);
+}
+html[data-player-skin="slate"]:root .agent-msg.assistant .agent-bubble {
+  border: 1px solid color-mix(in srgb, var(--sl-steel) 14%, transparent);
+  border-radius: var(--sl-r-plate);
+  background: var(--sl-plate);
+  color: var(--sl-ink);
+}
+html[data-player-skin="slate"]:root .agent-msg.user .agent-bubble {
+  border: 1px solid var(--sl-steel-dim);
+  border-radius: var(--sl-r-plate);
+  background: color-mix(in srgb, var(--sl-steel) 26%, var(--sl-plate));
+  color: var(--sl-ink);
+}
+
+html[data-player-skin="slate"]:root[data-app-tab="Today"] #main .tdy-hour-cell,
+html[data-player-skin="slate"]:root[data-app-tab="Calendar"] #main .tdy-hour-cell,
+html[data-player-skin="slate"]:root[data-app-tab="Calendar"] .cal-day,
+html[data-player-skin="slate"]:root[data-app-tab="Calendar"] .cal-hour-cell {
+  border: 1px solid color-mix(in srgb, var(--sl-steel) 18%, transparent);
+  border-radius: var(--sl-r-cell);
+  background: var(--sl-plate);
+  color: var(--sl-ink-2);
+}
+html[data-player-skin="slate"]:root :is(.tdy-hour-painted, .cal-hour-painted) {
+  border-color: var(--sl-steel-hi);
+  background: color-mix(in srgb, var(--sl-steel) 34%, var(--sl-plate));
+  color: var(--sl-ink);
+  box-shadow: inset 3px 0 0 var(--sl-steel-hi);
+}
+html[data-player-skin="slate"]:root[data-app-tab="Calendar"] .cal-month-cell:not(.cal-month-cell-pad) {
+  border: 1px solid color-mix(in srgb, var(--sl-steel) 16%, transparent);
+  border-radius: var(--sl-r-cell);
+  background: var(--sl-plate);
+}
+html[data-player-skin="slate"]:root[data-app-tab="Calendar"] .cal-month-cell-today {
+  border-color: var(--sl-steel-hi);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sl-steel) 40%, transparent);
+}
+html[data-player-skin="slate"]:root :is(.cal-week-chip, .cal-month-chip) {
+  border-radius: var(--sl-r-chip);
+  border: 1px solid color-mix(in srgb, var(--sl-steel) 22%, transparent);
+  background: var(--sl-plate-hi);
+  color: var(--sl-ink-2);
+}
+
+html[data-player-skin="slate"]:root[data-app-tab="Tasks"] #main .card,
+html[data-player-skin="slate"]:root[data-app-tab="Goals"] #main .card {
+  border-left: 2px solid var(--sl-steel-dim);
+}
+html[data-player-skin="slate"]:root[data-app-tab="Hub"] #main .hub-card,
+html[data-player-skin="slate"]:root[data-app-tab="Hub"] #main .hub-glance-item {
+  border-bottom: 2px solid var(--sl-joint);
+}
+html[data-player-skin="slate"]:root:is(
+  [data-app-tab="Practice"],
+  [data-app-tab="Settings"],
+  [data-app-tab="About"],
+  [data-app-tab="Paint"],
+  [data-app-tab="Projects"],
+  [data-app-tab="Parallel"]
+) #main .card {
+  background: color-mix(in srgb, var(--sl-plate) 96%, var(--sl-steel) 4%);
+}
+
+html[data-player-skin="slate"]:root .companion-launcher-orb {
+  border-radius: 0;
+  clip-path: var(--sl-hex);
+  background: linear-gradient(155deg, var(--sl-steel-hi), var(--sl-steel) 55%, var(--sl-oil));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), inset 0 -2px 0 var(--sl-joint);
+}
+
+/* ── 9 · Motion — a bench does not perform ───────────────────── */
+
+@keyframes room-slate-glint {
+  0%, 100% { opacity: 0.72; }
+  50% { opacity: 0.95; }
+}
+
+@keyframes room-slate-seat {
+  0% { filter: brightness(1); }
+  45% { filter: brightness(0.88); }
+  100% { filter: brightness(0.98); }
+}
+
+@keyframes room-slate-grain {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 60px 24px, -40px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="slate"]:root *,
+  html[data-player-skin="slate"]:root *::before,
+  html[data-player-skin="slate"]:root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}

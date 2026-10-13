@@ -1,0 +1,333 @@
+/* ── skin-icons · page marks by rarity ─────────────────────────
+   Equipped skins get fitted marks. Trailblazer / no player-skin
+   keeps the old copperplate emoji scale — no 40px wells, no
+   plated 60px atelier boxes. Buttons keep 13×13 / 16×16 marks.
+   ═══════════════════════════════════════════════════════════ */
+
+html[data-player-skin][data-skin-rarity] .tab-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+html[data-player-skin][data-skin-rarity] .tab-chip-emoji {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  font-size: 13px;
+  line-height: 14px;
+  text-align: center;
+}
+
+html[data-player-skin][data-skin-rarity] .tab-chip-mark {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+}
+
+html[data-player-skin][data-skin-rarity] .hud-icon-btn .hud-icon-svg,
+html[data-player-skin][data-skin-rarity] .hud-icon-svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+html[data-player-skin][data-skin-rarity] .wp-app-emoji {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  font-size: 28px;
+  line-height: 1;
+  filter: none;
+}
+
+html[data-player-skin][data-skin-rarity] .launcher-tile-glyph,
+html[data-player-skin][data-skin-rarity] .launcher-card-glyph {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  overflow: visible;
+  clip-path: none;
+  transform: none;
+}
+
+html[data-player-skin][data-skin-rarity] .launcher-tile-glyph svg,
+html[data-player-skin][data-skin-rarity] .launcher-card-glyph svg,
+html[data-player-skin][data-skin-rarity] .ws-mark.wp-icon-refined {
+  width: 32px;
+  height: 32px;
+  filter: none;
+}
+
+/* Copperplate default: compact emoji, no plated well, no stretched box. */
+html:not([data-player-skin]) .launcher-card,
+html:not([data-player-skin]) .launcher-card-main {
+  text-align: center;
+  align-items: center;
+}
+
+html:not([data-player-skin]) .launcher-card::before {
+  display: none;
+}
+
+html:not([data-player-skin]) .launcher-tile-name,
+html:not([data-player-skin]) .launcher-card-name,
+html:not([data-player-skin]) .launcher-tile-sub,
+html:not([data-player-skin]) .launcher-card-sub,
+html:not([data-player-skin]) .launcher-card-intention {
+  text-align: center;
+}
+
+html:not([data-player-skin]) .launcher-tile-glyph,
+html:not([data-player-skin]) .launcher-card-glyph {
+  display: grid;
+  place-items: center;
+  align-self: center;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+  border-radius: 0;
+  clip-path: none;
+  transform: none;
+  animation: none;
+  font-size: 36px;
+  line-height: 1;
+  filter: drop-shadow(0 4px 12px color-mix(in srgb, var(--tile-accent, var(--accent)) 35%, transparent));
+}
+
+html:not([data-player-skin]) .wp-app-emoji {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  font-size: 36px;
+  line-height: 1;
+  filter: none;
+}
+
+html:not([data-player-skin]) .wp-skin-emoji {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  line-height: 1;
+}
+
+html:not([data-player-skin]) .loot-skin-avatar .wp-skin-emoji {
+  width: 36px;
+  height: 36px;
+  font-size: 36px;
+}
+
+html:not([data-player-skin]) .tab-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+html:not([data-player-skin]) .tab-chip-emoji {
+  display: inline-grid;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+html:not([data-player-skin]) .hud-icon-svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* The 7px accent square is a leftover mark. Real icons replace it. */
+#nav.tab-chip-bar .tab-chip::before,
+.tab-chip:has(.tab-chip-emoji)::before,
+.tab-chip:has(.tab-chip-mark)::before {
+  content: none;
+  display: none;
+}
+
+html:not([data-player-skin]) :is(.ws-mark, .hud-icon-svg, .tab-chip-mark, .launcher-tile-glyph svg) {
+  filter: none;
+  animation: none;
+}
+
+/* Rare+: skin color lives in the SVG. Do not tint the mark muddy. */
+html[data-player-skin][data-skin-rarity="rare"] :is(.ws-mark, .hud-icon-svg, .tab-chip-mark, .launcher-tile-glyph svg),
+html[data-player-skin][data-skin-rarity="epic"] :is(.ws-mark, .hud-icon-svg, .tab-chip-mark, .launcher-tile-glyph svg),
+html[data-player-skin][data-skin-rarity="mythic"] :is(.ws-mark, .hud-icon-svg, .tab-chip-mark, .launcher-tile-glyph svg) {
+  filter: none;
+}
+
+html[data-player-skin][data-skin-rarity="common"] .launcher-tile-glyph,
+html[data-player-skin][data-skin-rarity="common"] .launcher-card-glyph {
+  background: color-mix(in srgb, var(--skin-a, var(--accent)) 12%, var(--at-plate, var(--bg-card)));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--skin-a, var(--accent)) 22%, transparent);
+}
+
+html[data-player-skin][data-skin-rarity="rare"] .launcher-tile-glyph,
+html[data-player-skin][data-skin-rarity="rare"] .launcher-card-glyph {
+  background: color-mix(in srgb, var(--skin-a, var(--accent)) 16%, var(--at-plate, var(--bg-card)));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--skin-a, var(--accent)) 28%, transparent);
+}
+
+html[data-player-skin][data-skin-rarity="epic"] .launcher-tile-glyph,
+html[data-player-skin][data-skin-rarity="epic"] .launcher-card-glyph {
+  background: color-mix(in srgb, var(--skin-a, var(--accent)) 22%, var(--at-plate, var(--bg-card)));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--skin-a, var(--accent)) 40%, transparent),
+    0 4px 10px color-mix(in srgb, var(--skin-b, #111) 28%, transparent);
+}
+
+html[data-player-skin][data-skin-rarity="mythic"] .launcher-tile-glyph,
+html[data-player-skin][data-skin-rarity="mythic"] .launcher-card-glyph {
+  background: color-mix(in srgb, var(--skin-a, var(--accent)) 28%, var(--at-plate, var(--bg-card)));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--skin-a, var(--accent)) 55%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--skin-b, #111) 40%, transparent);
+  animation: wp-icon-breathe 4.8s ease-in-out infinite;
+}
+
+@keyframes wp-icon-breathe {
+  0%, 100% {
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--skin-a, var(--accent)) 40%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--skin-b, #111) 30%, transparent);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--skin-a, var(--accent)) 70%, transparent),
+      0 0 0 3px color-mix(in srgb, var(--skin-a, var(--accent)) 28%, transparent);
+  }
+}
+
+html[data-player-skin][data-skin-rarity="epic"] .tab-chip.active .tab-chip-mark,
+html[data-player-skin][data-skin-rarity="mythic"] .tab-chip.active .tab-chip-mark {
+  color: var(--accent-ink, var(--at-ink));
+}
+
+html[data-player-skin][data-skin-rarity] .hud-icon-btn,
+html[data-player-skin][data-skin-rarity] .hud-glyph-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+html[data-player-skin][data-skin-rarity] button.primary,
+html[data-player-skin][data-skin-rarity] button.secondary,
+html[data-player-skin][data-skin-rarity] .tab-chip {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-player-skin][data-skin-rarity] .tab-chip > span {
+  min-width: 0;
+}
+
+/* Kill family filter / clip on the icon itself. Rooms keep card language. */
+html[data-player-skin][data-skin-rarity] .launcher-tile-glyph,
+html[data-player-skin][data-skin-rarity] .launcher-card-glyph {
+  clip-path: none;
+}
+
+html[data-player-skin][data-skin-rarity] :is(.ws-mark, .hud-icon-svg, .tab-chip-mark, .launcher-tile-glyph svg) {
+  filter: none;
+}
+
+html[data-player-skin][data-skin-effect="aurora"][data-skin-rarity] .hud-icon-svg,
+html[data-player-skin][data-skin-effect="volt"][data-skin-rarity] .hud-icon-svg,
+html[data-player-skin][data-skin-family="prism"][data-skin-rarity] .hud-icon-svg,
+html[data-player-skin][data-skin-family="bolt"][data-skin-rarity] .hud-icon-svg {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin][data-skin-rarity="mythic"] .launcher-tile-glyph,
+  html[data-player-skin][data-skin-rarity="mythic"] .launcher-card-glyph {
+    animation: none;
+  }
+}
+
+/* Hour cells stay rounded rects. Chip/world 999px pills must not
+   flatten every skin's planner into the same stadium. Harbor keeps
+   portholes; everyone else uses the kit cell token. */
+html:not([data-player-skin]) :is(
+  .tdy-hour-cell,
+  .cal-hour-cell,
+  .pln-hour-row,
+  .tdy-hour-row,
+  .cal-week-hour
+),
+html:not([data-player-skin])[data-app-tab="Today"] #main .tdy-hour-cell,
+html:not([data-player-skin])[data-app-tab="Calendar"] #main .tdy-hour-cell {
+  border-radius: 6px;
+}
+
+html[data-player-skin]:not([data-player-skin="harbor"]) :is(
+  .tdy-hour-cell,
+  .cal-hour-cell,
+  .pln-hour-row,
+  .tdy-hour-row,
+  .cal-week-hour
+),
+html[data-player-skin]:not([data-player-skin="harbor"])[data-app-tab="Today"] #main .tdy-hour-cell,
+html[data-player-skin]:not([data-player-skin="harbor"])[data-app-tab="Calendar"] #main .tdy-hour-cell,
+html[data-player-skin]:not([data-player-skin="harbor"])[data-world-skin][data-app-tab="Today"] #main .tdy-hour-cell,
+html[data-player-skin]:not([data-player-skin="harbor"])[data-world-skin][data-app-tab="Calendar"] #main .tdy-hour-cell {
+  border-radius: var(--at-r-cell, 6px);
+}
+
+/* Copperplate brand + wordmark: the pre-atelier triangle in a 34px
+   plate, Georgia 15/700 title. Equipped skins keep jewel chrome. */
+html:not([data-player-skin]) .top-hud .hud-glyph-btn,
+html:not([data-player-skin]) .top-hud .hud-glyph-btn.hud-brand-jewel {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-control);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  box-shadow: none;
+}
+
+html:not([data-player-skin]) .top-hud .hud-glyph-btn:hover,
+html:not([data-player-skin]) .top-hud .hud-glyph-btn.hud-brand-jewel:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  box-shadow: var(--plate-shadow-hover);
+}
+
+html:not([data-player-skin]) .brand-mark {
+  width: 22px;
+  height: 22px;
+  filter: none;
+}
+
+html:not([data-player-skin]) .brand-mark .wp-brand-peak {
+  fill: url(#brand-g);
+}
+
+html:not([data-player-skin]) .hud-app-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink-primary);
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+}
+
+html.device-phone:not([data-player-skin]) .hud-app-name {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}

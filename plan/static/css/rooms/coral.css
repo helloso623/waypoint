@@ -1,0 +1,993 @@
+/* ═══════════════════════════════════════════════════════════════
+   CORAL VOYAGER — bright reefs and hidden blue channels.
+
+   The object: a living barrier reef cut by a single deep ocean
+   channel. Not cherry candy (#fb7185/#be123c), not lagoon wake,
+   not tropic coconut, not splatter paint. No gore — this is a
+   reef, not blood.
+
+   Architecture:
+   - Living coral architecture: branching calcareous structures,
+     aragonite shelves, porous cellular coralite cups, and active
+     polyp margins that reach upward.
+   - One deep channel: a dark, clear trench of blue-teal water
+     cutting vertically through the shelf, carrying oceanic tides.
+   - Organic branching on cards: asymmetric calcified node radii
+     (never 42%/48% ovals) that flare like elkhorn and staghorn plates.
+   - Today as a tide chart of channels: depth soundings, isobaths,
+     submerged channel cells, and the now-marker as a glowing tide crest.
+
+   Palette:
+   - One ground: deep channel blue-teal (#155e75 deepening to #041a24).
+   - One accent: living coral (#f43f5e) with delicate polyp warmth.
+   - Neutral paper: cream aragonite sand and sea-salt calcification
+     (#edf8fa, #d1e7ed, #94b9c5).
+
+   Photo: coral fan in clear teal water, cream sand barely visible,
+   no people: /img/skins/coral.png.
+   Selectors carry [data-player-skin="coral"]:root to outrank family
+   stencils. Never clip #main or .launcher-card. Glyphs may clip.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — channel trench depth + living polyp flame ──── */
+
+html[data-player-skin="coral"]:root {
+  --room-coral-trench: #020f17;
+  --room-coral-abyss: #041a24;
+  --room-coral-channel: #082836;
+  --room-coral-shelf: #0c3647;
+  --room-coral-water: #155e75;
+  --room-coral-water-hot: #0e7490;
+  --room-coral-water-clear: #06b6d4;
+  --room-coral-living: #f43f5e;
+  --room-coral-polyp-hot: #fb7185;
+  --room-coral-polyp-tip: #ffe4e6;
+  --room-coral-polyp-deep: #9f1239;
+  --room-coral-sand: #edf8fa;
+  --room-coral-sand-2: #cadfe6;
+  --room-coral-silt: #88aab6;
+  --room-coral-hair: rgba(21, 94, 117, 0.38);
+  --room-coral-hair-living: rgba(244, 63, 94, 0.45);
+  --room-coral-tide-wash: rgba(21, 94, 117, 0.22);
+
+  --bg-shell: #020f17;
+  --bg-content: #041a24;
+  --bg-card: #082836;
+  --ink-primary: #edf8fa;
+  --ink-secondary: #cadfe6;
+  --ink-muted: #88aab6;
+  --border: #144658;
+  --accent: #f43f5e;
+  --ws-accent: #f43f5e;
+  --accent-ink: #041a24;
+  --at-ink: #edf8fa;
+
+  /* Loot catalog source of truth: living coral over channel teal */
+  --skin-a: #f43f5e;
+  --skin-b: #155e75;
+  --at-a: #f43f5e;
+  --at-b: #155e75;
+  --feel-a: #f43f5e;
+  --feel-b: #155e75;
+  --feel-accent: #f43f5e;
+  --feel-ground: #020f17;
+  --feel-paper: #082836;
+  --feel-ink: #edf8fa;
+
+  --at-plate: #082836;
+  --at-plate-2: #0c3647;
+  --at-well: #020f17;
+  --at-hair: rgba(202, 223, 230, 0.16);
+  --at-hair-2: rgba(21, 94, 117, 0.38);
+  --at-hair-a: rgba(244, 63, 94, 0.44);
+  --at-tint: rgba(244, 63, 94, 0.12);
+  --at-tint-b: rgba(21, 94, 117, 0.28);
+  --at-focus: 0 0 0 3px rgba(244, 63, 94, 0.32);
+  --at-rise: 0 24px 50px -28px rgba(1, 10, 16, 0.95);
+  --at-rise-soft: 0 14px 28px -18px rgba(1, 10, 16, 0.85);
+  --at-inset: inset 0 1px 0 rgba(237, 248, 250, 0.12);
+
+  /* Signature organic branching radii — living calcified asymmetry */
+  --room-coral-r-plate: 18px 4px 22px 3px / 4px 20px 3px 16px;
+  --room-coral-r-card: 16px 3px 20px 2px / 3px 18px 2px 14px;
+  --room-coral-r-ctl: 10px 2px 12px 2px / 2px 12px 2px 10px;
+  --room-coral-r-chip: 14px 2px 12px 2px / 2px 12px 2px 14px;
+  --room-coral-r-cell: 4px 2px 6px 2px;
+
+  --at-r-plate: var(--room-coral-r-plate);
+  --at-r-card: var(--room-coral-r-card);
+  --at-r-ctl: var(--room-coral-r-ctl);
+  --at-r-chip: var(--room-coral-r-chip);
+  --at-r-cell: var(--room-coral-r-cell);
+
+  --font-display: "Avenir Next", "Trebuchet MS", "Inter", -apple-system, system-ui, sans-serif;
+  --at-font-display: "Avenir Next", "Trebuchet MS", "Inter", -apple-system, system-ui, sans-serif;
+
+  /* Tactile living coral feel — calcified shelf with ocean depth */
+  --feel-3d: inset 0 1px 0 rgba(255, 255, 255, 0.18),
+             0 8px 0 #03141e,
+             0 18px 32px rgba(1, 8, 14, 0.75);
+  --feel-3d-press: inset 0 2px 6px rgba(0, 0, 0, 0.5),
+                   0 2px 0 #03141e,
+                   0 4px 10px rgba(1, 8, 14, 0.6);
+  --feel-grain-opacity: 0.28;
+  --feel-grain-blend: soft-light;
+  --feel-grain:
+    radial-gradient(circle at 50% 0%, rgba(21, 94, 117, 0.18) 0%, transparent 60%),
+    repeating-linear-gradient(135deg, transparent 0 18px, rgba(244, 63, 94, 0.04) 18px 19px, transparent 19px 38px);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 1px solid rgba(244, 63, 94, 0.4);
+  --feel-icon: drop-shadow(0 1px 2px rgba(1, 10, 16, 0.8)) drop-shadow(0 0 6px rgba(244, 63, 94, 0.45));
+  --feel-title-tracking: 0.03em;
+  --feel-title-case: none;
+}
+
+/* ── 2 · Body — The deep channel pass between sunlit reefs ───── */
+
+html[data-player-skin="coral"]:root body {
+  background-color: var(--room-coral-abyss) !important;
+  background-image:
+    /* One vertical deep channel cut running through the shelf */
+    linear-gradient(90deg,
+      rgba(2, 15, 23, 0.94) 0%,
+      rgba(8, 40, 54, 0.82) 20%,
+      rgba(21, 94, 117, 0.28) 38%,
+      rgba(2, 15, 23, 0.96) 50%,
+      rgba(21, 94, 117, 0.28) 62%,
+      rgba(8, 40, 54, 0.82) 80%,
+      rgba(2, 15, 23, 0.94) 100%
+    ),
+    /* Subsurface ocean downwelling and living coral light */
+    radial-gradient(ellipse 90% 55% at 50% 0%, rgba(21, 94, 117, 0.45) 0%, rgba(2, 15, 23, 0.8) 75%),
+    radial-gradient(circle at 18% 30%, rgba(244, 63, 94, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 82% 65%, rgba(244, 63, 94, 0.14) 0%, transparent 45%),
+    url("/img/skins/coral.png") !important;
+  background-position: center, center top, center, center, center 28% !important;
+  background-size: 100% 100%, 100% 100%, cover, cover, cover !important;
+  background-attachment: fixed !important;
+  color: var(--ink-primary);
+}
+
+/* Subsurface water drift and light refraction over the reef */
+html[data-player-skin="coral"]:root body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.18;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 20%, rgba(6, 182, 212, 0.35) 0%, transparent 65%),
+    repeating-linear-gradient(78deg, transparent 0 42px, rgba(21, 94, 117, 0.12) 42px 44px, transparent 44px 88px);
+  animation: room-coral-channel-drift 32s ease-in-out infinite alternate;
+}
+
+/* Aragonite sand silt and cellular coralite texture */
+html[data-player-skin="coral"]:root body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.2;
+  mix-blend-mode: soft-light;
+  background:
+    radial-gradient(circle at 20% 40%, rgba(244, 63, 94, 0.12) 0 1px, transparent 1.6px) 0 0 / 24px 24px,
+    radial-gradient(circle at 70% 80%, rgba(237, 248, 250, 0.14) 0 0.8px, transparent 1.4px) 0 0 / 38px 38px,
+    repeating-linear-gradient(135deg, transparent 0 20px, rgba(21, 94, 117, 0.06) 20px 21px);
+}
+
+/* ── 3 · Main — The navigable channel canyon ─────────────────── */
+
+html[data-player-skin="coral"]:root #main {
+  clip-path: none !important;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(4, 26, 36, 0.72) 0%, rgba(2, 15, 23, 0.88) 100%),
+    radial-gradient(ellipse 85% 40% at 50% 0%, rgba(21, 94, 117, 0.22), transparent 70%) !important;
+  border-inline: 1px solid rgba(21, 94, 117, 0.35);
+  box-shadow:
+    inset 20px 0 40px -15px rgba(2, 15, 23, 0.85),
+    inset -20px 0 40px -15px rgba(2, 15, 23, 0.85),
+    inset 0 1px 0 rgba(237, 248, 250, 0.1);
+}
+
+html[data-player-skin="coral"]:root #main::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  clip-path: none !important;
+  opacity: 0.24;
+  mix-blend-mode: overlay;
+  background:
+    radial-gradient(ellipse 120% 50% at 50% 100%, rgba(21, 94, 117, 0.3) 0%, transparent 70%);
+  animation: room-coral-caustic-shimmer 14s ease-in-out infinite;
+}
+
+/* ── 4 · Top HUD — Reef barrier crest bridge ─────────────────── */
+
+html[data-player-skin="coral"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(8, 40, 54, 0.94) 0%, rgba(4, 26, 36, 0.97) 100%),
+    linear-gradient(90deg, rgba(2, 15, 23, 0.85) 0%, rgba(21, 94, 117, 0.25) 50%, rgba(2, 15, 23, 0.85) 100%);
+  border-bottom: 2px solid rgba(244, 63, 94, 0.65);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(21, 94, 117, 0.8),
+    0 10px 28px rgba(1, 10, 16, 0.75);
+  color: var(--ink-primary);
+  backdrop-filter: blur(12px);
+}
+
+/* Tidal crest line along the bottom rim of the HUD */
+html[data-player-skin="coral"]:root .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(21, 94, 117, 0.8) 20%,
+    #f43f5e 50%,
+    rgba(21, 94, 117, 0.8) 80%,
+    transparent 100%
+  );
+  filter: drop-shadow(0 0 6px rgba(244, 63, 94, 0.8));
+  animation: room-coral-tide-surge 8s ease-in-out infinite alternate;
+}
+
+html[data-player-skin="coral"]:root .hud-app-name {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  color: #edf8fa;
+  -webkit-text-fill-color: #edf8fa;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 16px rgba(244, 63, 94, 0.35);
+}
+
+html[data-player-skin="coral"]:root .hud-intention,
+html[data-player-skin="coral"]:root .hud-now-focus-kicker {
+  color: var(--ink-secondary);
+  font-size: 11px;
+}
+
+/* HUD controls and telemetry chips */
+html[data-player-skin="coral"]:root :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-chip,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .hud-model-chip--status,
+  .loot-profile-chip
+) {
+  background: rgba(8, 40, 54, 0.85);
+  color: var(--ink-primary);
+  border: 1px solid rgba(21, 94, 117, 0.45);
+  border-bottom: 1.5px solid rgba(244, 63, 94, 0.4);
+  border-radius: var(--room-coral-r-ctl);
+  box-shadow: inset 0 1px 0 rgba(237, 248, 250, 0.1);
+  transition: all 180ms ease;
+}
+
+html[data-player-skin="coral"]:root :is(.hud-icon-btn, .hud-glyph-btn):hover:not(:disabled) {
+  background: rgba(14, 56, 72, 0.95);
+  border-color: rgba(244, 63, 94, 0.7);
+  box-shadow: 0 0 12px rgba(244, 63, 94, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* ── 5 · Navigation & Tab Chips ──────────────────────────────── */
+
+html[data-player-skin="coral"]:root .tab-chip-bar {
+  border-bottom: 1px solid rgba(21, 94, 117, 0.35);
+  background: rgba(4, 26, 36, 0.55);
+}
+
+html[data-player-skin="coral"]:root .tab-chip {
+  border-radius: var(--room-coral-r-chip);
+  border: 1px solid rgba(21, 94, 117, 0.35);
+  background: rgba(8, 40, 54, 0.65);
+  color: var(--ink-secondary);
+  transition: all 180ms cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+html[data-player-skin="coral"]:root .tab-chip:hover {
+  background: rgba(12, 54, 71, 0.85);
+  color: var(--ink-primary);
+  border-color: rgba(244, 63, 94, 0.45);
+  transform: translateY(-1px);
+}
+
+html[data-player-skin="coral"]:root .tab-chip.active,
+html[data-player-skin="coral"]:root .tab-chip[aria-selected="true"] {
+  background: linear-gradient(180deg, rgba(14, 56, 72, 0.95) 0%, rgba(8, 40, 54, 0.98) 100%);
+  color: #edf8fa;
+  border-color: rgba(244, 63, 94, 0.65);
+  border-bottom: 2px solid #f43f5e;
+  box-shadow:
+    0 4px 14px rgba(2, 15, 23, 0.65),
+    0 0 14px rgba(244, 63, 94, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+html[data-player-skin="coral"]:root :is(
+  .ws-mark,
+  .hud-icon-svg,
+  .tab-chip-mark,
+  .wp-skin-mark
+) {
+  color: #f43f5e;
+  filter: drop-shadow(0 0 6px rgba(244, 63, 94, 0.5));
+}
+
+/* ── 6 · Launcher & Cards — Branching Calcified Shelves ──────── */
+
+html[data-player-skin="coral"]:root .launcher-grid,
+html[data-player-skin="coral"]:root .launcher-my-apps-row {
+  position: relative;
+  padding-top: 14px;
+}
+
+html[data-player-skin="coral"]:root .launcher-card {
+  clip-path: none !important;
+  overflow: visible !important;
+  border-radius: var(--room-coral-r-card);
+  color: #edf8fa;
+  background-color: rgba(8, 40, 54, 0.88);
+  background-image:
+    linear-gradient(160deg, rgba(244, 63, 94, 0.12) 0%, transparent 40%),
+    linear-gradient(0deg, rgba(2, 15, 23, 0.6) 0%, transparent 35%),
+    repeating-linear-gradient(135deg, rgba(21, 94, 117, 0.05) 0 14px, transparent 14px 28px);
+  border: 1px solid rgba(21, 94, 117, 0.42);
+  border-top: 2px solid rgba(244, 63, 94, 0.4);
+  box-shadow:
+    0 16px 36px -18px rgba(1, 10, 16, 0.95),
+    inset 0 1px 0 rgba(237, 248, 250, 0.12);
+  transition:
+    transform 240ms cubic-bezier(0.2, 0.8, 0.25, 1),
+    box-shadow 240ms ease,
+    border-color 200ms ease;
+}
+
+/* Tide surge lifts the living coral shelf */
+html[data-player-skin="coral"]:root .launcher-card:hover {
+  transform: translateY(-2px) scale(1.008);
+  border-color: rgba(244, 63, 94, 0.65);
+  background-color: rgba(12, 54, 71, 0.92);
+  box-shadow:
+    0 22px 44px -20px rgba(1, 10, 16, 0.98),
+    0 0 20px rgba(244, 63, 94, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+html[data-player-skin="coral"]:root .launcher-card--focused {
+  border-color: #f43f5e;
+  box-shadow: 0 0 0 2px rgba(244, 63, 94, 0.45), 0 18px 38px -18px rgba(1, 10, 16, 0.95);
+}
+
+html[data-player-skin="coral"]:root .launcher-card-name {
+  color: #edf8fa;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+html[data-player-skin="coral"]:root .launcher-card-intention {
+  color: #cadfe6;
+}
+
+/* ── 7 · Glyphs — The Calcified Coralite Calyx ───────────────── */
+
+html[data-player-skin="coral"]:root .launcher-card-glyph,
+html[data-player-skin="coral"]:root .launcher-tile-glyph,
+html[data-player-skin="coral"]:root .nav-app-glyph,
+html[data-player-skin="coral"]:root .loot-skin-avatar {
+  position: relative;
+  border: none;
+  /* 9-pointed calcified gorgonian polyp calyx */
+  clip-path: polygon(50% 0%, 82% 16%, 100% 46%, 86% 84%, 60% 100%, 40% 100%, 14% 84%, 0% 46%, 18% 16%);
+  background:
+    radial-gradient(circle at 48% 38%, rgba(255, 228, 230, 0.8) 0%, rgba(244, 63, 94, 0.92) 35%, rgba(21, 94, 117, 0.85) 75%, #041a24 100%),
+    linear-gradient(155deg, #fb7185 0%, #f43f5e 42%, #155e75 90%);
+  color: #edf8fa;
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.5),
+    inset 0 -3px 6px rgba(2, 15, 23, 0.7),
+    0 6px 18px -4px rgba(244, 63, 94, 0.6);
+}
+
+/* Bioluminescent polyp tentacles at the center of the calyx */
+html[data-player-skin="coral"]:root .launcher-card-glyph::after,
+html[data-player-skin="coral"]:root .launcher-tile-glyph::after {
+  content: "";
+  position: absolute;
+  inset: 24%;
+  clip-path: polygon(50% 0%, 80% 20%, 100% 50%, 80% 80%, 50% 100%, 20% 80%, 0% 50%, 20% 20%);
+  background: radial-gradient(circle, #ffe4e6 0%, rgba(244, 63, 94, 0.8) 60%, transparent 85%);
+  opacity: 0.9;
+  animation: room-coral-polyp-breathe 5.6s ease-in-out infinite alternate;
+}
+
+html[data-player-skin="coral"]:root .launcher-custom-app-emoji {
+  clip-path: polygon(50% 0%, 82% 16%, 100% 46%, 86% 84%, 60% 100%, 40% 100%, 14% 84%, 0% 46%, 18% 16%);
+  background: rgba(21, 94, 117, 0.4);
+  border: 1px solid rgba(244, 63, 94, 0.4);
+}
+
+/* ── 8 · Primary & Secondary Buttons ─────────────────────────── */
+
+html[data-player-skin="coral"]:root button.primary,
+html[data-player-skin="coral"]:root .primary,
+html[data-player-skin="coral"]:root .agent-pane-chat .agc-send {
+  background-color: #f43f5e;
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(2, 15, 23, 0.25) 100%),
+    radial-gradient(ellipse 80% 70% at 50% 15%, rgba(255, 228, 230, 0.4), transparent 70%);
+  color: #041a24;
+  border: 1px solid #e11d48;
+  border-radius: var(--room-coral-r-ctl);
+  font-weight: 700;
+  transform-origin: 50% 100%;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 6px 0 #9f1239,
+    0 12px 24px rgba(1, 10, 16, 0.7);
+  transition: all 160ms cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+html[data-player-skin="coral"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="coral"]:root .primary:hover:not(:disabled),
+html[data-player-skin="coral"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35) inset,
+    0 8px 0 #9f1239,
+    0 16px 28px rgba(244, 63, 94, 0.45);
+}
+
+html[data-player-skin="coral"]:root button.primary:active:not(:disabled),
+html[data-player-skin="coral"]:root .primary:active:not(:disabled),
+html[data-player-skin="coral"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.15) inset,
+    0 2px 0 #9f1239,
+    0 6px 12px rgba(1, 10, 16, 0.8);
+}
+
+html[data-player-skin="coral"]:root button.secondary,
+html[data-player-skin="coral"]:root .secondary,
+html[data-player-skin="coral"]:root .ghost-btn {
+  background: rgba(8, 40, 54, 0.7);
+  color: var(--ink-secondary);
+  border: 1px solid rgba(21, 94, 117, 0.45);
+  border-bottom: 2px solid rgba(244, 63, 94, 0.35);
+  border-radius: var(--room-coral-r-ctl);
+  transition: all 180ms ease;
+}
+
+html[data-player-skin="coral"]:root button.secondary:hover:not(:disabled),
+html[data-player-skin="coral"]:root .secondary:hover:not(:disabled),
+html[data-player-skin="coral"]:root .ghost-btn:hover:not(:disabled) {
+  background: rgba(14, 56, 72, 0.9);
+  color: #edf8fa;
+  border-color: rgba(244, 63, 94, 0.6);
+  transform: translateY(-1px);
+}
+
+/* ── 9 · Inputs, Focus & Empty States ────────────────────────── */
+
+html[data-player-skin="coral"]:root input,
+html[data-player-skin="coral"]:root textarea,
+html[data-player-skin="coral"]:root select,
+html[data-player-skin="coral"]:root .agc-input-zone {
+  background-color: rgba(4, 26, 36, 0.85);
+  background-image: linear-gradient(180deg, rgba(21, 94, 117, 0.12) 0%, rgba(4, 26, 36, 0) 36%);
+  color: #edf8fa;
+  caret-color: #f43f5e;
+  border: 1px solid rgba(21, 94, 117, 0.45);
+  border-bottom: 2px solid rgba(244, 63, 94, 0.38);
+  border-radius: var(--room-coral-r-ctl);
+  transition: all 200ms ease;
+}
+
+html[data-player-skin="coral"]:root input:focus,
+html[data-player-skin="coral"]:root textarea:focus,
+html[data-player-skin="coral"]:root select:focus,
+html[data-player-skin="coral"]:root .agc-input-zone:focus-within {
+  outline: none;
+  background-color: rgba(8, 40, 54, 0.95);
+  border-color: rgba(244, 63, 94, 0.7);
+  border-bottom-color: #f43f5e;
+  box-shadow:
+    0 0 0 3px rgba(244, 63, 94, 0.28),
+    0 8px 24px -10px rgba(244, 63, 94, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+html[data-player-skin="coral"]:root input::placeholder,
+html[data-player-skin="coral"]:root textarea::placeholder {
+  color: rgba(136, 170, 182, 0.65);
+}
+
+html[data-player-skin="coral"]:root :focus-visible {
+  outline: 2px solid #f43f5e;
+  outline-offset: 2px;
+}
+
+html[data-player-skin="coral"]:root button:disabled,
+html[data-player-skin="coral"]:root input:disabled,
+html[data-player-skin="coral"]:root select:disabled,
+html[data-player-skin="coral"]:root textarea:disabled,
+html[data-player-skin="coral"]:root [aria-disabled="true"] {
+  opacity: 0.62;
+  cursor: not-allowed;
+  color: rgba(136, 170, 182, 0.7);
+  border-color: rgba(21, 94, 117, 0.25);
+  box-shadow: none;
+}
+
+/* Empty State — Atoll Lagoon at Slack Tide */
+html[data-player-skin="coral"]:root .empty-state {
+  border: 1.5px dashed rgba(244, 63, 94, 0.42);
+  border-top: 2px solid rgba(21, 94, 117, 0.7);
+  border-radius: var(--room-coral-r-plate);
+  background-color: rgba(4, 26, 36, 0.82);
+  background-image:
+    linear-gradient(180deg, rgba(21, 94, 117, 0.24) 0%, rgba(4, 26, 36, 0) 42%),
+    radial-gradient(ellipse 65% 50% at 50% 60%, rgba(244, 63, 94, 0.08), transparent 75%);
+  padding: 28px 20px 24px;
+}
+
+html[data-player-skin="coral"]:root .empty-state-title {
+  color: #f43f5e;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+html[data-player-skin="coral"]:root .empty-state-body,
+html[data-player-skin="coral"]:root .empty-state-hint {
+  color: #cadfe6;
+}
+
+/* ── 10 · Dialogs & Overlays ─────────────────────────────────── */
+
+html[data-player-skin="coral"]:root :is(
+  .loot-shell-dialog,
+  .napkin-capture-dialog,
+  .launcher-search-panel,
+  .launcher-dock-panel,
+  .companion-panel,
+  .wf-code-modal,
+  .rich-fs-modal,
+  .wp-board,
+  dialog
+) {
+  border-radius: var(--room-coral-r-plate);
+  background-color: rgba(8, 40, 54, 0.96);
+  background-image:
+    linear-gradient(180deg, rgba(244, 63, 94, 0.12) 0%, rgba(4, 26, 36, 0) 32%),
+    linear-gradient(90deg, rgba(21, 94, 117, 0.15) 0%, transparent 50%, rgba(21, 94, 117, 0.15) 100%);
+  color: #edf8fa;
+  border: 1px solid rgba(21, 94, 117, 0.45);
+  border-top: 3px solid rgba(244, 63, 94, 0.65);
+  box-shadow: 0 40px 80px -30px rgba(1, 10, 16, 0.98);
+}
+
+html[data-player-skin="coral"]:root :is(
+  .loot-chest-overlay,
+  .command-palette-overlay,
+  .launcher-search-overlay,
+  .wf-code-modal-overlay,
+  .wp-board-overlay,
+  .rit-overlay,
+  .wp-alarm-overlay,
+  .wp-arcade-overlay
+) {
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(21, 94, 117, 0.25) 0%, rgba(2, 15, 23, 0) 65%),
+    rgba(2, 15, 23, 0.88);
+  backdrop-filter: blur(4px);
+}
+
+/* ── 11 · Companion Orb — Coral Pearl in Deep Water ──────────── */
+
+html[data-player-skin="coral"]:root .companion-launcher {
+  background: rgba(4, 26, 36, 0.9);
+  border: 1px solid rgba(21, 94, 117, 0.45);
+  border-radius: 50%;
+  box-shadow: 0 16px 32px -16px rgba(1, 10, 16, 0.95);
+}
+
+html[data-player-skin="coral"]:root .companion-launcher-orb {
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffe4e6 0%, #f43f5e 42%, #0e7490 82%, #041a24 100%);
+  box-shadow:
+    0 0 16px rgba(244, 63, 94, 0.7),
+    0 0 36px -4px rgba(21, 94, 117, 0.65);
+  animation: room-coral-polyp-breathe 6.2s ease-in-out infinite alternate;
+}
+
+html[data-player-skin="coral"]:root .companion-launcher:hover .companion-launcher-orb {
+  box-shadow:
+    0 0 24px rgba(244, 63, 94, 0.95),
+    0 0 48px -4px rgba(21, 94, 117, 0.85);
+}
+
+/* ── 12 · Universal Cards, Tasks & Agent Bubbles ─────────────── */
+
+html[data-player-skin="coral"]:root :is(
+  .card,
+  .hub-card,
+  .page-intent,
+  .napkin-entry,
+  .task-row,
+  .tsk-row,
+  .pln-rail-card,
+  .evt-card
+) {
+  background-color: rgba(8, 40, 54, 0.86);
+  color: #edf8fa;
+  border: 1px solid rgba(21, 94, 117, 0.38);
+  border-left: 2px solid rgba(244, 63, 94, 0.45);
+  border-radius: var(--room-coral-r-card);
+}
+
+html[data-player-skin="coral"]:root .agent-bubble {
+  background: rgba(8, 40, 54, 0.92);
+  color: #edf8fa;
+  border-left: 3px solid rgba(244, 63, 94, 0.65);
+  border-radius: var(--room-coral-r-card);
+}
+
+html[data-player-skin="coral"]:root .agent-msg.assistant .agent-bubble {
+  background: rgba(8, 40, 54, 0.95);
+  border-left: 3px solid #f43f5e;
+}
+
+html[data-player-skin="coral"]:root .agent-msg.user .agent-bubble {
+  background: rgba(12, 54, 71, 0.9);
+  border-right: 3px solid rgba(21, 94, 117, 0.8);
+  border-left: none;
+}
+
+html[data-player-skin="coral"]:root .loot-shell-brand > span {
+  background: linear-gradient(180deg, #ffe4e6 0%, #f43f5e 50%, #155e75 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* ═══ 13 · Per-Tab Rooms ═══════════════════════════════════════ */
+
+/* ── Home · Panorama of the reef shelf and deep channel pass ── */
+html[data-player-skin="coral"]:root[data-app-tab="Home"] body {
+  background-position: center bottom !important;
+  background-size: cover !important;
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Home"] #main {
+  background-color: rgba(4, 26, 36, 0.42);
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Home"] :is(.launcher-cinematic, .launcher-ambient) {
+  opacity: 0.38;
+  filter: saturate(0.75);
+}
+
+/* ── Today · A TIDE CHART OF CHANNELS ───────────────────────── */
+/* The entire day is rendered as hydrographic bathymetric soundings:
+   depth transects, channel flow, water marks, and tide crests. */
+
+html[data-player-skin="coral"]:root[data-app-tab="Today"] body {
+  background-size: 145% auto !important;
+  background-position: 50% 12% !important;
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Today"] #main {
+  background-color: rgba(2, 15, 23, 0.82);
+  /* Bathymetric soundings chart grid and isobath contours */
+  background-image:
+    repeating-linear-gradient(180deg, transparent 0 54px, rgba(21, 94, 117, 0.12) 54px 55px),
+    repeating-linear-gradient(90deg, transparent 0 110px, rgba(21, 94, 117, 0.08) 110px 111px),
+    radial-gradient(ellipse 95% 45% at 50% 0%, rgba(21, 94, 117, 0.3) 0%, transparent 75%);
+  box-shadow:
+    inset 0 2px 0 rgba(244, 63, 94, 0.45),
+    inset 0 0 44px rgba(2, 15, 23, 0.7);
+}
+
+/* Hour rows: depth sounding transects across the reef pass */
+html[data-player-skin="coral"]:root[data-app-tab="Today"] .tdy-hour-row {
+  border-bottom: 1px solid rgba(21, 94, 117, 0.22);
+}
+
+/* Sounding meridian time mark */
+html[data-player-skin="coral"]:root[data-app-tab="Today"] .tdy-hour-time {
+  color: #88aab6;
+  font-family: ui-monospace, "SF Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+/* Submerged channel cells */
+html[data-player-skin="coral"]:root[data-app-tab="Today"] .tdy-hour-cell {
+  border-radius: var(--room-coral-r-cell);
+  border: 1px solid rgba(21, 94, 117, 0.35);
+  border-left: 3px solid rgba(21, 94, 117, 0.55);
+  background-color: rgba(8, 40, 54, 0.55);
+  background-image: linear-gradient(90deg, rgba(21, 94, 117, 0.2) 0%, rgba(4, 26, 36, 0.3) 100%);
+  transition: all 160ms ease;
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Today"] .tdy-hour-cell:hover {
+  background-color: rgba(14, 56, 72, 0.75);
+  border-color: rgba(6, 182, 212, 0.5);
+  border-left-color: #f43f5e;
+}
+
+/* Painted hours: living coral reef crest / active tidal flood */
+html[data-player-skin="coral"]:root[data-app-tab="Today"] .tdy-hour-painted {
+  background-color: rgba(12, 54, 71, 0.85) !important;
+  background-image:
+    linear-gradient(90deg, rgba(244, 63, 94, 0.32) 0%, rgba(21, 94, 117, 0.35) 45%, rgba(8, 40, 54, 0.7) 100%) !important;
+  border-left: 3px solid #f43f5e !important;
+  border-color: rgba(244, 63, 94, 0.45) !important;
+  box-shadow:
+    inset 0 0 14px rgba(244, 63, 94, 0.2),
+    0 2px 8px rgba(1, 10, 16, 0.6) !important;
+}
+
+/* The now marker: plumb line / tide crest beacon */
+html[data-player-skin="coral"]:root[data-app-tab="Today"] .tdy-now-marker {
+  background: #f43f5e;
+  box-shadow:
+    0 0 14px rgba(244, 63, 94, 0.95),
+    0 0 28px rgba(21, 94, 117, 0.8);
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Today"] .tdy-now-marker::before {
+  background: #ffe4e6;
+  box-shadow: 0 0 10px #f43f5e;
+}
+
+/* Category chips as tidal channel markers */
+html[data-player-skin="coral"]:root[data-app-tab="Today"] .tdy-cat-chip {
+  border-radius: var(--room-coral-r-chip);
+  border: 1px solid rgba(21, 94, 117, 0.4);
+  background: rgba(8, 40, 54, 0.75);
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Today"] .tdy-cat-chip.tdy-cat-armed {
+  border-color: #f43f5e;
+  box-shadow: 0 0 10px rgba(244, 63, 94, 0.45);
+}
+
+/* Water depth tide gauge */
+html[data-player-skin="coral"]:root[data-app-tab="Today"] #tdy-completion-bar {
+  background: linear-gradient(90deg, #155e75 0%, #0e7490 60%, #f43f5e 100%);
+  box-shadow: 0 0 8px rgba(244, 63, 94, 0.5);
+}
+
+/* ── Tasks · Hydrographic Reef Transect Stations ─────────────── */
+html[data-player-skin="coral"]:root[data-app-tab="Tasks"] body {
+  background-position: center 65% !important;
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Tasks"] #main :is(.card, .task-row) {
+  border-radius: var(--room-coral-r-card);
+  border: 1px solid rgba(21, 94, 117, 0.35);
+  border-left: 3px solid rgba(244, 63, 94, 0.55);
+  background-color: rgba(8, 40, 54, 0.88);
+}
+
+/* Checkbox as coralite polyp cup */
+html[data-player-skin="coral"]:root[data-app-tab="Tasks"] input[type="checkbox"] {
+  border-radius: 4px;
+  border: 1.5px solid rgba(21, 94, 117, 0.6);
+  background: rgba(4, 26, 36, 0.85);
+  accent-color: #f43f5e;
+}
+
+/* ── Agent · Deep Channel Trench ─────────────────────────────── */
+html[data-player-skin="coral"]:root[data-app-tab="Agent"] body {
+  background-position: center 38% !important;
+  background-size: 130% auto !important;
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Agent"] #main .agent-pane {
+  border-radius: var(--room-coral-r-plate);
+  background-color: rgba(4, 26, 36, 0.92);
+  background-image:
+    linear-gradient(90deg, rgba(244, 63, 94, 0.12) 0%, transparent 15%),
+    linear-gradient(270deg, rgba(21, 94, 117, 0.2) 0%, transparent 15%);
+  border: 1px solid rgba(21, 94, 117, 0.38);
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Agent"] .agent-splitter {
+  background: linear-gradient(180deg, rgba(244, 63, 94, 0.5), rgba(21, 94, 117, 0.5));
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Agent"] .agent-live-dot {
+  background: #f43f5e;
+  box-shadow: 0 0 10px rgba(244, 63, 94, 0.85);
+  animation: room-coral-polyp-breathe 2.4s ease-in-out infinite;
+}
+
+/* ── Hub · Atoll Archipelago ─────────────────────────────────── */
+html[data-player-skin="coral"]:root[data-app-tab="Hub"] body {
+  background-position: 25% bottom !important;
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Hub"] #main :is(.hub-card, .hub-glance-item) {
+  border-radius: var(--room-coral-r-card);
+  border: 1px solid rgba(21, 94, 117, 0.35);
+  border-top: 2px solid rgba(244, 63, 94, 0.5);
+  background-color: rgba(8, 40, 54, 0.86);
+  transition: transform 220ms ease;
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Hub"] #main .hub-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(244, 63, 94, 0.7);
+}
+
+/* ── Calendar · Tidal Lunar Cycles & Bathymetric Days ────────── */
+html[data-player-skin="coral"]:root[data-app-tab="Calendar"] body {
+  background-position: center 85% !important;
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Calendar"] #main :is(.cal-month-cell, .cal-day-panel, .cal-day) {
+  border-radius: var(--room-coral-r-cell);
+  border: 1px solid rgba(21, 94, 117, 0.28);
+  background-color: rgba(8, 40, 54, 0.7);
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Calendar"] #main .cal-month-cell-today {
+  border: 1px solid #f43f5e;
+  background-color: rgba(14, 56, 72, 0.85);
+  box-shadow: inset 0 0 12px rgba(244, 63, 94, 0.3);
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Calendar"] #main .cal-hour-cell {
+  border-radius: var(--room-coral-r-cell);
+  border-left: 2px solid rgba(21, 94, 117, 0.45);
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Calendar"] #main .cal-hour-painted {
+  background-color: rgba(12, 54, 71, 0.85) !important;
+  border-left: 3px solid #f43f5e !important;
+}
+
+/* ── Practice · Sunken Reef Garden ───────────────────────────── */
+html[data-player-skin="coral"]:root[data-app-tab="Practice"] body {
+  background-position: center 25% !important;
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Practice"] #main .card {
+  border-radius: var(--room-coral-r-card);
+  border: 1px dashed rgba(244, 63, 94, 0.35);
+  background-color: rgba(8, 40, 54, 0.82);
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Practice"] #main .card:hover {
+  border-color: rgba(244, 63, 94, 0.65);
+}
+
+/* ── Settings · Hydrographic Chart Desk ──────────────────────── */
+html[data-player-skin="coral"]:root[data-app-tab="Settings"] body {
+  background-position: 75% bottom !important;
+}
+
+html[data-player-skin="coral"]:root[data-app-tab="Settings"] #main .card {
+  border-radius: var(--room-coral-r-card);
+  border-left: 3px solid rgba(21, 94, 117, 0.7);
+  border-top: 1px solid rgba(244, 63, 94, 0.35);
+  background-color: rgba(8, 40, 54, 0.85);
+}
+
+/* ── 14 · Keyframe Animations — Prefixed room-coral-* ────────── */
+
+@keyframes room-coral-tide-surge {
+  0% {
+    opacity: 0.65;
+    transform: scaleX(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1.02);
+  }
+}
+
+@keyframes room-coral-polyp-breathe {
+  0% {
+    transform: scale(0.94);
+    opacity: 0.82;
+  }
+  100% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+
+@keyframes room-coral-channel-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.16;
+  }
+  50% {
+    transform: translate3d(-1.2%, 0.8%, 0) scale(1.03);
+    opacity: 0.22;
+  }
+  100% {
+    transform: translate3d(1%, -0.6%, 0) scale(1.02);
+    opacity: 0.18;
+  }
+}
+
+@keyframes room-coral-caustic-shimmer {
+  0%, 100% {
+    opacity: 0.18;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 0.28;
+    transform: scaleY(1.04);
+  }
+}
+
+@keyframes room-coral-depth-pulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(244, 63, 94, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(244, 63, 94, 0.75);
+  }
+}
+
+/* ── 15 · Accessibility — Reduced Motion ─────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="coral"]:root body::before,
+  html[data-player-skin="coral"]:root body::after,
+  html[data-player-skin="coral"]:root #main::after,
+  html[data-player-skin="coral"]:root .top-hud::after,
+  html[data-player-skin="coral"]:root .companion-launcher-orb,
+  html[data-player-skin="coral"]:root .launcher-card-glyph::after,
+  html[data-player-skin="coral"]:root .launcher-tile-glyph::after,
+  html[data-player-skin="coral"]:root .agent-live-dot {
+    animation: none !important;
+  }
+
+  html[data-player-skin="coral"]:root .launcher-card,
+  html[data-player-skin="coral"]:root button.primary,
+  html[data-player-skin="coral"]:root .primary,
+  html[data-player-skin="coral"]:root .tab-chip,
+  html[data-player-skin="coral"]:root[data-app-tab="Hub"] #main .hub-card {
+    transition: none !important;
+  }
+
+  html[data-player-skin="coral"]:root .launcher-card:hover,
+  html[data-player-skin="coral"]:root button.primary:hover,
+  html[data-player-skin="coral"]:root .primary:hover,
+  html[data-player-skin="coral"]:root button.primary:active,
+  html[data-player-skin="coral"]:root .primary:active,
+  html[data-player-skin="coral"]:root .tab-chip:hover,
+  html[data-player-skin="coral"]:root[data-app-tab="Hub"] #main .hub-card:hover {
+    transform: none !important;
+  }
+}

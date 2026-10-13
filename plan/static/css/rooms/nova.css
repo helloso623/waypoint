@@ -1,0 +1,68 @@
+/* Nova Key — supernova light curve.
+   Magnitude rises then decays. Radial burst on Home.
+   Yellow key on magenta dusk. */
+
+html[data-player-skin="nova"] {
+  --at-r-plate: 4px 22px 4px 22px;
+  --at-r-card: 4px 22px 4px 22px;
+  --at-r-ctl: 3px 12px;
+  --at-r-chip: 3px 10px;
+  --at-r-cell: 3px 10px;
+  --at-font-display: "Inter", system-ui, sans-serif;
+  --bg-shell: #2a0536;
+  --bg-card: #3b0764;
+  --ink-primary: #fdf4ff;
+  --accent: #fde68a;
+  --accent-ink: #4a044e;
+}
+
+html[data-player-skin="nova"] body {
+  background:
+    radial-gradient(circle at 50% 18%, rgba(253, 230, 138, 0.28), transparent 36%),
+    #2a0536 !important;
+}
+html[data-player-skin="nova"] body::after {
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  background:
+    repeating-conic-gradient(from 0deg at 50% 16%, transparent 0 8deg, rgba(253, 230, 138, 0.08) 8deg 9deg);
+  animation: room-nova-spin 22s linear infinite;
+}
+
+html[data-player-skin="nova"] .top-hud {
+  background: #3b0764;
+  border-bottom: 1px solid #fde68a;
+}
+html[data-player-skin="nova"] .hud-app-name {
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+html[data-player-skin="nova"] .launcher-card {
+  border-radius: 4px 22px;
+  padding: 16px 20px 22px;
+  background:
+    radial-gradient(circle at 80% 12%, rgba(253, 230, 138, 0.22), transparent 40%),
+    #3b0764;
+  border: 1px solid rgba(253, 230, 138, 0.3);
+}
+html[data-player-skin="nova"] button.primary,
+html[data-player-skin="nova"] .tab-chip.active {
+  background: #fde68a;
+  color: #4a044e;
+  border: 1px solid #db2777;
+}
+
+html[data-player-skin="nova"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 3px 10px; }
+html[data-player-skin="nova"][data-app-tab="Today"] .tdy-hour-row:nth-child(n+10):nth-child(-n+14) .tdy-hour-cell {
+  box-shadow: inset 0 0 0 1px rgba(253, 230, 138, 0.45);
+}
+html[data-player-skin="nova"][data-app-tab="Tasks"] .tsk-row { border-radius: 4px 16px; }
+html[data-player-skin="nova"][data-app-tab="Agent"] .agent-bubble { border-radius: 4px 18px; }
+
+@keyframes room-nova-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="nova"] body::after { animation: none; }
+}

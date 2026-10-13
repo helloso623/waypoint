@@ -1,0 +1,85 @@
+/* Eclipse Meridian — annular corona.
+   Total dark, one gold rim. Cards are disks with a flat base.
+   HUD wears the diamond ring. */
+
+html[data-player-skin="eclipse"] {
+  --at-r-plate: 40px 40px 4px 4px;
+  --at-r-card: 40px 40px 4px 4px;
+  --at-r-ctl: 16px 16px 3px 3px;
+  --at-r-chip: 12px 12px 3px 3px;
+  --at-r-cell: 8px 8px 3px 3px;
+  --at-font-display: "IBM Plex Mono", ui-monospace, monospace;
+  --bg-shell: #020617;
+  --bg-card: #0b1020;
+  --ink-primary: #fef3c7;
+  --accent: #facc15;
+  --accent-ink: #020617;
+}
+
+html[data-player-skin="eclipse"] body {
+  background:
+    radial-gradient(circle at 50% -8%, #facc15 0 2px, rgba(250, 204, 21, 0.35) 14px, transparent 46%),
+    #020617 !important;
+}
+html[data-player-skin="eclipse"] body::after {
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background: radial-gradient(circle at 50% -10%, transparent 12%, rgba(2, 6, 23, 0.55) 28%, #020617 52%);
+}
+
+html[data-player-skin="eclipse"] .top-hud {
+  background: #0b1020;
+  border-bottom: 1px solid #facc15;
+  box-shadow: 0 0 24px rgba(250, 204, 21, 0.18);
+}
+html[data-player-skin="eclipse"] .top-hud::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: #020617;
+  box-shadow: 0 0 0 3px #facc15, 0 0 18px #facc15;
+  animation: room-eclipse-corona 5.5s ease-in-out infinite;
+}
+html[data-player-skin="eclipse"] .hud-app-name {
+  font-family: var(--at-font-display);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+html[data-player-skin="eclipse"] .launcher-card {
+  border-radius: 40px 40px 4px 4px;
+  padding: 20px 20px 14px;
+  background: #0b1020;
+  border: 1px solid rgba(250, 204, 21, 0.35);
+}
+html[data-player-skin="eclipse"] button.primary,
+html[data-player-skin="eclipse"] .tab-chip.active {
+  background: #facc15;
+  color: #020617;
+  border: 1px solid #a16207;
+}
+
+html[data-player-skin="eclipse"][data-app-tab="Today"] #main .tdy-hour-cell {
+  border-radius: 8px 8px 3px 3px;
+}
+html[data-player-skin="eclipse"][data-app-tab="Today"] .tdy-hour-row:nth-child(12) .tdy-hour-cell,
+html[data-player-skin="eclipse"][data-app-tab="Today"] .tdy-hour-row:nth-child(13) .tdy-hour-cell {
+  box-shadow: inset 0 0 0 2px #facc15;
+}
+html[data-player-skin="eclipse"][data-app-tab="Tasks"] .tsk-row { border-radius: 18px 18px 4px 4px; }
+html[data-player-skin="eclipse"][data-app-tab="Agent"] .agent-bubble { border-radius: 22px 22px 4px 4px; }
+
+@keyframes room-eclipse-corona {
+  50% { box-shadow: 0 0 0 5px #facc15, 0 0 28px #fde047; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="eclipse"] .top-hud::after { animation: none; }
+}

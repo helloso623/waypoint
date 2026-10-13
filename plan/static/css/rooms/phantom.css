@@ -1,0 +1,71 @@
+/* Phantom Compass — penumbra geometry.
+   Routes appear only in a narrow dusk band. Dashed ghost cards.
+   Double-exposure Agent. Inter, indigo dusk. */
+
+html[data-player-skin="phantom"] {
+  --at-r-plate: 20px 0 20px 0;
+  --at-r-card: 20px 0 20px 0;
+  --at-r-ctl: 9px 0;
+  --at-r-chip: 9px 0;
+  --at-r-cell: 8px 0;
+  --at-font-display: "Inter", system-ui, sans-serif;
+  --bg-shell: #0c0a18;
+  --bg-card: #16132e;
+  --ink-primary: #e0e7ff;
+  --accent: #a5b4fc;
+  --accent-ink: #16132e;
+}
+
+html[data-player-skin="phantom"] body {
+  background:
+    linear-gradient(180deg, rgba(165, 180, 252, 0.08), transparent 28%, rgba(12, 10, 24, 0.4) 72%),
+    #0c0a18 !important;
+}
+html[data-player-skin="phantom"] body::after {
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.3;
+  background: repeating-linear-gradient(135deg, transparent 0 11px, rgba(165, 180, 252, 0.06) 11px 12px);
+  animation: room-phantom-veil 12s ease-in-out infinite;
+}
+
+html[data-player-skin="phantom"] .top-hud {
+  background: #120f22;
+  border-bottom: 1px dashed rgba(165, 180, 252, 0.45);
+}
+html[data-player-skin="phantom"] .hud-app-name {
+  opacity: 0.82;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+html[data-player-skin="phantom"] .launcher-card {
+  border-radius: 20px 0;
+  padding: 24px 14px 12px;
+  background: rgba(22, 19, 46, 0.82);
+  border: 1px dashed rgba(165, 180, 252, 0.4);
+}
+html[data-player-skin="phantom"] button.primary,
+html[data-player-skin="phantom"] .tab-chip.active {
+  background: #a5b4fc;
+  color: #16132e;
+  border: 1px dashed #6366f1;
+}
+
+html[data-player-skin="phantom"][data-app-tab="Today"] #main .tdy-hour-cell {
+  border-radius: 8px 0;
+  border-style: dashed;
+  opacity: 0.88;
+}
+html[data-player-skin="phantom"][data-app-tab="Today"] .tdy-hour-row:nth-child(-n+8) .tdy-hour-cell { opacity: 0.55; }
+html[data-player-skin="phantom"][data-app-tab="Tasks"] .tsk-row { border-radius: 14px 0; border-style: dashed; }
+html[data-player-skin="phantom"][data-app-tab="Agent"] .agent-bubble {
+  border-radius: 16px 0;
+  box-shadow: 4px 4px 0 rgba(165, 180, 252, 0.18);
+}
+
+@keyframes room-phantom-veil { 50% { opacity: 0.12; } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="phantom"] body::after { animation: none; }
+}

@@ -1,0 +1,945 @@
+/* ═══════════════════════════════════════════════════════════════
+   ICEBERG CROWN — a cold halo around the top HUD.
+
+   The object: you are at the waterline, looking at a berg. The
+   part you see is the crown — a pale ice peak with a cold halo
+   of sky on the water around it. Most of the mass is underwater:
+   a dark keel of hexagonal ice cells, nine-tenths of the berg,
+   living on the page. The HUD is the tip. The page is the rest.
+
+   Not Frostbite Relay (needle dendrites, sting of royal blue,
+   crystals nucleating on the pulse row). Not Glacier Warden
+   (ancient cyan wall, a route cut, frosted glass). Not Polar
+   Beacon (a light at the top of the world). Not Blizzard Post
+   (whiteout dots). Not Mist Walker (a dissolving veil).
+
+   Architecture:
+   - Signature cut: the calved waterline. Tight peaks on the two
+     top corners (the visible crown), then a huge submerged keel
+     below. The left foot is the weathered mass; the right is the
+     fresh calving face. Pixel radii. Never 42%/48% ovals.
+   - Signature glyph: a berg in elevation — small truncated peak
+     above a waterline, wide hex keel below. Glyphs may clip;
+     #main and .launcher-card may not.
+   - HUD: the crown. A cold halo sits *around* the fascia. A
+     waterline rims the foot. Place is hud.
+   - Page: the submerged mass. Hex cells of ice through dark
+     water. The keel is mostly below the fold. Place is page.
+   - Place is not pulse, not chip, not companion. Cards sit in
+     the water as quiet plates. No halo on them.
+
+   Loot: colorA #bae6fd, colorB #0c4a6e, effect frost,
+   pattern hex, place hud,page. Selectors carry :root so this
+   room outranks the frost-family crystal stencil (6px plates,
+   white inner ring, crack grain, hex-tile glyphs, skew press).
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — crown ice, waterline, submerged keel ──────── */
+
+html[data-player-skin="iceberg"]:root {
+  color-scheme: dark;
+
+  --ib-sky: #071018;
+  --ib-deep: #04101a;
+  --ib-keel: #0c4a6e;
+  --ib-keel-hot: #0e7490;
+  --ib-shelf: #155e75;
+  --ib-water: #164e63;
+  --ib-ice: #bae6fd;
+  --ib-ice-hot: #e0f2fe;
+  --ib-ice-tip: #f0f9ff;
+  --ib-glint: #ffffff;
+  --ib-ink: #e8f4fb;
+  --ib-ink-2: #b8d4e6;
+  --ib-mute: #7aa0b8;
+  --ib-hair: rgba(186, 230, 253, 0.22);
+  --ib-hair-2: rgba(186, 230, 253, 0.48);
+  --ib-halo: rgba(186, 230, 253, 0.38);
+
+  /* Calved waterline: tight crown TL/TR, huge keel BL, calving
+     shelf BR. Nothing else uses 13 / 9 / 58 / 76 with a 49px keel. */
+  --ib-r-crown: 13px 9px 58px 76px / 9px 6px 41px 49px;
+  --ib-r-card: 11px 7px 46px 60px / 7px 5px 32px 39px;
+  --ib-r-ctl: 8px 6px 34px 46px / 6px 4px 24px 30px;
+  --ib-r-chip: 6px 4px 26px 34px / 5px 3px 18px 22px;
+  --ib-r-cell: 5px 3px 18px 24px / 4px 2px 13px 16px;
+  --ib-r-halo: 22px 18px 70px 88px / 14px 11px 48px 58px;
+
+  /* Berg in elevation. Truncated peak, waterline shoulders,
+     hex-keel feet. Not a frost-family hex tile, not a dendrite. */
+  --ib-berg: polygon(
+    40% 0%,
+    60% 0%,
+    70% 22%,
+    94% 34%,
+    100% 52%,
+    78% 100%,
+    22% 100%,
+    0% 52%,
+    6% 34%,
+    30% 22%
+  );
+
+  /* Submerged hex cells — large ice, seen through water.
+     60° lattice, 19px pitch. Not frostbite's 13px orthogonal grid. */
+  --ib-hex:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 18px,
+      rgba(186, 230, 253, 0.1) 18px 19px
+    ),
+    repeating-linear-gradient(
+      60deg,
+      transparent 0 18px,
+      rgba(12, 74, 110, 0.42) 18px 19px
+    ),
+    repeating-linear-gradient(
+      120deg,
+      transparent 0 18px,
+      rgba(186, 230, 253, 0.07) 18px 19px
+    );
+  --ib-hex-soft:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 23px,
+      rgba(186, 230, 253, 0.06) 23px 24px
+    ),
+    repeating-linear-gradient(
+      60deg,
+      transparent 0 23px,
+      rgba(12, 74, 110, 0.28) 23px 24px
+    ),
+    repeating-linear-gradient(
+      120deg,
+      transparent 0 23px,
+      rgba(186, 230, 253, 0.04) 23px 24px
+    );
+
+  --ib-font-display: "Avenir Next Condensed", "Barlow Condensed",
+    "Segoe UI Variable Display", "Trebuchet MS", sans-serif;
+  --ib-font-ui: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+
+  --bg-shell: var(--ib-sky);
+  --bg-content: var(--ib-deep);
+  --bg-card: var(--ib-water);
+  --bg-card-hover: var(--ib-shelf);
+  --ink-primary: var(--ib-ink);
+  --ink-secondary: var(--ib-ink-2);
+  --ink-muted: var(--ib-mute);
+  --border: rgba(186, 230, 253, 0.22);
+  --gridline: rgba(12, 74, 110, 0.55);
+  --accent: var(--ib-ice);
+  --ws-accent: var(--ib-ice);
+  --accent-ink: var(--ib-deep);
+
+  /* Loot catalog source of truth. */
+  --skin-a: #bae6fd;
+  --skin-b: #0c4a6e;
+  --at-a: #bae6fd;
+  --at-b: #0c4a6e;
+  --feel-a: #bae6fd;
+  --feel-b: #0c4a6e;
+  --feel-accent: #bae6fd;
+  --feel-ground: #071018;
+  --feel-paper: #164e63;
+  --feel-ink: #e8f4fb;
+
+  --at-plate: var(--ib-water);
+  --at-plate-2: var(--ib-shelf);
+  --at-well: var(--ib-deep);
+  --at-ink: var(--ib-ink);
+  --at-ink-2: var(--ib-ink-2);
+  --at-ink-3: var(--ib-mute);
+  --at-hair: var(--ib-hair);
+  --at-hair-2: var(--ib-hair-2);
+  --at-hair-a: rgba(186, 230, 253, 0.55);
+  --at-tint: rgba(186, 230, 253, 0.1);
+  --at-tint-b: rgba(12, 74, 110, 0.4);
+  --at-focus: 0 0 0 3px rgba(186, 230, 253, 0.28);
+  --at-gold: var(--ib-ice);
+  --at-gold-soft: var(--ib-ice-hot);
+  --at-inset: inset 0 1px 0 rgba(240, 249, 255, 0.28);
+  --at-rise: 0 22px 40px -26px rgba(2, 8, 14, 0.92);
+  --at-rise-soft: 0 12px 22px -16px rgba(2, 8, 14, 0.8);
+  --at-r-plate: var(--ib-r-crown);
+  --at-r-card: var(--ib-r-card);
+  --at-r-ctl: var(--ib-r-ctl);
+  --at-r-chip: var(--ib-r-chip);
+  --at-r-cell: var(--ib-r-cell);
+
+  --font-display: var(--ib-font-display);
+  --at-font-display: var(--ib-font-display);
+  --at-font-ui: var(--ib-font-ui);
+  --font-ui: var(--ib-font-ui);
+
+  /* A berg in water, not frost-family crystal step + white ring. */
+  --feel-3d:
+    inset 0 1px 0 rgba(240, 249, 255, 0.32),
+    inset 0 -14px 20px rgba(4, 16, 26, 0.45),
+    0 0 0 1px rgba(12, 74, 110, 0.7),
+    0 16px 28px -18px rgba(2, 8, 14, 0.88);
+  --feel-3d-press:
+    inset 0 4px 10px rgba(4, 16, 26, 0.55),
+    inset 0 1px 0 rgba(186, 230, 253, 0.12),
+    0 0 0 1px rgba(12, 74, 110, 0.8);
+  --feel-grain-opacity: 0.28;
+  --feel-grain-blend: overlay;
+  --feel-grain: var(--ib-hex-soft);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 2px solid rgba(186, 230, 253, 0.55);
+  --feel-icon:
+    saturate(0.7) brightness(1.18) contrast(1.06)
+    drop-shadow(0 0 8px rgba(186, 230, 253, 0.45));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.16em;
+  --feel-plate-image:
+    linear-gradient(180deg, rgba(186, 230, 253, 0.12), transparent 28%),
+    var(--ib-hex-soft);
+}
+
+/* ── 2 · Body — deep water. The crown lives on the HUD. ─────── */
+
+html[data-player-skin="iceberg"]:root body {
+  background-color: var(--ib-sky) !important;
+  background-image:
+    radial-gradient(ellipse 88% 22% at 50% -4%, rgba(186, 230, 253, 0.16), transparent 72%),
+    linear-gradient(
+      180deg,
+      #0a2436 0%,
+      #071820 14%,
+      #04101a 40%,
+      #0c4a6e 100%
+    ) !important;
+  background-attachment: fixed !important;
+  color: var(--ib-ink);
+  animation: none;
+  text-shadow: none;
+}
+
+/* Quiet cold sky above the waterline. The real halo is HUD-gated. */
+html[data-player-skin="iceberg"]:root body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.28;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(ellipse 70% 18% at 50% 0%, rgba(186, 230, 253, 0.5), transparent 68%);
+}
+
+/* Kill frost-family cracks and the generic hex overlay.
+   Place=page owns the submerged lattice. */
+html[data-player-skin="iceberg"]:root body::after,
+html[data-player-skin="iceberg"]:root[data-skin-effect="frost"] body::after,
+html[data-player-skin="iceberg"]:root[data-skin-pattern="hex"] body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  background: none;
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html[data-player-skin="iceberg"]:root[data-skin-place~="page"] body::after {
+  opacity: 0.32;
+  mix-blend-mode: overlay;
+  background: var(--ib-hex-soft);
+  animation: room-iceberg-keel 28s ease-in-out infinite;
+}
+
+/* ── 3 · Page — the submerged nine-tenths ───────────────────── */
+
+html[data-player-skin="iceberg"]:root #main {
+  clip-path: none !important;
+  isolation: isolate;
+  position: relative;
+  overflow: visible;
+  background: color-mix(in srgb, var(--ib-deep) 62%, transparent) !important;
+  box-shadow: inset 0 1px 0 rgba(186, 230, 253, 0.08);
+}
+
+html[data-player-skin="iceberg"]:root[data-skin-place~="page"] #main {
+  background-color: color-mix(in srgb, var(--ib-keel) 38%, transparent) !important;
+  background-image:
+    var(--ib-hex),
+    radial-gradient(
+      ellipse 78% 58% at 50% 118%,
+      rgba(186, 230, 253, 0.18),
+      rgba(12, 74, 110, 0.22) 40%,
+      transparent 68%
+    ),
+    linear-gradient(180deg, rgba(4, 16, 26, 0.35), rgba(12, 74, 110, 0.18) 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(186, 230, 253, 0.1),
+    inset 0 40px 60px -36px rgba(4, 16, 26, 0.55),
+    inset 0 -48px 70px -28px rgba(186, 230, 253, 0.08);
+}
+
+/* Ghost of the keel — most of the berg, sitting below the fold. */
+html[data-player-skin="iceberg"]:root[data-skin-place~="page"] #main::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -18%;
+  height: 46%;
+  z-index: 0;
+  border-radius: var(--ib-r-halo);
+  background:
+    var(--ib-hex-soft),
+    linear-gradient(180deg, rgba(186, 230, 253, 0.08), rgba(12, 74, 110, 0.45) 62%, rgba(4, 16, 26, 0.7));
+  opacity: 0.55;
+  animation: room-iceberg-keel 22s ease-in-out infinite;
+}
+
+html[data-player-skin="iceberg"]:root #main::after,
+html[data-player-skin="iceberg"]:root[data-skin-effect="frost"] #main::after,
+html[data-player-skin="iceberg"]:root[data-skin-pattern="hex"] #main::after,
+html[data-player-skin="iceberg"]:root[data-skin-family="frost"] #main::after {
+  clip-path: none !important;
+  animation: none !important;
+  background: none !important;
+  opacity: 0;
+}
+
+/* Cards sit in the water. Quiet plates. No halo, no clip. */
+html[data-player-skin="iceberg"]:root .launcher-card {
+  clip-path: none !important;
+  border-radius: var(--ib-r-card);
+  overflow: visible;
+}
+
+/* ── 4 · HUD — the visible crown, a cold halo around it ─────── */
+
+html[data-player-skin="iceberg"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  color: var(--ib-ink);
+  border-bottom: 0;
+  border-image: none;
+  border-radius: 0 0 58px 76px / 0 0 41px 49px;
+  background:
+    linear-gradient(180deg, rgba(240, 249, 255, 0.18) 0 8%, transparent 28%),
+    linear-gradient(
+      180deg,
+      #e0f2fe 0 12%,
+      #bae6fd 12% 34%,
+      #38bdf8 34% 46%,
+      #0e7490 46% 62%,
+      #0c4a6e 62% 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -16px 22px rgba(4, 16, 26, 0.35);
+  backdrop-filter: none;
+}
+
+/* The halo lives only on hud-place. It sits *around* the fascia. */
+html[data-player-skin="iceberg"]:root[data-skin-place~="hud"] .top-hud {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -16px 22px rgba(4, 16, 26, 0.35),
+    0 0 28px rgba(186, 230, 253, 0.28),
+    0 18px 36px -22px rgba(2, 8, 14, 0.85);
+}
+
+html[data-player-skin="iceberg"]:root[data-skin-place~="hud"] .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  top: -44%;
+  height: 180%;
+  z-index: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      ellipse 72% 38% at 50% 28%,
+      rgba(240, 249, 255, 0.55) 0%,
+      rgba(186, 230, 253, 0.32) 28%,
+      rgba(14, 116, 144, 0.12) 58%,
+      transparent 74%
+    );
+  mix-blend-mode: screen;
+  opacity: 0.85;
+  animation: room-iceberg-halo 7.6s ease-in-out infinite;
+}
+
+/* Waterline at the foot of the crown. The berg is rolling. */
+html[data-player-skin="iceberg"]:root[data-skin-place~="hud"] .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: 0;
+  height: 3px;
+  z-index: 2;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(186, 230, 253, 0.25) 8%,
+    #f0f9ff 28%,
+    #bae6fd 46%,
+    #7dd3fc 62%,
+    rgba(12, 74, 110, 0.4) 82%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 12px rgba(186, 230, 253, 0.7),
+    0 8px 18px rgba(186, 230, 253, 0.22);
+  background-size: 180% 100%;
+  animation: room-iceberg-waterline 11s ease-in-out infinite;
+}
+
+html[data-player-skin="iceberg"]:root .top-hud > * {
+  position: relative;
+  z-index: 3;
+}
+
+html[data-player-skin="iceberg"]:root :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--ib-deep);
+  color: var(--ib-deep);
+  font-family: var(--ib-font-display);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+html[data-player-skin="iceberg"]:root .page-title {
+  -webkit-text-fill-color: var(--ib-ice-hot);
+  color: var(--ib-ice-hot);
+  text-shadow: 0 1px 0 #04101a, 0 0 14px rgba(186, 230, 253, 0.28);
+}
+
+/* Unique mark: truncated peak above a waterline. Not a dendrite. */
+html[data-player-skin="iceberg"]:root .hud-app-name::before {
+  content: "";
+  display: inline-block;
+  width: 0.78em;
+  height: 0.9em;
+  margin-right: 0.48em;
+  vertical-align: -0.12em;
+  background:
+    linear-gradient(180deg, var(--ib-ice-tip) 0 28%, var(--ib-ice) 28% 40%, var(--ib-keel) 40% 100%);
+  clip-path: var(--ib-berg);
+  box-shadow: 0 0 8px rgba(186, 230, 253, 0.55);
+  animation: room-iceberg-halo 5.8s ease-in-out infinite;
+}
+
+html[data-player-skin="iceberg"]:root .hud-app-name::after {
+  content: none !important;
+  animation: none !important;
+}
+
+html[data-player-skin="iceberg"]:root :is(.hud-intention, .hud-now-focus-kicker) {
+  color: var(--ib-keel);
+  letter-spacing: 0.08em;
+}
+
+html[data-player-skin="iceberg"]:root[data-skin-place~="page"] :is(.hud-intention, .hud-now-focus-kicker) {
+  color: var(--ib-ink-2);
+}
+
+/* Brand jewel: the crown in miniature — peak, waterline, keel. */
+html[data-player-skin="iceberg"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid rgba(240, 249, 255, 0.55);
+  border-radius: var(--ib-r-chip);
+  background:
+    linear-gradient(180deg, var(--ib-ice-tip) 0 30%, var(--ib-ice) 30% 46%, var(--ib-keel) 46% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 0 12px rgba(186, 230, 253, 0.45);
+  clip-path: var(--ib-berg);
+  animation: room-iceberg-halo 6.4s ease-in-out infinite;
+}
+
+html[data-player-skin="iceberg"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 38%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ib-ice-tip), transparent);
+  opacity: 0.85;
+}
+
+html[data-player-skin="iceberg"]:root :is(
+  .brand-mark,
+  .ws-mark,
+  .hud-icon-svg,
+  .tab-chip-mark,
+  .wp-skin-mark
+) {
+  color: var(--ib-ice-hot);
+  filter: var(--feel-icon);
+  image-rendering: auto;
+  animation: none !important;
+  transform: none;
+}
+
+html[data-player-skin="iceberg"]:root .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-chip,
+  .hud-game-cluster,
+  .hud-game-chip,
+  .hud-model-chip--status,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .loot-profile-chip
+) {
+  color: var(--ib-deep);
+  border: 1px solid rgba(240, 249, 255, 0.4);
+  border-radius: var(--ib-r-chip);
+  background:
+    linear-gradient(180deg, rgba(240, 249, 255, 0.35), rgba(186, 230, 253, 0.55) 46%, rgba(14, 116, 144, 0.35));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  animation: none;
+}
+
+html[data-player-skin="iceberg"]:root .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-chip,
+  .hud-game-chip,
+  .loot-profile-chip
+):hover:not(:disabled) {
+  border-color: var(--ib-ice-tip);
+  box-shadow: 0 0 12px rgba(186, 230, 253, 0.45);
+  animation: room-iceberg-calve 0.42s ease-out 1;
+}
+
+html[data-player-skin="iceberg"]:root .tab-chip-bar {
+  background: color-mix(in srgb, var(--ib-deep) 88%, var(--ib-keel));
+  border-bottom: 1px solid rgba(186, 230, 253, 0.16);
+  backdrop-filter: none;
+}
+
+html[data-player-skin="iceberg"]:root :is(
+  .tab-chip,
+  .pill,
+  .seg-pill-btn,
+  .pln-mode-chip,
+  .app-subnav-pill
+) {
+  border: 1px solid rgba(186, 230, 253, 0.18);
+  border-radius: var(--ib-r-chip);
+  background: var(--ib-water);
+  color: var(--ib-ink-2);
+  font-family: var(--ib-font-display);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: inset 0 -2px 0 rgba(186, 230, 253, 0.18);
+}
+
+html[data-player-skin="iceberg"]:root :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .pill.active,
+  .pill[aria-pressed="true"],
+  .app-subnav-pill.active
+) {
+  color: var(--ib-deep);
+  border-color: rgba(240, 249, 255, 0.55);
+  background: linear-gradient(180deg, var(--ib-ice-hot), var(--ib-ice) 70%, var(--ib-keel-hot));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 10px rgba(186, 230, 253, 0.28);
+}
+
+/* ── 5 · Glyph — berg in elevation. Glyphs may clip. ────────── */
+
+html[data-player-skin="iceberg"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .nav-app-glyph,
+  .launcher-custom-app-emoji,
+  .loot-skin-avatar
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid rgba(240, 249, 255, 0.35);
+  border-radius: 0;
+  clip-path: var(--ib-berg);
+  color: var(--ib-deep);
+  background:
+    linear-gradient(180deg, var(--ib-ice-tip) 0 26%, var(--ib-ice) 26% 40%, var(--ib-keel) 40% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 0 10px rgba(186, 230, 253, 0.28);
+  transform: none;
+  filter: none;
+}
+
+html[data-player-skin="iceberg"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .loot-skin-avatar
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 36%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ib-ice-tip) 50%, transparent);
+  opacity: 0.8;
+  animation: room-iceberg-waterline 9s ease-in-out infinite;
+}
+
+html[data-player-skin="iceberg"]:root :is(.launcher-card-glyph, .launcher-tile-glyph) svg {
+  filter: brightness(0.35) saturate(0.6) contrast(1.12);
+}
+
+/* Override frost-family hex-tile clip and 3D tilt. */
+html[data-player-skin="iceberg"]:root[data-skin-family="frost"] .launcher-tile-glyph {
+  clip-path: var(--ib-berg);
+  border-radius: 0;
+}
+
+html[data-player-skin="iceberg"]:root .launcher-card,
+html[data-player-skin="iceberg"]:root .launcher-tile-glyph {
+  transform: none;
+}
+
+html[data-player-skin="iceberg"]:root :is(
+  .launcher-card,
+  .card,
+  .hub-card,
+  .pln-rail-card,
+  .evt-card,
+  .tsk-row,
+  .task-row,
+  .page-intent
+) {
+  clip-path: none !important;
+  border: 1px solid rgba(186, 230, 253, 0.16);
+  border-radius: var(--ib-r-card);
+  background:
+    var(--ib-hex-soft),
+    linear-gradient(180deg, rgba(22, 78, 99, 0.92), rgba(12, 74, 110, 0.88));
+  color: var(--ib-ink);
+  box-shadow: var(--feel-3d);
+}
+
+html[data-player-skin="iceberg"]:root :is(.launcher-card:hover, .launcher-card--focused) {
+  border-color: rgba(186, 230, 253, 0.45);
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgba(240, 249, 255, 0.22),
+    0 0 18px rgba(186, 230, 253, 0.18),
+    0 18px 28px -20px rgba(2, 8, 14, 0.9);
+}
+
+html[data-player-skin="iceberg"]:root :is(.launcher-card-name, .launcher-tile-name) {
+  color: var(--ib-ice-hot);
+  font-family: var(--ib-font-display);
+  letter-spacing: 0.08em;
+}
+
+html[data-player-skin="iceberg"]:root .launcher-card-intention {
+  color: var(--ib-mute);
+}
+
+/* ── 6 · Controls — crown ice, settle into water. No skew. ──── */
+
+html[data-player-skin="iceberg"]:root button.primary,
+html[data-player-skin="iceberg"]:root .primary,
+html[data-player-skin="iceberg"]:root .page-intent-primary,
+html[data-player-skin="iceberg"]:root .agent-pane-chat .agc-send {
+  border: 1px solid rgba(240, 249, 255, 0.45);
+  border-radius: var(--ib-r-ctl);
+  background: linear-gradient(180deg, var(--ib-ice-hot) 0 36%, var(--ib-ice) 36% 62%, var(--ib-keel-hot) 62% 100%);
+  color: var(--ib-deep);
+  font-family: var(--ib-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 0 12px rgba(186, 230, 253, 0.22);
+  transform: none;
+}
+
+html[data-player-skin="iceberg"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="iceberg"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    0 0 18px rgba(186, 230, 253, 0.4);
+}
+
+html[data-player-skin="iceberg"]:root button.primary:active:not(:disabled),
+html[data-player-skin="iceberg"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translateY(3px);
+  filter: brightness(0.96);
+  box-shadow: var(--feel-3d-press);
+}
+
+html[data-player-skin="iceberg"]:root[data-skin-family="frost"] button.primary:active,
+html[data-player-skin="iceberg"]:root[data-skin-effect="frost"] button.primary:active {
+  transform: translateY(3px);
+  filter: brightness(0.96);
+}
+
+html[data-player-skin="iceberg"]:root :is(button.secondary, .ghost-btn) {
+  border: 1px solid rgba(186, 230, 253, 0.22);
+  border-radius: var(--ib-r-ctl);
+  background: linear-gradient(180deg, rgba(22, 78, 99, 0.9), rgba(4, 16, 26, 0.92));
+  color: var(--ib-ink-2);
+  box-shadow: inset 0 1px 0 rgba(186, 230, 253, 0.1);
+}
+
+html[data-player-skin="iceberg"]:root :is(button.secondary, .ghost-btn):hover:not(:disabled) {
+  border-color: var(--ib-ice);
+  color: var(--ib-ice-hot);
+}
+
+html[data-player-skin="iceberg"]:root #quick-capture-fab.quick-capture-fab {
+  background: linear-gradient(180deg, var(--ib-ice), var(--ib-keel)) !important;
+  color: var(--ib-deep) !important;
+  border-color: rgba(186, 230, 253, 0.5) !important;
+  border-radius: var(--ib-r-crown) !important;
+  box-shadow: 0 0 16px rgba(186, 230, 253, 0.35) !important;
+  clip-path: none !important;
+}
+
+/* ── 7 · Empty / input / focus ──────────────────────────────── */
+
+html[data-player-skin="iceberg"]:root :is(
+  input,
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+) {
+  border: 1px solid rgba(186, 230, 253, 0.22);
+  border-top: 2px solid rgba(186, 230, 253, 0.45);
+  border-radius: var(--ib-r-ctl);
+  background-color: rgba(4, 16, 26, 0.88);
+  background-image:
+    var(--ib-hex-soft),
+    linear-gradient(180deg, rgba(186, 230, 253, 0.08) 0%, transparent 28%);
+  color: var(--ib-ink);
+  caret-color: var(--ib-ice);
+  font-family: var(--ib-font-ui);
+  box-shadow:
+    inset 0 3px 10px rgba(2, 8, 14, 0.55),
+    inset 0 1px 0 rgba(186, 230, 253, 0.16);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+html[data-player-skin="iceberg"]:root :is(input, textarea)::placeholder {
+  color: rgba(122, 160, 184, 0.75);
+  letter-spacing: 0.04em;
+}
+
+html[data-player-skin="iceberg"]:root :is(
+  input,
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+):focus,
+html[data-player-skin="iceberg"]:root .agc-input-zone:focus-within {
+  outline: none;
+  border-color: var(--ib-ice);
+  border-top-color: var(--ib-ice-tip);
+  background-color: rgba(7, 16, 24, 0.94);
+  box-shadow:
+    inset 0 3px 10px rgba(2, 8, 14, 0.45),
+    0 0 0 3px rgba(186, 230, 253, 0.22),
+    0 0 18px rgba(186, 230, 253, 0.28);
+}
+
+html[data-player-skin="iceberg"]:root :focus-visible {
+  outline: 2px solid var(--ib-ice);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 7px rgba(186, 230, 253, 0.16);
+}
+
+/* Empty: the sea with no crown yet. Waterline, a keel waiting. */
+html[data-player-skin="iceberg"]:root .empty-state {
+  position: relative;
+  border: 1.5px dashed rgba(186, 230, 253, 0.32);
+  border-radius: var(--ib-r-crown);
+  background-color: rgba(4, 16, 26, 0.86);
+  background-image:
+    linear-gradient(180deg, rgba(186, 230, 253, 0.08) 0 18%, transparent 18%),
+    var(--ib-hex-soft);
+  color: var(--ib-ink-2);
+  padding: 28px 20px 24px;
+  box-shadow: inset 0 1px 0 rgba(186, 230, 253, 0.12);
+}
+
+html[data-player-skin="iceberg"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 28px;
+  margin: 0 auto 12px;
+  background:
+    linear-gradient(180deg, var(--ib-ice-hot) 0 28%, var(--ib-ice) 28% 38%, var(--ib-keel) 38% 100%);
+  clip-path: var(--ib-berg);
+  opacity: 0.55;
+  animation: room-iceberg-halo 6.8s ease-in-out infinite;
+}
+
+html[data-player-skin="iceberg"]:root .empty-state-title {
+  color: var(--ib-ice);
+  font-family: var(--ib-font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="iceberg"]:root :is(.empty-state-body, .empty-state-hint) {
+  color: var(--ib-ink-2);
+}
+
+html[data-player-skin="iceberg"]:root :is(
+  button:disabled,
+  input:disabled,
+  select:disabled,
+  textarea:disabled,
+  [aria-disabled="true"]
+) {
+  opacity: 0.52;
+  cursor: not-allowed;
+  color: rgba(122, 160, 184, 0.75);
+  border-color: rgba(12, 74, 110, 0.4);
+  box-shadow: none;
+  filter: saturate(0.35) brightness(0.85);
+  animation: none !important;
+}
+
+html[data-player-skin="iceberg"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .launcher-search-panel,
+  dialog
+) {
+  border: 1px solid rgba(186, 230, 253, 0.22);
+  border-radius: var(--ib-r-crown);
+  background:
+    linear-gradient(180deg, rgba(186, 230, 253, 0.1) 0%, transparent 22%),
+    var(--ib-water);
+  color: var(--ib-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(240, 249, 255, 0.18),
+    0 28px 56px -24px rgba(2, 8, 14, 0.95);
+}
+
+html[data-player-skin="iceberg"]:root :is(.loot-shell-backdrop, .wp-arcade-overlay) {
+  background:
+    radial-gradient(ellipse 80% 30% at 50% 0%, rgba(186, 230, 253, 0.12), transparent 60%),
+    rgba(4, 16, 26, 0.86);
+}
+
+html[data-player-skin="iceberg"]:root .toast-item {
+  border-radius: var(--ib-r-chip);
+  background: linear-gradient(180deg, var(--ib-ice-hot) 0 30%, var(--ib-ice) 30% 100%);
+  color: var(--ib-deep);
+  border: 1px solid rgba(240, 249, 255, 0.5);
+  box-shadow: 0 0 12px rgba(186, 230, 253, 0.28);
+  animation: room-iceberg-calve 0.4s ease-out 1;
+}
+
+html[data-player-skin="iceberg"]:root .companion-launcher-orb {
+  clip-path: none;
+  border-radius: var(--ib-r-ctl);
+  background: linear-gradient(180deg, var(--ib-ice), var(--ib-keel));
+  box-shadow: 0 0 0 1px rgba(186, 230, 253, 0.35);
+}
+
+html[data-player-skin="iceberg"]:root ::selection {
+  background: rgba(12, 74, 110, 0.65);
+  color: var(--ib-ice-tip);
+}
+
+html[data-player-skin="iceberg"]:root * {
+  scrollbar-color: rgba(186, 230, 253, 0.32) transparent;
+}
+
+html[data-player-skin="iceberg"]:root .agent-bubble {
+  background: var(--ib-water);
+  color: var(--ib-ink);
+  border-radius: var(--ib-r-card);
+}
+
+html[data-player-skin="iceberg"]:root .agent-msg.assistant .agent-bubble {
+  border-left: 2px solid var(--ib-ice);
+}
+
+html[data-player-skin="iceberg"]:root .agent-msg.user .agent-bubble {
+  border: 1px solid rgba(186, 230, 253, 0.28);
+  background: var(--ib-shelf);
+  color: var(--ib-ice-hot);
+}
+
+/* ── 8 · Motion — halo, waterline, keel, one calve ──────────── */
+
+@keyframes room-iceberg-halo {
+  0%, 100% { opacity: 0.72; filter: brightness(0.96); }
+  50% { opacity: 1; filter: brightness(1.14); }
+}
+
+@keyframes room-iceberg-waterline {
+  0%, 100% { background-position: 0% 0; opacity: 0.78; }
+  50% { background-position: 100% 0; opacity: 1; }
+}
+
+@keyframes room-iceberg-keel {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(-6px); opacity: 0.7; }
+}
+
+@keyframes room-iceberg-calve {
+  0% { filter: brightness(1); }
+  22% {
+    filter: brightness(1.28);
+    box-shadow: 0 0 18px rgba(186, 230, 253, 0.7);
+  }
+  100% { filter: brightness(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="iceberg"]:root *,
+  html[data-player-skin="iceberg"]:root *::before,
+  html[data-player-skin="iceberg"]:root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html[data-player-skin="iceberg"]:root[data-skin-place~="hud"] .top-hud::before,
+  html[data-player-skin="iceberg"]:root[data-skin-place~="hud"] .top-hud::after,
+  html[data-player-skin="iceberg"]:root[data-skin-place~="page"] #main::before,
+  html[data-player-skin="iceberg"]:root .empty-state::before {
+    transform: none;
+    opacity: 0.8;
+  }
+}

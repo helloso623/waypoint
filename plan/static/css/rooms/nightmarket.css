@@ -1,0 +1,671 @@
+/* ═══════════════════════════════════════════════════════════════
+   NIGHT MARKET — lantern stalls. Player-skin chrome only.
+
+   Critique: the object is a hanging shop sign over a paper lantern.
+   You are under the stall, not inside a photograph of a street.
+   The HUD is the lacquer board on two rings. Chips are paper
+   lanterns with a crown ring and a tassel. Empty is steam off
+   an unlit pot. The world already painted the alley, the stall
+   cards, the steam under #main. This file hangs hardware on
+   that street. If it floods the body with a new night, or if
+   the lantern becomes the world's 50%/42% oval, the object
+   has failed.
+
+   Not Emberglass (rose pane, iron sash, gather striae).
+   Not Vermilion Lacquer (temple door, cinnabar coat).
+   Not Cherry Beacon (candy fruit, cream soda).
+   Not Cabinet Night (arcade bezel). Not Harbor (rope, tide).
+   A paper lantern and a hanging sign. Ember is the flame
+   inside the paper, not forged steel.
+
+   Architecture:
+   - Signature cut: the hanging plaque. Square hang-ring on the
+     leading corner, a swung free edge on the trailing. Pixel
+     radii. Never 42%/48% ovals.
+   - Signature glyph: hex paper lantern — flat crown ring,
+     hexagonal body, tassel foot. Glyphs may clip.
+     #main and .launcher-card may not.
+   - HUD: hanging sign on two rings. Place hud.
+   - Chips: paper lanterns. Place chip.
+   - Empty: steam. Input is a stall ticket. Focus is lantern glow.
+   - NEVER body { background-image }. The world keeps the street.
+
+   Loot: colorA #fb923c · colorB #7f1d1d · effect ember ·
+   pattern hex · world:true · place hud,page,chip,companion,
+   calendar,pulse.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — lacquer, paper, one tassel ────────────────── */
+
+html[data-player-skin="nightmarket"] {
+  color-scheme: dark;
+
+  --nm-alley: #1c0b10;
+  --nm-well: #150709;
+  --nm-lacquer: #7f1d1d;
+  --nm-stall: #431407;
+  --nm-paper: #fb923c;
+  --nm-flame: #fde68a;
+  --nm-amber: #fbbf24;
+  --nm-coal: #9a3412;
+  --nm-ink: #fff1e6;
+  --nm-ink-2: #fed7aa;
+  --nm-mute: #d09a6a;
+
+  --nm-hair: rgba(251, 146, 60, 0.28);
+  --nm-glow: rgba(253, 230, 138, 0.55);
+
+  /* Hanging plaque: square hang-ring TL, swung free edge TR,
+     a slightly dropped trailing foot. Nothing else uses
+     4 / 26 / 8 / 18 over 4 / 12 / 7 / 16. */
+  --nm-r-sign: 4px 26px 8px 18px / 4px 12px 7px 16px;
+  --nm-r-lantern: 16px 16px 24px 10px / 7px 7px 26px 18px;
+  --nm-r-ctl: 6px 14px 8px 10px / 4px 7px 6px 9px;
+  --nm-r-cell: 5px 11px 6px 8px / 3px 6px 5px 7px;
+  --nm-r-ring: 9px;
+
+  /* Paper lantern pleats — hex loot as vertical ribs, not a tile. */
+  --nm-pleat:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 6px,
+      rgba(127, 29, 29, 0.28) 6px 7px
+    );
+  --nm-pleat-soft:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 8px,
+      rgba(251, 146, 60, 0.12) 8px 9px
+    );
+
+  --skin-a: #fb923c;
+  --skin-b: #7f1d1d;
+  --at-a: #fb923c;
+  --at-b: #7f1d1d;
+  --feel-a: #fb923c;
+  --feel-b: #7f1d1d;
+  --feel-accent: #fb923c;
+  --feel-ink: #fff1e6;
+
+  --accent: var(--nm-paper);
+  --ws-accent: var(--nm-paper);
+  --accent-ink: var(--nm-stall);
+
+  --at-r-ctl: var(--nm-r-ctl);
+  --at-r-chip: var(--nm-r-lantern);
+  --at-r-cell: var(--nm-r-cell);
+  --at-focus: 0 0 0 3px rgba(251, 146, 60, 0.45);
+
+  --nm-font: "Yu Mincho", "Songti SC", "Palatino Linotype", "Iowan Old Style", Georgia, serif;
+  --at-font-display: var(--nm-font);
+
+  --feel-3d:
+    inset 0 1px 0 rgba(253, 230, 138, 0.35),
+    0 0 16px rgba(251, 146, 60, 0.28),
+    0 10px 18px rgba(0, 0, 0, 0.45);
+  --feel-3d-press:
+    inset 0 3px 8px rgba(21, 7, 9, 0.55),
+    inset 0 1px 0 rgba(253, 230, 138, 0.18);
+  --feel-hud-hair: 2px solid #fde68a;
+  --feel-icon:
+    saturate(1.15) brightness(1.06)
+    drop-shadow(0 0 6px rgba(251, 146, 60, 0.55));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.16em;
+}
+
+/* Kill flame-family forged steel. Do not paint the alley. */
+html[data-player-skin="nightmarket"] .app-shell::before {
+  content: none;
+  background: none;
+  animation: none;
+}
+
+html[data-player-skin="nightmarket"] #main,
+html[data-player-skin="nightmarket"] .launcher-card {
+  clip-path: none !important;
+}
+
+/* ── 2 · HUD — hanging shop sign on two rings ───────────────── */
+
+html[data-player-skin="nightmarket"] .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  transform-origin: top center;
+  border-radius: var(--nm-r-sign);
+  border-bottom: 3px solid var(--nm-flame);
+  box-shadow:
+    inset 0 1px 0 rgba(253, 230, 138, 0.28),
+    0 8px 0 var(--nm-stall),
+    0 16px 22px rgba(0, 0, 0, 0.45);
+  backdrop-filter: none;
+}
+
+/* Left hang-ring. The sign is suspended, not bolted. */
+html[data-player-skin="nightmarket"] .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+  top: -13px;
+  left: 14%;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--nm-flame);
+  border-radius: var(--nm-r-ring);
+  background: transparent;
+  box-shadow: 0 10px 0 -5px #fde68a;
+  transform-origin: 50% 0;
+  animation: room-nightmarket-swing 3.6s ease-in-out infinite;
+}
+
+/* Right hang-ring. A second hook, slightly out of phase. */
+html[data-player-skin="nightmarket"] .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+  top: -13px;
+  right: 16%;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--nm-flame);
+  border-radius: var(--nm-r-ring);
+  background: transparent;
+  box-shadow: 0 10px 0 -5px #fde68a;
+  transform-origin: 50% 0;
+  animation: room-nightmarket-swing 4.1s ease-in-out infinite reverse;
+}
+
+html[data-player-skin="nightmarket"] .top-hud > * {
+  position: relative;
+  z-index: 3;
+}
+
+html[data-player-skin="nightmarket"] :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--nm-flame);
+  color: var(--nm-flame);
+  font-family: var(--nm-font);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(251, 191, 36, 0.55);
+}
+
+html[data-player-skin="nightmarket"] :is(.hud-intention, .hud-now-focus-kicker) {
+  color: var(--nm-ink-2);
+  letter-spacing: 0.08em;
+}
+
+/* Brand jewel is the lantern crown — a ring, not a disc. */
+html[data-player-skin="nightmarket"] .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 2px solid var(--nm-flame);
+  border-radius: var(--nm-r-lantern);
+  background:
+    var(--nm-pleat),
+    radial-gradient(circle at 50% 28%, var(--nm-flame), var(--nm-paper) 46%, var(--nm-lacquer) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(253, 230, 138, 0.55),
+    0 0 14px rgba(251, 146, 60, 0.45);
+  animation: room-nightmarket-glow 2.8s ease-in-out infinite;
+}
+
+html[data-player-skin="nightmarket"] .hud-brand-jewel::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: -22%;
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--nm-flame);
+  border-radius: var(--nm-r-ring);
+  background: transparent;
+  transform: translateX(-50%);
+}
+
+html[data-player-skin="nightmarket"] :is(
+  .brand-mark,
+  .ws-mark,
+  .hud-icon-svg,
+  .tab-chip-mark,
+  .wp-skin-mark
+) {
+  color: var(--nm-flame);
+  filter: var(--feel-icon);
+}
+
+html[data-player-skin="nightmarket"] .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-agent-chip,
+  .loot-profile-chip
+) {
+  border-radius: var(--nm-r-lantern);
+  border: 1px solid var(--nm-amber);
+  color: var(--nm-flame);
+  box-shadow: 0 0 10px rgba(251, 146, 60, 0.22);
+}
+
+/* ── 3 · Chips — paper lanterns, crown ring + tassel ────────── */
+
+html[data-player-skin="nightmarket"][data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .hud-agent-chip,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .tsk-day-chip,
+  .tdy-cat-chip,
+  .pln-mode-chip,
+  .cal-week-chip,
+  .cal-month-chip,
+  .hub-chip
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid var(--nm-amber);
+  border-radius: var(--nm-r-lantern);
+  background:
+    var(--nm-pleat),
+    radial-gradient(circle at 50% 26%, var(--nm-flame), var(--nm-paper) 47%, var(--nm-lacquer) 100%);
+  color: var(--nm-stall);
+  font-family: var(--nm-font);
+  letter-spacing: 0.06em;
+  box-shadow:
+    inset 0 1px 0 rgba(253, 230, 138, 0.4),
+    0 0 12px rgba(251, 146, 60, 0.28);
+}
+
+/* Crown ring sitting on the lantern. */
+html[data-player-skin="nightmarket"][data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill
+)::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: -7px;
+  width: 8px;
+  height: 8px;
+  z-index: 1;
+  border: 2px solid var(--nm-flame);
+  border-radius: var(--nm-r-ring);
+  background: transparent;
+  transform: translateX(-50%);
+}
+
+/* Tassel under the gather. */
+html[data-player-skin="nightmarket"][data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 2px;
+  height: 8px;
+  z-index: 1;
+  border-radius: 1px 1px 2px 2px;
+  background: var(--nm-flame);
+  transform: translateX(-50%);
+  box-shadow: 0 3px 0 -1px #fb923c;
+  animation: room-nightmarket-tassel 2.4s ease-in-out infinite;
+}
+
+html[data-player-skin="nightmarket"][data-skin-place~="chip"] :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active
+) {
+  color: var(--nm-stall);
+  border-color: var(--nm-flame);
+  background:
+    var(--nm-pleat),
+    radial-gradient(circle at 50% 22%, #fff7d6, var(--nm-flame) 36%, var(--nm-paper) 72%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 247, 214, 0.7),
+    0 0 18px rgba(251, 191, 36, 0.55);
+  animation: room-nightmarket-glow 2.4s ease-in-out infinite;
+}
+
+html[data-player-skin="nightmarket"] .tab-chip {
+  border-radius: var(--nm-r-lantern);
+}
+
+/* ── 4 · Glyph — hex lantern, ring, tassel ──────────────────── */
+/* Flat crown, hexagonal paper, gathered foot. Not the world's
+   50%/42% oval. Glyphs may clip. Cards and #main may not. */
+
+html[data-player-skin="nightmarket"] :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .nav-app-glyph,
+  .loot-skin-avatar
+) {
+  position: relative;
+  overflow: visible;
+  border: none;
+  border-radius: 0;
+  transform: none;
+  color: var(--nm-stall);
+  clip-path: polygon(
+    36% 0%, 64% 0%,
+    73% 9%,
+    91% 24%, 100% 41%, 91% 71%,
+    64% 85%,
+    57% 100%, 43% 100%,
+    36% 85%,
+    9% 71%, 0% 41%, 9% 24%,
+    27% 9%
+  );
+  background:
+    var(--nm-pleat),
+    radial-gradient(circle at 50% 28%, var(--nm-flame), var(--nm-paper) 46%, var(--nm-lacquer) 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(253, 230, 138, 0.45),
+    0 0 16px rgba(251, 146, 60, 0.4);
+  filter: none;
+  animation: room-nightmarket-glow 3.2s ease-in-out infinite;
+}
+
+html[data-player-skin="nightmarket"] :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar
+)::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: 4%;
+  width: 22%;
+  height: 10%;
+  border: 2px solid var(--nm-stall);
+  border-radius: var(--nm-r-ring);
+  background: transparent;
+  transform: translateX(-50%);
+}
+
+html[data-player-skin="nightmarket"] :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 46%;
+  bottom: 2%;
+  width: 8%;
+  height: 12%;
+  border-radius: 1px;
+  background: var(--nm-stall);
+}
+
+html[data-player-skin="nightmarket"] .launcher-custom-app-emoji {
+  border-radius: var(--nm-r-lantern);
+  background: rgba(251, 146, 60, 0.28);
+  border: 1px solid rgba(253, 230, 138, 0.45);
+}
+
+/* ── 5 · Launcher card — hanging plaque, player-skin only ───── */
+/* World stall is 0 18px 0 18px. This plaque hangs from one ring. */
+
+html[data-player-skin="nightmarket"] .launcher-card {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  clip-path: none !important;
+  transform-origin: top center;
+  border-radius: var(--nm-r-sign);
+}
+
+html[data-player-skin="nightmarket"] .launcher-card::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--nm-flame);
+  border-radius: var(--nm-r-ring);
+  background: transparent;
+  transform: translateX(-50%);
+  opacity: 1;
+  box-shadow: 0 8px 0 -4px #fde68a;
+}
+
+html[data-player-skin="nightmarket"] .launcher-card::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 2px;
+  height: 7px;
+  border-radius: 1px 1px 2px 2px;
+  background: var(--nm-flame);
+  transform: translateX(-50%);
+  opacity: 0.85;
+}
+
+html[data-player-skin="nightmarket"] .launcher-card:hover,
+html[data-player-skin="nightmarket"] .launcher-card--focused {
+  animation: room-nightmarket-swing 2.8s ease-in-out infinite;
+}
+
+/* ── 6 · Empty / input / focus ──────────────────────────────── */
+
+/* Empty: an unlit pot. Steam still rises. */
+html[data-player-skin="nightmarket"] .empty-state {
+  position: relative;
+  overflow: visible;
+  border: 1px dashed rgba(251, 146, 60, 0.55);
+  border-radius: var(--nm-r-sign);
+  background: var(--nm-well);
+  color: var(--nm-ink-2);
+  box-shadow: inset 0 0 24px rgba(251, 146, 60, 0.08);
+  padding: 28px 18px 22px;
+}
+
+html[data-player-skin="nightmarket"] .empty-state::before {
+  content: "";
+  display: block;
+  width: 52px;
+  height: 34px;
+  margin: 0 auto 12px;
+  border-radius: 40% 50% 45% 55%;
+  background:
+    radial-gradient(ellipse 38% 46% at 32% 70%, rgba(253, 230, 138, 0.4), transparent 72%),
+    radial-gradient(ellipse 34% 44% at 68% 58%, rgba(251, 146, 60, 0.32), transparent 70%),
+    radial-gradient(ellipse 26% 38% at 50% 36%, rgba(255, 241, 230, 0.22), transparent 68%);
+  filter: blur(3px);
+  opacity: 0.85;
+  animation: room-nightmarket-steam 4.6s ease-in-out infinite;
+}
+
+html[data-player-skin="nightmarket"] .empty-state-title {
+  color: var(--nm-paper);
+  font-family: var(--nm-font);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="nightmarket"] :is(.empty-state-body, .empty-state-hint) {
+  color: var(--nm-ink-2);
+}
+
+/* Input is a stall ticket: dark slip, dashed carbon foot. */
+html[data-player-skin="nightmarket"] :is(
+  input,
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+) {
+  border: 1px solid rgba(251, 146, 60, 0.5);
+  border-bottom: 2px dashed var(--nm-paper);
+  border-radius: var(--nm-r-ctl);
+  background: var(--nm-well);
+  color: var(--nm-ink);
+  caret-color: var(--nm-paper);
+  font-family: var(--nm-font);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.45);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+html[data-player-skin="nightmarket"] :is(input, textarea)::placeholder {
+  color: var(--nm-mute);
+  letter-spacing: 0.04em;
+}
+
+html[data-player-skin="nightmarket"] :is(
+  input,
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+):focus,
+html[data-player-skin="nightmarket"] .agc-input-zone:focus-within {
+  outline: none;
+  border-color: var(--nm-flame);
+  border-bottom-color: var(--nm-amber);
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.35),
+    0 0 0 2px var(--nm-lacquer),
+    0 0 0 4px var(--nm-paper),
+    0 0 18px rgba(251, 146, 60, 0.4);
+}
+
+html[data-player-skin="nightmarket"] :focus-visible {
+  outline: 2px solid var(--nm-paper);
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 5px var(--nm-lacquer),
+    0 0 14px rgba(251, 146, 60, 0.45);
+}
+
+html[data-player-skin="nightmarket"] :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: #4a2018;
+  background: #241014;
+  color: #8a5a4a;
+  opacity: 0.55;
+  filter: saturate(0.4);
+  box-shadow: none;
+  animation: none !important;
+}
+
+html[data-player-skin="nightmarket"] ::selection {
+  background: rgba(251, 146, 60, 0.4);
+  color: var(--nm-stall);
+}
+
+/* Companion stays a hanging lantern, not a new world. */
+html[data-player-skin="nightmarket"] .companion-launcher-orb {
+  border-radius: var(--nm-r-lantern);
+  border: 2px solid var(--nm-flame);
+  background:
+    var(--nm-pleat),
+    radial-gradient(circle at 40% 28%, var(--nm-flame), var(--nm-paper) 50%, var(--nm-lacquer));
+  box-shadow: 0 0 16px rgba(251, 146, 60, 0.45);
+  animation: room-nightmarket-glow 2.8s ease-in-out infinite;
+}
+
+/* ── 7 · Motion — swing, glow, steam, tassel ────────────────── */
+
+@keyframes room-nightmarket-swing {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2.4deg); }
+}
+
+@keyframes room-nightmarket-glow {
+  0%, 100% {
+    box-shadow:
+      inset 0 1px 0 rgba(253, 230, 138, 0.35),
+      0 0 10px rgba(251, 146, 60, 0.28);
+  }
+  50% {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 247, 214, 0.7),
+      0 0 22px rgba(251, 191, 36, 0.65),
+      0 0 36px rgba(251, 146, 60, 0.28);
+  }
+}
+
+@keyframes room-nightmarket-steam {
+  0%, 100% {
+    transform: translateY(0) scaleX(1);
+    opacity: 0.55;
+    filter: blur(3px);
+  }
+  50% {
+    transform: translateY(-10px) scaleX(1.12);
+    opacity: 0.95;
+    filter: blur(5px);
+  }
+}
+
+@keyframes room-nightmarket-tassel {
+  0%, 100% { transform: translateX(-50%) rotate(-8deg); }
+  50% { transform: translateX(-50%) rotate(10deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="nightmarket"] .top-hud::before,
+  html[data-player-skin="nightmarket"] .top-hud::after,
+  html[data-player-skin="nightmarket"] .hud-brand-jewel,
+  html[data-player-skin="nightmarket"] .launcher-card:hover,
+  html[data-player-skin="nightmarket"] .launcher-card--focused,
+  html[data-player-skin="nightmarket"] .empty-state::before,
+  html[data-player-skin="nightmarket"] .companion-launcher-orb,
+  html[data-player-skin="nightmarket"] :is(
+    .launcher-tile-glyph,
+    .launcher-card-glyph,
+    .loot-skin-avatar
+  ),
+  html[data-player-skin="nightmarket"][data-skin-place~="chip"] :is(
+    .tab-chip,
+    .hud-chip,
+    .loot-profile-chip,
+    .app-subnav-pill,
+    .pill
+  ),
+  html[data-player-skin="nightmarket"][data-skin-place~="chip"] :is(
+    .tab-chip,
+    .hud-chip,
+    .loot-profile-chip,
+    .app-subnav-pill,
+    .pill
+  )::after {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,64 @@
+/* Noir Cut — silver halide chiaroscuro.
+   Venetian blinds, hard key light, a city that never dries. */
+
+html[data-player-skin="noir"] {
+  --at-r-plate: 0 12px 0 12px;
+  --at-r-card: 0 12px 0 12px;
+  --at-r-ctl: 0 8px;
+  --at-r-chip: 0 8px;
+  --at-r-cell: 0 6px;
+  --at-font-display: "IBM Plex Mono", ui-monospace, monospace;
+  --bg-shell: #111827;
+  --bg-card: #1f2937;
+  --ink-primary: #e5e7eb;
+  --accent: #e5e7eb;
+  --accent-ink: #111827;
+}
+
+html[data-player-skin="noir"] body {
+  background: #111827 !important;
+}
+html[data-player-skin="noir"] body::after {
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.28;
+  background: repeating-linear-gradient(180deg, transparent 0 10px, rgba(0, 0, 0, 0.55) 10px 14px);
+  animation: room-noir-blinds 10s linear infinite;
+}
+
+html[data-player-skin="noir"] .top-hud {
+  background: #0b0f16;
+  border-bottom: 1px solid #e5e7eb;
+}
+html[data-player-skin="noir"] .hud-app-name {
+  font-family: var(--at-font-display);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+html[data-player-skin="noir"] .launcher-card {
+  border-radius: 0 12px;
+  padding: 16px 18px;
+  background: #1f2937;
+  border: 1px solid #4b5563;
+  box-shadow: 8px 0 0 rgba(229, 231, 235, 0.08);
+}
+html[data-player-skin="noir"] button.primary,
+html[data-player-skin="noir"] .tab-chip.active {
+  background: #e5e7eb;
+  color: #111827;
+  border: 1px solid #9ca3af;
+}
+
+html[data-player-skin="noir"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 0 6px; }
+html[data-player-skin="noir"][data-app-tab="Tasks"] .tsk-row { border-radius: 0 10px; }
+html[data-player-skin="noir"][data-app-tab="Agent"] .agent-bubble {
+  border-radius: 0 14px;
+  box-shadow: -10px 0 20px rgba(0, 0, 0, 0.45);
+}
+
+@keyframes room-noir-blinds { to { background-position: 0 14px; } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="noir"] body::after { animation: none; }
+}

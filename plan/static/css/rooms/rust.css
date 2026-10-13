@@ -1,0 +1,1046 @@
+/* ═══════════════════════════════════════════════════════════════
+   RUST CART — oxidized iron for long hauls.
+
+   The object: a freight gondola. You are standing in the cart bed.
+   Place is the page: the working surface is the steel floor, ribbed
+   the length of the car, flaking oxide, one honest iron still showing
+   where a wheel hub was wiped clean. Not copper patina (no green).
+   Not canyon red stone (no beds, no trail, no cairn). Not terracotta
+   brick (no masonry, no grout). Not scrap's washer collage.
+
+   Architecture:
+   - Signature cut: the fishbelly gondola. Square top chords (the
+     side sills), a long underframe belly at the loaded foot. The
+     right-rear sits heavier after the haul. Never a mesa crown,
+     never 42%/48% ovals.
+   - Signature glyph: the car in side elevation — body, two wheels.
+     The right wheel is the honest iron. Glyphs may clip.
+   - Signature edge: floor ribs running the length of the bed
+     (loot pattern `stripes`). HUD is only the top chord you lean on.
+   - Signature grit: mill-scale flakes (loot effect `sand`), not
+     canyon talus and not noon dune dust.
+   - One honest iron: a single wiped hub, grey metal, never a
+     four-corner rivet grid.
+
+   Loot: colorA #c2410c · colorB #7c2d12 · effect sand · pattern
+   stripes · place page. Selectors carry :root to outrank the
+   dune-family stencil. Never clip #main or .launcher-card.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — mill scale, hematite flake, one wiped hub ─── */
+
+html[data-player-skin="rust"]:root {
+  color-scheme: dark;
+
+  --ru-well: #100c0a;
+  --ru-bed: #18110d;
+  --ru-plate: #241812;
+  --ru-plate-2: #2e1c14;
+  --ru-sill: #1c1410;
+  --ru-oxide: #c2410c;
+  --ru-scale: #7c2d12;
+  --ru-flake: #d14a12;
+  --ru-scab: #9a3410;
+  --ru-iron: #5c564e;
+  --ru-iron-hi: #c2b6aa;
+  --ru-iron-raw: #8a8178;
+  --ru-iron-lo: #3a3530;
+  --ru-ink: #f2e6d8;
+  --ru-ink-2: #d4c4b4;
+  --ru-mute: #a09080;
+
+  --ru-hair: rgba(194, 65, 12, 0.28);
+  --ru-hair-2: rgba(194, 65, 12, 0.5);
+  --ru-metal: rgba(194, 182, 170, 0.22);
+
+  /* Fishbelly gondola: square sills, loaded belly, heavier right-rear. */
+  --ru-r-plate: 2px 2px 34px 26px / 2px 2px 15px 11px;
+  --ru-r-card: 2px 2px 28px 22px / 2px 2px 12px 9px;
+  --ru-r-ctl: 1px 1px 16px 12px / 1px 1px 8px 6px;
+  --ru-r-chip: 1px 1px 12px 9px / 1px 1px 6px 5px;
+  --ru-r-cell: 1px 1px 10px 8px / 1px 1px 5px 4px;
+  --ru-r-dialog: 2px 2px 38px 30px / 2px 2px 17px 13px;
+
+  /* Floor ribs: longitudinal corrugation of the cart bed. */
+  --ru-ribs:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 13px,
+      rgba(16, 12, 10, 0.55) 13px 14px,
+      transparent 14px 27px,
+      rgba(194, 65, 12, 0.14) 27px 28px
+    );
+  --ru-ribs-soft:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 15px,
+      rgba(16, 12, 10, 0.35) 15px 16px,
+      transparent 16px 31px,
+      rgba(194, 65, 12, 0.08) 31px 32px
+    );
+
+  --ru-font-stencil: "Avenir Next Condensed", "Barlow Condensed",
+    "Arial Narrow", "Impact", "Segoe UI", system-ui, sans-serif;
+  --ru-font-figure: ui-monospace, "IBM Plex Mono", "Cascadia Mono", monospace;
+
+  --bg-shell: var(--ru-well);
+  --bg-content: var(--ru-bed);
+  --bg-card: var(--ru-plate);
+  --bg-card-hover: var(--ru-plate-2);
+  --ink-primary: var(--ru-ink);
+  --ink-secondary: var(--ru-ink-2);
+  --ink-muted: var(--ru-mute);
+  --border: rgba(194, 65, 12, 0.34);
+  --gridline: rgba(124, 45, 18, 0.28);
+  --accent: var(--ru-oxide);
+  --ws-accent: var(--ru-oxide);
+  --accent-ink: var(--ru-well);
+
+  --skin-a: #c2410c;
+  --skin-b: #7c2d12;
+  --at-a: #c2410c;
+  --at-b: #7c2d12;
+  --feel-a: #c2410c;
+  --feel-b: #7c2d12;
+  --feel-accent: #c2410c;
+  --feel-ground: #100c0a;
+  --feel-paper: #241812;
+  --feel-ink: #f2e6d8;
+
+  --at-plate: var(--ru-plate);
+  --at-plate-2: var(--ru-plate-2);
+  --at-well: var(--ru-well);
+  --at-ink: var(--ru-ink);
+  --at-ink-2: var(--ru-ink-2);
+  --at-ink-3: var(--ru-mute);
+  --at-hair: var(--ru-hair);
+  --at-hair-2: var(--ru-hair-2);
+  --at-hair-a: rgba(194, 65, 12, 0.58);
+  --at-focus: 0 0 0 2px var(--ru-iron-hi);
+  --at-gold: var(--ru-oxide);
+  --at-gold-soft: var(--ru-flake);
+  --at-inset: inset 0 1px 0 rgba(194, 182, 170, 0.16);
+  --at-rise: 0 8px 0 #100c0a, 0 16px 24px rgba(8, 6, 5, 0.5);
+  --at-rise-soft: 0 5px 0 #100c0a, 0 10px 16px rgba(8, 6, 5, 0.36);
+  --at-r-plate: var(--ru-r-plate);
+  --at-r-card: var(--ru-r-card);
+  --at-r-ctl: var(--ru-r-ctl);
+  --at-r-chip: var(--ru-r-chip);
+  --at-r-cell: var(--ru-r-cell);
+  --at-font-display: var(--ru-font-stencil);
+  --at-font-mono: var(--ru-font-figure);
+  --font-display: var(--ru-font-stencil);
+  --font-ui: var(--ru-font-stencil);
+
+  /* Load on the bed: a heavy underframe, a wiped highlight on the sill. */
+  --feel-3d:
+    inset 0 1px 0 rgba(194, 182, 170, 0.18),
+    inset 0 -3px 0 rgba(16, 12, 10, 0.7),
+    0 7px 0 #100c0a,
+    0 14px 22px rgba(8, 6, 5, 0.46);
+  --feel-3d-press:
+    inset 0 4px 8px rgba(16, 12, 10, 0.7),
+    inset 0 -1px 0 rgba(194, 65, 12, 0.18),
+    0 2px 0 #100c0a,
+    0 5px 10px rgba(8, 6, 5, 0.36);
+  --feel-grain-opacity: 0.32;
+  --feel-grain-blend: overlay;
+  --feel-grain:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 13px,
+      rgba(16, 12, 10, 0.4) 13px 14px,
+      transparent 14px 27px,
+      rgba(194, 65, 12, 0.1) 27px 28px
+    ),
+    radial-gradient(circle at 22% 31%, rgba(194, 65, 12, 0.28) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 71% 64%, rgba(92, 86, 78, 0.22) 0 1.1px, transparent 1.9px);
+  --feel-grain-size: auto, 29px 23px, 37px 31px;
+  --feel-hud-hair: 3px solid #5c564e;
+  --feel-icon:
+    sepia(0.28) saturate(0.92) contrast(1.1)
+    drop-shadow(0 1px 0 rgba(16, 12, 10, 0.7));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.11em;
+  --feel-plate-image: var(--ru-ribs-soft);
+  --plate-shadow: var(--at-rise-soft);
+  --plate-shadow-hover: var(--at-rise);
+
+  --ru-hub:
+    radial-gradient(circle at 36% 30%,
+      var(--ru-iron-hi) 0 14%,
+      var(--ru-iron-raw) 22%,
+      var(--ru-iron) 52%,
+      var(--ru-iron-lo) 74%,
+      var(--ru-well) 88%);
+  --ru-wheel:
+    radial-gradient(circle at 50% 50%,
+      var(--ru-well) 0 18%,
+      var(--ru-iron-hi) 19% 22%,
+      var(--ru-iron) 28% 36%,
+      var(--ru-scale) 44% 62%,
+      var(--ru-oxide) 70% 82%,
+      var(--ru-iron-lo) 90% 100%);
+}
+
+/* ── 2 · Body — standing in the cart, looking at the bed ────── */
+
+html[data-player-skin="rust"]:root body {
+  background-color: var(--ru-well) !important;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(16, 12, 10, 0.82) 0%,
+      transparent 11%,
+      transparent 89%,
+      rgba(16, 12, 10, 0.82) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(36, 24, 18, 0.55) 0%,
+      rgba(24, 17, 13, 0.35) 22%,
+      rgba(16, 12, 10, 0.72) 100%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      #18110d 0 14px,
+      #1e1410 14px 15px,
+      #241812 15px 29px,
+      #7c2d12 29px 30px
+    ) !important;
+  background-attachment: fixed, fixed, fixed !important;
+  color: var(--ru-ink);
+}
+
+/* Mill-scale flakes. Sand of this room: oxide peeling, not stone dust. */
+html[data-player-skin="rust"]:root body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.34;
+  mix-blend-mode: overlay;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(194, 65, 12, 0.45) 0 1.1px, transparent 1.8px),
+    radial-gradient(circle at 63% 41%, rgba(92, 86, 78, 0.35) 0 0.9px, transparent 1.6px),
+    radial-gradient(circle at 81% 73%, rgba(124, 45, 18, 0.4) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 37% 82%, rgba(194, 65, 12, 0.22) 0 0.7px, transparent 1.4px);
+  background-size: 31px 27px, 23px 19px, 41px 33px, 17px 21px;
+  animation: room-rust-flake 26s linear infinite;
+}
+
+html[data-player-skin="rust"]:root body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+  background: var(--ru-ribs);
+  animation: room-rust-haul 18s ease-in-out infinite;
+}
+
+/* ── 3 · Main — the cart bed. Walls rise. Ribs run the haul. ── */
+
+html[data-player-skin="rust"]:root #main {
+  clip-path: none !important;
+  isolation: isolate;
+  overflow: visible;
+  background:
+    var(--ru-ribs-soft),
+    linear-gradient(
+      180deg,
+      rgba(36, 24, 18, 0.45) 0%,
+      rgba(16, 12, 10, 0.62) 100%
+    ) !important;
+  border-inline: 4px solid #3a3530;
+  box-shadow:
+    inset 28px 0 36px -18px rgba(16, 12, 10, 0.92),
+    inset -28px 0 36px -18px rgba(16, 12, 10, 0.92),
+    inset 0 1px 0 rgba(194, 182, 170, 0.12),
+    inset 0 -6px 0 rgba(16, 12, 10, 0.55);
+}
+
+html[data-player-skin="rust"]:root #main::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 10px 14px auto 14px;
+  height: 3px;
+  z-index: 0;
+  background: linear-gradient(
+    90deg,
+    var(--ru-iron-lo) 0%,
+    var(--ru-iron) 18%,
+    var(--ru-iron-hi) 22%,
+    var(--ru-iron) 28%,
+    var(--ru-scale) 55%,
+    var(--ru-oxide) 78%,
+    var(--ru-iron-lo) 100%
+  );
+  opacity: 0.7;
+  box-shadow: 0 1px 0 var(--ru-well);
+}
+
+html[data-player-skin="rust"]:root #main::after {
+  clip-path: none !important;
+  animation: none;
+  background: none;
+}
+
+/* ── 4 · HUD — the top chord you lean on, not the object ────── */
+
+html[data-player-skin="rust"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border-image: none;
+  border-bottom: 3px solid var(--ru-iron);
+  border-radius: 0 0 28px 22px / 0 0 12px 9px;
+  background:
+    linear-gradient(180deg, rgba(194, 182, 170, 0.12), transparent 26%),
+    linear-gradient(180deg, #3a2a22 0 16%, #2a1c16 16% 58%, #1c1410 58% 100%);
+  color: var(--ru-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(194, 182, 170, 0.2),
+    0 6px 0 var(--ru-well),
+    0 12px 20px rgba(8, 6, 5, 0.4);
+  backdrop-filter: none;
+}
+
+/* Oxide scab along the sill — a flake line, not a canyon trail. */
+html[data-player-skin="rust"]:root .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 12px;
+  right: 18px;
+  bottom: 5px;
+  height: 4px;
+  z-index: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--ru-scale) 0 11px,
+    var(--ru-oxide) 11px 14px,
+    var(--ru-iron-lo) 14px 23px
+  );
+  opacity: 0.85;
+}
+
+html[data-player-skin="rust"]:root .top-hud::after {
+  content: none;
+}
+
+html[data-player-skin="rust"]:root .top-hud > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-player-skin="rust"]:root .hud-app-name,
+html[data-player-skin="rust"]:root .launcher-title,
+html[data-player-skin="rust"]:root .page-title {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--ru-ink);
+  color: var(--ru-ink);
+  font-family: var(--ru-font-stencil);
+  font-weight: 760;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 var(--ru-well);
+}
+
+html[data-player-skin="rust"]:root .hud-app-name::before {
+  content: "⊟  ";
+  color: var(--ru-iron-hi);
+  font-size: 0.78em;
+  letter-spacing: 0;
+}
+
+html[data-player-skin="rust"]:root .hud-app-name::after {
+  content: none !important;
+  animation: none !important;
+}
+
+html[data-player-skin="rust"]:root .hud-intention,
+html[data-player-skin="rust"]:root .hud-now-focus-kicker {
+  color: var(--ru-ink-2);
+  font-family: var(--ru-font-figure);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+}
+
+/* The jewel is the wiped hub — honest iron, not a rust scab. */
+html[data-player-skin="rust"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  border-radius: 50%;
+  border: 2px solid var(--ru-iron);
+  background: var(--ru-hub);
+  box-shadow:
+    inset 0 1px 0 rgba(194, 182, 170, 0.55),
+    inset 0 -2px 0 var(--ru-well),
+    0 2px 0 var(--ru-well);
+  animation: room-rust-iron 7.4s ease-in-out infinite;
+}
+
+html[data-player-skin="rust"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 34%;
+  border-radius: 50%;
+  background: var(--ru-well);
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.5), 0 0 0 1px var(--ru-iron-raw);
+}
+
+html[data-player-skin="rust"]:root .brand-mark,
+html[data-player-skin="rust"]:root .ws-mark,
+html[data-player-skin="rust"]:root .hud-icon-svg,
+html[data-player-skin="rust"]:root .tab-chip-mark,
+html[data-player-skin="rust"]:root .wp-skin-mark {
+  color: var(--ru-iron-hi);
+  filter: var(--feel-icon);
+  image-rendering: auto;
+  transform: none;
+}
+
+html[data-player-skin="rust"]:root :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-chip,
+  .hud-metric,
+  .hud-game-cluster,
+  .hud-game-chip,
+  .hud-model-chip--status,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .loot-profile-chip
+) {
+  color: var(--ru-ink);
+  border: 1px solid rgba(194, 65, 12, 0.32);
+  border-bottom: 2px solid var(--ru-iron-lo);
+  border-radius: var(--ru-r-chip);
+  background:
+    linear-gradient(180deg, rgba(194, 182, 170, 0.1), transparent 36%),
+    var(--ru-plate);
+  box-shadow: inset 0 1px 0 rgba(194, 182, 170, 0.1), 0 3px 0 var(--ru-well);
+  animation: none;
+}
+
+html[data-player-skin="rust"]:root :is(.hud-icon-btn, .hud-glyph-btn):hover:not(:disabled) {
+  border-color: var(--ru-oxide);
+  filter: brightness(1.06);
+}
+
+html[data-player-skin="rust"]:root :is(.hud-icon-btn, .hud-glyph-btn):active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: var(--feel-3d-press);
+}
+
+html[data-player-skin="rust"]:root .tab-chip-bar {
+  background: color-mix(in srgb, var(--ru-well) 90%, var(--ru-scale));
+  border-bottom: 1px solid var(--ru-iron-lo);
+}
+
+html[data-player-skin="rust"]:root .tab-chip,
+html[data-player-skin="rust"]:root .pill,
+html[data-player-skin="rust"]:root .seg-pill-btn,
+html[data-player-skin="rust"]:root .pln-mode-chip,
+html[data-player-skin="rust"]:root .app-subnav-pill,
+html[data-player-skin="rust"]:root .tsk-day-chip {
+  border: 1px solid rgba(194, 65, 12, 0.26);
+  border-radius: var(--ru-r-chip);
+  background: var(--ru-plate);
+  color: var(--ru-ink-2);
+  font-family: var(--ru-font-stencil);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 3px 0 var(--ru-well);
+}
+
+html[data-player-skin="rust"]:root .tab-chip.active,
+html[data-player-skin="rust"]:root .pill.active,
+html[data-player-skin="rust"]:root .pill[aria-pressed="true"],
+html[data-player-skin="rust"]:root .app-subnav-pill.active {
+  color: var(--ru-well);
+  border-color: var(--ru-iron-hi);
+  background: linear-gradient(180deg, var(--ru-iron-hi), var(--ru-iron-raw) 62%, var(--ru-iron));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 3px 0 var(--ru-well);
+}
+
+/* ── 5 · Glyph — gondola in side elevation, right wheel honest ─ */
+/* Body, two wheels. The right wheel is wiped iron. Glyphs may clip. */
+
+html[data-player-skin="rust"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .nav-app-glyph,
+  .loot-skin-avatar,
+  .wp-skin-mark
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: none;
+  transform: none;
+  color: var(--ru-well);
+  clip-path: polygon(
+    7% 24%, 93% 24%, 93% 58%, 80% 58%, 80% 78%, 66% 78%, 66% 58%,
+    34% 58%, 34% 78%, 20% 78%, 20% 58%, 7% 58%
+  );
+  background:
+    linear-gradient(180deg, var(--ru-iron-raw) 0 18%, var(--ru-scab) 18% 40%, var(--ru-scale) 40% 72%, var(--ru-iron-lo) 72% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(194, 182, 170, 0.28),
+    0 4px 0 var(--ru-well);
+  filter: none;
+}
+
+html[data-player-skin="rust"]:root .launcher-card-glyph::before,
+html[data-player-skin="rust"]:root .launcher-tile-glyph::before,
+html[data-player-skin="rust"]:root .loot-skin-avatar::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  right: 14%;
+  bottom: 4%;
+  width: 22%;
+  height: 22%;
+  border-radius: 50%;
+  background: var(--ru-hub);
+  box-shadow: 0 0 0 1px var(--ru-iron);
+}
+
+html[data-player-skin="rust"]:root .launcher-card-glyph::after,
+html[data-player-skin="rust"]:root .launcher-tile-glyph::after,
+html[data-player-skin="rust"]:root .loot-skin-avatar::after {
+  content: "⊟";
+  position: absolute;
+  right: -5px;
+  bottom: -6px;
+  display: grid;
+  width: 16px;
+  height: 16px;
+  place-items: center;
+  border: 1px solid var(--ru-iron);
+  border-radius: 50%;
+  background: var(--ru-well);
+  color: var(--ru-iron-hi);
+  font: 700 9px/1 var(--ru-font-figure), sans-serif;
+  box-shadow: 0 1px 0 var(--ru-well);
+  clip-path: none;
+}
+
+html[data-player-skin="rust"]:root .launcher-custom-app-emoji {
+  clip-path: polygon(
+    7% 24%, 93% 24%, 93% 58%, 80% 58%, 80% 78%, 66% 78%, 66% 58%,
+    34% 58%, 34% 78%, 20% 78%, 20% 58%, 7% 58%
+  );
+  background: rgba(124, 45, 18, 0.55);
+  border: 1px solid rgba(194, 182, 170, 0.28);
+}
+
+html[data-player-skin="rust"]:root .launcher-card-glyph svg,
+html[data-player-skin="rust"]:root .launcher-tile-glyph svg {
+  filter: brightness(0.22) contrast(1.15) sepia(0.25);
+}
+
+/* ── 6 · Cards — cargo sitting on the bed ───────────────────── */
+
+html[data-player-skin="rust"]:root .launcher-card {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  outline: none;
+  clip-path: none !important;
+  border: 1px solid rgba(194, 65, 12, 0.32);
+  border-bottom: 3px solid var(--ru-iron-lo);
+  border-radius: var(--ru-r-card);
+  background:
+    var(--ru-ribs-soft),
+    linear-gradient(180deg, var(--ru-plate-2), var(--ru-plate) 72%);
+  color: var(--ru-ink);
+  box-shadow: var(--feel-3d);
+  transform: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 180ms ease;
+}
+
+html[data-player-skin="rust"]:root :is(
+  .card,
+  .hub-card,
+  .pln-rail-card,
+  .evt-card,
+  .tsk-row,
+  .task-row,
+  .hub-glance-item,
+  .page-intent,
+  .napkin-entry
+) {
+  border: 1px solid rgba(194, 65, 12, 0.26);
+  border-bottom: 2px solid var(--ru-iron-lo);
+  border-radius: var(--ru-r-plate);
+  background:
+    var(--ru-ribs-soft),
+    var(--ru-plate);
+  color: var(--ru-ink);
+  box-shadow: inset 0 1px 0 rgba(194, 182, 170, 0.1), 0 5px 0 var(--ru-well);
+}
+
+/* One honest iron hub, not a four-corner fastener set. */
+html[data-player-skin="rust"]:root .launcher-card::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1px solid var(--ru-iron);
+  background: var(--ru-hub);
+  opacity: 1;
+  box-shadow:
+    inset 0 1px 0 rgba(194, 182, 170, 0.5),
+    0 1px 0 var(--ru-well);
+}
+
+/* Floor rib catching light along the loaded foot. */
+html[data-player-skin="rust"]:root .launcher-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 14px 10px 14px;
+  right: 14px;
+  bottom: 10px;
+  width: auto;
+  height: 3px;
+  aspect-ratio: auto;
+  border-radius: 0;
+  opacity: 0.55;
+  transform: none;
+  background-color: transparent;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--ru-iron-lo) 0 8px,
+    var(--ru-oxide) 8px 10px,
+    transparent 10px 18px
+  );
+}
+
+html[data-player-skin="rust"]:root .launcher-card-name,
+html[data-player-skin="rust"]:root .launcher-tile-name {
+  color: var(--ru-ink);
+  font-family: var(--ru-font-stencil);
+  font-weight: 760;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 var(--ru-well);
+}
+
+html[data-player-skin="rust"]:root .launcher-card-intention,
+html[data-player-skin="rust"]:root .launcher-card-sub,
+html[data-player-skin="rust"]:root .launcher-card-stats {
+  color: var(--ru-ink-2);
+  font-family: var(--ru-font-figure);
+}
+
+/* Cargo settles onto the bed. Nothing lifts. */
+html[data-player-skin="rust"]:root .launcher-card:hover,
+html[data-player-skin="rust"]:root .launcher-card--focused {
+  transform: translateY(2px);
+  border-color: rgba(194, 65, 12, 0.58);
+  box-shadow:
+    inset 0 1px 0 rgba(194, 182, 170, 0.22),
+    inset 0 -4px 0 rgba(16, 12, 10, 0.75),
+    0 4px 0 var(--ru-well),
+    0 10px 16px rgba(8, 6, 5, 0.5);
+}
+
+html[data-player-skin="rust"]:root .launcher-card:hover::after,
+html[data-player-skin="rust"]:root .launcher-card--focused::after {
+  opacity: 0.95;
+}
+
+html[data-player-skin="rust"]:root :is(.card, .hub-card):hover {
+  border-color: rgba(194, 65, 12, 0.5);
+}
+
+html[data-player-skin="rust"]:root :is(.loot-skin-card, .loot-collection-card) {
+  border: 1px solid rgba(194, 65, 12, 0.3);
+  border-radius: var(--ru-r-card);
+  background: var(--ru-plate);
+  color: var(--ru-ink);
+}
+
+/* ── 7 · Buttons — a coupler that closes; the hub stays put ─── */
+
+html[data-player-skin="rust"]:root button.primary,
+html[data-player-skin="rust"]:root .primary,
+html[data-player-skin="rust"]:root .page-intent-primary,
+html[data-player-skin="rust"]:root .agent-pane-chat .agc-send {
+  position: relative;
+  border: 1px solid var(--ru-oxide);
+  border-bottom: 3px solid var(--ru-iron-lo);
+  border-radius: var(--ru-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(194, 182, 170, 0.2), transparent 32%),
+    linear-gradient(180deg, var(--ru-flake), var(--ru-oxide) 55%, var(--ru-scale));
+  color: var(--ru-ink);
+  font-family: var(--ru-font-stencil);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 var(--ru-well);
+  box-shadow: var(--feel-3d);
+  animation: none;
+  transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+}
+
+html[data-player-skin="rust"]:root button.primary::before,
+html[data-player-skin="rust"]:root .agent-pane-chat .agc-send::before {
+  content: "⊟";
+  margin-right: 6px;
+  opacity: 0.7;
+  font-size: 0.85em;
+  color: var(--ru-iron-hi);
+}
+
+html[data-player-skin="rust"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="rust"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.05);
+  transform: translateY(1px);
+}
+
+html[data-player-skin="rust"]:root button.primary:active:not(:disabled),
+html[data-player-skin="rust"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: var(--feel-3d-press);
+  animation: room-rust-iron 180ms ease-out;
+}
+
+html[data-player-skin="rust"]:root :is(button.secondary, .ghost-btn, .pill) {
+  border: 1px solid rgba(194, 65, 12, 0.3);
+  border-bottom: 2px solid var(--ru-iron-lo);
+  border-radius: var(--ru-r-ctl);
+  background: var(--ru-plate);
+  color: var(--ru-ink-2);
+  font-family: var(--ru-font-stencil);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: inset 0 1px 0 rgba(194, 182, 170, 0.08), 0 3px 0 var(--ru-well);
+}
+
+html[data-player-skin="rust"]:root button.secondary:hover:not(:disabled),
+html[data-player-skin="rust"]:root .ghost-btn:hover:not(:disabled) {
+  border-color: var(--ru-oxide);
+  color: var(--ru-ink);
+}
+
+html[data-player-skin="rust"]:root #quick-capture-fab.quick-capture-fab {
+  background: linear-gradient(180deg, var(--ru-flake), var(--ru-scale)) !important;
+  color: var(--ru-ink) !important;
+  border-color: var(--ru-iron) !important;
+  border-radius: var(--ru-r-card) !important;
+  box-shadow: 0 5px 0 var(--ru-well) !important;
+}
+
+/* ── 8 · Empty / input / focus / disabled ───────────────────── */
+
+/* Empty: an unloaded bed. Ribs, no cargo, the hub still there. */
+html[data-player-skin="rust"]:root .empty-state {
+  position: relative;
+  border: 1px dashed rgba(194, 182, 170, 0.4);
+  border-bottom: 3px dashed var(--ru-iron);
+  border-radius: var(--ru-r-plate);
+  background:
+    var(--ru-ribs),
+    var(--ru-bed);
+  color: var(--ru-ink-2);
+  box-shadow:
+    inset 0 0 0 5px var(--ru-well),
+    inset 18px 0 22px -14px rgba(16, 12, 10, 0.7),
+    inset -18px 0 22px -14px rgba(16, 12, 10, 0.7),
+    0 6px 0 var(--ru-well);
+}
+
+html[data-player-skin="rust"]:root .empty-state::before {
+  content: "⊟";
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ru-iron-hi);
+  font: 700 20px/1 var(--ru-font-figure), sans-serif;
+  opacity: 0.8;
+}
+
+html[data-player-skin="rust"]:root .empty-state-title {
+  color: var(--ru-ink);
+  font-family: var(--ru-font-stencil);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="rust"]:root .empty-state-body,
+html[data-player-skin="rust"]:root .empty-state-hint {
+  color: var(--ru-ink-2);
+}
+
+/* Stake pocket: a recessed slot in the floor. */
+html[data-player-skin="rust"]:root :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]) {
+  border: 1px solid rgba(194, 65, 12, 0.34);
+  border-bottom: 2px solid var(--ru-iron);
+  border-radius: var(--ru-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.4), transparent 38%),
+    var(--ru-ribs-soft),
+    var(--ru-well);
+  color: var(--ru-ink);
+  caret-color: var(--ru-iron-hi);
+  font-family: var(--ru-font-figure);
+  box-shadow:
+    inset 0 3px 8px rgba(8, 6, 5, 0.62),
+    inset 0 0 0 1px var(--ru-sill);
+}
+
+html[data-player-skin="rust"]:root :is(input, textarea)::placeholder {
+  color: var(--ru-mute);
+  letter-spacing: 0.04em;
+}
+
+html[data-player-skin="rust"]:root :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]):focus,
+html[data-player-skin="rust"]:root .agc-input-zone:focus-within {
+  border-color: var(--ru-iron-hi);
+  outline: none;
+  box-shadow:
+    inset 0 3px 8px rgba(8, 6, 5, 0.62),
+    0 0 0 2px var(--ru-well),
+    0 0 0 4px color-mix(in srgb, var(--ru-iron-hi) 55%, transparent);
+}
+
+/* Focus is the wiped hub: inner axle, then the iron rim. */
+html[data-player-skin="rust"]:root :focus-visible {
+  outline: 2px solid var(--ru-iron-hi);
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 5px var(--ru-well),
+    0 0 0 6px var(--ru-iron);
+}
+
+html[data-player-skin="rust"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .launcher-search-panel,
+  .wp-alarm-card,
+  dialog
+) {
+  border: 1px solid rgba(194, 65, 12, 0.4);
+  border-bottom: 4px solid var(--ru-iron-lo);
+  border-radius: var(--ru-r-dialog);
+  background:
+    var(--ru-ribs-soft),
+    var(--ru-plate-2);
+  color: var(--ru-ink);
+  box-shadow:
+    inset 0 0 0 1px var(--ru-sill),
+    0 8px 0 var(--ru-well),
+    0 28px 56px rgba(8, 6, 5, 0.64);
+}
+
+html[data-player-skin="rust"]:root .toast-item {
+  border: 1px solid var(--ru-oxide);
+  border-bottom: 3px solid var(--ru-iron-lo);
+  border-radius: var(--ru-r-chip);
+  background: linear-gradient(135deg, var(--ru-oxide), var(--ru-scale));
+  color: var(--ru-ink);
+  box-shadow: 0 4px 0 var(--ru-well);
+  animation: room-rust-scale 0.8s ease-out 1;
+}
+
+html[data-player-skin="rust"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: #4a4038;
+  background: #221a16;
+  color: #6e6660;
+  opacity: 0.58;
+  filter: grayscale(0.4) saturate(0.45);
+  box-shadow: none;
+  cursor: not-allowed;
+  animation: none !important;
+}
+
+html[data-player-skin="rust"]:root ::selection {
+  background: color-mix(in srgb, var(--ru-oxide) 45%, transparent);
+  color: var(--ru-ink);
+}
+
+html[data-player-skin="rust"]:root * {
+  scrollbar-color: color-mix(in srgb, var(--ru-oxide) 40%, transparent) transparent;
+}
+
+/* ── 9 · Companion, agent, per-tab beds ─────────────────────── */
+
+html[data-player-skin="rust"]:root .companion-launcher-orb {
+  border-radius: 50%;
+  border: 2px solid var(--ru-iron);
+  background: var(--ru-wheel);
+  box-shadow:
+    inset 0 1px 0 rgba(194, 182, 170, 0.3),
+    0 0 0 1px var(--ru-iron-lo),
+    0 4px 0 var(--ru-well);
+  animation: room-rust-iron 8.2s ease-in-out infinite;
+}
+
+html[data-player-skin="rust"]:root .agent-msg.assistant .agent-bubble {
+  border: 1px solid rgba(194, 65, 12, 0.22);
+  border-radius: var(--ru-r-card);
+  background: var(--ru-plate);
+  color: var(--ru-ink);
+}
+
+html[data-player-skin="rust"]:root .agent-msg.user .agent-bubble {
+  border: 1px solid var(--ru-iron);
+  border-radius: 2px 2px 22px 16px / 2px 2px 10px 8px;
+  background: color-mix(in srgb, var(--ru-oxide) 22%, var(--ru-plate));
+  color: var(--ru-ink);
+}
+
+/* Home: looking down the whole bed. Ribs, walls, the haul ahead. */
+html[data-player-skin="rust"]:root[data-app-tab="Home"] #main {
+  clip-path: none !important;
+  background:
+    var(--ru-ribs),
+    linear-gradient(180deg, rgba(46, 28, 20, 0.4), rgba(16, 12, 10, 0.55)) !important;
+  box-shadow:
+    inset 32px 0 40px -20px rgba(16, 12, 10, 0.94),
+    inset -32px 0 40px -20px rgba(16, 12, 10, 0.94),
+    inset 0 1px 0 rgba(194, 182, 170, 0.14);
+}
+
+html[data-player-skin="rust"]:root[data-app-tab="Today"] #main,
+html[data-player-skin="rust"]:root[data-app-tab="Calendar"] #main {
+  clip-path: none !important;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 27px,
+      rgba(194, 65, 12, 0.1) 27px 28px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 31px,
+      rgba(16, 12, 10, 0.35) 31px 32px
+    ),
+    var(--ru-bed) !important;
+}
+
+html[data-player-skin="rust"]:root[data-app-tab="Today"] #main .tdy-hour-cell,
+html[data-player-skin="rust"]:root[data-app-tab="Calendar"] #main .tdy-hour-cell,
+html[data-player-skin="rust"]:root[data-app-tab="Calendar"] :is(.cal-day, .cal-hour-cell),
+html[data-player-skin="rust"]:root[data-app-tab="Calendar"] .cal-month-cell:not(.cal-month-cell-pad) {
+  border: 1px solid rgba(194, 65, 12, 0.28);
+  border-bottom: 2px solid var(--ru-iron-lo);
+  border-radius: var(--ru-r-cell);
+  background:
+    linear-gradient(180deg, rgba(194, 182, 170, 0.06), transparent 36%),
+    var(--ru-plate);
+  color: var(--ru-ink-2);
+  box-shadow: 0 3px 0 var(--ru-well);
+}
+
+html[data-player-skin="rust"]:root :is(.tdy-hour-painted, .cal-hour-painted),
+html[data-player-skin="rust"]:root[data-app-tab="Calendar"] .cal-month-cell-today {
+  border-color: var(--ru-oxide);
+  background: color-mix(in srgb, var(--ru-oxide) 32%, var(--ru-plate));
+  color: var(--ru-ink);
+  box-shadow: inset 3px 0 0 var(--ru-iron-hi), 0 3px 0 var(--ru-well);
+}
+
+html[data-player-skin="rust"]:root :is(.cal-week-chip, .cal-month-chip) {
+  border-radius: var(--ru-r-chip);
+  border: 1px solid rgba(194, 65, 12, 0.26);
+  background: var(--ru-plate-2);
+  color: var(--ru-ink-2);
+}
+
+html[data-player-skin="rust"]:root[data-app-tab="Agent"] #main .agent-pane,
+html[data-player-skin="rust"]:root .agent-pane {
+  border: 1px solid rgba(194, 65, 12, 0.26);
+  border-radius: var(--ru-r-plate);
+  background:
+    radial-gradient(ellipse 55% 26% at 50% 0%, rgba(194, 65, 12, 0.16), transparent 70%),
+    var(--ru-ribs-soft),
+    var(--ru-well);
+  color: var(--ru-ink);
+  box-shadow: inset 0 1px 0 rgba(194, 182, 170, 0.1), inset 0 -3px 0 var(--ru-sill);
+}
+
+html[data-player-skin="rust"]:root[data-app-tab="Tasks"] #main :is(.card, .tsk-row, .task-row),
+html[data-player-skin="rust"]:root[data-app-tab="Goals"] #main .card,
+html[data-player-skin="rust"]:root[data-app-tab="Projects"] #main .card,
+html[data-player-skin="rust"]:root[data-app-tab="Parallel"] #main .card {
+  border-left: 3px solid var(--ru-iron);
+  background:
+    linear-gradient(90deg, rgba(194, 65, 12, 0.1), transparent 22%),
+    var(--ru-plate);
+}
+
+html[data-player-skin="rust"]:root[data-app-tab="Hub"] #main :is(.hub-card, .hub-glance-item),
+html[data-player-skin="rust"]:root:is(
+  [data-app-tab="Practice"],
+  [data-app-tab="Settings"],
+  [data-app-tab="About"],
+  [data-app-tab="Paint"]
+) #main .card {
+  border-radius: var(--ru-r-card);
+  background:
+    var(--ru-ribs-soft),
+    var(--ru-plate);
+}
+
+/* ── 10 · Motion — flakes peel, the haul sways, iron glints ─── */
+
+@keyframes room-rust-flake {
+  0% { background-position: 0 0, 0 0, 0 0, 0 0; }
+  100% { background-position: 0 54px, 12px 38px, -8px 66px, 6px 21px; }
+}
+
+@keyframes room-rust-haul {
+  0%, 100% { transform: translateX(0); opacity: 0.16; }
+  50% { transform: translateX(3px); opacity: 0.22; }
+}
+
+@keyframes room-rust-iron {
+  0%, 100% { filter: brightness(0.96); }
+  40% { filter: brightness(1.12); }
+  58% { filter: brightness(0.94); }
+}
+
+@keyframes room-rust-scale {
+  0% { transform: translateY(-6px); opacity: 0; filter: brightness(1.08); }
+  62% { transform: translateY(2px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; filter: brightness(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="rust"]:root *,
+  html[data-player-skin="rust"]:root *::before,
+  html[data-player-skin="rust"]:root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  html[data-player-skin="rust"]:root .launcher-card:hover,
+  html[data-player-skin="rust"]:root .launcher-card--focused,
+  html[data-player-skin="rust"]:root button.primary:hover:not(:disabled) {
+    transform: none;
+  }
+}

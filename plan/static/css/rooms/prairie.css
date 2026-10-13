@@ -1,0 +1,977 @@
+/* ═══════════════════════════════════════════════════════════════
+   PRAIRIE SCOUT — a fence post in wind, a low horizon, endless grass.
+
+   The object is one paddock post standing in a field that does not
+   end. Not Storm Chaser (thunderhead, gold fork, navy glass). Not
+   Dune Surveyor (noon limestone, brass dial, un-feathered shadow).
+   Not Harvest Flag (corn gold, page-edge stripes). Nothing here
+   flashes, nothing is surveyed, nothing is a crop. The facts are
+   grass, wind, and a grey timber that has been there longer than
+   the person looking.
+
+   Signature cut: a sawn rail on top (radius 0) and a wind-mounded
+   sod on the downwind foot — grass piled against the post from
+   the right, so the bottom-left corner is the only soft corner
+   in the room.
+   Signature object: the T-post. Vertical weathered timber, one
+   through-rail, a tuft of grass at the foot. No wheat sheaf, no
+   reflector, no plumb vane.
+   Signature edge: the HUD is the horizon itself. Pale sky, a
+   2px olive cut, then grass blades.
+   Signature motion: the field combs sideways. Nothing rises.
+   Photograph: /img/skins/prairie.png (grassland, low fence, no
+   beach). Never clip #main or .launcher-card.
+   Loot: colorA #a3e635, colorB #4d7c0f, effect sand (overridden
+   here as wind through grass, never dune grit).
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens ─────────────────────────────────────────────── */
+
+html[data-player-skin="prairie"]:root {
+  color-scheme: light;
+
+  --pr-sky: #cfe6f0;
+  --pr-sky-low: #b7d4e0;
+  --pr-sky-wash: #e7f3f7;
+  --pr-lime: #a3e635;
+  --pr-lime-hot: #bef264;
+  --pr-grass: #65a30d;
+  --pr-olive: #4d7c0f;
+  --pr-sod: #3f6212;
+  --pr-deep: #1a2e05;
+  --pr-ink: #14240a;
+  --pr-ink-2: #365314;
+  --pr-ink-3: #4b6b22;
+  --pr-wood: #6b5340;
+  --pr-wood-hi: #8a7358;
+  --pr-wood-lo: #4a3b2c;
+  --pr-straw: #eef6d6;
+  --pr-turf: #d5e8b0;
+  --pr-well: #c5d99a;
+  --pr-hair: rgba(77, 124, 15, 0.28);
+  --pr-hair-2: rgba(77, 124, 15, 0.46);
+  --pr-wind: rgba(163, 230, 53, 0.22);
+
+  /* sawn rail above, wind-mounded sod on the lee (bottom-left) */
+  --pr-r-plate: 0px 0px 9px 44px / 0px 0px 6px 27px;
+  --pr-r-card: 0px 0px 7px 32px / 0px 0px 5px 20px;
+  --pr-r-ctl: 0px 0px 5px 20px / 0px 0px 4px 13px;
+  --pr-r-chip: 0px 0px 4px 14px / 0px 0px 3px 9px;
+  --pr-r-cell: 0px 0px 4px 12px / 0px 0px 3px 8px;
+
+  --pr-font: "Trebuchet MS", "Verdana", "Segoe UI", system-ui, sans-serif;
+  --pr-cast-1: 0 3px 0 rgba(26, 46, 5, 0.18);
+  --pr-cast-2: 0 5px 0 rgba(26, 46, 5, 0.16), 0 10px 18px rgba(26, 46, 5, 0.12);
+  --pr-cast-press: 0 1px 0 rgba(26, 46, 5, 0.28);
+
+  --bg-shell: #dcecc4;
+  --bg-content: #d2e4b4;
+  --bg-card: var(--pr-straw);
+  --bg-card-hover: #f4fadf;
+  --ink-primary: var(--pr-ink);
+  --ink-secondary: var(--pr-ink-2);
+  --ink-muted: var(--pr-ink-3);
+  --border: var(--pr-hair);
+  --gridline: rgba(77, 124, 15, 0.16);
+  --accent: var(--pr-olive);
+  --ws-accent: var(--pr-olive);
+  --accent-ink: var(--pr-deep);
+  --glow-accent: rgba(163, 230, 53, 0.28);
+  --glow-violet: rgba(77, 124, 15, 0.16);
+
+  --skin-a: #a3e635;
+  --skin-b: #4d7c0f;
+  --at-a: #a3e635;
+  --at-b: #4d7c0f;
+  --feel-a: #a3e635;
+  --feel-b: #4d7c0f;
+  --feel-accent: #a3e635;
+  --feel-ground: #dcecc4;
+  --feel-paper: #eef6d6;
+  --feel-ink: #14240a;
+
+  --at-plate: var(--pr-straw);
+  --at-plate-2: var(--pr-turf);
+  --at-well: var(--pr-well);
+  --at-ink: var(--pr-ink);
+  --at-ink-2: var(--pr-ink-2);
+  --at-ink-3: var(--pr-ink-3);
+  --at-hair: var(--pr-hair);
+  --at-hair-2: var(--pr-hair-2);
+  --at-hair-a: rgba(163, 230, 53, 0.55);
+  --at-tint: rgba(163, 230, 53, 0.12);
+  --at-tint-b: rgba(77, 124, 15, 0.16);
+  --at-focus: var(--pr-lime);
+  --at-gold: var(--pr-wood-hi);
+  --at-gold-soft: var(--pr-wood);
+  --at-inset: inset 0 2px 0 rgba(26, 46, 5, 0.1);
+  --at-rise: var(--pr-cast-2);
+  --at-rise-soft: var(--pr-cast-1);
+  --at-r-plate: var(--pr-r-plate);
+  --at-r-card: var(--pr-r-card);
+  --at-r-ctl: var(--pr-r-ctl);
+  --at-r-chip: var(--pr-r-chip);
+  --at-r-cell: var(--pr-r-cell);
+  --at-font-display: var(--pr-font);
+  --at-font-mono: var(--pr-font);
+  --font-display: var(--pr-font);
+
+  /* sand-effect brown grit is cancelled; grain is wind-combed grass */
+  --feel-3d: inset 0 1px 0 rgba(255, 255, 245, 0.55), 0 4px 0 #3f6212, 0 10px 16px rgba(26, 46, 5, 0.16);
+  --feel-3d-press: inset 0 2px 4px rgba(26, 46, 5, 0.28), 0 1px 0 #3f6212;
+  --feel-grain-opacity: 0.28;
+  --feel-grain-blend: multiply;
+  --feel-grain:
+    repeating-linear-gradient(98deg, transparent 0 7px, rgba(77, 124, 15, 0.07) 7px 8px),
+    repeating-linear-gradient(82deg, transparent 0 11px, rgba(163, 230, 53, 0.05) 11px 12px);
+  --feel-grain-size: auto, auto;
+  --feel-hud-hair: 2px solid var(--pr-olive);
+  --feel-icon: saturate(1.08) contrast(1.06) brightness(1.02)
+    drop-shadow(0 1px 0 rgba(238, 246, 214, 0.7));
+  --feel-plate-image: linear-gradient(180deg, rgba(207, 230, 240, 0.35) 0 22%, transparent 40%),
+    linear-gradient(180deg, transparent 72%, rgba(77, 124, 15, 0.14) 100%);
+  --feel-title-case: none;
+  --feel-title-style: normal;
+  --feel-title-tracking: 0.04em;
+}
+
+/* ── 2 · The photograph — grassland, low fence, no beach ────── */
+
+html[data-player-skin="prairie"]:root body {
+  background-color: #dcecc4 !important;
+  background-image:
+    linear-gradient(180deg,
+      rgba(207, 230, 240, 0.55) 0 18%,
+      rgba(207, 230, 240, 0.12) 36%,
+      rgba(220, 236, 196, 0.28) 62%,
+      rgba(77, 124, 15, 0.22) 100%),
+    url("/img/skins/prairie.png") !important;
+  background-position: center, center 36%;
+  background-size: cover, cover;
+  background-attachment: fixed, fixed;
+  background-repeat: no-repeat;
+  color: var(--pr-ink);
+}
+
+/* Wind through grass. Replaces the sand-effect's brown scanlines. */
+html[data-player-skin="prairie"]:root body::after {
+  opacity: 0.26;
+  mix-blend-mode: overlay;
+  background:
+    repeating-linear-gradient(98deg, transparent 0 9px, rgba(77, 124, 15, 0.1) 9px 10px),
+    repeating-linear-gradient(82deg, transparent 0 13px, rgba(163, 230, 53, 0.08) 13px 14px);
+  animation: room-prairie-wind 22s linear infinite;
+}
+
+html[data-player-skin="prairie"]:root #main {
+  clip-path: none;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg,
+      rgba(207, 230, 240, 0.28) 0 16%,
+      rgba(238, 246, 214, 0.18) 44%,
+      rgba(77, 124, 15, 0.1) 100%);
+  border-inline: 1px solid rgba(77, 124, 15, 0.14);
+}
+
+html[data-player-skin="prairie"]:root #main::after {
+  clip-path: none;
+  animation: room-prairie-wind 28s linear infinite;
+}
+
+/* ── 3 · HUD · the horizon line with grass ────────────────────
+   Sky occupies most of the fascia. A 2px olive cut is the
+   horizon. Below it, grass. Text lives in the sky so nothing
+   legible ever straddles the line. */
+
+html[data-player-skin="prairie"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  min-height: 64px;
+  background:
+    linear-gradient(180deg,
+      #e7f3f7 0 22%,
+      #cfe6f0 22% 64%,
+      #b7d4e0 64% 72%,
+      #1a2e05 72% calc(72% + 2px),
+      #a3e635 calc(72% + 2px) 82%,
+      #65a30d 82% 91%,
+      #4d7c0f 91% 100%);
+  border-bottom: 0;
+  border-radius: 0;
+  box-shadow: 0 4px 0 rgba(26, 46, 5, 0.16);
+  backdrop-filter: none;
+  color: var(--pr-ink);
+}
+
+/* Grass blades along the sod of the HUD. */
+html[data-player-skin="prairie"]:root .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 16px;
+  z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg,
+      rgba(26, 46, 5, 0.55) 0 1px,
+      transparent 1px 4px,
+      rgba(163, 230, 53, 0.7) 4px 5px,
+      transparent 5px 9px);
+  background-size: 100% 100%;
+  background-position: 0 100%;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0 20%, #000 100%);
+  mask-image: linear-gradient(180deg, transparent 0 20%, #000 100%);
+  animation: room-prairie-ripple 5.6s ease-in-out infinite;
+}
+
+/* Wind walking the grass, almost not at all. */
+html[data-player-skin="prairie"]:root .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 72%;
+  height: 10px;
+  z-index: 0;
+  background: linear-gradient(90deg,
+    transparent 0 8%,
+    rgba(190, 242, 100, 0.45) 22%,
+    transparent 40% 58%,
+    rgba(163, 230, 53, 0.35) 72%,
+    transparent 90%);
+  mix-blend-mode: screen;
+  opacity: 0.55;
+  animation: room-prairie-ripple 7.2s ease-in-out infinite reverse;
+}
+
+html[data-player-skin="prairie"]:root .top-hud > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-player-skin="prairie"]:root .hud-app-name,
+html[data-player-skin="prairie"]:root .launcher-title,
+html[data-player-skin="prairie"]:root .page-title {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: currentColor;
+  color: var(--pr-ink);
+  font-family: var(--pr-font);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  text-shadow: 0 1px 0 rgba(231, 243, 247, 0.85);
+}
+
+html[data-player-skin="prairie"]:root .hud-intention {
+  color: var(--pr-ink-2);
+  font-family: var(--pr-font);
+  font-size: 10px;
+  font-style: normal;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+}
+
+/* The sun sits on the horizon — cool and low, not a brass noon. */
+html[data-player-skin="prairie"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  border-radius: 50% 50% 2px 2px;
+  border: 1px solid var(--pr-wood);
+  background: linear-gradient(180deg, #f7fbf4, #cfe6f0 70%, #65a30d 71% 100%);
+}
+
+html[data-player-skin="prairie"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -8px -8px -4px;
+  z-index: -1;
+  border-radius: 50% 50% 2px 2px;
+  background:
+    radial-gradient(circle at 50% 36%,
+      #fffef6 0 22%,
+      rgba(190, 242, 100, 0.55) 36%,
+      rgba(163, 230, 53, 0.2) 54%,
+      transparent 72%),
+    linear-gradient(180deg, transparent 62%, rgba(77, 124, 15, 0.35) 78%, transparent 92%);
+  animation: room-prairie-sway 8.4s ease-in-out infinite;
+}
+
+html[data-player-skin="prairie"]:root .brand-mark,
+html[data-player-skin="prairie"]:root .ws-mark,
+html[data-player-skin="prairie"]:root .hud-icon-svg,
+html[data-player-skin="prairie"]:root .tab-chip-mark {
+  filter: var(--feel-icon);
+  transform: none;
+}
+
+/* ── 4 · HUD controls sit in the sky, above the cut ─────────── */
+
+html[data-player-skin="prairie"]:root .hud-icon-btn,
+html[data-player-skin="prairie"]:root .hud-glyph-btn,
+html[data-player-skin="prairie"]:root .hud-status-pill,
+html[data-player-skin="prairie"]:root .hud-chip,
+html[data-player-skin="prairie"]:root .hud-metric,
+html[data-player-skin="prairie"]:root .hud-game-chip,
+html[data-player-skin="prairie"]:root .hud-agent-chip,
+html[data-player-skin="prairie"]:root .loot-profile-chip {
+  border: 1px solid var(--pr-hair-2);
+  border-radius: var(--pr-r-chip);
+  background: linear-gradient(180deg, #f4fbfc 0 68%, #d5e8b0 69% 100%);
+  color: var(--pr-ink);
+  font-family: var(--pr-font);
+  letter-spacing: 0.03em;
+  box-shadow: var(--pr-cast-1);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+html[data-player-skin="prairie"]:root .hud-icon-btn:hover:not(:disabled),
+html[data-player-skin="prairie"]:root .hud-glyph-btn:hover:not(:disabled),
+html[data-player-skin="prairie"]:root .hud-chip:hover:not(:disabled),
+html[data-player-skin="prairie"]:root .hud-metric:hover:not(:disabled) {
+  border-color: var(--pr-olive);
+  background: linear-gradient(180deg, #ffffff 0 68%, #e8f6c4 69% 100%);
+  transform: translateX(3px) skewX(-2deg);
+  box-shadow: var(--pr-cast-2);
+}
+
+html[data-player-skin="prairie"]:root .hud-icon-btn:active:not(:disabled),
+html[data-player-skin="prairie"]:root .hud-glyph-btn:active:not(:disabled) {
+  transform: translateY(2px) skewX(0deg);
+  box-shadow: var(--pr-cast-press);
+}
+
+html[data-player-skin="prairie"]:root .tab-chip-bar {
+  background: rgba(207, 230, 240, 0.86);
+  border-bottom: 2px solid var(--pr-olive);
+  backdrop-filter: none;
+}
+
+html[data-player-skin="prairie"]:root .tab-chip,
+html[data-player-skin="prairie"]:root .app-subnav-pill,
+html[data-player-skin="prairie"]:root .pill,
+html[data-player-skin="prairie"]:root .tsk-day-chip {
+  border: 1px solid var(--pr-hair);
+  border-radius: var(--pr-r-chip);
+  background: linear-gradient(180deg, #eef6d6 0 70%, #d5e8b0 71% 100%);
+  color: var(--pr-ink-2);
+  font-family: var(--pr-font);
+  font-style: normal;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  box-shadow: var(--pr-cast-1);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+html[data-player-skin="prairie"]:root .tab-chip:hover:not(.active) {
+  transform: translateX(3px) skewX(-2deg);
+  border-color: var(--pr-olive);
+}
+
+html[data-player-skin="prairie"]:root .tab-chip.active,
+html[data-player-skin="prairie"]:root .app-subnav-pill.active {
+  color: var(--pr-deep);
+  border-color: var(--pr-olive);
+  background: linear-gradient(180deg, #d9f99d 0 54%, var(--pr-lime) 55% 82%, var(--pr-olive) 83% 100%);
+  box-shadow: var(--pr-cast-1);
+}
+
+html[data-player-skin="prairie"]:root .tab-chip.active:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: var(--pr-cast-press);
+}
+
+/* ── 5 · Glyph · the T-post ───────────────────────────────────
+   Vertical weathered timber, one through-rail, grass at the
+   foot. Not a wheat sheaf, not a leaf oval, not a waypost lamp. */
+
+html[data-player-skin="prairie"]:root .launcher-tile-glyph,
+html[data-player-skin="prairie"]:root .launcher-card-glyph,
+html[data-player-skin="prairie"]:root .loot-skin-avatar,
+html[data-player-skin="prairie"]:root .wp-skin-mark {
+  position: relative;
+  overflow: visible;
+  border: 1px solid var(--pr-wood-lo);
+  border-radius: 2px 2px 10px 10px;
+  transform: none;
+  color: var(--pr-deep);
+  background:
+    linear-gradient(#6b5340, #6b5340) 50% 38% / 88% 13% no-repeat,
+    linear-gradient(90deg, #4a3b2c, #8a7358 36%, #5c4a36 70%, #4a3b2c) 50% 0 / 24% 100% no-repeat,
+    linear-gradient(180deg, #cfe6f0 0 36%, #3f6212 36% 39%, #a3e635 39% 58%, #4d7c0f 100%);
+  box-shadow: 0 3px 0 rgba(26, 46, 5, 0.28), inset 0 1px 0 rgba(255, 255, 245, 0.25);
+  filter: none;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+html[data-player-skin="prairie"]:root .launcher-tile-glyph::before,
+html[data-player-skin="prairie"]:root .launcher-card-glyph::before,
+html[data-player-skin="prairie"]:root .loot-skin-avatar::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 2px, rgba(74, 59, 44, 0.18) 2px 3px);
+  -webkit-mask: linear-gradient(#000, #000) 50% 0 / 24% 100% no-repeat;
+  mask: linear-gradient(#000, #000) 50% 0 / 24% 100% no-repeat;
+  opacity: 0.7;
+}
+
+html[data-player-skin="prairie"]:root .launcher-tile-glyph::after,
+html[data-player-skin="prairie"]:root .launcher-card-glyph::after,
+html[data-player-skin="prairie"]:root .loot-skin-avatar::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -3px;
+  height: 28%;
+  background:
+    repeating-linear-gradient(90deg,
+      #4d7c0f 0 2px,
+      transparent 2px 4px,
+      #a3e635 4px 5px,
+      transparent 5px 8px);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 55%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 55%);
+  animation: room-prairie-ripple 4.8s ease-in-out infinite;
+}
+
+/* ── 6 · Cards · sod tiles cut from the field ───────────────── */
+
+html[data-player-skin="prairie"]:root .launcher-card,
+html[data-player-skin="prairie"]:root .card,
+html[data-player-skin="prairie"]:root .hub-card,
+html[data-player-skin="prairie"]:root .pln-rail-card,
+html[data-player-skin="prairie"]:root .evt-card,
+html[data-player-skin="prairie"]:root .tsk-row,
+html[data-player-skin="prairie"]:root .task-row {
+  border: 1px solid var(--pr-hair-2);
+  border-top: 2px solid rgba(207, 230, 240, 0.9);
+  border-bottom: 4px solid var(--pr-olive);
+  border-radius: var(--pr-r-card);
+  background:
+    linear-gradient(180deg, rgba(207, 230, 240, 0.55) 0 18%, transparent 19%),
+    linear-gradient(180deg, var(--pr-straw) 0 68%, var(--pr-turf) 100%);
+  color: var(--pr-ink);
+  box-shadow: var(--pr-cast-2);
+  overflow: visible;
+}
+
+html[data-player-skin="prairie"]:root .launcher-card {
+  clip-path: none;
+  outline: none;
+  transform: none;
+  transform-origin: 50% 100%;
+  transition: transform 170ms ease, box-shadow 170ms ease, border-color 170ms ease;
+}
+
+/* A horizon hair, with the post standing on the left. */
+html[data-player-skin="prairie"]:root .launcher-card::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 14px;
+  width: auto;
+  height: 10px;
+  border-radius: 0;
+  opacity: 1;
+  background-color: transparent;
+  background-image:
+    linear-gradient(#6b5340, #6b5340),
+    linear-gradient(90deg, var(--pr-sod), var(--pr-sod));
+  background-repeat: no-repeat, no-repeat;
+  background-size: 4px 10px, 100% 2px;
+  background-position: 18px 0, 0 4px;
+}
+
+/* Grass along the footing of every card. */
+html[data-player-skin="prairie"]:root .launcher-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: 7px;
+  aspect-ratio: auto;
+  border-radius: 0 0 7px 32px / 0 0 5px 20px;
+  opacity: 0.85;
+  transform: none;
+  background-color: transparent;
+  background-image: repeating-linear-gradient(90deg,
+    rgba(26, 46, 5, 0.45) 0 1px, transparent 1px 5px, rgba(163, 230, 53, 0.7) 5px 6px, transparent 6px 10px);
+  transition: opacity 160ms ease;
+}
+
+html[data-player-skin="prairie"]:root .launcher-card-name,
+html[data-player-skin="prairie"]:root .launcher-tile-name {
+  color: var(--pr-ink);
+  font-family: var(--pr-font);
+  font-style: normal;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+html[data-player-skin="prairie"]:root .launcher-card-intention,
+html[data-player-skin="prairie"]:root .launcher-card-sub,
+html[data-player-skin="prairie"]:root .launcher-card-stats {
+  color: var(--pr-ink-2);
+  font-family: var(--pr-font);
+}
+
+/* Wind leans the sod; it does not lift it off the ground. */
+html[data-player-skin="prairie"]:root .launcher-card:hover,
+html[data-player-skin="prairie"]:root .launcher-card--focused {
+  transform: translateX(4px) skewX(-1.4deg);
+  border-color: var(--pr-olive);
+  box-shadow: 0 6px 0 rgba(26, 46, 5, 0.18), 0 12px 20px rgba(26, 46, 5, 0.12);
+  filter: none;
+}
+
+html[data-player-skin="prairie"]:root .launcher-card:hover .launcher-card-glyph,
+html[data-player-skin="prairie"]:root .launcher-card--focused .launcher-card-glyph,
+html[data-player-skin="prairie"]:root .launcher-card:hover .launcher-tile-glyph,
+html[data-player-skin="prairie"]:root .launcher-card--focused .launcher-tile-glyph {
+  transform: rotate(-3deg);
+}
+
+html[data-player-skin="prairie"]:root .launcher-card:hover::after,
+html[data-player-skin="prairie"]:root .launcher-card--focused::after {
+  opacity: 1;
+}
+
+html[data-player-skin="prairie"]:root .card:hover,
+html[data-player-skin="prairie"]:root .hub-card:hover {
+  border-color: var(--pr-olive);
+  box-shadow: var(--pr-cast-2);
+}
+
+/* ── 7 · Buttons · a rail you push with the wind ────────────── */
+
+html[data-player-skin="prairie"]:root button.primary,
+html[data-player-skin="prairie"]:root .agent-pane-chat .agc-send {
+  position: relative;
+  border: 1px solid var(--pr-sod);
+  border-radius: var(--pr-r-ctl);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(26, 46, 5, 0.28) 0 1px, transparent 1px 6px),
+    linear-gradient(180deg, #d9f99d 0 36%, var(--pr-lime) 37% 74%, var(--pr-olive) 75% 100%);
+  background-repeat: repeat-x, no-repeat;
+  background-size: 100% 6px, 100% 100%;
+  background-position: 0 100%, 0 0;
+  color: var(--pr-deep);
+  font-family: var(--pr-font);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: none;
+  text-shadow: 0 1px 0 rgba(238, 246, 214, 0.7);
+  box-shadow: 0 4px 0 var(--pr-sod), 0 6px 0 rgba(26, 46, 5, 0.18);
+  transition:
+    transform 150ms ease,
+    background-position 150ms ease,
+    box-shadow 150ms ease,
+    filter 150ms ease;
+}
+
+html[data-player-skin="prairie"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="prairie"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  transform: translateX(4px) skewX(-2deg);
+  background-position: 6px 100%, 0 0;
+  filter: brightness(1.04);
+  box-shadow: 0 4px 0 var(--pr-sod), 0 7px 0 rgba(26, 46, 5, 0.2);
+}
+
+html[data-player-skin="prairie"]:root button.primary:active:not(:disabled),
+html[data-player-skin="prairie"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translateY(3px) skewX(0deg);
+  background-position: 0 100%, 0 0;
+  filter: brightness(0.98);
+  box-shadow: 0 1px 0 var(--pr-sod);
+}
+
+html[data-player-skin="prairie"]:root button.secondary,
+html[data-player-skin="prairie"]:root .ghost-btn {
+  border: 1px solid var(--pr-hair-2);
+  border-radius: var(--pr-r-ctl);
+  background: linear-gradient(180deg, #f4fadf 0 66%, #d5e8b0 67% 100%);
+  color: var(--pr-ink-2);
+  font-family: var(--pr-font);
+  letter-spacing: 0.03em;
+  text-transform: none;
+  box-shadow: var(--pr-cast-1);
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+html[data-player-skin="prairie"]:root button.secondary:hover:not(:disabled),
+html[data-player-skin="prairie"]:root .ghost-btn:hover:not(:disabled) {
+  transform: translateX(3px) skewX(-1.5deg);
+  border-color: var(--pr-olive);
+  box-shadow: var(--pr-cast-2);
+}
+
+html[data-player-skin="prairie"]:root button.secondary:active:not(:disabled),
+html[data-player-skin="prairie"]:root .ghost-btn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: var(--pr-cast-press);
+}
+
+/* ── 8 · Inputs · a furrow in the sod ───────────────────────── */
+
+html[data-player-skin="prairie"]:root input,
+html[data-player-skin="prairie"]:root textarea,
+html[data-player-skin="prairie"]:root select,
+html[data-player-skin="prairie"]:root .agc-input-zone,
+html[data-player-skin="prairie"]:root [contenteditable="true"] {
+  border: 1px solid var(--pr-hair-2);
+  border-bottom: 2px solid var(--pr-olive);
+  border-radius: var(--pr-r-ctl);
+  background:
+    repeating-linear-gradient(180deg, transparent 0 22px, rgba(77, 124, 15, 0.08) 22px 23px),
+    linear-gradient(180deg, #f7fbea 0 74%, #d5e8b0 100%);
+  color: var(--pr-ink);
+  font-family: var(--pr-font);
+  caret-color: var(--pr-olive);
+  box-shadow: inset 0 2px 0 rgba(26, 46, 5, 0.08);
+}
+
+html[data-player-skin="prairie"]:root input::placeholder,
+html[data-player-skin="prairie"]:root textarea::placeholder {
+  color: #6b8a3a;
+  letter-spacing: 0.03em;
+}
+
+html[data-player-skin="prairie"]:root input:focus,
+html[data-player-skin="prairie"]:root textarea:focus,
+html[data-player-skin="prairie"]:root select:focus,
+html[data-player-skin="prairie"]:root .agc-input-zone:focus-within,
+html[data-player-skin="prairie"]:root [contenteditable="true"]:focus {
+  outline: none;
+  border-bottom-color: var(--pr-lime);
+  background: #fcfef4;
+  box-shadow:
+    inset 0 2px 0 rgba(26, 46, 5, 0.06),
+    0 2px 0 rgba(163, 230, 53, 0.7);
+}
+
+/* ── 9 · Empty · a post standing in an uncut field ──────────── */
+
+html[data-player-skin="prairie"]:root .empty-state {
+  position: relative;
+  border: 1px dashed var(--pr-olive);
+  border-top: 2px solid var(--pr-sky);
+  border-bottom: 5px solid var(--pr-olive);
+  border-radius: var(--pr-r-plate);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(77, 124, 15, 0.35) 0 1px, transparent 1px 7px),
+    linear-gradient(180deg, #cfe6f0 0 28%, #eef6d6 28% 62%, #d5e8b0 100%);
+  background-repeat: repeat-x, no-repeat;
+  background-size: 100% 8px, 100% 100%;
+  background-position: 0 100%, 0 0;
+  color: var(--pr-ink-2);
+  box-shadow: var(--pr-cast-2);
+}
+
+html[data-player-skin="prairie"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 52px;
+  height: 58px;
+  margin: 0 auto 12px;
+  background:
+    linear-gradient(#6b5340, #6b5340) 50% 36% / 100% 8px no-repeat,
+    linear-gradient(90deg, #4a3b2c, #8a7358 40%, #4a3b2c) 50% 0 / 10px 100% no-repeat;
+  filter: drop-shadow(0 2px 0 rgba(26, 46, 5, 0.25));
+}
+
+html[data-player-skin="prairie"]:root .empty-state-title {
+  color: var(--pr-ink);
+  font-family: var(--pr-font);
+  font-style: normal;
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+
+html[data-player-skin="prairie"]:root .empty-state-body,
+html[data-player-skin="prairie"]:root .empty-state-hint {
+  color: var(--pr-ink-3);
+}
+
+/* ── 10 · Dialogs, toasts, disabled, focus ──────────────────── */
+
+html[data-player-skin="prairie"]:root .loot-shell-dialog,
+html[data-player-skin="prairie"]:root .command-palette,
+html[data-player-skin="prairie"]:root .napkin-capture-dialog,
+html[data-player-skin="prairie"]:root .wp-alarm-card,
+html[data-player-skin="prairie"]:root dialog {
+  border: 1px solid var(--pr-olive);
+  border-top: 3px solid var(--pr-sky);
+  border-bottom: 6px solid var(--pr-olive);
+  border-radius: var(--pr-r-plate);
+  background:
+    linear-gradient(180deg, rgba(207, 230, 240, 0.7) 0 14%, transparent 15%),
+    linear-gradient(180deg, #f4fadf 0 62%, #d5e8b0 100%);
+  color: var(--pr-ink);
+  box-shadow:
+    0 10px 0 rgba(26, 46, 5, 0.16),
+    0 22px 40px rgba(26, 46, 5, 0.18);
+}
+
+html[data-player-skin="prairie"]:root .toast,
+html[data-player-skin="prairie"]:root .toast-item {
+  border: 1px solid var(--pr-olive);
+  border-radius: var(--pr-r-ctl);
+  background: linear-gradient(180deg, #d9f99d 0 40%, var(--pr-lime) 41% 100%);
+  color: var(--pr-deep);
+  font-family: var(--pr-font);
+  box-shadow: var(--pr-cast-2);
+}
+
+html[data-player-skin="prairie"]:root .toast-item {
+  animation: room-prairie-arrive 360ms ease both;
+}
+
+html[data-player-skin="prairie"]:root button:disabled,
+html[data-player-skin="prairie"]:root input:disabled,
+html[data-player-skin="prairie"]:root textarea:disabled,
+html[data-player-skin="prairie"]:root select:disabled,
+html[data-player-skin="prairie"]:root [aria-disabled="true"] {
+  border-color: rgba(77, 124, 15, 0.2);
+  background: #d7e4bc;
+  background-image: none;
+  color: #7a8f5a;
+  opacity: 1;
+  filter: saturate(0.35) brightness(1.04);
+  text-shadow: none;
+  box-shadow: none;
+  transform: none;
+}
+
+html[data-player-skin="prairie"]:root :focus-visible {
+  outline: 3px solid var(--pr-lime);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(77, 124, 15, 0.35);
+}
+
+html[data-player-skin="prairie"]:root .companion-launcher-orb {
+  border: 2px solid var(--pr-wood);
+  border-radius: 50% 50% 2px 2px;
+  background:
+    radial-gradient(circle at 50% 36%, #fffef6 0 16%, var(--pr-lime) 32%, transparent 40%),
+    linear-gradient(180deg, #cfe6f0 0 54%, var(--pr-olive) 55% 100%);
+  box-shadow: 0 3px 0 rgba(26, 46, 5, 0.28);
+  animation: room-prairie-sway 8.4s ease-in-out infinite;
+}
+
+/* ── 11 · Home · standing in the field ──────────────────────── */
+
+html[data-player-skin="prairie"]:root[data-app-tab="Home"] #main {
+  clip-path: none;
+  background-image:
+    linear-gradient(180deg, rgba(207, 230, 240, 0.4) 0 20%, transparent 32%),
+    repeating-linear-gradient(180deg,
+      transparent 0 15px,
+      rgba(77, 124, 15, 0.08) 15px 16px),
+    linear-gradient(180deg,
+      rgba(207, 230, 240, 0.22) 0 24%,
+      rgba(238, 246, 214, 0.2) 58%,
+      rgba(77, 124, 15, 0.16) 100%);
+  background-repeat: no-repeat, repeat, no-repeat;
+}
+
+/* ── 12 · Today · a long field, hour-plots of grass ───────────
+   Looking across the prairie, not down a notebook and not at a
+   weather chart. Horizontal grass rows run the full width. Each
+   hour is a sod plot; the painted hour is a sunlit swath. */
+
+html[data-player-skin="prairie"]:root[data-app-tab="Today"] #main,
+html[data-player-skin="prairie"]:root[data-app-tab="Calendar"] #main {
+  clip-path: none;
+  color: var(--pr-ink);
+  background-image:
+    linear-gradient(180deg, rgba(207, 230, 240, 0.78) 0 12%, rgba(207, 230, 240, 0.15) 22%, transparent 30%),
+    repeating-linear-gradient(180deg,
+      #dcecc4 0 21px,
+      #c5d99a 21px 22px,
+      #d2e4b4 22px 41px,
+      #4d7c0f 41px 42px);
+  background-repeat: no-repeat, repeat;
+  box-shadow: inset 0 0 0 8px rgba(207, 230, 240, 0.35), inset 0 0 0 10px rgba(77, 124, 15, 0.18);
+}
+
+html[data-player-skin="prairie"]:root[data-app-tab="Today"] #main .page-title,
+html[data-player-skin="prairie"]:root[data-app-tab="Calendar"] #main .page-title {
+  color: var(--pr-ink);
+  text-shadow: 0 1px 0 rgba(231, 243, 247, 0.8);
+}
+
+html[data-player-skin="prairie"]:root[data-app-tab="Today"] #main .tdy-hour-cell,
+html[data-player-skin="prairie"]:root[data-app-tab="Calendar"] #main .tdy-hour-cell,
+html[data-player-skin="prairie"]:root[data-app-tab="Calendar"] #main .cal-hour-cell {
+  border: 1px solid rgba(77, 124, 15, 0.32);
+  border-bottom: 3px solid var(--pr-olive);
+  border-radius: var(--pr-r-cell);
+  background: linear-gradient(180deg, #eef6d6 0 62%, #c5d99a 63% 82%, #4d7c0f 83% 100%);
+  color: var(--pr-ink);
+  font-family: var(--pr-font);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 245, 0.55);
+}
+
+html[data-player-skin="prairie"]:root[data-app-tab="Today"] #main .tdy-hour-painted,
+html[data-player-skin="prairie"]:root[data-app-tab="Calendar"] #main .tdy-hour-painted,
+html[data-player-skin="prairie"]:root[data-app-tab="Calendar"] #main .cal-hour-painted {
+  border-color: var(--pr-olive);
+  background: linear-gradient(180deg, #ecfccb 0 36%, var(--pr-lime) 37% 78%, var(--pr-olive) 79% 100%);
+  color: var(--pr-deep);
+  box-shadow: inset 3px 0 0 var(--pr-lime-hot);
+}
+
+html[data-player-skin="prairie"]:root[data-app-tab="Calendar"] #main .cal-day,
+html[data-player-skin="prairie"]:root[data-app-tab="Calendar"] #main .cal-month-cell {
+  border-radius: var(--pr-r-cell);
+  border: 1px solid rgba(77, 124, 15, 0.28);
+  background: rgba(238, 246, 214, 0.86);
+  color: var(--pr-ink);
+}
+
+html[data-player-skin="prairie"]:root[data-app-tab="Calendar"] #main .cal-month-daynum,
+html[data-player-skin="prairie"]:root[data-app-tab="Calendar"] #main .cal-week-day-head {
+  font-family: var(--pr-font);
+  color: var(--pr-ink-2);
+}
+
+html[data-player-skin="prairie"]:root[data-app-tab="Calendar"] #main .cal-month-cell-today,
+html[data-player-skin="prairie"]:root[data-app-tab="Calendar"] #main .cal-week-day-today {
+  border-color: var(--pr-olive);
+  box-shadow: inset 0 -4px 0 var(--pr-lime);
+}
+
+/* ── 13 · Tasks · plots laid in a row ───────────────────────── */
+
+html[data-player-skin="prairie"]:root[data-app-tab="Tasks"] #main .card,
+html[data-player-skin="prairie"]:root[data-app-tab="Tasks"] #main .tsk-row,
+html[data-player-skin="prairie"]:root[data-app-tab="Tasks"] #main .task-row {
+  border-left: 4px solid var(--pr-olive);
+  border-bottom: 3px solid var(--pr-olive);
+  box-shadow: var(--pr-cast-1);
+  background: linear-gradient(180deg, #eef6d6 0 70%, #d5e8b0 100%);
+}
+
+/* ── 14 · Agent · the lee of the fence ──────────────────────── */
+
+html[data-player-skin="prairie"]:root[data-app-tab="Agent"] #main .agent-pane {
+  border: 1px solid var(--pr-hair-2);
+  border-top: 2px solid var(--pr-sky);
+  border-bottom: 5px solid var(--pr-olive);
+  border-radius: var(--pr-r-plate);
+  background:
+    linear-gradient(180deg, rgba(207, 230, 240, 0.45) 0 16%, transparent 17%),
+    linear-gradient(180deg, #e4f0c8 0 62%, #c5d99a 100%);
+  box-shadow: inset 0 2px 0 rgba(26, 46, 5, 0.08);
+}
+
+html[data-player-skin="prairie"]:root .agent-msg.assistant .agent-bubble {
+  border: 1px solid var(--pr-hair);
+  border-radius: 0 0 7px 28px / 0 0 5px 16px;
+  background: #eef6d6;
+  color: var(--pr-ink);
+  box-shadow: var(--pr-cast-1);
+}
+
+html[data-player-skin="prairie"]:root .agent-msg.user .agent-bubble {
+  border: 1px solid var(--pr-olive);
+  border-radius: 0 0 28px 7px / 0 0 16px 5px;
+  background: linear-gradient(180deg, #d9f99d 0 50%, var(--pr-lime) 51% 100%);
+  color: var(--pr-deep);
+  box-shadow: var(--pr-cast-1);
+}
+
+/* ── 15 · Remaining pages keep the same cut ─────────────────── */
+
+html[data-player-skin="prairie"]:root[data-app-tab="Hub"] #main .hub-card,
+html[data-player-skin="prairie"]:root[data-app-tab="Hub"] #main .hub-glance-item {
+  border-radius: var(--pr-r-card);
+  border: 1px solid var(--pr-hair-2);
+  border-bottom: 4px solid var(--pr-olive);
+  background: linear-gradient(180deg, #eef6d6 0 68%, #d5e8b0 100%);
+  color: var(--pr-ink);
+  box-shadow: var(--pr-cast-1);
+}
+
+html[data-player-skin="prairie"]:root[data-app-tab="Practice"] #main .card,
+html[data-player-skin="prairie"]:root[data-app-tab="Settings"] #main .card,
+html[data-player-skin="prairie"]:root[data-app-tab="Paint"] #main .card,
+html[data-player-skin="prairie"]:root[data-app-tab="Projects"] #main .card,
+html[data-player-skin="prairie"]:root[data-app-tab="Parallel"] #main .card,
+html[data-player-skin="prairie"]:root[data-app-tab="Goals"] #main .card {
+  border-radius: var(--pr-r-card);
+  border: 1px solid var(--pr-hair-2);
+  border-bottom: 4px solid var(--pr-olive);
+  background: linear-gradient(180deg, #eef6d6 0 70%, #d5e8b0 100%);
+  box-shadow: var(--pr-cast-1);
+}
+
+html[data-player-skin="prairie"]:root .loot-skin-card,
+html[data-player-skin="prairie"]:root .loot-collection-card {
+  border-radius: var(--pr-r-card);
+  border: 1px solid var(--pr-hair-2);
+  border-bottom: 4px solid var(--pr-olive);
+  background: linear-gradient(180deg, #eef6d6 0 66%, #d5e8b0 100%);
+  color: var(--pr-ink);
+  box-shadow: var(--pr-cast-1);
+}
+
+/* ── 16 · Motion ────────────────────────────────────────────── */
+
+/* the wind does not gust; it combs the field in one direction */
+@keyframes room-prairie-wind {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 72px 0, -54px 0; }
+}
+
+/* grass along the horizon breathing, not heat-shimmer */
+@keyframes room-prairie-ripple {
+  0%, 100% { opacity: 0.7; transform: translateX(0); }
+  50% { opacity: 1; transform: translateX(3px); }
+}
+
+/* the post leans a degree and comes back */
+@keyframes room-prairie-sway {
+  0%, 100% { transform: rotate(-1.2deg); filter: brightness(1); }
+  50% { transform: rotate(1.4deg); filter: brightness(1.04); }
+}
+
+/* a toast arrives the way wind arrives: sideways, then still */
+@keyframes room-prairie-arrive {
+  0% { transform: translateX(-16px) skewX(-4deg); opacity: 0; }
+  62% { transform: translateX(3px) skewX(1deg); opacity: 1; }
+  100% { transform: translateX(0) skewX(0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="prairie"]:root *,
+  html[data-player-skin="prairie"]:root *::before,
+  html[data-player-skin="prairie"]:root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html[data-player-skin="prairie"]:root .launcher-card:hover,
+  html[data-player-skin="prairie"]:root button.primary:hover:not(:disabled) {
+    transform: none;
+  }
+}

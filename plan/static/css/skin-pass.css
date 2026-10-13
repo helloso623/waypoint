@@ -1,0 +1,1321 @@
+/* ═══════════════════════════════════════════════════════════════
+   SKIN PASS — photographed rooms, not hue-swapped cards.
+   Each named skin: one ground + one accent that coexist,
+   a real photograph, and a different object language.
+   Never clip #main or card copy. Glyphs may change shape.
+   ═══════════════════════════════════════════════════════════════ */
+
+html[data-player-skin] {
+  --feel-ground: color-mix(in srgb, var(--skin-b, #1a1612) 72%, #0c0a08);
+  --feel-paper: color-mix(in srgb, var(--skin-a, #e84a2f) 14%, var(--bg-card));
+  --feel-ink: color-mix(in srgb, var(--ink-primary) 82%, var(--skin-a) 18%);
+  --feel-accent: var(--skin-a);
+}
+
+html[data-player-skin] body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  background-size: cover;
+}
+
+html[data-player-skin] .launcher-card {
+  background: var(--feel-paper);
+  color: var(--feel-ink);
+  overflow: visible;
+}
+html[data-player-skin] .launcher-card-name,
+html[data-player-skin] .launcher-card-intention { color: inherit; }
+
+html[data-player-skin] button.primary {
+  background: var(--feel-accent);
+  color: var(--accent-ink, #fff8f0);
+  border-color: color-mix(in srgb, var(--feel-accent) 50%, #000);
+}
+
+/* Unique family silhouettes — never the same rounded cookie. */
+html[data-skin-family="scroll"] .launcher-card { border-radius: 2px 28px 2px 20px; }
+html[data-skin-family="ceramic"] .launcher-card { border-radius: 18px 10px; }
+html[data-skin-family="photogram"] .launcher-card { border-radius: 1px; }
+html[data-skin-family="gallery"] .launcher-card { border-radius: 0; }
+html[data-skin-family="chapel"] .launcher-card { border-radius: 6px 6px 18px 18px; }
+html[data-skin-family="mat"] .launcher-card { border-radius: 2px; }
+html[data-skin-family="press"] .launcher-card { border-radius: 0 3px 0 3px; }
+html[data-skin-family="tessera"] .launcher-card { border-radius: 3px; }
+html[data-skin-family="studio"] .launcher-card { border-radius: 16px 4px 20px 8px; }
+html[data-skin-family="slate"] .launcher-card { border-radius: 0 0 12px 12px; }
+html[data-skin-family="chip"] .launcher-card { border-radius: 14px 2px 22px 8px; }
+html[data-skin-family="lattice"] .launcher-card { border-radius: 1px 1px 1px 20px; }
+html[data-skin-family="comb"] .launcher-card { border-radius: 24px 6px 24px 6px; }
+html[data-skin-family="board"] .launcher-card { border-radius: 8px 8px 2px 2px; }
+html[data-skin-family="fold"] .launcher-card { border-radius: 30px 2px 30px 2px; }
+html[data-skin-family="dial"] .launcher-card { border-radius: 22px 22px 4px 4px; }
+html[data-skin-family="ingot"] .launcher-card { border-radius: 2px 18px 2px 18px; }
+html[data-skin-family="curtain"] .launcher-card { border-radius: 0 0 36px 0; }
+html[data-skin-family="cells"] .launcher-card { border-radius: 0; }
+html[data-skin-family="cellar"] .launcher-card { border-radius: 4px 4px 4px 22px; }
+
+html[data-skin-family="void"] .launcher-card { border-radius: 2px; }
+html[data-skin-family="bloom"] .launcher-card { border-radius: 28px 12px 28px 12px; }
+html[data-skin-family="bolt"] .launcher-card { border-radius: 0; }
+html[data-skin-family="bolt"] .launcher-card-glyph,
+html[data-skin-family="bolt"] .launcher-tile-glyph {
+  border-radius: 0;
+  clip-path: polygon(12% 0, 100% 0, 88% 100%, 0 100%);
+}
+html[data-skin-family="paper"] .launcher-card { border-radius: 2px 14px 2px 10px; }
+html[data-skin-family="cabinet"] .launcher-card { border-radius: 8px 8px 18px 18px; }
+html[data-skin-family="retro"] .launcher-card { border-radius: 0; }
+html[data-skin-family="compass"] .launcher-card { border-radius: 16px; }
+html[data-skin-family="leaf"] .launcher-card { border-radius: 22px 8px; }
+html[data-skin-family="flame"] .launcher-card { border-radius: 14px 10px 18px 10px; }
+html[data-skin-family="wave"] .launcher-card { border-radius: 16px 16px 22px 22px; }
+html[data-skin-family="frost"] .launcher-card { border-radius: 4px; }
+html[data-skin-family="prism"] .launcher-card { border-radius: 0; }
+html[data-skin-family="dune"] .launcher-card { border-radius: 8px; }
+html[data-skin-family="chrome"] .launcher-card { border-radius: 8px; }
+html[data-skin-family="blossom"] .launcher-card { border-radius: 14px; }
+html[data-skin-family="crown"] .launcher-card { border-radius: 6px 6px 22px 22px; }
+html[data-skin-family="metro"] .launcher-card { border-radius: 6px; }
+html[data-skin-family="scrap"] .launcher-card { border-radius: 10px 2px; }
+
+:root[data-world-skin="sumi"] #main,
+:root[data-world-skin="kintsugi"] #main,
+:root[data-world-skin="cyanotype"] #main,
+:root[data-world-skin="gesso"] #main,
+:root[data-world-skin="stained"] #main,
+:root[data-world-skin="tatami"] #main,
+:root[data-world-skin="letterpress"] #main,
+:root[data-world-skin="mosaic"] #main,
+:root[data-world-skin="splatter"] #main,
+:root[data-world-skin="chalkboard"] #main,
+:root[data-world-skin="terrazzo"] #main,
+:root[data-world-skin="shoji"] #main,
+:root[data-world-skin="beeswax"] #main,
+:root[data-world-skin="cork"] #main,
+:root[data-world-skin="shibori"] #main,
+:root[data-world-skin="solarium"] #main,
+:root[data-world-skin="foundry"] #main { isolation: isolate; position: relative; }
+:root[data-world-skin="sumi"] #main::before,
+:root[data-world-skin="kintsugi"] #main::before,
+:root[data-world-skin="cyanotype"] #main::before,
+:root[data-world-skin="gesso"] #main::before,
+:root[data-world-skin="stained"] #main::before,
+:root[data-world-skin="tatami"] #main::before,
+:root[data-world-skin="letterpress"] #main::before,
+:root[data-world-skin="mosaic"] #main::before,
+:root[data-world-skin="splatter"] #main::before,
+:root[data-world-skin="chalkboard"] #main::before,
+:root[data-world-skin="terrazzo"] #main::before,
+:root[data-world-skin="shoji"] #main::before,
+:root[data-world-skin="beeswax"] #main::before,
+:root[data-world-skin="cork"] #main::before,
+:root[data-world-skin="shibori"] #main::before,
+:root[data-world-skin="solarium"] #main::before,
+:root[data-world-skin="foundry"] #main::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 10px;
+  z-index: 0;
+}
+
+/* ── sumi · rice paper + ink + one vermilion seal ───────────── */
+
+html[data-player-skin="sumi"],
+:root[data-world-skin="sumi"] {
+  --bg-shell: #efe6d4;
+  --bg-content: #f4eee3;
+  --bg-card: #f8f3e9;
+  --ink-primary: #1c1c1c;
+  --ink-secondary: #3a322c;
+  --ws-accent: #8f2a1f;
+  --accent: #8f2a1f;
+  --at-ink: #1c1c1c;
+  --feel-accent: #8f2a1f;
+  --font-display: "Iowan Old Style", Palatino, Georgia, serif;
+}
+html[data-player-skin="sumi"] body,
+:root[data-world-skin="sumi"] body {
+  background-color: #efe6d4 !important;
+  background-image: url("/img/skins/sumi.png") !important;
+  background-size: cover !important;
+  background-position: center !important;
+  color: #1c1c1c;
+}
+html[data-player-skin="sumi"] body::after,
+:root[data-world-skin="sumi"] body::after {
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+  background: url("/img/skins/sumi.png") center / cover;
+}
+html[data-player-skin="sumi"] .top-hud,
+:root[data-world-skin="sumi"] .top-hud {
+  background: rgba(244, 238, 227, 0.94);
+  border-bottom: 2px solid #8f2a1f;
+  color: #1c1c1c;
+}
+html[data-player-skin="sumi"] .launcher-card {
+  background: rgba(248, 243, 233, 0.94);
+  color: #1c1c1c;
+  border-radius: 2px 28px 2px 20px;
+  border: 1px solid rgba(28, 28, 28, 0.16);
+  box-shadow: 0 18px 0 -14px #1c1c1c;
+}
+html[data-player-skin="sumi"] .launcher-card-glyph,
+html[data-player-skin="sumi"] .launcher-tile-glyph {
+  border-radius: 50% 8px;
+  background: #1c1c1c;
+  color: #efe6d4;
+}
+html[data-player-skin="sumi"] button.primary { background: #1c1c1c; color: #efe6d4; border-radius: 2px; }
+html[data-player-skin="sumi"] button.primary:active { transform: scale(0.96); }
+html[data-player-skin="sumi"] input,
+html[data-player-skin="sumi"] textarea,
+html[data-player-skin="sumi"] select {
+  background: #f8f3e9;
+  color: #1c1c1c;
+  border-color: rgba(28, 28, 28, 0.2);
+  border-radius: 2px;
+}
+:root[data-world-skin="sumi"] #main::before {
+  border: 1px solid rgba(143, 42, 31, 0.22);
+  border-radius: 2px 18px 2px 14px;
+}
+:root[data-world-skin="sumi"][data-app-tab="Home"] body {
+  background-image: url("/img/skins/sumi.png") !important;
+  background-position: center top !important;
+}
+:root[data-world-skin="sumi"][data-app-tab="Home"] #main {
+  background-image: linear-gradient(180deg, rgba(239, 230, 212, 0.18), transparent 42%);
+}
+:root[data-world-skin="sumi"][data-app-tab="Today"] body {
+  background-image: url("/img/skins/sumi_today.png") !important;
+  background-position: center !important;
+}
+:root[data-world-skin="sumi"][data-app-tab="Today"] #main {
+  box-shadow: inset 8px 0 0 #8f2a1f;
+  background: rgba(248, 243, 233, 0.18);
+}
+:root[data-world-skin="sumi"][data-app-tab="Tasks"] #main .card {
+  background: #f8f3e9;
+  border-left: 10px solid #1c1c1c;
+  border-radius: 2px 16px 2px 8px;
+  color: #1c1c1c;
+}
+:root[data-world-skin="sumi"][data-app-tab="Agent"] #main {
+  box-shadow: inset 0 0 0 1px rgba(143, 42, 31, 0.2);
+}
+:root[data-world-skin="sumi"][data-app-tab="Hub"] #main .hub-card {
+  border-radius: 2px 22px 2px 12px;
+  background: #f8f3e9;
+  color: #1c1c1c;
+}
+:root[data-world-skin="sumi"][data-app-tab="Practice"] #main .card {
+  background: #f4eee3;
+  border: 1px dashed #8f2a1f;
+}
+
+/* ── kintsugi · black ceramic, gold only in the cracks ──────── */
+
+html[data-player-skin="kintsugi"],
+:root[data-world-skin="kintsugi"] {
+  --bg-shell: #14110e;
+  --bg-content: #1a1612;
+  --bg-card: #1c1814;
+  --ink-primary: #f5edd4;
+  --ws-accent: #c9a227;
+  --accent: #c9a227;
+}
+html[data-player-skin="kintsugi"] body,
+:root[data-world-skin="kintsugi"] body {
+  background-color: #14110e !important;
+  background-image: url("/img/skins/kintsugi.png") !important;
+  background-size: cover !important;
+}
+html[data-player-skin="kintsugi"] body::after {
+  opacity: 0.34;
+  mix-blend-mode: soft-light;
+  background: url("/img/skins/kintsugi.png") center / cover;
+}
+html[data-player-skin="kintsugi"] .top-hud {
+  background: rgba(20, 17, 14, 0.92);
+  border-bottom: 2px solid #c9a227;
+  color: #f5edd4;
+}
+html[data-player-skin="kintsugi"] .launcher-card {
+  border-radius: 18px 10px;
+  background: rgba(20, 17, 14, 0.9);
+  color: #f5edd4;
+  border: 1px solid rgba(201, 162, 39, 0.4);
+  box-shadow: 8px 0 0 -6px #c9a227, -6px 10px 0 -8px #c9a227;
+}
+html[data-player-skin="kintsugi"] .launcher-card-glyph,
+html[data-player-skin="kintsugi"] .launcher-tile-glyph {
+  border-radius: 50%;
+  background: #14110e;
+  box-shadow: inset 0 0 0 2px #c9a227;
+  color: #c9a227;
+}
+html[data-player-skin="kintsugi"] button.primary {
+  background: #14110e;
+  color: #f5edd4;
+  border: 1px solid #c9a227;
+  border-radius: 999px;
+}
+:root[data-world-skin="kintsugi"] #main::before {
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  border-radius: 28px;
+  box-shadow: 12px 0 0 -11px #c9a227;
+}
+:root[data-world-skin="kintsugi"][data-app-tab="Home"] #main { background: transparent; }
+:root[data-world-skin="kintsugi"][data-app-tab="Today"] #main .tdy-hour-cell {
+  border-radius: 14px;
+  border-color: #c9a227;
+}
+:root[data-world-skin="kintsugi"][data-app-tab="Tasks"] body {
+  background-image: url("/img/skins/kintsugi_tasks.png") !important;
+  background-size: cover !important;
+}
+:root[data-world-skin="kintsugi"][data-app-tab="Tasks"] #main .card {
+  border-radius: 22px;
+  background: #1a1612;
+  border: 1px solid #c9a227;
+}
+:root[data-world-skin="kintsugi"][data-app-tab="Agent"] #main .agent-pane {
+  background: #14110e;
+  box-shadow: inset 0 0 0 1px #c9a227;
+}
+:root[data-world-skin="kintsugi"][data-app-tab="Hub"] #main .hub-card {
+  border-radius: 18px 10px;
+  background: #1a1612;
+  border: 1px solid #c9a227;
+}
+:root[data-world-skin="kintsugi"][data-app-tab="Practice"] #main .card {
+  border-radius: 18px;
+  outline: 1px dashed #c9a227;
+  outline-offset: 4px;
+}
+
+/* ── cyanotype · Prussian ground, pale print ─────────────────── */
+
+html[data-player-skin="cyanotype"],
+:root[data-world-skin="cyanotype"] {
+  --bg-shell: #0b3a6a;
+  --bg-content: #0e4a82;
+  --bg-card: #123e6c;
+  --ink-primary: #d6e4f0;
+  --ws-accent: #d6e4f0;
+  --accent: #d6e4f0;
+  --accent-ink: #0b3a6a;
+  --font-display: "IBM Plex Mono", ui-monospace, monospace;
+}
+html[data-player-skin="cyanotype"] body,
+:root[data-world-skin="cyanotype"] body {
+  background-color: #0b3a6a !important;
+  background-image: url("/img/skins/cyanotype.png") !important;
+  background-size: cover !important;
+  color: #d6e4f0;
+}
+html[data-player-skin="cyanotype"] body::after {
+  opacity: 0.28;
+  mix-blend-mode: multiply;
+  background: url("/img/skins/cyanotype.png") center / cover;
+}
+html[data-player-skin="cyanotype"] .top-hud {
+  background: rgba(11, 58, 106, 0.92);
+  border-bottom: 1px solid #d6e4f0;
+  color: #d6e4f0;
+}
+html[data-player-skin="cyanotype"] .launcher-card {
+  border-radius: 1px;
+  background: rgba(11, 58, 106, 0.84);
+  color: #d6e4f0;
+  border: 1px solid rgba(214, 228, 240, 0.35);
+}
+html[data-player-skin="cyanotype"] .launcher-card-glyph,
+html[data-player-skin="cyanotype"] .launcher-tile-glyph {
+  border-radius: 0;
+  background: #d6e4f0;
+  color: #0b3a6a;
+}
+html[data-player-skin="cyanotype"] button.primary {
+  background: #d6e4f0;
+  color: #0b3a6a;
+  border-radius: 0;
+}
+:root[data-world-skin="cyanotype"] #main::before {
+  border: 1px solid rgba(214, 228, 240, 0.28);
+}
+:root[data-world-skin="cyanotype"][data-app-tab="Home"] body {
+  background-image: url("/img/skins/cyanotype.png") !important;
+}
+:root[data-world-skin="cyanotype"][data-app-tab="Home"] #main { background: rgba(11, 58, 106, 0.12); }
+:root[data-world-skin="cyanotype"][data-app-tab="Today"] body {
+  background-image: url("/img/skins/cyanotype_today.png") !important;
+  background-position: center !important;
+}
+:root[data-world-skin="cyanotype"][data-app-tab="Today"] #main {
+  background: rgba(11, 58, 106, 0.22);
+}
+:root[data-world-skin="cyanotype"][data-app-tab="Tasks"] #main .card {
+  border-radius: 0;
+  background: #0e4a82;
+  color: #d6e4f0;
+  border: 1px solid #d6e4f0;
+}
+:root[data-world-skin="cyanotype"][data-app-tab="Agent"] #main .agent-pane {
+  background: #0b3a6a;
+  color: #d6e4f0;
+}
+:root[data-world-skin="cyanotype"][data-app-tab="Hub"] #main .hub-card {
+  border-radius: 0;
+  background: #123e6c;
+  border: 1px solid #d6e4f0;
+}
+:root[data-world-skin="cyanotype"][data-app-tab="Practice"] #main .card {
+  background: #0b3a6a;
+  outline: 1px solid #d6e4f0;
+  outline-offset: -8px;
+}
+
+/* ── gesso · gallery plaster, charcoal line ─────────────────── */
+
+html[data-player-skin="gesso"],
+:root[data-world-skin="gesso"] {
+  --bg-shell: #f4efe6;
+  --bg-content: #f7f3ec;
+  --bg-card: #fffdf8;
+  --ink-primary: #3f3a34;
+  --ws-accent: #3f3a34;
+  --accent: #3f3a34;
+  --accent-ink: #f4efe6;
+}
+html[data-player-skin="gesso"] body,
+:root[data-world-skin="gesso"] body {
+  background-color: #f4efe6 !important;
+  background-image: url("/img/skins/gesso.png") !important;
+  background-size: cover !important;
+  color: #3f3a34;
+}
+html[data-player-skin="gesso"] body::after { opacity: 0.1; mix-blend-mode: multiply; background: url("/img/skins/gesso.png") center / cover; }
+html[data-player-skin="gesso"] .top-hud { background: #fffdf8; border-bottom: 1px solid #3f3a34; color: #3f3a34; }
+html[data-player-skin="gesso"] .launcher-card {
+  border-radius: 0;
+  background: #fffdf8;
+  color: #3f3a34;
+  border: 12px solid #fffdf8;
+  outline: 1px solid #3f3a34;
+  box-shadow: none;
+}
+html[data-player-skin="gesso"] .launcher-card-glyph,
+html[data-player-skin="gesso"] .launcher-tile-glyph { border-radius: 0; background: #3f3a34; color: #f4efe6; }
+html[data-player-skin="gesso"] button.primary { background: #3f3a34; color: #f4efe6; transform: none; box-shadow: none; border-radius: 0; }
+:root[data-world-skin="gesso"] #main::before { border: 1px solid #3f3a34; }
+:root[data-world-skin="gesso"][data-app-tab="Home"] #main { background: rgba(255, 253, 248, 0.18); }
+:root[data-world-skin="gesso"][data-app-tab="Today"] body {
+  background-image: url("/img/skins/gesso_today.png") !important;
+  background-size: cover !important;
+}
+:root[data-world-skin="gesso"][data-app-tab="Today"] #main .card { background: #fffdf8; border: 1px solid #3f3a34; border-radius: 0; }
+:root[data-world-skin="gesso"][data-app-tab="Tasks"] #main .card { background: #fffdf8; border-radius: 0; border: 1px solid #3f3a34; }
+:root[data-world-skin="gesso"][data-app-tab="Agent"] #main .agent-pane { background: #fffdf8; color: #3f3a34; }
+:root[data-world-skin="gesso"][data-app-tab="Hub"] #main .hub-card { border-radius: 0; background: #fffdf8; outline: 1px solid #3f3a34; }
+:root[data-world-skin="gesso"][data-app-tab="Practice"] #main .card { background: #f7f3ec; border-radius: 0; }
+
+/* ── stained · night chapel, gold leading ───────────────────── */
+
+html[data-player-skin="stained"],
+:root[data-world-skin="stained"] {
+  --bg-shell: #1a1030;
+  --bg-content: #22143c;
+  --bg-card: #1e1340;
+  --ink-primary: #f5edd4;
+  --ws-accent: #c9a227;
+  --accent: #c9a227;
+}
+html[data-player-skin="stained"] body,
+:root[data-world-skin="stained"] body {
+  background-color: #1a1030 !important;
+  background-image: url("/img/skins/stained.png") !important;
+  background-size: cover !important;
+  background-position: center top !important;
+  color: #f5edd4;
+}
+html[data-player-skin="stained"] body::after {
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  background: url("/img/skins/stained.png") center top / cover;
+}
+html[data-player-skin="stained"] .top-hud {
+  background: rgba(26, 16, 48, 0.94);
+  border-bottom: 3px solid #c9a227;
+  color: #f5edd4;
+}
+html[data-player-skin="stained"] .launcher-card {
+  border-radius: 6px 6px 18px 18px;
+  background: rgba(26, 16, 48, 0.88);
+  color: #f5edd4;
+  border: 3px solid #c9a227;
+}
+html[data-player-skin="stained"] .launcher-card-glyph,
+html[data-player-skin="stained"] .launcher-tile-glyph {
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  border-radius: 0;
+  background: #c9a227;
+  color: #1a1030;
+}
+html[data-player-skin="stained"] button.primary { background: #c9a227; color: #1a1030; border-radius: 0 0 18px 18px; }
+:root[data-world-skin="stained"] #main::before {
+  border: 3px solid #c9a227;
+  border-radius: 0 0 28% 28%;
+}
+:root[data-world-skin="stained"][data-app-tab="Home"] body {
+  background-image: url("/img/skins/stained.png") !important;
+  background-position: center top !important;
+}
+:root[data-world-skin="stained"][data-app-tab="Home"] #main { background: rgba(26, 16, 48, 0.2); }
+:root[data-world-skin="stained"][data-app-tab="Today"] #main .tdy-hour-cell { border: 2px solid #c9a227; border-radius: 6px 6px 14px 14px; }
+:root[data-world-skin="stained"][data-app-tab="Tasks"] #main .card {
+  border-radius: 6px 6px 18px 18px;
+  background: #22143c;
+  border: 2px solid #c9a227;
+}
+:root[data-world-skin="stained"][data-app-tab="Agent"] body {
+  background-image: url("/img/skins/stained_agent.png") !important;
+  background-position: center !important;
+}
+:root[data-world-skin="stained"][data-app-tab="Agent"] #main .agent-pane { background: rgba(26, 16, 48, 0.78); }
+:root[data-world-skin="stained"][data-app-tab="Hub"] #main .hub-card {
+  border-radius: 6px 6px 18px 18px;
+  border: 3px solid #c9a227;
+  background: #1e1340;
+}
+:root[data-world-skin="stained"][data-app-tab="Practice"] #main .card { border: 3px double #c9a227; background: #1a1030; }
+
+/* ── tatami · straw + indigo ─────────────────────────────────── */
+
+html[data-player-skin="tatami"],
+:root[data-world-skin="tatami"] {
+  --bg-shell: #1e3a5f;
+  --bg-content: #24466e;
+  --bg-card: #2a4d73;
+  --ink-primary: #f3ead4;
+  --ws-accent: #c4b183;
+  --accent: #c4b183;
+  --accent-ink: #1e3a5f;
+}
+html[data-player-skin="tatami"] body,
+:root[data-world-skin="tatami"] body {
+  background-color: #1e3a5f !important;
+  background-image: url("/img/skins/tatami.png") !important;
+  background-size: cover !important;
+  background-position: center bottom !important;
+  color: #f3ead4;
+}
+html[data-player-skin="tatami"] body::after { opacity: 0.14; mix-blend-mode: multiply; background: url("/img/skins/tatami.png") center / cover; }
+html[data-player-skin="tatami"] .top-hud { background: #1e3a5f; border-bottom: 8px solid #c4b183; color: #f3ead4; }
+html[data-player-skin="tatami"] .launcher-card {
+  border-radius: 2px;
+  background: #24466e;
+  color: #f3ead4;
+  border: 1px solid #c4b183;
+  box-shadow: inset 0 10px 0 #c4b183;
+  padding-top: 18px;
+}
+html[data-player-skin="tatami"] .launcher-card-glyph,
+html[data-player-skin="tatami"] .launcher-tile-glyph { border-radius: 2px; background: #c4b183; color: #1e3a5f; }
+html[data-player-skin="tatami"] button.primary { background: #c4b183; color: #1e3a5f; border-radius: 2px; }
+:root[data-world-skin="tatami"] #main::before { border: 8px solid #c4b183; border-top-width: 18px; }
+:root[data-world-skin="tatami"][data-app-tab="Home"] #main { background: rgba(30, 58, 95, 0.18); }
+:root[data-world-skin="tatami"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 2px; border-color: #c4b183; }
+:root[data-world-skin="tatami"][data-app-tab="Tasks"] #main .card { border-radius: 2px; background: #24466e; border-top: 8px solid #c4b183; }
+:root[data-world-skin="tatami"][data-app-tab="Agent"] #main .agent-pane { background: #1e3a5f; }
+:root[data-world-skin="tatami"][data-app-tab="Hub"] #main .hub-card { border-radius: 2px; border-top: 10px solid #c4b183; background: #2a4d73; }
+:root[data-world-skin="tatami"][data-app-tab="Practice"] #main .card { border: 1px solid #c4b183; background: #1e3a5f; }
+
+/* ── letterpress · cream stock, wine ink ────────────────────── */
+
+html[data-player-skin="letterpress"],
+:root[data-world-skin="letterpress"] {
+  --bg-shell: #efe6d6;
+  --bg-content: #f4eee2;
+  --bg-card: #faf6ee;
+  --ink-primary: #6b2a22;
+  --ws-accent: #6b2a22;
+  --accent: #6b2a22;
+  --accent-ink: #efe6d6;
+  --font-display: "Iowan Old Style", Palatino, Georgia, serif;
+}
+html[data-player-skin="letterpress"] body,
+:root[data-world-skin="letterpress"] body {
+  background-color: #efe6d6 !important;
+  background-image: url("/img/skins/letterpress.png") !important;
+  background-size: cover !important;
+  color: #6b2a22;
+}
+html[data-player-skin="letterpress"] body::after { opacity: 0.12; mix-blend-mode: multiply; background: url("/img/skins/letterpress.png") center / cover; }
+html[data-player-skin="letterpress"] .top-hud { background: #faf6ee; border-bottom: 1px solid #6b2a22; color: #6b2a22; }
+html[data-player-skin="letterpress"] .launcher-card {
+  border-radius: 0 3px 0 3px;
+  background: #faf6ee;
+  color: #6b2a22;
+  box-shadow: 0 4px 0 #6b2a22;
+}
+html[data-player-skin="letterpress"] .launcher-card-glyph,
+html[data-player-skin="letterpress"] .launcher-tile-glyph { border-radius: 0; background: #6b2a22; color: #efe6d6; }
+html[data-player-skin="letterpress"] button.primary { background: #6b2a22; color: #efe6d6; border-radius: 0; }
+html[data-player-skin="letterpress"] button.primary:active { transform: translateY(4px); box-shadow: none; }
+:root[data-world-skin="letterpress"] #main::before { border: 1px solid #6b2a22; }
+:root[data-world-skin="letterpress"][data-app-tab="Home"] #main { background: rgba(250, 246, 238, 0.2); }
+:root[data-world-skin="letterpress"][data-app-tab="Today"] #main {
+  background-image: repeating-linear-gradient(180deg, transparent 0 27px, rgba(107, 42, 34, 0.12) 27px 28px);
+}
+:root[data-world-skin="letterpress"][data-app-tab="Tasks"] #main .card {
+  border-radius: 0;
+  background: #faf6ee;
+  color: #6b2a22;
+  box-shadow: 0 3px 0 #6b2a22;
+}
+:root[data-world-skin="letterpress"][data-app-tab="Agent"] #main .agent-pane { background: #faf6ee; color: #6b2a22; }
+:root[data-world-skin="letterpress"][data-app-tab="Hub"] #main .hub-card { border-radius: 0; background: #faf6ee; box-shadow: 0 3px 0 #6b2a22; }
+:root[data-world-skin="letterpress"][data-app-tab="Practice"] #main .card { background: #f4eee2; border: 1px dashed #6b2a22; }
+
+/* ── mosaic · dark teal ground, gold tesserae ───────────────── */
+
+html[data-player-skin="mosaic"],
+:root[data-world-skin="mosaic"] {
+  --bg-shell: #0c2f2c;
+  --bg-content: #103834;
+  --bg-card: #14403c;
+  --ink-primary: #f5edd4;
+  --ws-accent: #c9a227;
+  --accent: #c9a227;
+  --accent-ink: #0c2f2c;
+}
+html[data-player-skin="mosaic"] body,
+:root[data-world-skin="mosaic"] body {
+  background-color: #0c2f2c !important;
+  background-image: url("/img/skins/mosaic.png") !important;
+  background-size: cover !important;
+  color: #f5edd4;
+}
+html[data-player-skin="mosaic"] body::after { opacity: 0.28; mix-blend-mode: multiply; background: url("/img/skins/mosaic.png") center / cover; }
+html[data-player-skin="mosaic"] .top-hud { background: #0c2f2c; border-bottom: 4px solid #c9a227; color: #f5edd4; }
+html[data-player-skin="mosaic"] .launcher-card {
+  border-radius: 3px;
+  background: #14403c;
+  color: #f5edd4;
+  border: 2px solid #c9a227;
+  box-shadow: 4px 4px 0 #c9a227;
+}
+html[data-player-skin="mosaic"] .launcher-card-glyph,
+html[data-player-skin="mosaic"] .launcher-tile-glyph {
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  border-radius: 0;
+  background: #c9a227;
+  color: #0c2f2c;
+}
+html[data-player-skin="mosaic"] button.primary { background: #c9a227; color: #0c2f2c; border-radius: 3px; }
+:root[data-world-skin="mosaic"] #main::before { border: 4px solid #c9a227; }
+:root[data-world-skin="mosaic"][data-app-tab="Home"] #main { background: rgba(12, 47, 44, 0.18); }
+:root[data-world-skin="mosaic"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 0; border: 2px solid #c9a227; }
+:root[data-world-skin="mosaic"][data-app-tab="Tasks"] #main .card { border-radius: 3px; background: #14403c; border: 2px solid #c9a227; }
+:root[data-world-skin="mosaic"][data-app-tab="Agent"] #main .agent-pane { background: #0c2f2c; }
+:root[data-world-skin="mosaic"][data-app-tab="Hub"] #main .hub-card { border-radius: 3px; border: 2px solid #c9a227; background: #103834; }
+:root[data-world-skin="mosaic"][data-app-tab="Practice"] #main .card { background: #0c2f2c; box-shadow: 4px 4px 0 #c9a227; }
+
+/* ── splatter · cobalt paint on cream canvas, never gore ───── */
+
+html[data-player-skin="splatter"],
+:root[data-world-skin="splatter"] {
+  --bg-shell: #f3eee4;
+  --bg-content: #f7f3ec;
+  --bg-card: #fffdf8;
+  --ink-primary: #1c2438;
+  --ink-secondary: #3a4458;
+  --ws-accent: #2f5fbf;
+  --accent: #2f5fbf;
+  --accent-ink: #f3eee4;
+}
+html[data-player-skin="splatter"] body,
+:root[data-world-skin="splatter"] body {
+  background-color: #f3eee4 !important;
+  background-image: url("/img/skins/splatter.png") !important;
+  background-size: cover !important;
+  color: #1c2438;
+}
+html[data-player-skin="splatter"] body::after {
+  opacity: 0.1;
+  mix-blend-mode: multiply;
+  background: url("/img/skins/splatter.png") center / cover;
+}
+html[data-player-skin="splatter"] .top-hud {
+  background: rgba(243, 238, 228, 0.9);
+  border-bottom: 0;
+  color: #1c2438;
+}
+html[data-player-skin="splatter"] .launcher-card {
+  border-radius: 16px 4px 20px 8px;
+  background: rgba(255, 253, 248, 0.88);
+  color: #1c2438;
+  border: 0;
+}
+html[data-player-skin="splatter"] .launcher-card-glyph,
+html[data-player-skin="splatter"] .launcher-tile-glyph {
+  border-radius: 60% 12px 40% 8px;
+  background: #2f5fbf;
+  color: #f3eee4;
+}
+html[data-player-skin="splatter"] button.primary {
+  background: #2f5fbf;
+  color: #f3eee4;
+  border-radius: 12px 8px 16px 8px;
+}
+html[data-player-skin="splatter"] button.primary:hover { transform: translateY(-1px); }
+:root[data-world-skin="splatter"] #main::before { border: 0; }
+:root[data-world-skin="splatter"][data-app-tab="Home"] body {
+  background-image: url("/img/skins/splatter.png") !important;
+}
+:root[data-world-skin="splatter"][data-app-tab="Home"] #main { background: transparent; }
+:root[data-world-skin="splatter"][data-app-tab="Today"] body {
+  background-image: url("/img/skins/splatter_today.png") !important;
+  background-position: center !important;
+}
+:root[data-world-skin="splatter"][data-app-tab="Today"] #main { background: color-mix(in srgb, #f3eee4 42%, transparent); }
+:root[data-world-skin="splatter"][data-app-tab="Tasks"] body {
+  background-image: url("/img/skins/splatter_tasks.png") !important;
+  background-position: center top !important;
+}
+:root[data-world-skin="splatter"][data-app-tab="Tasks"] #main .card {
+  border-radius: 16px 4px 20px 8px;
+  background: rgba(255, 253, 248, 0.9);
+  border: 0;
+}
+:root[data-world-skin="splatter"][data-app-tab="Agent"] body {
+  background-image: url("/img/skins/splatter_agent.png") !important;
+  background-position: center !important;
+}
+:root[data-world-skin="splatter"][data-app-tab="Agent"] #main .agent-pane { background: rgba(255, 253, 248, 0.82); }
+:root[data-world-skin="splatter"][data-app-tab="Hub"] body {
+  background-image: url("/img/skins/splatter_tasks.png") !important;
+  background-position: left center !important;
+}
+:root[data-world-skin="splatter"][data-app-tab="Hub"] #main .hub-card {
+  border-radius: 16px 4px 20px 8px;
+  background: rgba(255, 253, 248, 0.88);
+}
+:root[data-world-skin="splatter"][data-app-tab="Practice"] body {
+  background-image: url("/img/skins/splatter_agent.png") !important;
+  background-position: center bottom !important;
+}
+:root[data-world-skin="splatter"][data-app-tab="Practice"] #main .card {
+  border-radius: 16px 6px;
+  background: rgba(255, 253, 248, 0.84);
+}
+
+/* ── chalkboard · slate board + chalk ──────────────────────── */
+
+html[data-player-skin="chalkboard"],
+:root[data-world-skin="chalkboard"] {
+  --bg-shell: #1a2a22;
+  --bg-content: #1e3228;
+  --bg-card: #22362c;
+  --ink-primary: #e8e4d8;
+  --ink-secondary: #c8c4b8;
+  --ws-accent: #e8e4d8;
+  --accent: #e8e4d8;
+  --accent-ink: #1a2a22;
+}
+html[data-player-skin="chalkboard"] body,
+:root[data-world-skin="chalkboard"] body {
+  background-color: #1a2a22 !important;
+  background-image: url("/img/skins/chalkboard.png") !important;
+  background-size: cover !important;
+  color: #e8e4d8;
+}
+html[data-player-skin="chalkboard"] body::after {
+  opacity: 0.14;
+  mix-blend-mode: multiply;
+  background: url("/img/skins/chalkboard.png") center / cover;
+}
+html[data-player-skin="chalkboard"] .top-hud {
+  background: rgba(26, 42, 34, 0.9);
+  border-bottom: 1px solid #e8e4d8;
+  color: #e8e4d8;
+}
+html[data-player-skin="chalkboard"] .launcher-card {
+  border-radius: 0 0 12px 12px;
+  background: rgba(34, 54, 44, 0.86);
+  color: #e8e4d8;
+  border: 1px solid #e8e4d8;
+}
+html[data-player-skin="chalkboard"] .launcher-card-glyph,
+html[data-player-skin="chalkboard"] .launcher-tile-glyph {
+  border-radius: 0;
+  background: #e8e4d8;
+  color: #1a2a22;
+}
+html[data-player-skin="chalkboard"] button.primary { background: #e8e4d8; color: #1a2a22; border-radius: 0 0 10px 10px; }
+:root[data-world-skin="chalkboard"] #main::before { border: 2px solid #e8e4d8; }
+:root[data-world-skin="chalkboard"][data-app-tab="Home"] #main { background: rgba(26, 42, 34, 0.18); }
+:root[data-world-skin="chalkboard"][data-app-tab="Today"] body {
+  background-image: url("/img/skins/chalkboard_today.png") !important;
+}
+:root[data-world-skin="chalkboard"][data-app-tab="Today"] #main .tdy-hour-cell { border: 1px dashed #e8e4d8; border-radius: 0; }
+:root[data-world-skin="chalkboard"][data-app-tab="Tasks"] #main .card {
+  border-radius: 0 0 12px 12px;
+  background: #22362c;
+  border: 1px solid #e8e4d8;
+}
+:root[data-world-skin="chalkboard"][data-app-tab="Agent"] #main .agent-pane { background: #1a2a22; color: #e8e4d8; }
+:root[data-world-skin="chalkboard"][data-app-tab="Hub"] #main .hub-card {
+  border-radius: 0 0 12px 12px;
+  background: #22362c;
+  border-bottom: 8px solid #e8e4d8;
+}
+:root[data-world-skin="chalkboard"][data-app-tab="Practice"] #main .card { background: #1e3228; border: 1px dashed #e8e4d8; }
+
+/* ── terrazzo · cream ground, sage chips ───────────────────── */
+
+html[data-player-skin="terrazzo"],
+:root[data-world-skin="terrazzo"] {
+  --bg-shell: #efe6d4;
+  --bg-content: #f4eee3;
+  --bg-card: #f8f3e9;
+  --ink-primary: #2a3228;
+  --ink-secondary: #4a5248;
+  --ws-accent: #6b7e5e;
+  --accent: #6b7e5e;
+  --accent-ink: #efe6d4;
+}
+html[data-player-skin="terrazzo"] body,
+:root[data-world-skin="terrazzo"] body {
+  background-color: #efe6d4 !important;
+  background-image: url("/img/skins/terrazzo.png") !important;
+  background-size: cover !important;
+  color: #2a3228;
+}
+html[data-player-skin="terrazzo"] body::after {
+  opacity: 0.12;
+  mix-blend-mode: multiply;
+  background: url("/img/skins/terrazzo.png") center / cover;
+}
+html[data-player-skin="terrazzo"] .top-hud {
+  background: rgba(239, 230, 212, 0.9);
+  border-bottom: 0;
+  color: #2a3228;
+}
+html[data-player-skin="terrazzo"] .launcher-card {
+  border-radius: 14px 2px 22px 8px;
+  background: rgba(248, 243, 233, 0.9);
+  color: #2a3228;
+  border: 0;
+}
+html[data-player-skin="terrazzo"] .launcher-card-glyph,
+html[data-player-skin="terrazzo"] .launcher-tile-glyph {
+  border-radius: 14px 2px 22px 8px;
+  background: #6b7e5e;
+  color: #efe6d4;
+}
+html[data-player-skin="terrazzo"] button.primary { background: #6b7e5e; color: #efe6d4; border-radius: 14px 2px 22px 8px; }
+:root[data-world-skin="terrazzo"] #main::before { border: 0; }
+:root[data-world-skin="terrazzo"][data-app-tab="Home"] #main { background: rgba(239, 230, 212, 0.16); }
+:root[data-world-skin="terrazzo"][data-app-tab="Today"] body {
+  background-image: url("/img/skins/terrazzo_today.png") !important;
+}
+:root[data-world-skin="terrazzo"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 14px 2px 22px 8px; border-color: #6b7e5e; }
+:root[data-world-skin="terrazzo"][data-app-tab="Tasks"] #main .card {
+  border-radius: 14px 2px 22px 8px;
+  background: #f8f3e9;
+  border: 1px solid #6b7e5e;
+}
+:root[data-world-skin="terrazzo"][data-app-tab="Agent"] #main .agent-pane { background: #f8f3e9; color: #2a3228; }
+:root[data-world-skin="terrazzo"][data-app-tab="Hub"] #main .hub-card {
+  border-radius: 14px 2px 22px 8px;
+  background: #f8f3e9;
+}
+:root[data-world-skin="terrazzo"][data-app-tab="Practice"] #main .card { background: #f4eee3; border-radius: 22px 8px; }
+
+/* ── shoji · paper light, charcoal lattice ─────────────────── */
+
+html[data-player-skin="shoji"],
+:root[data-world-skin="shoji"] {
+  --bg-shell: #f4efe6;
+  --bg-content: #f7f3ec;
+  --bg-card: #fbf8f2;
+  --ink-primary: #2a2420;
+  --ink-secondary: #4a443e;
+  --ws-accent: #2a2420;
+  --accent: #2a2420;
+  --accent-ink: #f4efe6;
+}
+html[data-player-skin="shoji"] body,
+:root[data-world-skin="shoji"] body {
+  background-color: #f4efe6 !important;
+  background-image: url("/img/skins/shoji.png") !important;
+  background-size: cover !important;
+  color: #2a2420;
+}
+html[data-player-skin="shoji"] body::after {
+  opacity: 0.08;
+  mix-blend-mode: multiply;
+  background: url("/img/skins/shoji.png") center / cover;
+}
+html[data-player-skin="shoji"] .top-hud {
+  background: rgba(244, 239, 230, 0.92);
+  border-bottom: 1px solid #2a2420;
+  color: #2a2420;
+}
+html[data-player-skin="shoji"] .launcher-card {
+  border-radius: 1px 1px 1px 20px;
+  background: rgba(251, 248, 242, 0.88);
+  color: #2a2420;
+  border: 1px solid #2a2420;
+}
+html[data-player-skin="shoji"] .launcher-card-glyph,
+html[data-player-skin="shoji"] .launcher-tile-glyph {
+  border-radius: 0;
+  background: #2a2420;
+  color: #f4efe6;
+}
+html[data-player-skin="shoji"] button.primary { background: #2a2420; color: #f4efe6; border-radius: 0; }
+:root[data-world-skin="shoji"] #main::before { border: 1px solid #2a2420; }
+:root[data-world-skin="shoji"][data-app-tab="Home"] #main { background: rgba(244, 239, 230, 0.14); }
+:root[data-world-skin="shoji"][data-app-tab="Today"] body {
+  background-image: url("/img/skins/shoji_today.png") !important;
+}
+:root[data-world-skin="shoji"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 0; border-color: #2a2420; }
+:root[data-world-skin="shoji"][data-app-tab="Tasks"] #main .card {
+  border-radius: 1px 1px 1px 20px;
+  background: #fbf8f2;
+  border: 1px solid #2a2420;
+}
+:root[data-world-skin="shoji"][data-app-tab="Agent"] #main .agent-pane { background: #fbf8f2; color: #2a2420; }
+:root[data-world-skin="shoji"][data-app-tab="Hub"] #main .hub-card {
+  border-radius: 0;
+  background: #fbf8f2;
+  border: 1px solid #2a2420;
+}
+:root[data-world-skin="shoji"][data-app-tab="Practice"] #main .card { background: #f7f3ec; border: 1px dashed #2a2420; }
+
+/* ── beeswax · walnut bench, honey comb ────────────────────── */
+
+html[data-player-skin="beeswax"],
+:root[data-world-skin="beeswax"] {
+  --bg-shell: #3a2a18;
+  --bg-content: #432f1c;
+  --bg-card: #4a3420;
+  --ink-primary: #f4ead0;
+  --ink-secondary: #d4c4a0;
+  --ws-accent: #c9a227;
+  --accent: #c9a227;
+  --accent-ink: #3a2a18;
+}
+html[data-player-skin="beeswax"] body,
+:root[data-world-skin="beeswax"] body {
+  background-color: #3a2a18 !important;
+  background-image: url("/img/skins/beeswax.png") !important;
+  background-size: cover !important;
+  color: #f4ead0;
+}
+html[data-player-skin="beeswax"] body::after {
+  opacity: 0.14;
+  mix-blend-mode: multiply;
+  background: url("/img/skins/beeswax.png") center / cover;
+}
+html[data-player-skin="beeswax"] .top-hud {
+  background: rgba(58, 42, 24, 0.9);
+  border-bottom: 2px solid #c9a227;
+  color: #f4ead0;
+}
+html[data-player-skin="beeswax"] .launcher-card {
+  border-radius: 24px 6px 24px 6px;
+  background: rgba(74, 52, 32, 0.86);
+  color: #f4ead0;
+  border: 1px solid #c9a227;
+}
+html[data-player-skin="beeswax"] .launcher-card-glyph,
+html[data-player-skin="beeswax"] .launcher-tile-glyph {
+  border-radius: 50% 8px;
+  background: #c9a227;
+  color: #3a2a18;
+}
+html[data-player-skin="beeswax"] button.primary { background: #c9a227; color: #3a2a18; border-radius: 24px 6px; }
+:root[data-world-skin="beeswax"] #main::before { border: 2px solid #c9a227; }
+:root[data-world-skin="beeswax"][data-app-tab="Home"] #main { background: rgba(58, 42, 24, 0.2); }
+:root[data-world-skin="beeswax"][data-app-tab="Today"] body {
+  background-image: url("/img/skins/beeswax_today.png") !important;
+}
+:root[data-world-skin="beeswax"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 24px 6px; border-color: #c9a227; }
+:root[data-world-skin="beeswax"][data-app-tab="Tasks"] #main .card {
+  border-radius: 24px 6px 24px 6px;
+  background: #4a3420;
+  border: 1px solid #c9a227;
+}
+:root[data-world-skin="beeswax"][data-app-tab="Agent"] #main .agent-pane { background: #3a2a18; color: #f4ead0; }
+:root[data-world-skin="beeswax"][data-app-tab="Hub"] #main .hub-card {
+  border-radius: 24px 6px;
+  background: #4a3420;
+  border: 1px solid #c9a227;
+}
+:root[data-world-skin="beeswax"][data-app-tab="Practice"] #main .card { background: #432f1c; box-shadow: 4px 4px 0 #c9a227; }
+
+/* ── cork · pinboard tan, cream cards ──────────────────────── */
+
+html[data-player-skin="cork"],
+:root[data-world-skin="cork"] {
+  --bg-shell: #c4a574;
+  --bg-content: #d2b68a;
+  --bg-card: #efe6d4;
+  --ink-primary: #3a2a18;
+  --ink-secondary: #5a4a32;
+  --ws-accent: #8a6a3a;
+  --accent: #8a6a3a;
+  --accent-ink: #efe6d4;
+}
+html[data-player-skin="cork"] body,
+:root[data-world-skin="cork"] body {
+  background-color: #c4a574 !important;
+  background-image: url("/img/skins/cork.png") !important;
+  background-size: cover !important;
+  color: #3a2a18;
+}
+html[data-player-skin="cork"] body::after {
+  opacity: 0.1;
+  mix-blend-mode: multiply;
+  background: url("/img/skins/cork.png") center / cover;
+}
+html[data-player-skin="cork"] .top-hud {
+  background: rgba(239, 230, 212, 0.9);
+  border-bottom: 0;
+  color: #3a2a18;
+}
+html[data-player-skin="cork"] .launcher-card {
+  border-radius: 8px 8px 2px 2px;
+  background: #efe6d4;
+  color: #3a2a18;
+  border: 0;
+  box-shadow: 0 2px 0 #8a6a3a;
+}
+html[data-player-skin="cork"] .launcher-card-glyph,
+html[data-player-skin="cork"] .launcher-tile-glyph {
+  border-radius: 50%;
+  background: #8a6a3a;
+  color: #efe6d4;
+}
+html[data-player-skin="cork"] button.primary { background: #8a6a3a; color: #efe6d4; border-radius: 8px 8px 2px 2px; }
+:root[data-world-skin="cork"] #main::before { border: 0; }
+:root[data-world-skin="cork"][data-app-tab="Home"] #main { background: rgba(196, 165, 116, 0.12); }
+:root[data-world-skin="cork"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 8px 8px 2px 2px; background: #efe6d4; }
+:root[data-world-skin="cork"][data-app-tab="Tasks"] #main .card {
+  border-radius: 8px 8px 2px 2px;
+  background: #efe6d4;
+  box-shadow: 0 3px 0 #8a6a3a;
+}
+:root[data-world-skin="cork"][data-app-tab="Agent"] #main .agent-pane { background: #efe6d4; color: #3a2a18; }
+:root[data-world-skin="cork"][data-app-tab="Hub"] #main .hub-card {
+  border-radius: 8px 8px 2px 2px;
+  background: #efe6d4;
+}
+:root[data-world-skin="cork"][data-app-tab="Practice"] #main .card { background: #f4eee3; border-radius: 8px 8px 2px 2px; }
+
+/* ── shibori · indigo cloth, cream stitch ──────────────────── */
+
+html[data-player-skin="shibori"],
+:root[data-world-skin="shibori"] {
+  --bg-shell: #1a2c4a;
+  --bg-content: #1e3454;
+  --bg-card: #243c5e;
+  --ink-primary: #f4efe6;
+  --ink-secondary: #d4cfc6;
+  --ws-accent: #d6cfc2;
+  --accent: #d6cfc2;
+  --accent-ink: #1a2c4a;
+}
+html[data-player-skin="shibori"] body,
+:root[data-world-skin="shibori"] body {
+  background-color: #1a2c4a !important;
+  background-image: url("/img/skins/shibori.png") !important;
+  background-size: cover !important;
+  color: #f4efe6;
+}
+html[data-player-skin="shibori"] body::after {
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+  background: url("/img/skins/shibori.png") center / cover;
+}
+html[data-player-skin="shibori"] .top-hud {
+  background: rgba(26, 44, 74, 0.9);
+  border-bottom: 1px solid #d6cfc2;
+  color: #f4efe6;
+}
+html[data-player-skin="shibori"] .launcher-card {
+  border-radius: 30px 2px 30px 2px;
+  background: rgba(36, 60, 94, 0.86);
+  color: #f4efe6;
+  border: 1px solid #d6cfc2;
+}
+html[data-player-skin="shibori"] .launcher-card-glyph,
+html[data-player-skin="shibori"] .launcher-tile-glyph {
+  border-radius: 30px 2px;
+  background: #d6cfc2;
+  color: #1a2c4a;
+}
+html[data-player-skin="shibori"] button.primary { background: #d6cfc2; color: #1a2c4a; border-radius: 30px 2px 30px 2px; }
+:root[data-world-skin="shibori"] #main::before { border: 1px dashed #d6cfc2; }
+:root[data-world-skin="shibori"][data-app-tab="Home"] #main { background: rgba(26, 44, 74, 0.2); }
+:root[data-world-skin="shibori"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 30px 2px; border-color: #d6cfc2; }
+:root[data-world-skin="shibori"][data-app-tab="Tasks"] #main .card {
+  border-radius: 30px 2px 30px 2px;
+  background: #243c5e;
+  border: 1px solid #d6cfc2;
+}
+:root[data-world-skin="shibori"][data-app-tab="Agent"] #main .agent-pane { background: #1a2c4a; color: #f4efe6; }
+:root[data-world-skin="shibori"][data-app-tab="Hub"] #main .hub-card {
+  border-radius: 30px 2px;
+  background: #243c5e;
+}
+:root[data-world-skin="shibori"][data-app-tab="Practice"] #main .card { background: #1e3454; border: 1px dashed #d6cfc2; }
+
+/* ── solarium · glass-roof sun, caustics, not a beach ──────── */
+
+html[data-player-skin="solarium"],
+:root[data-world-skin="solarium"] {
+  --bg-shell: #efe6d4;
+  --bg-content: #f4eee3;
+  --bg-card: #f8f3e9;
+  --ink-primary: #3a2a14;
+  --ink-secondary: #5a4a28;
+  --ws-accent: #c9a227;
+  --accent: #c9a227;
+  --accent-ink: #3a2a14;
+}
+html[data-player-skin="solarium"] body,
+:root[data-world-skin="solarium"] body {
+  background-color: #efe6d4 !important;
+  background-image: url("/img/skins/solarium.png") !important;
+  background-size: cover !important;
+  color: #3a2a14;
+}
+html[data-player-skin="solarium"] body::after {
+  opacity: 0.1;
+  mix-blend-mode: soft-light;
+  background: url("/img/skins/solarium.png") center / cover;
+}
+html[data-player-skin="solarium"] .top-hud {
+  background: rgba(248, 243, 233, 0.88);
+  border-bottom: 3px double #c9a227;
+  color: #3a2a14;
+}
+html[data-player-skin="solarium"] .launcher-card {
+  border-radius: 22px 22px 4px 4px;
+  background: rgba(248, 243, 233, 0.9);
+  color: #3a2a14;
+  border: 0;
+}
+html[data-player-skin="solarium"] .launcher-card-glyph,
+html[data-player-skin="solarium"] .launcher-tile-glyph {
+  border-radius: 50%;
+  background: #c9a227;
+  color: #3a2a14;
+}
+html[data-player-skin="solarium"] button.primary { background: #c9a227; color: #3a2a14; border-radius: 999px; }
+:root[data-world-skin="solarium"] #main::before { border: 3px double #c9a227; }
+:root[data-world-skin="solarium"][data-app-tab="Home"] #main { background: rgba(239, 230, 212, 0.12); }
+:root[data-world-skin="solarium"][data-app-tab="Today"] body {
+  background-image: url("/img/skins/solarium_today.png") !important;
+}
+:root[data-world-skin="solarium"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 14px; border-color: #c9a227; }
+:root[data-world-skin="solarium"][data-app-tab="Tasks"] #main .card {
+  border-radius: 22px 22px 4px 4px;
+  background: #f8f3e9;
+  border: 1px solid #c9a227;
+}
+:root[data-world-skin="solarium"][data-app-tab="Agent"] #main .agent-pane { background: #f8f3e9; color: #3a2a14; }
+:root[data-world-skin="solarium"][data-app-tab="Hub"] #main .hub-card {
+  border-radius: 22px 22px 4px 4px;
+  background: #f8f3e9;
+}
+:root[data-world-skin="solarium"][data-app-tab="Practice"] #main .card { background: #f4eee3; border-radius: 22px 4px; }
+
+/* ── foundry · brushed steel ingots ─────────────────────────── */
+
+html[data-player-skin="foundry"],
+:root[data-world-skin="foundry"] {
+  --bg-shell: #1a1d22;
+  --bg-content: #20242b;
+  --bg-card: #272c34;
+  --ink-primary: #e8edf2;
+  --ink-secondary: #b8c0c8;
+  --ws-accent: #cfd6de;
+  --accent: #cfd6de;
+  --accent-ink: #1a1d22;
+}
+html[data-player-skin="foundry"] body,
+:root[data-world-skin="foundry"] body {
+  background-color: #1a1d22 !important;
+  background-image: url("/img/skins/foundry.png") !important;
+  background-size: cover !important;
+  color: #e8edf2;
+}
+html[data-player-skin="foundry"] body::after {
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background: url("/img/skins/foundry.png") center / cover;
+}
+html[data-player-skin="foundry"] .top-hud {
+  background: linear-gradient(180deg, #cfd6de, #8a929c 48%, #3a4048 52%, #a8b0b8);
+  border-bottom: 1px solid #e8edf2;
+  color: #1a1d22;
+}
+html[data-player-skin="foundry"] .launcher-card {
+  border-radius: 2px 18px 2px 18px;
+  background: linear-gradient(180deg, #4a515a, #272c34 46%, #1a1d22 54%, #323840);
+  color: #e8edf2;
+  border: 1px solid #cfd6de;
+}
+html[data-player-skin="foundry"] .launcher-card-glyph,
+html[data-player-skin="foundry"] .launcher-tile-glyph {
+  border-radius: 2px 18px;
+  background: linear-gradient(180deg, #e8edf2, #8a929c 50%, #3a4048 52%, #cfd6de);
+  color: #1a1d22;
+}
+html[data-player-skin="foundry"] button.primary {
+  background: linear-gradient(180deg, #e8edf2, #9aa2aa 48%, #3a4048 52%, #cfd6de);
+  color: #1a1d22;
+  border-radius: 2px 18px;
+}
+:root[data-world-skin="foundry"] #main::before { border: 2px solid #cfd6de; }
+:root[data-world-skin="foundry"][data-app-tab="Home"] #main { background: rgba(26, 29, 34, 0.18); }
+:root[data-world-skin="foundry"][data-app-tab="Today"] body {
+  background-image: url("/img/skins/foundry_today.png") !important;
+}
+:root[data-world-skin="foundry"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 2px 18px; border-color: #cfd6de; }
+:root[data-world-skin="foundry"][data-app-tab="Tasks"] #main .card {
+  border-radius: 2px 18px 2px 18px;
+  background: #272c34;
+  border: 1px solid #cfd6de;
+}
+:root[data-world-skin="foundry"][data-app-tab="Agent"] #main .agent-pane { background: #1a1d22; color: #e8edf2; }
+:root[data-world-skin="foundry"][data-app-tab="Hub"] #main .hub-card {
+  border-radius: 2px 18px;
+  background: #272c34;
+}
+:root[data-world-skin="foundry"][data-app-tab="Practice"] #main .card { background: #20242b; box-shadow: inset 0 1px 0 #cfd6de; }
+
+/* ── craft skins: one ground, one accent, unique objects ────── */
+
+html[data-player-skin="risograph"] {
+  --bg-shell: #f4efe6;
+  --bg-content: #f7f3ec;
+  --bg-card: #fffaf4;
+  --ink-primary: #3a1c28;
+  --ws-accent: #d63d8a;
+  --accent: #d63d8a;
+  --accent-ink: #fff8f4;
+}
+html[data-player-skin="risograph"] body { background: #f4efe6 !important; color: #3a1c28; }
+html[data-player-skin="risograph"] .launcher-card { border-radius: 16px 2px 14px 2px; background: #fffaf4; color: #3a1c28; box-shadow: 6px 6px 0 #d63d8a; }
+html[data-player-skin="risograph"] button.primary { background: #d63d8a; color: #fff8f4; border-radius: 2px; }
+
+html[data-player-skin="bauhaus"] {
+  --bg-shell: #f3ead8;
+  --bg-content: #f7f0e2;
+  --bg-card: #fff8ee;
+  --ink-primary: #1a1a1a;
+  --ws-accent: #c41e3a;
+  --accent: #c41e3a;
+  --accent-ink: #fff8ee;
+}
+html[data-player-skin="bauhaus"] body { background: #f3ead8 !important; color: #1a1a1a; }
+html[data-player-skin="bauhaus"] .launcher-card { border-radius: 0; background: #fff8ee; color: #1a1a1a; border: 4px solid #1a1a1a; }
+html[data-player-skin="bauhaus"] .launcher-card-glyph { border-radius: 0; background: #c41e3a; color: #fff8ee; }
+html[data-player-skin="bauhaus"] button.primary { background: #c41e3a; color: #fff8ee; border-radius: 0; }
+
+html[data-player-skin="fresco"] {
+  --bg-shell: #efe6d4;
+  --bg-content: #f4eee3;
+  --bg-card: #f8f2e8;
+  --ink-primary: #4a2e22;
+  --ws-accent: #9a4a2a;
+  --accent: #9a4a2a;
+  --accent-ink: #efe6d4;
+}
+html[data-player-skin="fresco"] body { background: #efe6d4 !important; color: #4a2e22; }
+html[data-player-skin="fresco"] .launcher-card { border-radius: 2px; background: #f8f2e8; color: #4a2e22; border: 1px solid #9a4a2a; }
+html[data-player-skin="fresco"] button.primary { background: #9a4a2a; color: #efe6d4; }
+
+html[data-player-skin="ukiyo"] {
+  --bg-shell: #1a2a4a;
+  --bg-content: #1e3358;
+  --bg-card: #243a62;
+  --ink-primary: #f4eee3;
+  --ws-accent: #8f2a1f;
+  --accent: #8f2a1f;
+}
+html[data-player-skin="ukiyo"] body { background: #1a2a4a !important; color: #f4eee3; }
+html[data-player-skin="ukiyo"] .launcher-card { border-radius: 8px 28px 8px 28px; background: #243a62; color: #f4eee3; border: 1px solid #8f2a1f; }
+html[data-player-skin="ukiyo"] button.primary { background: #8f2a1f; color: #f4eee3; }
+
+html[data-player-skin="linocut"] {
+  --bg-shell: #fef3c7;
+  --ink-primary: #7f1d1d;
+  --ws-accent: #7f1d1d;
+  --accent: #7f1d1d;
+}
+html[data-player-skin="linocut"] .launcher-card { border-radius: 0; background: #fef3c7; color: #7f1d1d; box-shadow: 5px 5px 0 #7f1d1d; }
+
+html[data-player-skin="enamel"] {
+  --bg-shell: #1e3a8a;
+  --ink-primary: #fde68a;
+  --ws-accent: #fbbf24;
+  --accent: #fbbf24;
+  --accent-ink: #1e3a8a;
+}
+html[data-player-skin="enamel"] .launcher-card { border-radius: 22px; background: #1e3a8a; color: #fde68a; border: 4px solid #fbbf24; }
+
+html[data-player-skin="brutalist"] .launcher-card { border-radius: 0; background: #57534e; color: #e7e5e4; }
+html[data-player-skin="noir"] .launcher-card { border-radius: 2px; background: #111827; color: #e5e7eb; border: 1px solid #e5e7eb; }
+html[data-player-skin="celadon"] .launcher-card { border-radius: 22px 10px; background: #115e59; color: #a7f3d0; }
+html[data-player-skin="vermilion"] .launcher-card { border-radius: 4px; background: #7f1d1d; color: #fee2e2; }
+html[data-player-skin="kiln"] .launcher-card { border-radius: 8px 8px 22px 22px; background: #431407; color: #fed7aa; }
+html[data-player-skin="lacquer"] .launcher-card { border-radius: 12px; background: #0f172a; color: #fde68a; border: 1px solid #facc15; }
+
+/* Readable type on painted rooms — never invert mid-sentence. */
+html[data-player-skin="sumi"] .agent-bubble,
+html[data-player-skin="gesso"] .agent-bubble,
+html[data-player-skin="letterpress"] .agent-bubble,
+html[data-player-skin="splatter"] .agent-bubble,
+html[data-player-skin="terrazzo"] .agent-bubble,
+html[data-player-skin="shoji"] .agent-bubble,
+html[data-player-skin="cork"] .agent-bubble,
+html[data-player-skin="solarium"] .agent-bubble,
+html[data-player-skin="risograph"] .agent-bubble,
+html[data-player-skin="bauhaus"] .agent-bubble,
+html[data-player-skin="fresco"] .agent-bubble {
+  background: #fffdf8;
+  color: #1c1c1c;
+}
+html[data-player-skin="kintsugi"] .agent-bubble,
+html[data-player-skin="cyanotype"] .agent-bubble,
+html[data-player-skin="stained"] .agent-bubble,
+html[data-player-skin="tatami"] .agent-bubble,
+html[data-player-skin="mosaic"] .agent-bubble,
+html[data-player-skin="chalkboard"] .agent-bubble,
+html[data-player-skin="beeswax"] .agent-bubble,
+html[data-player-skin="shibori"] .agent-bubble,
+html[data-player-skin="foundry"] .agent-bubble,
+html[data-player-skin="ukiyo"] .agent-bubble {
+  background: color-mix(in srgb, var(--bg-card) 88%, #000 12%);
+  color: var(--ink-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin] button.primary:hover,
+  html[data-player-skin] .launcher-card:hover { transform: none; }
+}

@@ -1,0 +1,786 @@
+/* ═══════════════════════════════════════════════════════════════
+   INK COURIER — a wet cancellation stamp on a slate blotter.
+
+   The object: a courier's rubber stamp, just lifted. Three corners
+   of the mark are crisp where the pad hit; the fourth is still a
+   wet-black smear, shining, not yet dry. The HUD is the blotter
+   the stamp lives on — a dark slate desk (loot #1e293b / #334155)
+   with postal killer bars running the bottom edge. The brand jewel
+   is the circular date stamp: two rings, three bars through the
+   middle. Every chip is a freshly inked mark that still shines,
+   trailing a short glossy tail where the courier dragged off.
+
+   Not a letterpress shop (no wine on cream, no serif impression).
+   Not an inkstorm squall (no void weather over the page).
+   Not a sumi wash (no rice paper, no vermilion seal).
+   Wet, not gore — a black trail, never a wound.
+
+   Place is hud,chip. The blotter and the marks are the room.
+   Cards, calendar, and tab pages stay quiet. Never clip #main or
+   .launcher-card. No 42%/48% ovals. Photo: /img/skins/ink.png.
+   Selectors carry [data-player-skin="ink"]:root so this room
+   outranks family stencils in skin-pass.css / skin-feels.css.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — slate blotter, wet black, one cool sheen ──── */
+
+html[data-player-skin="ink"]:root {
+  color-scheme: dark;
+
+  --room-ink-blotter: #1e293b;
+  --room-ink-pad: #334155;
+  --room-ink-desk: #0f1724;
+  --room-ink-well: #0a1018;
+  --room-ink-wet: #07090d;
+  --room-ink-wet-2: #10141c;
+  --room-ink-sheen: #c9d6e8;
+  --room-ink-sheen-hot: #e8eef6;
+  --room-ink-paper: #d7e0ec;
+  --room-ink-paper-2: #9aabbf;
+  --room-ink-muted: #6b7c91;
+  --room-ink-hair: rgba(201, 214, 232, 0.22);
+  --room-ink-hair-2: rgba(201, 214, 232, 0.4);
+  --room-ink-gloss: rgba(232, 238, 246, 0.28);
+
+  /* Signature cut: stamp bite. Three crisp rubber corners, one
+     elongated wet-pooled trail where the pad lifted. Nothing else
+     in the catalog uses 2 / 7 / 2 / 22 with a 17px trailing foot. */
+  --room-ink-r-plate: 2px 7px 2px 22px / 2px 3px 2px 17px;
+  --room-ink-r-card: 2px 6px 2px 18px / 2px 3px 2px 14px;
+  --room-ink-r-ctl: 1px 5px 1px 13px / 1px 2px 1px 10px;
+  --room-ink-r-chip: 1px 4px 1px 16px / 1px 2px 1px 12px;
+  --room-ink-r-cell: 1px 3px 1px 10px / 1px 2px 1px 8px;
+
+  /* Postal killer bars — the stripes pattern, kept on the blotter. */
+  --room-ink-bars:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 5px,
+      var(--room-ink-wet) 5px 9px,
+      transparent 9px 14px
+    );
+  --room-ink-bars-soft:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 6px,
+      rgba(7, 9, 13, 0.55) 6px 9px,
+      transparent 9px 15px
+    );
+
+  --bg-shell: var(--room-ink-desk);
+  --bg-content: var(--room-ink-blotter);
+  --bg-card: var(--room-ink-pad);
+  --bg-card-hover: #3d4d63;
+  --ink-primary: var(--room-ink-sheen-hot);
+  --ink-secondary: var(--room-ink-paper);
+  --ink-muted: var(--room-ink-muted);
+  --border: color-mix(in srgb, var(--room-ink-pad) 70%, var(--room-ink-sheen) 12%);
+  --gridline: rgba(201, 214, 232, 0.1);
+  --accent: var(--room-ink-sheen);
+  --ws-accent: var(--room-ink-sheen);
+  --accent-ink: var(--room-ink-wet);
+
+  /* Loot catalog source of truth. */
+  --skin-a: #1e293b;
+  --skin-b: #334155;
+  --at-a: #1e293b;
+  --at-b: #334155;
+  --feel-a: #c9d6e8;
+  --feel-b: #1e293b;
+  --feel-accent: var(--room-ink-sheen);
+  --feel-ground: var(--room-ink-desk);
+  --feel-paper: var(--room-ink-pad);
+  --feel-ink: var(--room-ink-sheen-hot);
+
+  --at-plate: var(--room-ink-pad);
+  --at-plate-2: #3a4b61;
+  --at-well: var(--room-ink-well);
+  --at-ink: var(--room-ink-sheen-hot);
+  --at-ink-2: var(--room-ink-paper);
+  --at-ink-3: var(--room-ink-muted);
+  --at-hair: var(--room-ink-hair);
+  --at-hair-2: var(--room-ink-hair-2);
+  --at-hair-a: rgba(201, 214, 232, 0.55);
+  --at-tint: rgba(201, 214, 232, 0.08);
+  --at-tint-b: rgba(30, 41, 59, 0.55);
+  --at-focus: 0 0 0 3px rgba(201, 214, 232, 0.28);
+  --at-rise: 0 18px 36px -22px rgba(4, 6, 10, 0.9);
+  --at-rise-soft: 0 10px 22px -16px rgba(4, 6, 10, 0.7);
+  --at-inset: inset 0 1px 0 var(--room-ink-gloss);
+  --at-r-plate: var(--room-ink-r-plate);
+  --at-r-card: var(--room-ink-r-card);
+  --at-r-ctl: var(--room-ink-r-ctl);
+  --at-r-chip: var(--room-ink-r-chip);
+  --at-r-cell: var(--room-ink-r-cell);
+
+  --font-display: ui-monospace, "IBM Plex Mono", "Cascadia Mono", "Courier New", monospace;
+  --at-font-display: var(--font-display);
+  --at-font-mono: var(--font-display);
+
+  /* Wet press: a stamp landing, not a 3D arcade lift. */
+  --feel-3d:
+    inset 0 1px 0 var(--room-ink-gloss),
+    0 1px 0 var(--room-ink-wet),
+    4px 5px 0 -3px var(--room-ink-wet);
+  --feel-3d-press:
+    inset 0 2px 6px rgba(4, 6, 10, 0.72),
+    2px 3px 0 -2px var(--room-ink-wet);
+  --feel-grain-opacity: 0.18;
+  --feel-grain-blend: overlay;
+  --feel-grain:
+    linear-gradient(180deg, rgba(232, 238, 246, 0.05), transparent 36%),
+    repeating-linear-gradient(90deg, transparent 0 11px, rgba(7, 9, 13, 0.14) 11px 12px);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 1px solid rgba(201, 214, 232, 0.22);
+  --feel-icon: drop-shadow(0 1px 0 rgba(232, 238, 246, 0.28));
+  --feel-title-tracking: 0.14em;
+  --feel-title-case: uppercase;
+  --feel-plate-image:
+    linear-gradient(180deg, rgba(232, 238, 246, 0.08), transparent 48%),
+    var(--room-ink-bars-soft);
+}
+
+/* ── 2 · Body — the blotter, not a squall ───────────────────── */
+
+html[data-player-skin="ink"]:root body {
+  background-color: var(--room-ink-desk) !important;
+  background-image:
+    linear-gradient(180deg, rgba(15, 23, 36, 0.88) 0%, rgba(30, 41, 59, 0.55) 42%, rgba(10, 16, 24, 0.92) 100%),
+    url("/img/skins/ink.png") !important;
+  background-size: cover, cover !important;
+  background-position: center, center !important;
+  background-attachment: fixed, fixed !important;
+  background-repeat: no-repeat !important;
+  color: var(--room-ink-sheen-hot);
+}
+
+/* Signal is a drying shine, not a CRT scan. Stripes live on the HUD. */
+html[data-player-skin="ink"]:root body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(ellipse 48% 18% at 18% 8%, rgba(232, 238, 246, 0.18), transparent 70%),
+    linear-gradient(180deg, rgba(201, 214, 232, 0.05), transparent 28%);
+  animation: room-ink-sheen 7.4s ease-in-out infinite;
+}
+
+html[data-player-skin="ink"]:root #main {
+  clip-path: none;
+  isolation: isolate;
+  position: relative;
+  background: color-mix(in srgb, var(--room-ink-desk) 42%, transparent) !important;
+}
+html[data-player-skin="ink"]:root #main::before,
+html[data-player-skin="ink"]:root #main::after {
+  animation: none;
+  background: none;
+  clip-path: none;
+}
+
+html[data-player-skin="ink"]:root .launcher-card {
+  clip-path: none;
+}
+
+/* ── 3 · HUD — the blotter the stamp lives on ───────────────── */
+
+html[data-player-skin="ink"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  color: var(--room-ink-sheen-hot);
+  border-bottom: 2px solid var(--room-ink-wet);
+  border-radius: 0;
+  background:
+    linear-gradient(180deg, rgba(232, 238, 246, 0.07), transparent 38%),
+    linear-gradient(180deg, #243044 0%, var(--room-ink-blotter) 72%, #172033 100%);
+  box-shadow:
+    inset 0 1px 0 var(--room-ink-gloss),
+    inset 0 -10px 0 var(--room-ink-wet),
+    0 10px 22px rgba(4, 6, 10, 0.42);
+}
+
+/* Killer bars: the courier's cancellation, running the blotter lip. */
+html[data-player-skin="ink"]:root .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 0;
+  height: 10px;
+  z-index: 1;
+  background: var(--room-ink-bars);
+  background-size: 28px 100%;
+  opacity: 0.92;
+  animation: room-ink-bars 18s linear infinite;
+}
+
+/* A wet shine walking the blotter — the signal, not a squall. */
+html[data-player-skin="ink"]:root .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: -18%;
+  width: 28%;
+  height: 100%;
+  z-index: 0;
+  background: linear-gradient(100deg, transparent, rgba(232, 238, 246, 0.12), transparent);
+  animation: room-ink-signal 5.6s ease-in-out infinite;
+}
+
+html[data-player-skin="ink"]:root .top-hud > * {
+  position: relative;
+  z-index: 2;
+}
+
+html[data-player-skin="ink"]:root .hud-app-name {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: currentColor;
+  color: var(--room-ink-sheen-hot);
+  font-family: var(--font-display);
+  font-weight: 760;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 var(--room-ink-wet);
+}
+
+/* Mini cancellation mark beside the name. */
+html[data-player-skin="ink"]:root .hud-app-name::before {
+  content: "";
+  display: inline-block;
+  width: 0.78em;
+  height: 0.78em;
+  margin-right: 0.5em;
+  vertical-align: -0.1em;
+  border: 1.5px solid var(--room-ink-sheen);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--room-ink-sheen);
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0 2px,
+    var(--room-ink-sheen) 2px 3px,
+    transparent 3px 5px
+  );
+  animation: room-ink-stamp 4.8s steps(2) infinite;
+}
+
+html[data-player-skin="ink"]:root .hud-intention,
+html[data-player-skin="ink"]:root .hud-now-focus-kicker {
+  color: var(--room-ink-paper-2);
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+}
+
+html[data-player-skin="ink"]:root :is(.brand-mark, .ws-mark, .hud-icon-svg, .tab-chip-mark, .hud-metric-mark) {
+  filter: var(--feel-icon);
+  color: var(--room-ink-sheen);
+}
+
+/* The date stamp: two rings, three killer bars. */
+html[data-player-skin="ink"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border-radius: 50%;
+  border: 2px solid var(--room-ink-wet);
+  background:
+    radial-gradient(circle at 34% 28%, rgba(232, 238, 246, 0.28), transparent 42%),
+    repeating-linear-gradient(0deg, transparent 0 3px, var(--room-ink-wet) 3px 5px, transparent 5px 8px),
+    radial-gradient(circle, var(--room-ink-pad) 0 34%, var(--room-ink-wet) 36% 42%, var(--room-ink-pad) 44% 68%, var(--room-ink-wet) 70% 78%, var(--room-ink-blotter) 80%);
+  box-shadow:
+    inset 0 1px 0 var(--room-ink-gloss),
+    5px 6px 0 -3px var(--room-ink-wet);
+  animation: room-ink-stamp 4.8s steps(2) infinite;
+}
+
+html[data-player-skin="ink"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 18%;
+  border: 1.5px solid rgba(201, 214, 232, 0.55);
+  border-radius: 50%;
+  box-shadow: 6px 7px 0 -4px var(--room-ink-wet);
+}
+
+html[data-player-skin="ink"]:root .tab-chip-bar {
+  overflow: visible;
+  background: color-mix(in srgb, var(--room-ink-desk) 88%, var(--room-ink-pad));
+  border-bottom: 1px solid var(--room-ink-wet);
+  box-shadow: inset 0 1px 0 rgba(232, 238, 246, 0.06);
+}
+
+/* ── 4 · Chips — freshly inked marks that still shine ───────── */
+
+html[data-player-skin="ink"]:root :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .hud-model-chip--status,
+  .hud-icon-btn,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .tsk-day-chip,
+  .tsk-keyword-chip,
+  .tsk-bucket-chip,
+  .tsk-due-chip,
+  .tsk-bar-chip,
+  .hub-chip,
+  .nts-chip,
+  .pln-mode-chip,
+  .pln-commit-chip,
+  .pln-keyword-chip,
+  .tdy-cat-chip,
+  .tdy-week-chip,
+  .today-day-chip,
+  .cal-week-chip,
+  .cal-month-chip,
+  .repo-cat-chip,
+  .agc-followup-chip,
+  .quick-capture-chip,
+  .game-stamp-chip
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid color-mix(in srgb, var(--room-ink-wet) 70%, var(--room-ink-sheen) 8%);
+  border-radius: var(--room-ink-r-chip);
+  background:
+    linear-gradient(165deg, rgba(232, 238, 246, 0.16) 0 18%, transparent 42%),
+    linear-gradient(180deg, #3a4b61 0%, var(--room-ink-pad) 55%, #243044 100%);
+  color: var(--room-ink-paper);
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+  box-shadow:
+    inset 0 1px 0 var(--room-ink-gloss),
+    7px 6px 0 -4px var(--room-ink-wet);
+  transition:
+    transform 140ms cubic-bezier(0.2, 0.7, 0.25, 1),
+    box-shadow 140ms ease,
+    filter 140ms ease,
+    background 180ms ease;
+}
+
+/* The wet-black trail every chip leaves when the stamp lifts. */
+html[data-player-skin="ink"]:root :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .tsk-day-chip,
+  .tsk-keyword-chip,
+  .tsk-bucket-chip,
+  .hub-chip,
+  .nts-chip,
+  .pln-mode-chip,
+  .tdy-cat-chip,
+  .today-day-chip,
+  .repo-cat-chip,
+  .quick-capture-chip
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  right: -8px;
+  bottom: 2px;
+  width: 13px;
+  height: 8px;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 18% 42%, var(--room-ink-wet) 0 58%, transparent 72%),
+    linear-gradient(112deg, var(--room-ink-wet) 0 36%, transparent 88%);
+  border-radius: 30% 80% 90% 40% / 40% 70% 50% 80%;
+  opacity: 0.86;
+  filter: blur(0.25px);
+  animation: room-ink-trail 2.6s ease-in-out infinite;
+}
+
+html[data-player-skin="ink"]:root :is(
+  .tab-chip:hover:not(.active):not(:disabled),
+  .hud-chip:hover:not(:disabled),
+  .hud-icon-btn:hover:not(:disabled),
+  .hud-status-pill:hover:not(:disabled),
+  .hud-metric:hover:not(:disabled),
+  .app-subnav-pill:hover:not(.active),
+  .pill:hover,
+  .tsk-day-chip:hover,
+  .hub-chip:hover,
+  .nts-chip:hover,
+  .pln-mode-chip:hover,
+  .tdy-cat-chip:hover,
+  .loot-profile-chip:hover
+) {
+  border-color: color-mix(in srgb, var(--room-ink-sheen) 45%, var(--room-ink-wet));
+  color: var(--room-ink-sheen-hot);
+  filter: brightness(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(232, 238, 246, 0.34),
+    8px 7px 0 -3px var(--room-ink-wet);
+}
+
+html[data-player-skin="ink"]:root :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active,
+  .tsk-day-chip-active,
+  .tsk-day-chip.active,
+  .hub-chip.active,
+  .nts-chip.active,
+  .pln-mode-chip-active,
+  .tdy-cat-armed,
+  .today-day-chip-selected,
+  .tdy-week-chip-selected,
+  .loot-profile-chip--complete
+) {
+  border-color: var(--room-ink-wet);
+  background:
+    linear-gradient(165deg, rgba(232, 238, 246, 0.28) 0 22%, transparent 48%),
+    linear-gradient(180deg, #1a2230 0%, var(--room-ink-wet) 58%, #05070b 100%);
+  color: var(--room-ink-sheen-hot);
+  font-weight: 700;
+  box-shadow:
+    inset 0 1px 0 rgba(232, 238, 246, 0.42),
+    9px 8px 0 -3px var(--room-ink-wet),
+    14px 12px 8px -8px rgba(7, 9, 13, 0.55);
+}
+
+html[data-player-skin="ink"]:root :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active,
+  .tsk-day-chip-active,
+  .hub-chip.active,
+  .loot-profile-chip--complete
+)::after {
+  width: 16px;
+  height: 9px;
+  right: -10px;
+  opacity: 1;
+  animation: room-ink-trail 1.8s ease-in-out infinite;
+}
+
+html[data-player-skin="ink"]:root .hud-brand-jewel {
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(232, 238, 246, 0.28), transparent 42%),
+    repeating-linear-gradient(0deg, transparent 0 3px, var(--room-ink-wet) 3px 5px, transparent 5px 8px),
+    radial-gradient(circle, var(--room-ink-pad) 0 34%, var(--room-ink-wet) 36% 42%, var(--room-ink-pad) 44% 68%, var(--room-ink-wet) 70% 78%, var(--room-ink-blotter) 80%);
+}
+
+html[data-player-skin="ink"]:root :is(
+  .tab-chip:active:not(:disabled),
+  .hud-icon-btn:active:not(:disabled),
+  .hud-chip:active:not(:disabled)
+) {
+  transform: translate(1px, 2px);
+  box-shadow: var(--feel-3d-press);
+  filter: brightness(0.94);
+}
+
+html[data-player-skin="ink"]:root .tab-chip.active .tab-chip-mark {
+  color: var(--room-ink-sheen-hot);
+  opacity: 1;
+}
+
+html[data-player-skin="ink"]:root .hud-status-pill {
+  animation: room-ink-signal-hold 2.2s steps(2) infinite;
+}
+
+/* ── 5 · Glyph — cancellation stamp, two rings, three bars ──── */
+
+html[data-player-skin="ink"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar,
+  .wp-skin-mark
+) {
+  position: relative;
+  overflow: visible;
+  border: 2px solid var(--room-ink-wet);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(232, 238, 246, 0.26), transparent 40%),
+    repeating-linear-gradient(0deg, transparent 0 3px, var(--room-ink-wet) 3px 5px, transparent 5px 8px),
+    radial-gradient(
+      circle,
+      var(--room-ink-pad) 0 32%,
+      var(--room-ink-wet) 34% 40%,
+      var(--room-ink-pad) 42% 66%,
+      var(--room-ink-wet) 68% 76%,
+      var(--room-ink-blotter) 78%
+    );
+  color: var(--room-ink-sheen-hot);
+  box-shadow:
+    inset 0 1px 0 var(--room-ink-gloss),
+    6px 7px 0 -3px var(--room-ink-wet);
+  clip-path: none;
+}
+
+html[data-player-skin="ink"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 22%;
+  border: 1.5px solid rgba(201, 214, 232, 0.5);
+  border-radius: 50%;
+}
+
+/* ── 6 · The stamp pad — one press, then a wet mark ─────────── */
+
+html[data-player-skin="ink"]:root button.primary,
+html[data-player-skin="ink"]:root .agent-pane-chat .agc-send {
+  border: 1px solid var(--room-ink-wet);
+  border-radius: var(--room-ink-r-ctl);
+  background:
+    linear-gradient(165deg, rgba(232, 238, 246, 0.22) 0 20%, transparent 46%),
+    linear-gradient(180deg, #2a3648, var(--room-ink-wet) 58%, #05070b);
+  color: var(--room-ink-sheen-hot);
+  font-family: var(--font-display);
+  font-weight: 760;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: var(--feel-3d);
+  animation: none;
+  transition:
+    transform 140ms cubic-bezier(0.2, 0.7, 0.25, 1),
+    box-shadow 140ms ease,
+    filter 140ms ease;
+}
+
+html[data-player-skin="ink"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="ink"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.08);
+  box-shadow:
+    inset 0 1px 0 rgba(232, 238, 246, 0.36),
+    6px 7px 0 -3px var(--room-ink-wet);
+}
+
+html[data-player-skin="ink"]:root button.primary:active:not(:disabled),
+html[data-player-skin="ink"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translate(1px, 3px);
+  filter: brightness(0.92);
+  box-shadow: var(--feel-3d-press);
+}
+
+html[data-player-skin="ink"]:root :is(button.secondary, .ghost-btn) {
+  border: 1px solid rgba(201, 214, 232, 0.18);
+  border-radius: var(--room-ink-r-ctl);
+  background: color-mix(in srgb, var(--room-ink-blotter) 82%, var(--room-ink-wet));
+  color: var(--room-ink-paper);
+  box-shadow: inset 0 1px 0 rgba(232, 238, 246, 0.06);
+}
+
+/* ── 7 · Empty / input / focus / disabled / dialog ──────────── */
+
+html[data-player-skin="ink"]:root :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]) {
+  border: 1px solid rgba(201, 214, 232, 0.16);
+  border-bottom: 2px solid var(--room-ink-wet);
+  border-radius: var(--room-ink-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(232, 238, 246, 0.04), transparent 40%),
+    var(--room-ink-well);
+  color: var(--room-ink-sheen-hot);
+  caret-color: var(--room-ink-sheen);
+  box-shadow: inset 0 2px 7px rgba(4, 6, 10, 0.55);
+  transition: border-bottom-color 180ms ease, box-shadow 180ms ease;
+}
+
+html[data-player-skin="ink"]:root :is(input, textarea)::placeholder {
+  color: var(--room-ink-muted);
+  opacity: 1;
+}
+
+html[data-player-skin="ink"]:root :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]):focus {
+  outline: none;
+  border-bottom-color: var(--room-ink-sheen);
+  box-shadow:
+    inset 0 2px 7px rgba(4, 6, 10, 0.55),
+    0 0 0 3px rgba(201, 214, 232, 0.2);
+}
+
+html[data-player-skin="ink"]:root :focus-visible {
+  outline: 2px solid var(--room-ink-sheen);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(201, 214, 232, 0.16);
+}
+
+/* Unused blotter: a cancellation ring waiting for a stamp. */
+html[data-player-skin="ink"]:root .empty-state {
+  position: relative;
+  border: 1px dashed rgba(201, 214, 232, 0.28);
+  border-radius: var(--room-ink-r-plate);
+  background:
+    radial-gradient(circle at 50% 28%, transparent 0 22px, rgba(7, 9, 13, 0.45) 23px 25px, transparent 26px),
+    linear-gradient(180deg, rgba(232, 238, 246, 0.04), transparent 40%),
+    var(--room-ink-blotter);
+  color: var(--room-ink-paper-2);
+  box-shadow: inset 0 1px 0 rgba(232, 238, 246, 0.06);
+}
+
+html[data-player-skin="ink"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 22px;
+  margin: 0 auto 10px;
+  border: 2px solid var(--room-ink-sheen);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px var(--room-ink-sheen);
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0 3px,
+    var(--room-ink-sheen) 3px 4px,
+    transparent 4px 7px
+  );
+  opacity: 0.72;
+}
+
+html[data-player-skin="ink"]:root .empty-state-title {
+  color: var(--room-ink-sheen-hot);
+  font-family: var(--font-display);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="ink"]:root .empty-state-body,
+html[data-player-skin="ink"]:root .empty-state-hint {
+  color: var(--room-ink-paper-2);
+}
+
+html[data-player-skin="ink"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .wp-alarm-card,
+  dialog
+) {
+  border: 1px solid rgba(201, 214, 232, 0.2);
+  border-radius: var(--room-ink-r-plate);
+  background:
+    linear-gradient(180deg, rgba(232, 238, 246, 0.06), transparent 32%),
+    var(--room-ink-blotter);
+  color: var(--room-ink-sheen-hot);
+  box-shadow:
+    inset 0 1px 0 var(--room-ink-gloss),
+    0 24px 52px rgba(4, 6, 10, 0.62);
+}
+
+html[data-player-skin="ink"]:root .toast-item {
+  border: 1px solid var(--room-ink-wet);
+  border-radius: var(--room-ink-r-chip);
+  background:
+    linear-gradient(165deg, rgba(232, 238, 246, 0.2), transparent 40%),
+    var(--room-ink-wet);
+  color: var(--room-ink-sheen-hot);
+  box-shadow: 7px 6px 0 -4px #05070b;
+}
+
+html[data-player-skin="ink"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: rgba(107, 124, 145, 0.28);
+  background: #243044;
+  color: var(--room-ink-muted);
+  opacity: 0.62;
+  filter: saturate(0.2);
+  box-shadow: none;
+  animation: none;
+}
+
+/* Dried ink: the trail is gone. */
+html[data-player-skin="ink"]:root :is(
+  button:disabled,
+  [aria-disabled="true"]
+)::after {
+  display: none;
+}
+
+/* ── 8 · Motion — wet shine, stamp click, trailing smear ────── */
+
+@keyframes room-ink-sheen {
+  0%, 100% { opacity: 0.12; transform: translate3d(0, 0, 0); }
+  50% { opacity: 0.22; transform: translate3d(1.2%, 0, 0); }
+}
+
+@keyframes room-ink-bars {
+  0% { background-position: 0 0; }
+  100% { background-position: 28px 0; }
+}
+
+@keyframes room-ink-signal {
+  0%, 100% { transform: translateX(0); opacity: 0.18; }
+  50% { transform: translateX(240%); opacity: 0.38; }
+}
+
+@keyframes room-ink-signal-hold {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.12); }
+}
+
+@keyframes room-ink-trail {
+  0%, 100% { opacity: 0.72; transform: translate(0, 0) scaleX(1); }
+  50% { opacity: 1; transform: translate(1px, 1px) scaleX(1.1); }
+}
+
+@keyframes room-ink-stamp {
+  0%, 82%, 100% { filter: brightness(1); }
+  88% { filter: brightness(1.16); }
+  93% { filter: brightness(0.9); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="ink"]:root body::after,
+  html[data-player-skin="ink"]:root .top-hud::before,
+  html[data-player-skin="ink"]:root .top-hud::after,
+  html[data-player-skin="ink"]:root .hud-app-name::before,
+  html[data-player-skin="ink"]:root .hud-brand-jewel,
+  html[data-player-skin="ink"]:root .hud-status-pill,
+  html[data-player-skin="ink"]:root :is(
+    .tab-chip,
+    .hud-chip,
+    .hud-status-pill,
+    .hud-metric,
+    .loot-profile-chip,
+    .app-subnav-pill,
+    .pill,
+    .tsk-day-chip,
+    .hub-chip,
+    .nts-chip,
+    .pln-mode-chip,
+    .tdy-cat-chip,
+    .today-day-chip,
+    .repo-cat-chip,
+    .quick-capture-chip
+  )::after {
+    animation: none !important;
+  }
+}

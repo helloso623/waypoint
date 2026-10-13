@@ -1,0 +1,13 @@
+services:
+  app:
+    build: .
+    ports:
+      - "5099:5099"
+    env_file:
+      - .env
+    environment:
+      - FLASK_HOST=0.0.0.0
+    volumes:
+      - ./planner.db:/app/planner.db
+      - ./obsidian_vault:/app/obsidian_vault
+    restart: unless-stopped

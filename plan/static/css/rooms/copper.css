@@ -1,0 +1,615 @@
+/* Copper Scout — a weathered field instrument, repaired and carried.
+   Aged copper #d97706 on dark brown #78350f; verdigris is only edge residue.
+   The room is neither ceremonial bronze, starter-kit paper, nor brushed steel.
+   Signature: service-tab corners and the survey rivet glyph ⌖.
+   Never clip #main or .launcher-card. */
+
+html[data-player-skin="copper"] {
+  color-scheme: dark;
+
+  --copper-flame: #d97706;
+  --copper-brown: #78350f;
+  --copper-dark: #2b140a;
+  --copper-black: #160b07;
+  --copper-plate: #3b1d0e;
+  --copper-plate-2: #4a260f;
+  --copper-worn: #a84f0b;
+  --copper-cream: #f7e7cf;
+  --copper-dim: #caa77d;
+  --copper-patina: #6e9483;
+
+  --bg-shell: var(--copper-black);
+  --bg-content: var(--copper-dark);
+  --bg-card: var(--copper-plate);
+  --bg-card-hover: var(--copper-plate-2);
+  --ink-primary: var(--copper-cream);
+  --ink-secondary: var(--copper-dim);
+  --ink-muted: #947457;
+  --border: rgba(217, 119, 6, 0.3);
+  --gridline: rgba(217, 119, 6, 0.12);
+  --accent: var(--copper-flame);
+  --ws-accent: var(--copper-flame);
+  --accent-ink: var(--copper-black);
+
+  --at-a: var(--copper-flame);
+  --at-b: var(--copper-brown);
+  --at-plate: var(--copper-plate);
+  --at-plate-2: var(--copper-plate-2);
+  --at-well: var(--copper-black);
+  --at-ink: var(--copper-cream);
+  --at-ink-2: var(--copper-dim);
+  --at-ink-3: #947457;
+  --at-hair: rgba(217, 119, 6, 0.2);
+  --at-hair-2: rgba(217, 119, 6, 0.34);
+  --at-hair-a: rgba(217, 119, 6, 0.55);
+
+  /* Service tabs: one filed corner, one swollen gasket corner. */
+  --copper-r-plate: 4px 19px 7px 12px;
+  --copper-r-card: 3px 15px 6px 10px;
+  --copper-r-control: 2px 11px 4px 8px;
+  --copper-r-chip: 2px 9px 3px 7px;
+  --copper-r-cell: 2px 8px 4px 6px;
+  --at-r-plate: var(--copper-r-plate);
+  --at-r-card: var(--copper-r-card);
+  --at-r-ctl: var(--copper-r-control);
+  --at-r-chip: var(--copper-r-chip);
+  --at-r-cell: var(--copper-r-cell);
+
+  --feel-3d:
+    inset 0 1px 0 rgba(255, 231, 201, 0.18),
+    inset 0 -2px 0 rgba(43, 20, 10, 0.8),
+    0 4px 0 #210f08,
+    0 8px 15px rgba(12, 5, 2, 0.36);
+  --feel-3d-press:
+    inset 0 2px 3px rgba(43, 20, 10, 0.72),
+    inset 0 -1px 0 rgba(255, 214, 165, 0.12),
+    0 1px 0 #210f08,
+    0 3px 6px rgba(12, 5, 2, 0.3);
+  --feel-grain-opacity: 0.3;
+  --feel-grain-blend: soft-light;
+  --feel-grain:
+    repeating-linear-gradient(101deg, transparent 0 9px, rgba(255, 222, 184, 0.045) 9px 10px, transparent 10px 23px),
+    repeating-linear-gradient(7deg, transparent 0 31px, rgba(31, 14, 7, 0.24) 31px 32px),
+    radial-gradient(circle at 20% 13%, rgba(217, 119, 6, 0.13), transparent 30%);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 1px solid rgba(110, 148, 131, 0.46);
+  --feel-icon: sepia(0.55) saturate(0.86) contrast(1.12)
+    drop-shadow(0 1px 0 rgba(255, 222, 184, 0.16));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.065em;
+}
+
+/* The whole room is the inside of a field case: heat stains, handling marks,
+   and broad darkness. It deliberately does not depend on a glossy photo. */
+html[data-player-skin="copper"] body {
+  background-color: var(--copper-black) !important;
+  background-image:
+    linear-gradient(137deg, rgba(22, 11, 7, 0.88) 0%, rgba(43, 20, 10, 0.58) 48%, rgba(22, 11, 7, 0.9) 100%),
+    radial-gradient(circle at 84% 10%, rgba(217, 119, 6, 0.14), transparent 26%),
+    url("/img/skins/copper.png") !important;
+  background-position: center, center, center !important;
+  background-size: cover, cover, cover !important;
+  color: var(--copper-cream);
+}
+
+html[data-player-skin="copper"] body::after {
+  opacity: 0.34;
+  mix-blend-mode: soft-light;
+  background:
+    repeating-linear-gradient(101deg, transparent 0 9px, rgba(255, 226, 190, 0.06) 9px 10px, transparent 10px 23px),
+    repeating-linear-gradient(7deg, transparent 0 31px, rgba(18, 8, 4, 0.38) 31px 32px),
+    radial-gradient(circle at 78% 22%, rgba(110, 148, 131, 0.1), transparent 8%);
+  animation: room-copper-weather 18s ease-in-out infinite;
+}
+
+html[data-player-skin="copper"] #main {
+  isolation: isolate;
+  border-inline: 1px solid rgba(217, 119, 6, 0.12);
+  background:
+    linear-gradient(101deg, rgba(217, 119, 6, 0.035), transparent 24%),
+    rgba(22, 11, 7, 0.46);
+  box-shadow: inset 0 1px 0 rgba(255, 226, 190, 0.06);
+}
+
+/* Tarnished equipment fascia. The green line is oxidation in the seam,
+   never a second accent. */
+html[data-player-skin="copper"] .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border-image: none;
+  border-bottom: 1px solid rgba(110, 148, 131, 0.52);
+  border-radius: 0 0 7px 13px;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(247, 231, 207, 0.13), transparent 19%),
+    repeating-linear-gradient(103deg, transparent 0 17px, rgba(255, 226, 190, 0.045) 17px 18px),
+    linear-gradient(180deg, #6b300f 0%, #4a210d 46%, #32170b 100%);
+  color: var(--copper-cream);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 224, 183, 0.2),
+    inset 0 -3px 0 rgba(38, 16, 7, 0.58),
+    0 6px 0 #160b07,
+    0 13px 24px rgba(12, 5, 2, 0.42);
+}
+
+html[data-player-skin="copper"] .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 6px 11px;
+  z-index: 0;
+  border: 1px solid rgba(217, 119, 6, 0.22);
+  border-radius: 2px 12px 4px 8px;
+  background:
+    radial-gradient(circle at 2px 2px, #f4c889 0 1px, #a84f0b 1.5px 2.5px, #2b140a 2.7px 3.5px, transparent 3.7px) left top / 12px 12px no-repeat,
+    radial-gradient(circle at calc(100% - 2px) 2px, #f4c889 0 1px, #a84f0b 1.5px 2.5px, #2b140a 2.7px 3.5px, transparent 3.7px) right top / 12px 12px no-repeat;
+}
+
+html[data-player-skin="copper"] .top-hud > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-player-skin="copper"] :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  color: var(--copper-cream);
+  font-family: ui-monospace, "IBM Plex Mono", "Cascadia Mono", monospace;
+  font-weight: 760;
+  letter-spacing: 0.055em;
+  text-shadow: 0 1px 0 #160b07;
+}
+
+html[data-player-skin="copper"] .hud-app-name::before {
+  content: "⌖  ";
+  color: #eaa243;
+  font-size: 0.78em;
+}
+
+html[data-player-skin="copper"] .hud-intention {
+  color: #d9b68c;
+}
+
+html[data-player-skin="copper"] :is(.brand-mark, .ws-mark, .hud-icon-svg, .tab-chip-mark) {
+  filter: var(--feel-icon);
+}
+
+html[data-player-skin="copper"] .hud-brand-jewel {
+  position: relative;
+  border-radius: var(--copper-r-chip);
+}
+
+html[data-player-skin="copper"] .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -5px;
+  z-index: -1;
+  border: 1px solid rgba(247, 231, 207, 0.48);
+  border-radius: 3px 12px 5px 9px;
+  background:
+    radial-gradient(circle at 37% 30%, #ffe0ae 0 6%, #d97706 10%, #8d400b 33%, #3b1d0e 67%);
+  box-shadow: 0 0 0 2px #2b140a, 0 2px 0 #160b07;
+  animation: room-copper-rivet 6.4s ease-in-out infinite;
+}
+
+html[data-player-skin="copper"] .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-chip,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .loot-profile-chip
+) {
+  border: 1px solid rgba(217, 119, 6, 0.38);
+  border-radius: var(--copper-r-chip);
+  background:
+    linear-gradient(180deg, rgba(255, 226, 190, 0.09), transparent 44%),
+    #35190c;
+  color: var(--copper-cream);
+  box-shadow: inset 0 -2px 0 #210f08, inset 0 1px 0 rgba(255, 226, 190, 0.1);
+}
+
+html[data-player-skin="copper"] .top-hud :is(.hud-icon-btn, .hud-glyph-btn):hover:not(:disabled) {
+  border-color: #d97706;
+  background: linear-gradient(180deg, #5d2d0e, #35190c);
+  transform: translateY(-1px);
+}
+
+html[data-player-skin="copper"] .tab-chip-bar {
+  background: rgba(22, 11, 7, 0.94);
+  border-bottom: 1px solid rgba(110, 148, 131, 0.28);
+}
+
+html[data-player-skin="copper"] .tab-chip {
+  border: 1px solid rgba(217, 119, 6, 0.22);
+  border-radius: var(--copper-r-chip);
+  background: #2b140a;
+  color: #caa77d;
+  font-family: ui-monospace, "IBM Plex Mono", monospace;
+  letter-spacing: 0.055em;
+}
+
+html[data-player-skin="copper"] .tab-chip.active {
+  border-color: #e09029;
+  background:
+    linear-gradient(180deg, rgba(255, 226, 190, 0.16), transparent 37%),
+    #a84f0b;
+  color: #fff1dc;
+  box-shadow: inset 0 -2px 0 #78350f, 0 2px 0 #160b07;
+}
+
+/* Survey rivet: the room's glyph, stamped into every field badge. */
+html[data-player-skin="copper"] :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar,
+  .wp-skin-mark
+) {
+  position: relative;
+  border: 1px solid #c56812;
+  border-radius: 3px 14px 5px 9px;
+  background:
+    radial-gradient(circle at 30% 22%, rgba(255, 226, 190, 0.2), transparent 29%),
+    linear-gradient(143deg, #a84f0b, #62300e 64%, #32170b);
+  color: #ffe4bd;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 226, 190, 0.2),
+    inset 0 -3px 0 #2b140a,
+    0 3px 0 #160b07;
+}
+
+html[data-player-skin="copper"] .launcher-tile-glyph::after,
+html[data-player-skin="copper"] .launcher-card-glyph::after {
+  content: "⌖";
+  position: absolute;
+  right: -5px;
+  bottom: -5px;
+  display: grid;
+  width: 16px;
+  height: 16px;
+  place-items: center;
+  border: 1px solid #d97706;
+  border-radius: 50%;
+  background: #2b140a;
+  color: #f0b968;
+  font: 800 10px/1 ui-monospace, monospace;
+  box-shadow: 0 1px 0 #160b07;
+}
+
+/* Cards are removable access plates, not paper sheets or factory ingots. */
+html[data-player-skin="copper"] :is(
+  .launcher-card,
+  .card,
+  .hub-card,
+  .pln-rail-card,
+  .evt-card,
+  .tsk-row,
+  .task-row
+) {
+  border: 1px solid rgba(217, 119, 6, 0.3);
+  border-radius: var(--copper-r-card);
+  background:
+    radial-gradient(circle at 88% 17%, rgba(110, 148, 131, 0.07), transparent 12%),
+    repeating-linear-gradient(101deg, transparent 0 19px, rgba(255, 225, 188, 0.035) 19px 20px),
+    linear-gradient(180deg, #4a260f, #35190c 72%);
+  color: var(--copper-cream);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 226, 190, 0.11),
+    inset 0 -2px 0 #210f08,
+    0 4px 0 #160b07,
+    0 10px 18px rgba(12, 5, 2, 0.28);
+}
+
+html[data-player-skin="copper"] .launcher-card {
+  outline: 1px solid rgba(110, 148, 131, 0.16);
+  outline-offset: 3px;
+}
+
+html[data-player-skin="copper"] .launcher-card::before {
+  width: 9px;
+  height: 9px;
+  border: 1px solid #d97706;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 28%, #ffe0ae 0 12%, #d97706 19%, #78350f 58%, #210f08 63%);
+  box-shadow: 0 0 0 1px #160b07;
+}
+
+html[data-player-skin="copper"] .launcher-card::after {
+  right: 10px;
+  bottom: 8px;
+  width: 31px;
+  height: 1px;
+  border-radius: 0;
+  background: linear-gradient(90deg, transparent, rgba(110, 148, 131, 0.55));
+  opacity: 0.65;
+}
+
+html[data-player-skin="copper"] :is(.launcher-card:hover, .launcher-card--focused, .card:hover) {
+  border-color: rgba(217, 119, 6, 0.64);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 226, 190, 0.16),
+    inset 0 -2px 0 #210f08,
+    0 6px 0 #160b07,
+    0 14px 22px rgba(12, 5, 2, 0.34);
+}
+
+html[data-player-skin="copper"] :is(.launcher-card-name, .launcher-tile-name, .empty-state-title) {
+  color: var(--copper-cream);
+}
+
+html[data-player-skin="copper"] :is(.launcher-card-intention, .launcher-card-sub) {
+  color: var(--copper-dim);
+}
+
+/* A soft mallet press: broad travel, muted rebound, no glossy click. */
+html[data-player-skin="copper"] button.primary,
+html[data-player-skin="copper"] .agent-pane-chat .agc-send {
+  border: 1px solid #e09a43;
+  border-radius: var(--copper-r-control);
+  background:
+    linear-gradient(180deg, rgba(255, 230, 196, 0.2), transparent 35%),
+    linear-gradient(180deg, #c56812, #a84f0b 57%, #78350f);
+  color: #fff1dc;
+  font-family: ui-monospace, "IBM Plex Mono", monospace;
+  font-weight: 800;
+  letter-spacing: 0.035em;
+  text-shadow: 0 1px 0 #3b1d0e;
+  box-shadow: var(--feel-3d);
+  transition: transform 150ms cubic-bezier(0.2, 0.72, 0.28, 1), box-shadow 150ms ease, filter 150ms ease;
+}
+
+html[data-player-skin="copper"] button.primary:hover:not(:disabled),
+html[data-player-skin="copper"] .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.06) saturate(0.95);
+  transform: translateY(-1px);
+}
+
+html[data-player-skin="copper"] button.primary:active:not(:disabled),
+html[data-player-skin="copper"] .agent-pane-chat .agc-send:active:not(:disabled) {
+  filter: brightness(0.94);
+  transform: translateY(3px) scale(0.995);
+  box-shadow: var(--feel-3d-press);
+}
+
+html[data-player-skin="copper"] :is(button.secondary, .ghost-btn, .pill) {
+  border: 1px solid rgba(217, 119, 6, 0.34);
+  border-radius: var(--copper-r-control);
+  background: #32170b;
+  color: var(--copper-dim);
+  box-shadow: inset 0 1px 0 rgba(255, 226, 190, 0.07);
+}
+
+/* Recessed instrument slots. Focus warms the copper; it does not glow neon. */
+html[data-player-skin="copper"] :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]) {
+  border: 1px solid rgba(217, 119, 6, 0.34);
+  border-radius: var(--copper-r-control);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 25px, rgba(217, 119, 6, 0.055) 25px 26px),
+    #1e0e08;
+  color: var(--copper-cream);
+  caret-color: #eaa243;
+  box-shadow:
+    inset 0 3px 8px rgba(10, 4, 2, 0.62),
+    0 1px 0 rgba(255, 226, 190, 0.08);
+}
+
+html[data-player-skin="copper"] :is(input, textarea)::placeholder {
+  color: #947457;
+}
+
+html[data-player-skin="copper"] :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]):focus {
+  border-color: #d97706;
+  box-shadow:
+    inset 0 3px 8px rgba(10, 4, 2, 0.62),
+    0 0 0 2px rgba(217, 119, 6, 0.2),
+    0 2px 0 rgba(110, 148, 131, 0.24);
+}
+
+html[data-player-skin="copper"] .empty-state {
+  border: 1px dashed rgba(217, 119, 6, 0.5);
+  border-radius: var(--copper-r-card);
+  background:
+    radial-gradient(circle at 16px 16px, rgba(217, 119, 6, 0.28) 0 2px, transparent 2.5px),
+    radial-gradient(circle at calc(100% - 16px) calc(100% - 16px), rgba(110, 148, 131, 0.28) 0 2px, transparent 2.5px),
+    #2b140a;
+  color: var(--copper-dim);
+  box-shadow: inset 0 0 0 4px #1e0e08, inset 0 0 0 5px rgba(217, 119, 6, 0.12);
+}
+
+html[data-player-skin="copper"] .empty-state::before {
+  content: "⌖";
+  display: block;
+  margin-bottom: 7px;
+  color: #d97706;
+  font: 800 16px/1 ui-monospace, monospace;
+}
+
+html[data-player-skin="copper"] :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .wp-alarm-card,
+  dialog
+) {
+  border: 1px solid #b75a10;
+  border-radius: var(--copper-r-plate);
+  background:
+    radial-gradient(circle at 93% 8%, rgba(110, 148, 131, 0.1), transparent 10%),
+    linear-gradient(145deg, rgba(255, 226, 190, 0.08), transparent 29%),
+    #2b140a;
+  color: var(--copper-cream);
+  box-shadow:
+    inset 0 0 0 2px #160b07,
+    inset 0 1px 0 rgba(255, 226, 190, 0.13),
+    0 0 0 6px rgba(22, 11, 7, 0.82),
+    0 24px 58px rgba(10, 4, 2, 0.64);
+}
+
+html[data-player-skin="copper"] .toast-item {
+  border: 1px solid #e09a43;
+  border-radius: var(--copper-r-control);
+  background: linear-gradient(135deg, #b75a10, #78350f);
+  color: #fff1dc;
+  box-shadow: 0 4px 0 #2b140a;
+}
+
+html[data-player-skin="copper"] :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: #56321f;
+  background: #27150d;
+  color: #755b47;
+  opacity: 0.68;
+  filter: saturate(0.35);
+  box-shadow: inset 0 2px 3px rgba(10, 4, 2, 0.48);
+}
+
+html[data-player-skin="copper"] :focus-visible {
+  outline: 2px solid #e69a39;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(217, 119, 6, 0.2);
+}
+
+html[data-player-skin="copper"] .companion-launcher-orb {
+  border-radius: 3px 13px 5px 9px;
+  background:
+    radial-gradient(circle at 34% 27%, #ffe0ae 0 7%, #d97706 12%, #8c400b 39%, #2b140a 72%);
+  box-shadow: inset 0 -2px 0 #160b07, 0 0 0 1px #d97706, 0 5px 12px rgba(10, 4, 2, 0.46);
+  animation: room-copper-bearing 7.5s ease-in-out infinite;
+}
+
+/* Home: an open field case with corner fasteners and a rubbed center. */
+html[data-player-skin="copper"][data-app-tab="Home"] #main {
+  background:
+    radial-gradient(circle at 18px 18px, #d97706 0 1px, #78350f 1.5px 3px, transparent 3.4px) 0 0 / 100% 100% no-repeat,
+    radial-gradient(circle at calc(100% - 18px) 18px, #d97706 0 1px, #78350f 1.5px 3px, transparent 3.4px) 0 0 / 100% 100% no-repeat,
+    radial-gradient(ellipse 62% 36% at 50% 18%, rgba(217, 119, 6, 0.08), transparent 70%),
+    repeating-linear-gradient(101deg, transparent 0 23px, rgba(255, 226, 190, 0.025) 23px 24px),
+    #1e0e08;
+  box-shadow: inset 0 0 0 10px rgba(22, 11, 7, 0.5), inset 0 0 0 11px rgba(110, 148, 131, 0.12);
+}
+
+/* Today and Calendar: stamped coordinate plates, not notebook paper. */
+html[data-player-skin="copper"][data-app-tab="Today"] #main,
+html[data-player-skin="copper"][data-app-tab="Calendar"] #main {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 30px, rgba(217, 119, 6, 0.055) 30px 31px),
+    repeating-linear-gradient(90deg, transparent 0 59px, rgba(110, 148, 131, 0.035) 59px 60px),
+    #1a0c07;
+}
+
+html[data-player-skin="copper"][data-app-tab="Today"] #main .tdy-hour-cell,
+html[data-player-skin="copper"][data-app-tab="Calendar"] #main .tdy-hour-cell,
+html[data-player-skin="copper"][data-app-tab="Calendar"] :is(.cal-day, .cal-hour-cell),
+html[data-player-skin="copper"][data-app-tab="Calendar"] .cal-month-cell:not(.cal-month-cell-pad) {
+  border: 1px solid rgba(217, 119, 6, 0.28);
+  border-radius: var(--copper-r-cell);
+  background:
+    linear-gradient(180deg, rgba(255, 226, 190, 0.06), transparent 39%),
+    #35190c;
+  color: var(--copper-cream);
+  box-shadow: inset 0 -2px 0 #210f08;
+}
+
+html[data-player-skin="copper"][data-app-tab="Today"] #main .tdy-hour-painted,
+html[data-player-skin="copper"][data-app-tab="Calendar"] #main .tdy-hour-painted,
+html[data-player-skin="copper"][data-app-tab="Calendar"] .cal-month-cell-today {
+  border-color: #d97706;
+  background: linear-gradient(145deg, #9a470c, #57280e);
+  color: #fff1dc;
+  box-shadow: inset 3px 0 0 #eaa243, inset 0 -2px 0 #2b140a;
+}
+
+/* Agent: the repair bench, lit by one warm inspection lamp. */
+html[data-player-skin="copper"][data-app-tab="Agent"] #main .agent-pane {
+  border: 1px solid rgba(217, 119, 6, 0.3);
+  border-radius: var(--copper-r-plate);
+  background:
+    radial-gradient(ellipse 55% 31% at 50% 0%, rgba(217, 119, 6, 0.2), transparent 70%),
+    repeating-linear-gradient(90deg, transparent 0 36px, rgba(110, 148, 131, 0.04) 36px 37px),
+    #160b07;
+  box-shadow: inset 0 1px 0 rgba(255, 226, 190, 0.08), inset 0 -3px 0 #100704;
+}
+
+html[data-player-skin="copper"] .agent-msg.assistant .agent-bubble {
+  border: 1px solid rgba(217, 119, 6, 0.26);
+  border-radius: var(--copper-r-card);
+  background: #32170b;
+  color: var(--copper-cream);
+}
+
+html[data-player-skin="copper"] .agent-msg.user .agent-bubble {
+  border: 1px solid #c56812;
+  border-radius: 14px 3px 10px 6px;
+  background: #6b300f;
+  color: #fff1dc;
+}
+
+/* Work tabs keep the same rig while changing the tray beneath the tools. */
+html[data-player-skin="copper"][data-app-tab="Tasks"] #main :is(.card, .tsk-row, .task-row),
+html[data-player-skin="copper"][data-app-tab="Projects"] #main .card,
+html[data-player-skin="copper"][data-app-tab="Parallel"] #main .card {
+  border-left: 3px solid #a84f0b;
+  background:
+    linear-gradient(90deg, rgba(217, 119, 6, 0.08), transparent 19%),
+    #35190c;
+}
+
+html[data-player-skin="copper"][data-app-tab="Hub"] #main :is(.hub-card, .hub-glance-item),
+html[data-player-skin="copper"][data-app-tab="Practice"] #main .card,
+html[data-player-skin="copper"][data-app-tab="Settings"] #main .card,
+html[data-player-skin="copper"][data-app-tab="Paint"] #main .card {
+  border-radius: var(--copper-r-card);
+  border-color: rgba(217, 119, 6, 0.26);
+  background:
+    radial-gradient(circle at 94% 12%, rgba(110, 148, 131, 0.07), transparent 9%),
+    #35190c;
+}
+
+html[data-player-skin="copper"] :is(.loot-skin-card, .loot-collection-card) {
+  border: 1px solid rgba(217, 119, 6, 0.28);
+  border-radius: var(--copper-r-card);
+  background: #35190c;
+  color: var(--copper-cream);
+}
+
+@keyframes room-copper-weather {
+  0%, 100% { opacity: 0.3; background-position: 0 0, 0 0, 0 0; }
+  50% { opacity: 0.36; background-position: 6px 2px, -4px 3px, 0 0; }
+}
+
+@keyframes room-copper-rivet {
+  0%, 100% { filter: brightness(0.96); }
+  50% { filter: brightness(1.07); }
+}
+
+@keyframes room-copper-bearing {
+  0%, 100% { transform: rotate(-1deg); filter: brightness(0.98); }
+  50% { transform: rotate(1deg); filter: brightness(1.06); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="copper"] body::after,
+  html[data-player-skin="copper"] .hud-brand-jewel::after,
+  html[data-player-skin="copper"] .companion-launcher-orb {
+    animation: none !important;
+  }
+
+  html[data-player-skin="copper"] button.primary:hover:not(:disabled),
+  html[data-player-skin="copper"] .launcher-card:hover {
+    transform: none;
+  }
+
+  html[data-player-skin="copper"] * {
+    transition-duration: 0.01ms !important;
+  }
+}

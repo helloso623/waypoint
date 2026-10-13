@@ -1,0 +1,907 @@
+/* ═══════════════════════════════════════════════════════════════
+   AURORA VEIL — a polar curtain almost never in stock.
+
+   The object: two sheer sheets of ionized air you look *through*.
+   Cyan (#67e8f9) is the near sheet (oxygen). Violet (#c084fc) is
+   the far sheet (nitrogen). They never fuse. Polar night sits
+   behind them. You are not hanging a drape; you are standing in
+   the ionosphere, reading the room through a membrane that is
+   almost never there.
+
+   Critique: the object holds only while both sheets stay
+   translucent and out of phase — a look-through, not a hang.
+   It fails the moment a steel rod appears, the folds go
+   vertical, one chroma wins, or the page becomes fabric. Scout
+   is a teal curtain pinned to hardware. This is scarce light
+   layered over violet night. Pond-rings from a corner, nimbus
+   shelves, and mist fog are other rooms. Stop at the veil.
+
+   Architecture:
+   - Signature cut: a membrane on four uneven pins. Left crown
+     gathered, right crown wind-stretched, trailing hem sagged,
+     left foot tight. Pixel radii. Never 42%/48%.
+   - Signature glyph: two pins at the crown, a scooped look-
+     through hem. Not the curtain family's vertical bars.
+     Glyphs may clip. #main and .launcher-card may not.
+   - Signature motion: the two sheets drift opposite. A tear
+     breathes on the companion. Nothing glints on a rod.
+   - Place hud: the gathered crown of the veil.
+   - Place page: the room behind the sheets.
+   - Place companion: a tear in the membrane.
+   - Place chip: a swatch of both sheets.
+
+   Loot: colorA #67e8f9 · colorB #c084fc · effect aurora
+   (overridden — no hue-cycle, no prism plinth) · pattern waves
+   (two out-of-phase sheets, not pond rings) · place
+   hud,page,companion,chip · legendary.
+   Selectors carry :root to outrank curtain-family and aurora-
+   effect stencils. Never clip #main or .launcher-card.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — violet night, two sheer sheets ────────────── */
+
+html[data-player-skin="auroraveil"]:root {
+  color-scheme: dark;
+
+  --av-night: #08061a;
+  --av-night-2: #0e0b24;
+  --av-well: #050412;
+  --av-plate: #16122c;
+  --av-plate-2: #1c1736;
+  --av-cyan: #67e8f9;
+  --av-cyan-hot: #a5f3fc;
+  --av-cyan-deep: #22d3ee;
+  --av-violet: #c084fc;
+  --av-violet-hot: #e9d5ff;
+  --av-violet-deep: #a855f7;
+  --av-ink: #eef7ff;
+  --av-ink-2: #c4b5fd;
+  --av-mute: #8b7cb3;
+  --av-hair: rgba(103, 232, 249, 0.28);
+  --av-hair-2: rgba(192, 132, 252, 0.32);
+
+  /* Membrane on four pins. 8 / 21 / 14 / 5 over 18 / 7 / 23 / 11.
+     Gathered left, wind-stretched right, sagged trailing hem.
+     Nothing else uses this. Never 42%/48%. */
+  --av-r-veil: 8px 21px 14px 5px / 18px 7px 23px 11px;
+  --av-r-card: 7px 17px 12px 5px / 15px 6px 19px 9px;
+  --av-r-ctl: 6px 13px 10px 4px / 12px 5px 15px 7px;
+  --av-r-chip: 7px 16px 11px 4px / 14px 6px 18px 8px;
+  --av-r-cell: 5px 11px 8px 3px / 10px 4px 13px 6px;
+
+  /* Two pins, scooped look-through hem. Not curtain bars. */
+  --av-glyph: polygon(
+    14% 4%, 36% 16%, 50% 8%, 64% 16%, 86% 4%,
+    97% 26%, 100% 54%, 90% 78%,
+    68% 96%, 50% 82%, 32% 96%,
+    10% 78%, 0% 54%, 3% 26%
+  );
+
+  /* Loot waves as two sheets, shallow and offset — not Scout
+     pleats, not a pond from 80/120. */
+  --av-sheet-cyan:
+    repeating-linear-gradient(
+      8deg,
+      transparent 0 17px,
+      rgba(103, 232, 249, 0.16) 17px 19px,
+      transparent 19px 33px,
+      rgba(34, 211, 238, 0.1) 33px 34px
+    );
+  --av-sheet-violet:
+    repeating-linear-gradient(
+      -11deg,
+      transparent 0 21px,
+      rgba(192, 132, 252, 0.18) 21px 23px,
+      transparent 23px 39px,
+      rgba(168, 85, 247, 0.1) 39px 40px
+    );
+  --av-sheet-soft:
+    repeating-linear-gradient(
+      8deg,
+      transparent 0 22px,
+      rgba(103, 232, 249, 0.08) 22px 23px,
+      transparent 23px 41px
+    ),
+    repeating-linear-gradient(
+      -11deg,
+      transparent 0 26px,
+      rgba(192, 132, 252, 0.1) 26px 27px,
+      transparent 27px 47px
+    );
+
+  --bg-shell: var(--av-night);
+  --bg-content: var(--av-night-2);
+  --bg-card: var(--av-plate);
+  --bg-card-hover: var(--av-plate-2);
+  --ink-primary: var(--av-ink);
+  --ink-secondary: var(--av-ink-2);
+  --ink-muted: var(--av-mute);
+  --border: rgba(103, 232, 249, 0.22);
+  --gridline: rgba(192, 132, 252, 0.14);
+  --accent: var(--av-cyan);
+  --ws-accent: var(--av-violet);
+  --accent-ink: var(--av-well);
+
+  /* Catalog source of truth. Keep both chromas. */
+  --skin-a: #67e8f9;
+  --skin-b: #c084fc;
+  --at-a: #67e8f9;
+  --at-b: #c084fc;
+  --feel-a: #67e8f9;
+  --feel-b: #c084fc;
+  --feel-accent: #67e8f9;
+  --feel-ground: #08061a;
+  --feel-paper: #16122c;
+  --feel-ink: #eef7ff;
+
+  --at-plate: var(--av-plate);
+  --at-plate-2: var(--av-plate-2);
+  --at-well: var(--av-well);
+  --at-ink: var(--av-ink);
+  --at-ink-2: var(--av-ink-2);
+  --at-ink-3: var(--av-mute);
+  --at-hair: var(--av-hair);
+  --at-hair-2: var(--av-hair-2);
+  --at-hair-a: rgba(103, 232, 249, 0.5);
+  --at-tint: rgba(103, 232, 249, 0.08);
+  --at-tint-b: rgba(192, 132, 252, 0.16);
+  --at-focus:
+    0 0 0 1px var(--av-cyan),
+    0 0 0 4px rgba(192, 132, 252, 0.4);
+  --at-inset: inset 0 1px 0 rgba(103, 232, 249, 0.22);
+  --at-rise: 0 20px 40px -26px rgba(5, 4, 18, 0.92);
+  --at-rise-soft: 0 12px 24px -18px rgba(5, 4, 18, 0.78);
+  --at-r-plate: var(--av-r-veil);
+  --at-r-card: var(--av-r-card);
+  --at-r-ctl: var(--av-r-ctl);
+  --at-r-chip: var(--av-r-chip);
+  --at-r-cell: var(--av-r-cell);
+
+  --av-font: "Futura", "Century Gothic", "Avenir Next Condensed",
+    "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--av-font);
+  --at-font-display: var(--av-font);
+
+  /* Two hairlines = two sheets. Kill prism's indigo plinth. */
+  --feel-3d:
+    inset 0 1px 0 rgba(103, 232, 249, 0.24),
+    inset 0 -1px 0 rgba(192, 132, 252, 0.2),
+    0 16px 32px -22px rgba(5, 4, 18, 0.88);
+  --feel-3d-press:
+    inset 0 3px 8px rgba(5, 4, 18, 0.55),
+    inset 0 1px 0 rgba(103, 232, 249, 0.12);
+  --feel-grain-opacity: 0.38;
+  --feel-grain-blend: screen;
+  --feel-grain: var(--av-sheet-soft);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 1px solid rgba(103, 232, 249, 0.36);
+  --feel-icon:
+    drop-shadow(0 0 6px rgba(103, 232, 249, 0.45))
+    drop-shadow(0 1px 0 rgba(192, 132, 252, 0.4));
+  --feel-title-case: lowercase;
+  --feel-title-tracking: 0.22em;
+  --feel-plate-image:
+    linear-gradient(180deg, rgba(103, 232, 249, 0.08), transparent 28%),
+    linear-gradient(0deg, rgba(192, 132, 252, 0.1), transparent 32%),
+    var(--av-sheet-soft);
+}
+
+/* ── 2 · Body — polar night, two sheets in front of it ──────── */
+
+html[data-player-skin="auroraveil"]:root body {
+  background-color: var(--av-night) !important;
+  background-image:
+    radial-gradient(ellipse 64% 22% at 50% -4%, rgba(192, 132, 252, 0.22), transparent 72%),
+    radial-gradient(ellipse 36% 18% at 78% 8%, rgba(103, 232, 249, 0.12), transparent 68%),
+    linear-gradient(180deg, #0e0b24 0%, #08061a 58%, #050412 100%) !important;
+  background-attachment: fixed !important;
+  color: var(--av-ink);
+  animation: none;
+}
+
+/* Near sheet — cyan, slow, one way. */
+html[data-player-skin="auroraveil"]:root body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: -8% -12%;
+  z-index: 1;
+  opacity: 0.42;
+  mix-blend-mode: screen;
+  background: var(--av-sheet-cyan);
+  animation: room-auroraveil-cyan 22s ease-in-out infinite alternate;
+}
+
+/* Far sheet — violet, slower, the other way. Kill aurora-effect
+   wash and the waves-pattern pond ring. */
+html[data-player-skin="auroraveil"]:root body::after,
+html[data-player-skin="auroraveil"]:root[data-skin-effect="aurora"] body::after,
+html[data-player-skin="auroraveil"]:root[data-skin-pattern="waves"] body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: -10% -14%;
+  z-index: 2;
+  opacity: 0.34;
+  mix-blend-mode: screen;
+  background: var(--av-sheet-violet) !important;
+  background-image: var(--av-sheet-violet) !important;
+  animation: room-auroraveil-violet 28s ease-in-out infinite alternate !important;
+}
+
+/* ── 3 · #main — the room behind the veil. Place page. ──────── */
+
+html[data-player-skin="auroraveil"]:root #main,
+html[data-player-skin="auroraveil"]:root[data-skin-place~="page"] #main {
+  position: relative;
+  isolation: isolate;
+  clip-path: none !important;
+  border-top: 1px solid rgba(103, 232, 249, 0.22);
+  border-inline: 0;
+  background:
+    linear-gradient(180deg, rgba(103, 232, 249, 0.07), transparent 24%),
+    linear-gradient(0deg, rgba(192, 132, 252, 0.1), transparent 28%),
+    color-mix(in srgb, var(--av-night) 62%, transparent) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(103, 232, 249, 0.16),
+    inset 0 -1px 0 rgba(192, 132, 252, 0.14);
+}
+
+html[data-player-skin="auroraveil"]:root #main::before,
+html[data-player-skin="auroraveil"]:root #main::after,
+html[data-player-skin="auroraveil"]:root[data-skin-family="prism"] #main::after,
+html[data-player-skin="auroraveil"]:root[data-skin-family="curtain"] #main::after {
+  animation: none !important;
+  clip-path: none !important;
+}
+
+html[data-player-skin="auroraveil"]:root #main::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.28;
+  mix-blend-mode: screen;
+  background: var(--av-sheet-soft);
+}
+
+html[data-player-skin="auroraveil"]:root .launcher-card {
+  clip-path: none !important;
+  transform: none;
+  overflow: visible;
+  border: 1px solid rgba(103, 232, 249, 0.22);
+  border-radius: var(--av-r-card);
+  background:
+    linear-gradient(165deg, rgba(103, 232, 249, 0.1) 0 18%, transparent 38%),
+    linear-gradient(15deg, rgba(192, 132, 252, 0.12) 0 16%, transparent 40%),
+    color-mix(in srgb, var(--av-plate) 78%, transparent);
+  color: var(--av-ink);
+  box-shadow: var(--feel-3d);
+  backdrop-filter: blur(10px) saturate(1.15);
+}
+
+html[data-player-skin="auroraveil"]:root[data-skin-family="curtain"] .launcher-card {
+  border-radius: var(--av-r-card);
+}
+
+html[data-player-skin="auroraveil"]:root .launcher-card:hover,
+html[data-player-skin="auroraveil"]:root .launcher-card--focused {
+  transform: none;
+  border-color: rgba(103, 232, 249, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(103, 232, 249, 0.32),
+    inset 0 -1px 0 rgba(192, 132, 252, 0.28),
+    0 0 22px rgba(192, 132, 252, 0.18);
+}
+
+html[data-player-skin="auroraveil"]:root :is(
+  .card,
+  .hub-card,
+  .page-intent,
+  .napkin-entry,
+  .task-row,
+  .tsk-row,
+  .pln-rail-card,
+  .evt-card,
+  .hub-glance-item
+) {
+  clip-path: none !important;
+  border: 1px solid rgba(192, 132, 252, 0.22);
+  border-radius: var(--av-r-card);
+  background: color-mix(in srgb, var(--av-plate) 82%, transparent);
+  color: var(--av-ink);
+  box-shadow: var(--feel-3d);
+  backdrop-filter: blur(8px);
+}
+
+html[data-player-skin="auroraveil"]:root :is(.launcher-card-name, .launcher-tile-name) {
+  color: var(--av-ink);
+  font-family: var(--av-font);
+  letter-spacing: 0.08em;
+}
+
+html[data-player-skin="auroraveil"]:root .launcher-card-intention {
+  color: var(--av-mute);
+}
+
+/* ── 4 · HUD — gathered crown of the veil. Place hud. ───────── */
+
+html[data-player-skin="auroraveil"]:root .top-hud,
+html[data-player-skin="auroraveil"]:root[data-skin-place~="hud"] .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  color: var(--av-ink);
+  border-bottom: 0;
+  border-image: none;
+  border-radius: 0 0 14px 5px / 0 0 23px 11px;
+  backdrop-filter: blur(14px) saturate(1.2);
+  background:
+    var(--av-sheet-soft),
+    linear-gradient(
+      180deg,
+      rgba(103, 232, 249, 0.16) 0 12%,
+      rgba(22, 18, 44, 0.82) 12% 72%,
+      rgba(192, 132, 252, 0.18) 72% 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(103, 232, 249, 0.28),
+    inset 0 -1px 0 rgba(192, 132, 252, 0.32),
+    0 12px 28px -18px rgba(5, 4, 18, 0.7);
+}
+
+/* The hem — two sheets waving under the crown. Not a rod. */
+html[data-player-skin="auroraveil"]:root .top-hud::after,
+html[data-player-skin="auroraveil"]:root[data-skin-place~="hud"] .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: -7px;
+  height: 9px;
+  z-index: 3;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 11px,
+      var(--av-cyan) 11px 12px,
+      transparent 12px 23px,
+      var(--av-violet) 23px 24px,
+      transparent 24px 37px
+    );
+  opacity: 0.85;
+  filter: drop-shadow(0 0 6px rgba(103, 232, 249, 0.4));
+  animation: room-auroraveil-sheer 7.6s ease-in-out infinite;
+}
+
+html[data-player-skin="auroraveil"]:root .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--av-sheet-cyan);
+  opacity: 0.22;
+  mix-blend-mode: screen;
+  animation: room-auroraveil-cyan 22s ease-in-out infinite alternate;
+}
+
+html[data-player-skin="auroraveil"]:root .top-hud > * {
+  position: relative;
+  z-index: 2;
+}
+
+html[data-player-skin="auroraveil"]:root :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--av-ink);
+  color: var(--av-ink);
+  font-family: var(--av-font);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: lowercase;
+  text-shadow:
+    0 0 12px rgba(103, 232, 249, 0.35),
+    0 1px 0 rgba(192, 132, 252, 0.35);
+}
+
+/* Unique mark: two pins holding the crown. */
+html[data-player-skin="auroraveil"]:root .hud-app-name::before {
+  content: "";
+  display: inline-block;
+  width: 0.86em;
+  height: 0.7em;
+  margin-right: 0.5em;
+  vertical-align: -0.04em;
+  background:
+    linear-gradient(165deg, var(--av-cyan-hot) 0 28%, transparent 52%),
+    linear-gradient(15deg, var(--av-violet) 0 36%, var(--av-cyan) 100%);
+  clip-path: var(--av-glyph);
+  box-shadow: 0 0 8px rgba(103, 232, 249, 0.45);
+  animation: room-auroraveil-sheer 5.4s ease-in-out infinite;
+}
+
+html[data-player-skin="auroraveil"]:root .hud-app-name::after {
+  content: none !important;
+  animation: none !important;
+}
+
+html[data-player-skin="auroraveil"]:root :is(.hud-intention, .hud-now-focus-kicker) {
+  color: var(--av-ink-2);
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+}
+
+html[data-player-skin="auroraveil"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid rgba(103, 232, 249, 0.45);
+  border-radius: var(--av-r-cell);
+  background:
+    linear-gradient(165deg, var(--av-cyan-hot), var(--av-violet-deep));
+  box-shadow:
+    inset 0 1px 0 rgba(165, 243, 252, 0.55),
+    0 0 12px rgba(192, 132, 252, 0.4);
+  clip-path: var(--av-glyph);
+}
+
+html[data-player-skin="auroraveil"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 22%;
+  background: var(--av-cyan-hot);
+  clip-path: var(--av-glyph);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+  animation: room-auroraveil-sheer 4.2s ease-in-out infinite;
+}
+
+html[data-player-skin="auroraveil"]:root :is(
+  .ws-mark,
+  .hud-icon-svg,
+  .tab-chip-mark,
+  .launcher-tile-glyph svg,
+  .wp-skin-mark
+),
+html[data-player-skin="auroraveil"]:root[data-skin-effect="aurora"] .hud-icon-svg {
+  color: var(--av-cyan);
+  filter: var(--feel-icon);
+  animation: none !important;
+}
+
+/* ── 5 · Glyph — two pins, scooped hem. Glyphs may clip. ────── */
+
+html[data-player-skin="auroraveil"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .nav-app-glyph,
+  .loot-skin-avatar
+),
+html[data-player-skin="auroraveil"]:root[data-skin-family="curtain"] .launcher-tile-glyph,
+html[data-player-skin="auroraveil"]:root[data-skin-family="prism"] .launcher-tile-glyph {
+  position: relative;
+  overflow: visible;
+  border: 1px solid rgba(103, 232, 249, 0.4);
+  border-radius: 0;
+  transform: none;
+  color: var(--av-well);
+  clip-path: var(--av-glyph);
+  background:
+    linear-gradient(165deg, rgba(165, 243, 252, 0.55) 0 18%, transparent 40%),
+    linear-gradient(180deg, var(--av-cyan) 0 36%, var(--av-violet) 36% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(238, 247, 255, 0.35),
+    0 0 14px rgba(192, 132, 252, 0.32);
+  filter: none;
+}
+
+/* Far sheet offset inside the glyph — you look through it. */
+html[data-player-skin="auroraveil"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 18% 12% 8% 18%;
+  background: linear-gradient(15deg, var(--av-violet-hot), transparent 70%);
+  clip-path: inherit;
+  mix-blend-mode: screen;
+  opacity: 0.7;
+  animation: room-auroraveil-sheer 6s ease-in-out infinite;
+}
+
+html[data-player-skin="auroraveil"]:root .launcher-custom-app-emoji {
+  filter: drop-shadow(0 0 6px rgba(103, 232, 249, 0.5));
+}
+
+/* ── 6 · Chips — a swatch of both sheets. Place chip. ───────── */
+
+html[data-player-skin="auroraveil"]:root :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-calm-pill,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .hud-model-chip--status,
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .tsk-day-chip,
+  .tsk-keyword-chip,
+  .tsk-bucket-chip,
+  .hub-chip,
+  .nts-chip,
+  .pln-mode-chip,
+  .tdy-cat-chip,
+  .today-day-chip,
+  .quick-capture-chip
+),
+html[data-player-skin="auroraveil"]:root[data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .app-subnav-pill,
+  .pill,
+  .loot-profile-chip
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid rgba(103, 232, 249, 0.28);
+  border-radius: var(--av-r-chip);
+  background:
+    linear-gradient(165deg, rgba(103, 232, 249, 0.18) 0 22%, transparent 46%),
+    linear-gradient(15deg, rgba(192, 132, 252, 0.16) 0 20%, transparent 44%),
+    color-mix(in srgb, var(--av-plate) 70%, transparent);
+  color: var(--av-ink);
+  font-family: var(--av-font);
+  letter-spacing: 0.06em;
+  box-shadow:
+    inset 0 1px 0 rgba(103, 232, 249, 0.22),
+    inset 0 -1px 0 rgba(192, 132, 252, 0.18);
+  backdrop-filter: blur(8px);
+  animation: none;
+}
+
+html[data-player-skin="auroraveil"]:root :is(
+  .tab-chip,
+  .hud-chip,
+  .loot-profile-chip,
+  .app-subnav-pill
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 12%;
+  right: 18%;
+  top: 3px;
+  height: 1px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, var(--av-cyan), var(--av-violet));
+  opacity: 0.7;
+}
+
+html[data-player-skin="auroraveil"]:root :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active,
+  .loot-profile-chip--complete
+) {
+  border-color: var(--av-cyan);
+  background:
+    linear-gradient(165deg, rgba(165, 243, 252, 0.28) 0 24%, transparent 50%),
+    linear-gradient(180deg, color-mix(in srgb, var(--av-cyan) 28%, var(--av-plate)), color-mix(in srgb, var(--av-violet) 32%, var(--av-plate)));
+  color: var(--av-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(165, 243, 252, 0.4),
+    0 0 14px rgba(192, 132, 252, 0.28);
+}
+
+html[data-player-skin="auroraveil"]:root .tab-chip-bar {
+  background: color-mix(in srgb, var(--av-night) 78%, var(--av-plate));
+  border-bottom: 1px solid rgba(192, 132, 252, 0.22);
+  backdrop-filter: blur(10px);
+}
+
+html[data-player-skin="auroraveil"]:root .hud-game-cluster {
+  border-radius: var(--av-r-chip);
+  background: color-mix(in srgb, var(--av-plate) 70%, transparent);
+  box-shadow: inset 0 1px 0 rgba(103, 232, 249, 0.16);
+}
+
+/* ── 7 · Companion — a tear in the membrane. Place companion. ─ */
+
+html[data-player-skin="auroraveil"]:root .companion-launcher,
+html[data-player-skin="auroraveil"]:root[data-skin-place~="companion"] .companion-launcher {
+  background: color-mix(in srgb, var(--av-plate) 72%, transparent);
+  border: 1px solid rgba(103, 232, 249, 0.32);
+  border-radius: var(--av-r-veil);
+  box-shadow: var(--feel-3d);
+  backdrop-filter: blur(12px);
+}
+
+html[data-player-skin="auroraveil"]:root .companion-launcher-orb,
+html[data-player-skin="auroraveil"]:root[data-skin-place~="companion"] .companion-launcher-orb {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border-radius: var(--av-r-veil);
+  clip-path: var(--av-glyph);
+  background:
+    linear-gradient(165deg, var(--av-cyan-hot) 0 22%, transparent 46%),
+    linear-gradient(180deg, var(--av-cyan) 0 40%, var(--av-violet) 40% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(238, 247, 255, 0.45),
+    0 0 18px rgba(103, 232, 249, 0.4),
+    0 0 28px -6px rgba(192, 132, 252, 0.45);
+  animation: room-auroraveil-tear 5.8s ease-in-out infinite;
+}
+
+html[data-player-skin="auroraveil"]:root .companion-launcher-orb::after,
+html[data-player-skin="auroraveil"]:root[data-skin-place~="companion"] .companion-launcher-orb::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 14% 8% 6% 16%;
+  background: linear-gradient(20deg, var(--av-violet-hot), transparent 68%);
+  clip-path: inherit;
+  mix-blend-mode: screen;
+  opacity: 0.75;
+  animation: room-auroraveil-sheer 4.6s ease-in-out infinite;
+}
+
+html[data-player-skin="auroraveil"]:root .companion-launcher:hover .companion-launcher-orb {
+  box-shadow:
+    inset 0 1px 0 rgba(238, 247, 255, 0.55),
+    0 0 26px rgba(103, 232, 249, 0.55),
+    0 0 36px -4px rgba(192, 132, 252, 0.55);
+}
+
+html[data-player-skin="auroraveil"]:root .companion-panel,
+html[data-player-skin="auroraveil"]:root[data-skin-place~="companion"] .companion-panel {
+  border-radius: var(--av-r-veil);
+  border: 1px solid rgba(192, 132, 252, 0.32);
+  background:
+    var(--av-sheet-soft),
+    color-mix(in srgb, var(--av-plate) 88%, transparent);
+  color: var(--av-ink);
+  box-shadow: var(--at-rise);
+  backdrop-filter: blur(16px);
+}
+
+/* ── 8 · Buttons ────────────────────────────────────────────── */
+
+html[data-player-skin="auroraveil"]:root button.primary,
+html[data-player-skin="auroraveil"]:root .primary,
+html[data-player-skin="auroraveil"]:root .agent-pane-chat .agc-send,
+html[data-player-skin="auroraveil"]:root[data-skin-effect="aurora"] button.primary {
+  border: 1px solid rgba(103, 232, 249, 0.5);
+  border-radius: var(--av-r-ctl);
+  background: linear-gradient(165deg, var(--av-cyan-hot) 0 28%, var(--av-cyan) 28% 58%, var(--av-violet) 58% 100%);
+  background-size: 100% 100%;
+  color: var(--av-well);
+  font-family: var(--av-font);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-shadow: 0 1px 0 rgba(238, 247, 255, 0.35);
+  box-shadow: var(--feel-3d);
+  animation: none !important;
+}
+
+html[data-player-skin="auroraveil"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="auroraveil"]:root .primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+  box-shadow:
+    inset 0 1px 0 rgba(238, 247, 255, 0.45),
+    0 0 16px rgba(103, 232, 249, 0.35);
+}
+
+html[data-player-skin="auroraveil"]:root button.primary:active:not(:disabled),
+html[data-player-skin="auroraveil"]:root .primary:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: var(--feel-3d-press);
+  filter: none;
+}
+
+html[data-player-skin="auroraveil"]:root :is(button.secondary, .ghost-btn, .secondary) {
+  border: 1px solid rgba(192, 132, 252, 0.32);
+  border-radius: var(--av-r-ctl);
+  background: color-mix(in srgb, var(--av-plate) 80%, transparent);
+  color: var(--av-ink-2);
+}
+
+html[data-player-skin="auroraveil"]:root #quick-capture-fab.quick-capture-fab {
+  background: linear-gradient(165deg, var(--av-cyan), var(--av-violet)) !important;
+  color: var(--av-well) !important;
+  border-color: var(--av-cyan) !important;
+  border-radius: var(--av-r-ctl) !important;
+}
+
+html[data-player-skin="auroraveil"]:root .agent-bubble {
+  border-radius: var(--av-r-card);
+  border: 1px solid rgba(103, 232, 249, 0.22);
+  background: color-mix(in srgb, var(--av-plate) 84%, transparent);
+}
+
+/* ── 9 · Empty / input / focus ──────────────────────────────── */
+
+html[data-player-skin="auroraveil"]:root .empty-state {
+  position: relative;
+  border: 1px dashed rgba(192, 132, 252, 0.4);
+  border-radius: var(--av-r-veil);
+  background:
+    var(--av-sheet-soft),
+    color-mix(in srgb, var(--av-well) 72%, transparent);
+  color: var(--av-ink-2);
+  box-shadow:
+    inset 0 1px 0 rgba(103, 232, 249, 0.16),
+    inset 0 -1px 0 rgba(192, 132, 252, 0.16);
+}
+
+/* A tear — both sheets part, polar night shows through. */
+html[data-player-skin="auroraveil"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 2.1em;
+  height: 1.6em;
+  margin: 0 auto 10px;
+  background: linear-gradient(165deg, var(--av-cyan-hot), var(--av-violet));
+  clip-path: var(--av-glyph);
+  opacity: 0.85;
+  filter: drop-shadow(0 0 8px rgba(103, 232, 249, 0.4));
+}
+
+html[data-player-skin="auroraveil"]:root .empty-state-title {
+  color: var(--av-ink);
+  font-family: var(--av-font);
+  letter-spacing: 0.16em;
+  text-transform: lowercase;
+}
+
+html[data-player-skin="auroraveil"]:root :is(.empty-state-body, .empty-state-hint) {
+  color: var(--av-mute);
+}
+
+html[data-player-skin="auroraveil"]:root :is(input, textarea, select, .agc-input-zone) {
+  border: 1px solid rgba(103, 232, 249, 0.28);
+  border-radius: var(--av-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(5, 4, 18, 0.55), rgba(22, 18, 44, 0.72));
+  color: var(--av-ink);
+  caret-color: var(--av-cyan);
+  box-shadow: inset 0 2px 8px rgba(5, 4, 18, 0.45);
+}
+
+html[data-player-skin="auroraveil"]:root :is(input, textarea)::placeholder {
+  color: var(--av-mute);
+}
+
+html[data-player-skin="auroraveil"]:root :is(input, textarea, select):focus,
+html[data-player-skin="auroraveil"]:root .agc-input-zone:focus-within {
+  border-color: var(--av-cyan);
+  outline: none;
+  box-shadow:
+    inset 0 2px 8px rgba(5, 4, 18, 0.4),
+    0 0 0 1px var(--av-cyan),
+    0 0 0 4px rgba(192, 132, 252, 0.38);
+}
+
+html[data-player-skin="auroraveil"]:root :focus-visible {
+  outline: 1px solid var(--av-cyan);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(192, 132, 252, 0.32);
+}
+
+html[data-player-skin="auroraveil"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: rgba(139, 124, 179, 0.22);
+  background: var(--av-night-2);
+  color: var(--av-mute);
+  opacity: 0.5;
+  box-shadow: none;
+  animation: none !important;
+  filter: grayscale(0.35);
+}
+
+html[data-player-skin="auroraveil"]:root ::selection {
+  background: color-mix(in srgb, var(--av-violet) 55%, var(--av-cyan));
+  color: var(--av-well);
+}
+
+html[data-player-skin="auroraveil"]:root :is(
+  .loot-shell-dialog,
+  .napkin-capture-dialog,
+  .launcher-search-panel,
+  .launcher-dock-panel,
+  .companion-panel,
+  .wf-code-modal,
+  .rich-fs-modal,
+  .wp-board,
+  .command-palette,
+  dialog
+) {
+  border: 1px solid rgba(103, 232, 249, 0.28);
+  border-radius: var(--av-r-veil);
+  background:
+    var(--av-sheet-soft),
+    color-mix(in srgb, var(--av-plate) 90%, transparent);
+  color: var(--av-ink);
+  box-shadow: var(--at-rise);
+  backdrop-filter: blur(18px);
+}
+
+html[data-player-skin="auroraveil"]:root .toast-item {
+  border: 1px solid var(--av-cyan);
+  border-radius: var(--av-r-chip);
+  background: linear-gradient(165deg, var(--av-cyan), var(--av-violet));
+  color: var(--av-well);
+}
+
+html[data-player-skin="auroraveil"]:root .loot-shell-brand > span {
+  background: linear-gradient(90deg, var(--av-cyan), var(--av-violet), var(--av-cyan));
+  background-size: 180% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: room-auroraveil-sheer 8s ease-in-out infinite;
+}
+
+/* ── 10 · Motion — two sheets, one tear ─────────────────────── */
+
+@keyframes room-auroraveil-cyan {
+  0% { transform: translate3d(-2.2%, 0.6%, 0); }
+  100% { transform: translate3d(2.4%, -0.8%, 0); }
+}
+
+@keyframes room-auroraveil-violet {
+  0% { transform: translate3d(2.6%, -0.5%, 0); }
+  100% { transform: translate3d(-2.8%, 0.9%, 0); }
+}
+
+@keyframes room-auroraveil-sheer {
+  0%, 100% { opacity: 0.55; filter: brightness(1); }
+  50% { opacity: 0.92; filter: brightness(1.08); }
+}
+
+@keyframes room-auroraveil-tear {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.04); filter: brightness(1.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="auroraveil"]:root body::before,
+  html[data-player-skin="auroraveil"]:root body::after,
+  html[data-player-skin="auroraveil"]:root .top-hud::before,
+  html[data-player-skin="auroraveil"]:root .top-hud::after,
+  html[data-player-skin="auroraveil"]:root .companion-launcher-orb,
+  html[data-player-skin="auroraveil"]:root .companion-launcher-orb::after,
+  html[data-player-skin="auroraveil"]:root .hud-app-name::before,
+  html[data-player-skin="auroraveil"]:root .hud-brand-jewel::after,
+  html[data-player-skin="auroraveil"]:root .loot-shell-brand > span,
+  html[data-player-skin="auroraveil"]:root :is(
+    .launcher-tile-glyph,
+    .launcher-card-glyph,
+    .loot-skin-avatar
+  )::after {
+    animation: none !important;
+  }
+  html[data-player-skin="auroraveil"]:root .top-hud::after { opacity: 0.5; }
+  html[data-player-skin="auroraveil"]:root .companion-launcher-orb { transform: none; }
+}

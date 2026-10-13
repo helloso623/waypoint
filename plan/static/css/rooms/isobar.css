@@ -1,0 +1,606 @@
+/* ═══════════════════════════════════════════════════════════════
+   STORM ATLAS — isobars on a forecast desk.
+
+   The object: you are seated at analysis. Two pressure cells are
+   drawn on a chart fascia — a high at the left, a low sliding in
+   from the catalog ear. The lines are isobars: closed, offset,
+   slightly elliptical, printed, not glowing. Lightning is a desk
+   flash that whites the plate for a frame, then the ink returns.
+   Chips are forecast tiles: a valid-time stripe, a ring stamp,
+   issued type. Today is already a weather chart in the world
+   skin. This room only chromes the desk.
+
+   Critique: the object holds only while the rings stay pressure
+   contours — closed, labeled by spacing, two cells, not a pond
+   from one corner and not a radar sweep. It fails if the HUD
+   becomes a prairie windshield, a gold fork, or a yellow sail.
+   #93c5fd on #0b1220 vanishes without a solid plate; without a
+   1px hairline the rings become glow. Stop at the desk.
+
+   Not Storm Chaser (prairie chase, gold fork, grass horizon,
+   navy windshield). Not Thunder Kite (ripstop sail, swallowtail,
+   gust-lit panels). Not Voltage Spine (90° lime rail). Waves
+   here are closed contours, not nimbus shelves.
+
+   Architecture:
+   - Signature cut: the chart sheet. Sharp registration at the
+     bound corner, one catalog ear on the free edge, tight feet.
+     Pixel radii. Never 42%/48% ovals.
+   - Signature glyph: dual-cell isobars with a thin ice-blue
+     stylus tick. Glyphs may clip. #main and .launcher-card may
+     not.
+   - Signature motion: contours drift; a desk flash. No gold
+     fork. No kite tug.
+   - Place: hud + chip. Rings on the fascia. Forecast tiles on
+     the chip bar. World already owns the photograph and the
+     page chart — do not repaint body.
+
+   Loot: colorA #93c5fd · colorB #0b1220 · effect volt
+   (overridden as a desk flash) · pattern waves (as isobars) ·
+   world:true · place hud,page,chip,companion,calendar,pulse.
+   Selectors carry :root to outrank storm-family / volt stencils.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — ice-blue ink on a night chart ─────────────── */
+
+html[data-player-skin="isobar"]:root {
+  color-scheme: dark;
+
+  --iso-night: #0b1220;
+  --iso-plate: #111827;
+  --iso-plate-2: #0f172a;
+  --iso-well: #070b14;
+  --iso-ink: #e2e8f0;
+  --iso-ink-2: #bfdbfe;
+  --iso-mute: #7fa3d6;
+  --iso-line: #93c5fd;
+  --iso-line-hot: #dbeafe;
+  --iso-cell: #1e3a8a;
+  --iso-warn: #facc15;
+  --iso-flash: #f8fafc;
+  --iso-hair: rgba(147, 197, 253, 0.28);
+  --iso-hair-2: rgba(147, 197, 253, 0.5);
+
+  /* Chart sheet: bound registration, one catalog ear, tight feet.
+     3 / 21 / 5 / 4 over 3 / 10 / 4 / 3 — not a kite slash,
+     not an anvil, never 42%/48%. */
+  --iso-r-sheet: 3px 21px 5px 4px / 3px 10px 4px 3px;
+  --iso-r-card: 3px 16px 4px 3px / 3px 8px 3px 3px;
+  --iso-r-ctl: 2px 11px 3px 2px / 2px 6px 2px 2px;
+  --iso-r-chip: 2px 13px 3px 2px / 2px 7px 3px 2px;
+  --iso-r-cell: 2px 8px 2px 2px / 2px 5px 2px 2px;
+
+  /* Dual-cell isobars — loot waves as closed contours, not shelves. */
+  --iso-rings:
+    repeating-radial-gradient(
+      ellipse 130% 88% at 18% 112%,
+      transparent 0 17px,
+      rgba(147, 197, 253, 0.28) 17px 18px
+    ),
+    repeating-radial-gradient(
+      ellipse 108% 82% at 86% -18%,
+      transparent 0 21px,
+      rgba(147, 197, 253, 0.16) 21px 22px
+    );
+  --iso-rings-tight:
+    repeating-radial-gradient(
+      ellipse 90% 70% at 78% 18%,
+      transparent 0 6px,
+      rgba(147, 197, 253, 0.4) 6px 7px
+    );
+  --iso-grid:
+    linear-gradient(rgba(147, 197, 253, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(147, 197, 253, 0.07) 1px, transparent 1px);
+
+  --iso-font: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --bg-shell: var(--iso-night);
+  --bg-content: var(--iso-plate-2);
+  --bg-card: var(--iso-plate);
+  --bg-card-hover: #152033;
+  --ink-primary: var(--iso-ink);
+  --ink-secondary: var(--iso-ink-2);
+  --ink-muted: var(--iso-mute);
+  --border: var(--iso-hair);
+  --gridline: rgba(147, 197, 253, 0.12);
+  --accent: var(--iso-line);
+  --ws-accent: var(--iso-line);
+  --accent-ink: var(--iso-night);
+
+  --skin-a: #93c5fd;
+  --skin-b: #0b1220;
+  --at-a: #93c5fd;
+  --at-b: #0b1220;
+  --feel-a: #93c5fd;
+  --feel-b: #0b1220;
+  --feel-accent: #93c5fd;
+  --feel-ground: #0b1220;
+  --feel-paper: #111827;
+  --feel-ink: #e2e8f0;
+
+  --at-plate: var(--iso-plate);
+  --at-plate-2: var(--iso-plate-2);
+  --at-well: var(--iso-well);
+  --at-ink: var(--iso-ink);
+  --at-ink-2: var(--iso-ink-2);
+  --at-ink-3: var(--iso-mute);
+  --at-hair: var(--iso-hair);
+  --at-hair-2: var(--iso-hair-2);
+  --at-hair-a: rgba(147, 197, 253, 0.62);
+  --at-tint: rgba(147, 197, 253, 0.1);
+  --at-tint-b: rgba(30, 58, 138, 0.4);
+  --at-focus: 0 0 0 2px var(--iso-line-hot);
+  --at-gold: var(--iso-line);
+  --at-gold-soft: var(--iso-line-hot);
+  --at-inset: inset 0 1px 0 rgba(219, 234, 254, 0.12);
+  --at-rise: 0 14px 28px -18px rgba(2, 6, 14, 0.88);
+  --at-rise-soft: 0 8px 16px -12px rgba(2, 6, 14, 0.7);
+  --at-r-plate: var(--iso-r-sheet);
+  --at-r-card: var(--iso-r-card);
+  --at-r-ctl: var(--iso-r-ctl);
+  --at-r-chip: var(--iso-r-chip);
+  --at-r-cell: var(--iso-r-cell);
+  --at-font-display: var(--iso-font);
+  --at-font-mono: var(--iso-font);
+  --font-display: var(--iso-font);
+  --font-ui: var(--iso-font);
+
+  /* Printed chart, not volt outline + offset, not gold anvil. */
+  --feel-3d:
+    inset 0 1px 0 rgba(219, 234, 254, 0.14),
+    0 0 0 1px rgba(147, 197, 253, 0.35),
+    0 3px 0 #070b14;
+  --feel-3d-press:
+    inset 0 2px 6px rgba(7, 11, 20, 0.55),
+    0 1px 0 #070b14;
+  --feel-grain-opacity: 0.28;
+  --feel-grain-blend: screen;
+  --feel-grain: var(--iso-rings);
+  --feel-grain-size: auto, auto;
+  --feel-hud-hair: 1px solid rgba(147, 197, 253, 0.55);
+  --feel-icon:
+    saturate(0.85) brightness(1.12) contrast(1.06)
+    drop-shadow(0 0 5px rgba(147, 197, 253, 0.4));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.1em;
+}
+
+/* ── 2 · Kill family — leave the world photograph ───────────── */
+
+html[data-player-skin="isobar"]:root body::after,
+html[data-player-skin="isobar"]:root[data-skin-effect="volt"] body::after,
+html[data-player-skin="isobar"]:root[data-skin-pattern="waves"] body::after {
+  background-image: none;
+  animation: none;
+  opacity: 0;
+}
+
+html[data-player-skin="isobar"]:root .app-shell::before {
+  content: none;
+  background: none;
+  animation: none;
+}
+
+html[data-player-skin="isobar"]:root #main,
+html[data-player-skin="isobar"]:root .launcher-card {
+  clip-path: none !important;
+}
+
+html[data-player-skin="isobar"]:root #main::before,
+html[data-player-skin="isobar"]:root #main::after,
+html[data-player-skin="isobar"]:root .launcher-card::before,
+html[data-player-skin="isobar"]:root .launcher-card::after {
+  clip-path: none !important;
+}
+
+html[data-player-skin="isobar"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar
+) {
+  clip-path: none !important;
+}
+
+/* ── 3 · HUD — pressure chart fascia, two cells ─────────────── */
+
+html[data-player-skin="isobar"]:root .top-hud,
+html[data-player-skin="isobar"]:root[data-skin-place~="hud"] .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--iso-ink);
+  background:
+    var(--iso-rings),
+    linear-gradient(180deg, #152033 0 62%, #0f172a 100%);
+  border-bottom: 2px solid var(--iso-line);
+  border-radius: 0;
+  box-shadow:
+    inset 0 -1px 0 rgba(250, 204, 21, 0.35),
+    0 10px 22px rgba(2, 6, 14, 0.45);
+  backdrop-filter: none;
+}
+
+html[data-player-skin="isobar"]:root .top-hud::before,
+html[data-player-skin="isobar"]:root[data-skin-place~="hud"] .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -40% -20% -60% -16%;
+  z-index: 0;
+  background: var(--iso-rings);
+  opacity: 0.85;
+  animation: room-isobar-drift 22s linear infinite;
+}
+
+html[data-player-skin="isobar"]:root .top-hud::after,
+html[data-player-skin="isobar"]:root[data-skin-place~="hud"] .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.72), transparent 58%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation: room-isobar-flash 7.6s steps(1, end) infinite;
+}
+
+html[data-player-skin="isobar"]:root .top-hud > * {
+  position: relative;
+  z-index: 2;
+}
+
+html[data-player-skin="isobar"]:root :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: currentColor;
+  color: var(--iso-ink-2);
+  font-family: var(--iso-font);
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(147, 197, 253, 0.28);
+}
+
+html[data-player-skin="isobar"]:root :is(.hud-intention, .hud-now-focus-kicker) {
+  color: var(--iso-mute);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="isobar"]:root :is(
+  .brand-mark,
+  .ws-mark,
+  .hud-icon-svg,
+  .tab-chip-mark,
+  .hud-metric-mark,
+  .wp-skin-mark
+) {
+  color: var(--iso-line);
+  filter: var(--feel-icon);
+  animation: none;
+}
+
+/* Jewel: closed contours around a high. Stylus tick, not a prairie fork. */
+html[data-player-skin="isobar"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border-radius: 50%;
+  border: 1px solid var(--iso-line);
+  background:
+    radial-gradient(circle at 50% 50%, var(--iso-cell) 0 28%, var(--iso-night) 72%);
+  box-shadow:
+    0 0 0 3px var(--iso-night),
+    0 0 0 4px rgba(147, 197, 253, 0.7),
+    0 0 0 8px var(--iso-night),
+    0 0 0 9px rgba(147, 197, 253, 0.32);
+  animation: room-isobar-cell 8.4s ease-in-out infinite;
+}
+
+html[data-player-skin="isobar"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 18% 40% 22% 36%;
+  z-index: 1;
+  background: var(--iso-line-hot);
+  clip-path: polygon(60% 0, 36% 40%, 51% 40%, 26% 100%, 72% 50%, 55% 50%);
+  filter: drop-shadow(0 0 4px rgba(219, 234, 254, 0.8));
+  animation: room-isobar-flash 7.6s steps(1, end) infinite;
+}
+
+html[data-player-skin="isobar"]:root .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-game-cluster,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .loot-profile-chip
+) {
+  color: var(--iso-ink-2);
+  border: 1px dashed var(--iso-hair-2);
+  border-radius: var(--iso-r-ctl);
+  background: var(--iso-plate);
+  box-shadow: none;
+  font-family: var(--iso-font);
+}
+
+html[data-player-skin="isobar"]:root .top-hud :is(.hud-icon-btn, .hud-glyph-btn):hover:not(:disabled) {
+  border-style: solid;
+  border-color: var(--iso-line);
+  background: var(--iso-cell);
+  color: var(--iso-ink);
+}
+
+html[data-player-skin="isobar"]:root .hud-status-pill {
+  position: relative;
+  padding-left: 18px;
+}
+
+html[data-player-skin="isobar"]:root .hud-status-pill::before {
+  border-radius: 0;
+  width: 2px;
+  height: 9px;
+  background: var(--iso-warn);
+  transform: translateY(-50%) rotate(22deg);
+  transform-origin: 50% 100%;
+  animation: room-isobar-needle 6s ease-in-out infinite;
+}
+
+/* ── 4 · Forecast chips — issued tiles, not kites ───────────── */
+
+html[data-player-skin="isobar"]:root .tab-chip-bar {
+  background: var(--iso-plate-2);
+  border-bottom: 1px solid var(--iso-line);
+  align-items: flex-end;
+}
+
+html[data-player-skin="isobar"]:root .tab-chip,
+html[data-player-skin="isobar"]:root .pill,
+html[data-player-skin="isobar"]:root .app-subnav-pill,
+html[data-player-skin="isobar"]:root[data-skin-place~="chip"] :is(
+  .tab-chip,
+  .pill,
+  .app-subnav-pill,
+  .hud-game-chip,
+  .cal-week-chip,
+  .loot-profile-chip
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgba(147, 197, 253, 0.45);
+  border-bottom-width: 0;
+  border-radius: var(--iso-r-chip);
+  background:
+    var(--iso-rings-tight),
+    var(--iso-plate);
+  color: var(--iso-ink-2);
+  font-family: var(--iso-font);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: inset 0 3px 0 var(--iso-line);
+}
+
+html[data-player-skin="isobar"]:root[data-skin-place~="chip"] .tab-chip::after,
+html[data-player-skin="isobar"]:root .tab-chip::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 1px rgba(147, 197, 253, 0.55),
+    0 0 0 3px transparent,
+    0 0 0 4px rgba(147, 197, 253, 0.28);
+  opacity: 0.7;
+}
+
+html[data-player-skin="isobar"]:root .tab-chip.active,
+html[data-player-skin="isobar"]:root .tab-chip[aria-selected="true"],
+html[data-player-skin="isobar"]:root .app-subnav-pill.active,
+html[data-player-skin="isobar"]:root[data-skin-place~="chip"] .tab-chip.active,
+html[data-player-skin="isobar"]:root[data-skin-place~="chip"] .tab-chip[aria-selected="true"] {
+  background:
+    var(--iso-rings-tight),
+    var(--iso-cell);
+  border-style: solid;
+  border-color: var(--iso-line-hot);
+  color: var(--iso-ink);
+  box-shadow:
+    inset 0 3px 0 var(--iso-warn),
+    0 0 12px rgba(147, 197, 253, 0.28);
+}
+
+html[data-player-skin="isobar"]:root[data-skin-place~="chip"] .tab-chip:hover:not(.active) {
+  border-color: var(--iso-line);
+  background:
+    var(--iso-rings-tight),
+    #152033;
+}
+
+/* ── 5 · Empty / input / focus ──────────────────────────────── */
+
+html[data-player-skin="isobar"]:root .empty-state {
+  position: relative;
+  border: 1px dashed var(--iso-hair-2);
+  border-radius: var(--iso-r-sheet);
+  background:
+    var(--iso-rings),
+    var(--iso-grid),
+    var(--iso-plate);
+  background-size: auto, auto, 18px 18px, 18px 18px, auto;
+  color: var(--iso-ink-2);
+  box-shadow: inset 0 0 0 1px rgba(11, 18, 32, 0.6);
+}
+
+html[data-player-skin="isobar"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 58px;
+  height: 40px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 1px rgba(147, 197, 253, 0.4),
+    0 0 0 6px transparent,
+    0 0 0 7px rgba(147, 197, 253, 0.24),
+    0 0 0 13px transparent,
+    0 0 0 14px rgba(147, 197, 253, 0.14);
+}
+
+html[data-player-skin="isobar"]:root .empty-state-title {
+  color: var(--iso-ink);
+  font-family: var(--iso-font);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="isobar"]:root :is(.empty-state-body, .empty-state-hint) {
+  color: var(--iso-mute);
+}
+
+html[data-player-skin="isobar"]:root :is(
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+) {
+  border: 1px dashed rgba(96, 165, 250, 0.55);
+  border-radius: var(--iso-r-ctl);
+  background:
+    var(--iso-grid),
+    var(--iso-well);
+  background-size: 16px 16px, 16px 16px, auto;
+  color: var(--iso-ink);
+  caret-color: var(--iso-line);
+  font-family: var(--iso-font);
+  box-shadow: inset 0 1px 0 rgba(147, 197, 253, 0.08);
+}
+
+html[data-player-skin="isobar"]:root :is(input, textarea)::placeholder {
+  color: var(--iso-mute);
+  letter-spacing: 0.06em;
+}
+
+html[data-player-skin="isobar"]:root :is(
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select
+):focus,
+html[data-player-skin="isobar"]:root .agc-input-zone:focus-within,
+html[data-player-skin="isobar"]:root [contenteditable="true"]:focus {
+  outline: none;
+  border-style: solid;
+  border-color: var(--iso-line);
+  box-shadow:
+    inset 0 1px 0 rgba(147, 197, 253, 0.12),
+    0 0 0 3px rgba(147, 197, 253, 0.22),
+    0 0 0 7px rgba(147, 197, 253, 0.08);
+}
+
+html[data-player-skin="isobar"]:root :focus-visible {
+  outline: 2px solid var(--iso-line);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(147, 197, 253, 0.18);
+}
+
+html[data-player-skin="isobar"]:root ::selection {
+  background: rgba(147, 197, 253, 0.38);
+  color: var(--iso-night);
+}
+
+/* ── 6 · Quiet desk plates — no clip ────────────────────────── */
+
+html[data-player-skin="isobar"]:root .launcher-card {
+  overflow: visible;
+  border-radius: var(--iso-r-sheet);
+  border: 1px solid rgba(147, 197, 253, 0.4);
+  background:
+    var(--iso-rings-tight),
+    var(--iso-plate);
+}
+
+html[data-player-skin="isobar"]:root :is(.launcher-card-name, .launcher-tile-name) {
+  color: var(--iso-ink);
+  font-family: var(--iso-font);
+  letter-spacing: 0.06em;
+}
+
+html[data-player-skin="isobar"]:root :is(.launcher-tile-glyph, .launcher-card-glyph) {
+  border-radius: 50%;
+  border: 1px solid var(--iso-line);
+  background:
+    var(--iso-rings-tight),
+    var(--iso-night);
+  color: var(--iso-ink-2);
+  box-shadow:
+    0 0 0 3px var(--iso-night),
+    0 0 0 4px rgba(147, 197, 253, 0.45);
+}
+
+html[data-player-skin="isobar"]:root .companion-launcher-orb {
+  border-radius: 50%;
+  background:
+    var(--iso-rings-tight),
+    var(--iso-cell);
+  box-shadow:
+    0 0 0 2px var(--iso-line),
+    0 0 14px rgba(147, 197, 253, 0.4);
+  animation: room-isobar-cell 5.2s ease-in-out infinite;
+}
+
+html[data-player-skin="isobar"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: rgba(127, 163, 214, 0.22);
+  background: #0f172a;
+  color: #5b7394;
+  opacity: 0.55;
+  box-shadow: none;
+  animation: none !important;
+}
+
+/* ── 7 · Motion — drift, desk flash, cell, needle ───────────── */
+
+@keyframes room-isobar-drift {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-18px, 10px, 0); }
+}
+
+@keyframes room-isobar-flash {
+  0%, 11%, 15%, 72%, 76%, 100% { opacity: 0; filter: brightness(1); }
+  12%, 14% { opacity: 0.78; filter: brightness(1.35); }
+  73%, 75% { opacity: 0.22; filter: brightness(1.1); }
+}
+
+@keyframes room-isobar-cell {
+  0%, 100% { box-shadow: 0 0 0 3px #0b1220, 0 0 0 4px rgba(147, 197, 253, 0.7), 0 0 0 8px #0b1220, 0 0 0 9px rgba(147, 197, 253, 0.28); }
+  50% { box-shadow: 0 0 0 3px #0b1220, 0 0 0 5px rgba(147, 197, 253, 0.85), 0 0 0 10px #0b1220, 0 0 0 11px rgba(147, 197, 253, 0.2); }
+}
+
+@keyframes room-isobar-needle {
+  0%, 100% { transform: translateY(-50%) rotate(14deg); }
+  50% { transform: translateY(-50%) rotate(38deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="isobar"]:root *,
+  html[data-player-skin="isobar"]:root *::before,
+  html[data-player-skin="isobar"]:root *::after {
+    animation: none !important;
+  }
+}

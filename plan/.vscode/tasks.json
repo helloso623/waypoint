@@ -1,0 +1,27 @@
+{
+    "tasks": [
+        {
+            "label": "Run Planner App",
+            "type": "shell",
+            "command": "python",
+            "args": ["desktop.py"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Planner App (browser)",
+            "type": "shell",
+            "command": "python",
+            "args": ["app.py"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        }
+    ],
+    "version": "2.0.0"
+}

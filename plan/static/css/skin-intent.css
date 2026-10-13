@@ -1,0 +1,465 @@
+/* ═══════════════════════════════════════════════════════════════
+   SKIN INTENT — each equipped skin reaches a different object.
+   Sun = refraction + slight chiaroscuro on the sign, not a beach.
+   Metal = anisotropic steel, not a grey wash.
+   Default copperplate is untouched: no rules here apply unless
+   a player skin / family / world is equipped.
+   Never clip #main or launcher-card copy.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── sun · glass caustic, brass gnomon, clarity ─────────────── */
+
+html[data-skin-family="sun"] {
+  --feel-icon:
+    drop-shadow(-1px -1px 0 rgba(255, 248, 220, 0.5))
+    drop-shadow(2px 3px 1px rgba(42, 24, 6, 0.38))
+    contrast(1.1) brightness(1.05);
+  --feel-grain:
+    radial-gradient(ellipse 48% 18% at 30% 6%, rgba(255, 244, 210, 0.28), transparent 62%),
+    radial-gradient(ellipse 16% 36% at 78% 12%, rgba(255, 220, 140, 0.14), transparent 58%);
+  --feel-grain-blend: soft-light;
+  --feel-grain-opacity: 0.55;
+  --feel-hud-hair: 3px double color-mix(in srgb, var(--feel-a) 70%, #c9a227);
+}
+
+html[data-skin-family="sun"] .app-shell::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  background:
+    radial-gradient(ellipse 40% 16% at 22% 10%, rgba(255, 248, 220, 0.2), transparent 70%),
+    repeating-conic-gradient(from 12deg at 70% 8%, transparent 0 8deg, rgba(255, 236, 180, 0.05) 8deg 9deg);
+  mix-blend-mode: soft-light;
+  animation: intent-caustic 12s ease-in-out infinite;
+}
+
+html[data-skin-family="sun"] .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+}
+html[data-skin-family="sun"] .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -8px;
+  border-radius: 30%;
+  background: conic-gradient(
+    from 32deg,
+    transparent 0 16%,
+    rgba(255, 236, 170, 0.5) 20%,
+    transparent 28%,
+    rgba(255, 255, 255, 0.28) 34%,
+    transparent 48%
+  );
+  mix-blend-mode: screen;
+  animation: intent-refract 9s linear infinite;
+}
+html[data-skin-family="sun"] .brand-mark,
+html[data-skin-family="sun"] .ws-mark,
+html[data-skin-family="sun"] .hud-icon-svg,
+html[data-skin-family="sun"] .tab-chip-mark,
+html[data-skin-family="sun"] .launcher-tile-glyph svg {
+  filter: var(--feel-icon);
+}
+html[data-skin-family="sun"] input,
+html[data-skin-family="sun"] textarea,
+html[data-skin-family="sun"] select {
+  border-radius: 999px;
+  border-color: color-mix(in srgb, var(--feel-a) 50%, #c9a227);
+  box-shadow: inset 0 1px 0 rgba(255, 248, 220, 0.45);
+}
+html[data-skin-family="sun"] .empty-state {
+  border-radius: 22px 22px 4px 4px;
+  background: color-mix(in srgb, #fff8e8 70%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, #c9a227 35%, transparent);
+}
+html[data-skin-family="sun"] .loot-shell-dialog {
+  border-radius: 22px 22px 4px 4px;
+  border: 3px double #c9a227;
+  box-shadow: 0 24px 60px rgba(80, 50, 10, 0.28);
+}
+html[data-skin-family="sun"] .toast-item {
+  border-radius: 999px;
+  background: #c9a227;
+  color: #3a2a14;
+}
+html[data-skin-family="sun"] button:disabled {
+  filter: grayscale(0.4) brightness(1.1);
+  box-shadow: none;
+}
+html[data-skin-family="sun"] :focus-visible {
+  outline: 3px double #c9a227;
+  outline-offset: 3px;
+}
+
+html[data-player-skin="solar"][data-app-tab="Home"] #main { background: radial-gradient(ellipse at 50% 0, rgba(253, 230, 138, 0.12), transparent 55%); }
+html[data-player-skin="solar"][data-app-tab="Today"] .tdy-hour-cell { border-radius: 12px; }
+html[data-player-skin="solar"][data-app-tab="Tasks"] .card { border-radius: 22px 22px 4px 4px; }
+html[data-player-skin="solar"][data-app-tab="Agent"] .agent-pane { box-shadow: inset 0 0 40px rgba(201, 162, 39, 0.12); }
+html[data-player-skin="solar"][data-app-tab="Hub"] .hub-card { border-radius: 22px 22px 4px 4px; }
+html[data-player-skin="solar"][data-app-tab="Practice"] .card { border: 3px double #c9a227; }
+html[data-player-skin="solar"][data-app-tab="Calendar"] .cal-day { border-radius: 12px; }
+html[data-player-skin="solar"][data-app-tab="Settings"] .card { border-radius: 22px 4px; }
+html[data-player-skin="solar"][data-app-tab="Paint"] .card { box-shadow: 0 0 0 3px #c9a227; }
+html[data-player-skin="gold"] .brand-mark { filter: contrast(1.2) saturate(1.15) drop-shadow(-1px -1px 0 #fff4c0) drop-shadow(2px 3px 0 #3a2a14); }
+html[data-player-skin="sunrise"] .top-hud { box-shadow: inset 0 -8px 24px rgba(251, 113, 133, 0.12); }
+html[data-player-skin="sunflower"] .launcher-tile-glyph { box-shadow: 0 0 0 3px #fde047, 0 0 0 7px #1a1208; }
+
+/* Sand effect on sun skins: pools of light, not stamped clay. */
+html[data-skin-family="sun"][data-skin-effect="sand"] body::after,
+html[data-player-skin="solar"] body::after,
+html[data-player-skin="gold"] body::after {
+  background:
+    radial-gradient(ellipse 30% 12% at 20% 18%, rgba(255, 244, 200, 0.22), transparent 70%),
+    radial-gradient(ellipse 18% 10% at 72% 30%, rgba(255, 220, 140, 0.16), transparent 65%);
+  mix-blend-mode: soft-light;
+  opacity: 0.7;
+}
+
+/* ── chrome / metal · anisotropic mill ──────────────────────── */
+
+html[data-skin-family="chrome"] {
+  --feel-icon: grayscale(0.15) contrast(1.28) brightness(1.08)
+    drop-shadow(-1px -1px 0 rgba(255, 255, 255, 0.55))
+    drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.4));
+  --feel-grain: repeating-linear-gradient(
+    92deg,
+    rgba(255, 255, 255, 0.1) 0 1px,
+    transparent 1px 3px,
+    rgba(0, 0, 0, 0.12) 3px 4px,
+    transparent 4px 7px
+  );
+  --feel-grain-blend: overlay;
+  --feel-grain-opacity: 0.4;
+}
+html[data-skin-family="chrome"] .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.45) 46%, transparent 62%);
+  mix-blend-mode: screen;
+  animation: intent-spec 3.8s ease-in-out infinite;
+}
+html[data-skin-family="chrome"] .hud-brand-jewel { position: relative; overflow: hidden; }
+html[data-skin-family="chrome"] .brand-mark,
+html[data-skin-family="chrome"] .ws-mark,
+html[data-skin-family="chrome"] .hud-icon-svg {
+  filter: var(--feel-icon);
+}
+html[data-skin-family="chrome"] button.primary {
+  background: linear-gradient(180deg, #f4f7fa, #9aa3ae 46%, #3a414a 52%, #d5dbe2);
+  color: #12151a;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+html[data-skin-family="chrome"] input,
+html[data-skin-family="chrome"] textarea,
+html[data-skin-family="chrome"] select {
+  border-radius: 6px;
+  background: linear-gradient(180deg, #2a3038, #1a1d22);
+  border-color: #cfd6de;
+  color: #e8edf2;
+}
+html[data-skin-family="chrome"] .empty-state {
+  border-radius: 8px;
+  background: #1a1d22;
+  border: 1px solid #cfd6de;
+  box-shadow: inset 0 1px 0 #fff8;
+}
+html[data-skin-family="chrome"] .loot-shell-dialog {
+  border-radius: 8px;
+  background: linear-gradient(180deg, #2a3038, #15181d);
+  border: 1px solid #e8edf2;
+}
+html[data-skin-family="chrome"] .toast-item {
+  border-radius: 6px;
+  background: #cfd6de;
+  color: #12151a;
+}
+html[data-skin-family="chrome"] button:disabled { opacity: 0.45; filter: grayscale(0.6); }
+html[data-skin-family="chrome"] :focus-visible { outline: 2px solid #e8edf2; outline-offset: 2px; }
+html[data-player-skin="chrome"][data-app-tab="Today"] .tdy-hour-cell { border-radius: 6px; background: #1a1d22; }
+html[data-player-skin="chrome"][data-app-tab="Tasks"] .card { background: linear-gradient(180deg, #2a3038, #1a1d22); }
+html[data-player-skin="chrome"][data-app-tab="Agent"] .agent-pane { background: #12151a; }
+html[data-player-skin="tungsten"] button.primary { letter-spacing: 0.12em; text-transform: uppercase; }
+html[data-player-skin="marble"] input { background: #f7f5f2; color: #1a1a1c; border-color: #1a1a1c; }
+
+/* ── dune · mesa light, not a beach ─────────────────────────── */
+
+html[data-skin-family="dune"] {
+  --feel-grain: repeating-linear-gradient(
+    180deg,
+    transparent 0 18px,
+    rgba(90, 40, 10, 0.08) 18px 19px
+  );
+  --feel-grain-blend: multiply;
+  --feel-icon: contrast(1.08) saturate(1.05) brightness(1.02)
+    drop-shadow(-1px -1px 0 rgba(255, 236, 210, 0.25))
+    drop-shadow(2px 3px 0 rgba(40, 18, 6, 0.35));
+  --feel-hud-hair: 2px solid color-mix(in srgb, var(--feel-a) 50%, #7c2d12);
+}
+html[data-skin-family="dune"] .empty-state {
+  border-radius: 4px;
+  box-shadow: 6px 6px 0 color-mix(in srgb, var(--feel-b) 40%, #1a0f06);
+}
+html[data-skin-family="dune"] input { border-radius: 3px; }
+html[data-skin-family="dune"] :focus-visible { outline: 3px solid #b45309; }
+
+/* ── extra pages + edge cases for photographed rooms ────────── */
+
+:root[data-world-skin="sumi"][data-app-tab="Calendar"] .cal-day { border-radius: 2px 28px 2px 20px; border-color: #8f2a1f; }
+:root[data-world-skin="sumi"][data-app-tab="Settings"] .card { background: #f8f3e9; border-left: 8px solid #8f2a1f; }
+:root[data-world-skin="sumi"][data-app-tab="Paint"] .card { box-shadow: 8px 0 0 #8f2a1f; }
+:root[data-world-skin="sumi"][data-app-tab="Parallel"] .card { border-radius: 2px 28px 2px 20px; }
+:root[data-world-skin="sumi"][data-app-tab="Projects"] .card { background: #f4eee3; }
+:root[data-world-skin="sumi"] .empty-state { border-radius: 2px 28px 2px 20px; background: #f8f3e9; border-left: 10px solid #8f2a1f; }
+:root[data-world-skin="sumi"] input,
+:root[data-world-skin="sumi"] textarea { border-radius: 2px; border-color: #8f2a1f; }
+:root[data-world-skin="sumi"] .loot-shell-dialog { border-radius: 2px 28px; background: #f8f3e9; }
+:root[data-world-skin="sumi"] .toast-item { background: #8f2a1f; color: #efe6d4; }
+:root[data-world-skin="sumi"] button:disabled { opacity: 0.4; }
+:root[data-world-skin="sumi"] :focus-visible { outline: 2px solid #8f2a1f; }
+
+:root[data-world-skin="kintsugi"][data-app-tab="Calendar"] .cal-day { border: 1px solid #c9a227; border-radius: 18px 10px; }
+:root[data-world-skin="kintsugi"][data-app-tab="Settings"] .card { background: #14110e; border: 1px solid #c9a227; }
+:root[data-world-skin="kintsugi"][data-app-tab="Paint"] .card { box-shadow: 8px 0 0 -6px #c9a227; }
+:root[data-world-skin="kintsugi"][data-app-tab="Parallel"] .card { border-radius: 18px 10px; }
+:root[data-world-skin="kintsugi"][data-app-tab="Projects"] .card { background: #1a1612; }
+:root[data-world-skin="kintsugi"] .empty-state { background: #14110e; border: 1px solid #c9a227; color: #f5edd4; }
+:root[data-world-skin="kintsugi"] input,
+:root[data-world-skin="kintsugi"] textarea { background: #14110e; color: #f5edd4; border-color: #c9a227; border-radius: 18px 10px; }
+:root[data-world-skin="kintsugi"] .loot-shell-dialog { background: #14110e; border: 1px solid #c9a227; color: #f5edd4; }
+:root[data-world-skin="kintsugi"] .toast-item { background: #c9a227; color: #14110e; }
+:root[data-world-skin="kintsugi"] button:disabled { opacity: 0.35; }
+:root[data-world-skin="kintsugi"] :focus-visible { outline: 1px solid #c9a227; }
+
+:root[data-world-skin="cyanotype"][data-app-tab="Calendar"] .cal-day { border-radius: 0; background: #0b3a6a; }
+:root[data-world-skin="cyanotype"][data-app-tab="Settings"] .card { background: #0b3a6a; color: #d6e4f0; }
+:root[data-world-skin="cyanotype"][data-app-tab="Paint"] .card { outline: 2px solid #d6e4f0; }
+:root[data-world-skin="cyanotype"][data-app-tab="Parallel"] .card { border-radius: 0; }
+:root[data-world-skin="cyanotype"][data-app-tab="Projects"] .card { background: #0e4478; }
+:root[data-world-skin="cyanotype"] .empty-state { background: #0b3a6a; color: #d6e4f0; border-radius: 0; }
+:root[data-world-skin="cyanotype"] input,
+:root[data-world-skin="cyanotype"] textarea { border-radius: 0; background: #0b3a6a; color: #d6e4f0; }
+:root[data-world-skin="cyanotype"] .loot-shell-dialog { border-radius: 0; background: #0b3a6a; color: #d6e4f0; }
+:root[data-world-skin="cyanotype"] .toast-item { background: #d6e4f0; color: #0b3a6a; border-radius: 0; }
+:root[data-world-skin="cyanotype"] button:disabled { opacity: 0.4; }
+:root[data-world-skin="cyanotype"] :focus-visible { outline: 2px solid #d6e4f0; }
+
+:root[data-world-skin="gesso"][data-app-tab="Calendar"] .cal-day { border-radius: 0; border: 1px solid #3f3a34; }
+:root[data-world-skin="gesso"][data-app-tab="Settings"] .card { background: #fffdf8; border-radius: 0; }
+:root[data-world-skin="gesso"][data-app-tab="Paint"] .card { outline: 12px solid #fffdf8; }
+:root[data-world-skin="gesso"][data-app-tab="Parallel"] .card { border-radius: 0; }
+:root[data-world-skin="gesso"][data-app-tab="Projects"] .card { background: #f7f3ec; }
+:root[data-world-skin="gesso"] .empty-state { background: #fffdf8; border: 1px solid #3f3a34; border-radius: 0; }
+:root[data-world-skin="gesso"] input,
+:root[data-world-skin="gesso"] textarea { border-radius: 0; background: #fffdf8; }
+:root[data-world-skin="gesso"] .loot-shell-dialog { border-radius: 0; background: #fffdf8; }
+:root[data-world-skin="gesso"] .toast-item { background: #3f3a34; color: #f4efe6; border-radius: 0; }
+:root[data-world-skin="gesso"] button:disabled { box-shadow: none; opacity: 0.45; }
+:root[data-world-skin="gesso"] :focus-visible { outline: 1px solid #3f3a34; }
+
+:root[data-world-skin="stained"][data-app-tab="Calendar"] .cal-day { border: 2px solid #c9a227; border-radius: 6px 6px 18px 18px; }
+:root[data-world-skin="stained"][data-app-tab="Settings"] .card { background: #1a1030; border: 3px solid #c9a227; }
+:root[data-world-skin="stained"][data-app-tab="Paint"] .card { border: 3px double #c9a227; }
+:root[data-world-skin="stained"][data-app-tab="Parallel"] .card { border-radius: 6px 6px 18px 18px; }
+:root[data-world-skin="stained"][data-app-tab="Projects"] .card { background: #160e28; }
+:root[data-world-skin="stained"] .empty-state { background: #1a1030; color: #f5edd4; border: 3px solid #c9a227; }
+:root[data-world-skin="stained"] input,
+:root[data-world-skin="stained"] textarea { background: #1a1030; color: #f5edd4; border-color: #c9a227; border-radius: 6px 6px 18px 18px; }
+:root[data-world-skin="stained"] .loot-shell-dialog { background: #1a1030; color: #f5edd4; border: 3px solid #c9a227; }
+:root[data-world-skin="stained"] .toast-item { background: #c9a227; color: #1a1030; }
+:root[data-world-skin="stained"] button:disabled { opacity: 0.35; }
+:root[data-world-skin="stained"] :focus-visible { outline: 3px solid #c9a227; }
+
+:root[data-world-skin="tatami"][data-app-tab="Calendar"] .cal-day { border-radius: 2px; border-color: #c4b183; }
+:root[data-world-skin="tatami"][data-app-tab="Settings"] .card { background: #1e3a5f; border-top: 8px solid #c4b183; }
+:root[data-world-skin="tatami"][data-app-tab="Paint"] .card { border-top: 10px solid #c4b183; }
+:root[data-world-skin="tatami"][data-app-tab="Parallel"] .card { border-radius: 2px; }
+:root[data-world-skin="tatami"][data-app-tab="Projects"] .card { background: #24466e; }
+:root[data-world-skin="tatami"] .empty-state { background: #1e3a5f; color: #c4b183; border-radius: 2px; }
+:root[data-world-skin="tatami"] input,
+:root[data-world-skin="tatami"] textarea { border-radius: 2px; background: #1e3a5f; color: #f4eee3; }
+:root[data-world-skin="tatami"] .loot-shell-dialog { background: #1e3a5f; color: #f4eee3; border-radius: 2px; }
+:root[data-world-skin="tatami"] .toast-item { background: #c4b183; color: #1e3a5f; }
+:root[data-world-skin="tatami"] button:disabled { opacity: 0.4; }
+:root[data-world-skin="tatami"] :focus-visible { outline: 2px solid #c4b183; }
+
+:root[data-world-skin="letterpress"][data-app-tab="Calendar"] .cal-day { border-radius: 0; box-shadow: 0 3px 0 #6b2a22; }
+:root[data-world-skin="letterpress"][data-app-tab="Settings"] .card { background: #faf6ee; box-shadow: 0 4px 0 #6b2a22; }
+:root[data-world-skin="letterpress"][data-app-tab="Paint"] .card { border: 1px dashed #6b2a22; }
+:root[data-world-skin="letterpress"][data-app-tab="Parallel"] .card { border-radius: 0 3px 0 3px; }
+:root[data-world-skin="letterpress"][data-app-tab="Projects"] .card { background: #f4eee2; }
+:root[data-world-skin="letterpress"] .empty-state { background: #faf6ee; box-shadow: 0 4px 0 #6b2a22; border-radius: 0; }
+:root[data-world-skin="letterpress"] input,
+:root[data-world-skin="letterpress"] textarea { border-radius: 0; border-color: #6b2a22; background: #faf6ee; }
+:root[data-world-skin="letterpress"] .loot-shell-dialog { border-radius: 0; background: #faf6ee; box-shadow: 0 6px 0 #6b2a22; }
+:root[data-world-skin="letterpress"] .toast-item { background: #6b2a22; color: #efe6d6; border-radius: 0; }
+:root[data-world-skin="letterpress"] button:disabled { box-shadow: none; opacity: 0.45; }
+:root[data-world-skin="letterpress"] :focus-visible { outline: 2px solid #6b2a22; }
+
+:root[data-world-skin="mosaic"][data-app-tab="Calendar"] .cal-day { border-radius: 0; border: 2px solid #c9a227; }
+:root[data-world-skin="mosaic"][data-app-tab="Settings"] .card { background: #0c2f2c; border: 2px solid #c9a227; }
+:root[data-world-skin="mosaic"][data-app-tab="Paint"] .card { box-shadow: 4px 4px 0 #c9a227; }
+:root[data-world-skin="mosaic"][data-app-tab="Parallel"] .card { border-radius: 3px; }
+:root[data-world-skin="mosaic"][data-app-tab="Projects"] .card { background: #14403c; }
+:root[data-world-skin="mosaic"] .empty-state { background: #0c2f2c; color: #f5edd4; border: 2px solid #c9a227; }
+:root[data-world-skin="mosaic"] input,
+:root[data-world-skin="mosaic"] textarea { border-radius: 3px; background: #0c2f2c; color: #f5edd4; border-color: #c9a227; }
+:root[data-world-skin="mosaic"] .loot-shell-dialog { background: #0c2f2c; color: #f5edd4; border: 4px solid #c9a227; }
+:root[data-world-skin="mosaic"] .toast-item { background: #c9a227; color: #0c2f2c; border-radius: 3px; }
+:root[data-world-skin="mosaic"] button:disabled { opacity: 0.4; }
+:root[data-world-skin="mosaic"] :focus-visible { outline: 2px solid #c9a227; }
+
+:root[data-world-skin="splatter"][data-app-tab="Calendar"] .cal-day { border-radius: 16px 4px 20px 8px; }
+:root[data-world-skin="splatter"][data-app-tab="Settings"] .card { background: #fffdf8; border-radius: 16px 4px 20px 8px; }
+:root[data-world-skin="splatter"][data-app-tab="Paint"] .card { background: rgba(255, 253, 248, 0.9); }
+:root[data-world-skin="splatter"][data-app-tab="Parallel"] .card { border-radius: 16px 4px 20px 8px; }
+:root[data-world-skin="splatter"][data-app-tab="Projects"] .card { background: #fffdf8; }
+:root[data-world-skin="splatter"] .empty-state { background: #fffdf8; border-radius: 16px 4px 20px 8px; color: #1c2438; }
+:root[data-world-skin="splatter"] input,
+:root[data-world-skin="splatter"] textarea { border-radius: 16px 4px 20px 8px; background: #fffdf8; }
+:root[data-world-skin="splatter"] .loot-shell-dialog { background: #fffdf8; border-radius: 16px 4px 20px 8px; }
+:root[data-world-skin="splatter"] .toast-item { background: #2f5fbf; color: #f3eee4; border-radius: 12px 8px 16px 8px; }
+:root[data-world-skin="splatter"] button:disabled { opacity: 0.4; }
+:root[data-world-skin="splatter"] :focus-visible { outline: 3px solid #2f5fbf; }
+
+:root[data-world-skin="chalkboard"][data-app-tab="Calendar"] .cal-day { border: 1px dashed #e8e4d8; border-radius: 0; }
+:root[data-world-skin="chalkboard"][data-app-tab="Settings"] .card { background: #22362c; border: 1px solid #e8e4d8; }
+:root[data-world-skin="chalkboard"][data-app-tab="Paint"] .card { border: 1px dashed #e8e4d8; }
+:root[data-world-skin="chalkboard"][data-app-tab="Parallel"] .card { border-radius: 0 0 12px 12px; }
+:root[data-world-skin="chalkboard"][data-app-tab="Projects"] .card { background: #1e3228; }
+:root[data-world-skin="chalkboard"] .empty-state { background: #1a2a22; color: #e8e4d8; border: 1px dashed #e8e4d8; }
+:root[data-world-skin="chalkboard"] input,
+:root[data-world-skin="chalkboard"] textarea { background: #1a2a22; color: #e8e4d8; border-radius: 0; border-style: dashed; }
+:root[data-world-skin="chalkboard"] .loot-shell-dialog { background: #1a2a22; color: #e8e4d8; border: 2px solid #e8e4d8; }
+:root[data-world-skin="chalkboard"] .toast-item { background: #e8e4d8; color: #1a2a22; border-radius: 0 0 10px 10px; }
+:root[data-world-skin="chalkboard"] button:disabled { opacity: 0.4; }
+:root[data-world-skin="chalkboard"] :focus-visible { outline: 1px dashed #e8e4d8; }
+
+:root[data-world-skin="terrazzo"][data-app-tab="Calendar"] .cal-day { border-radius: 14px 2px 22px 8px; }
+:root[data-world-skin="terrazzo"][data-app-tab="Settings"] .card { background: #f8f3e9; }
+:root[data-world-skin="terrazzo"][data-app-tab="Paint"] .card { border: 1px solid #6b7e5e; }
+:root[data-world-skin="terrazzo"][data-app-tab="Parallel"] .card { border-radius: 14px 2px 22px 8px; }
+:root[data-world-skin="terrazzo"][data-app-tab="Projects"] .card { background: #f4eee3; }
+:root[data-world-skin="terrazzo"] .empty-state { background: #f8f3e9; border-radius: 14px 2px 22px 8px; }
+:root[data-world-skin="terrazzo"] input,
+:root[data-world-skin="terrazzo"] textarea { border-radius: 14px 2px 22px 8px; background: #f8f3e9; }
+:root[data-world-skin="terrazzo"] .loot-shell-dialog { background: #f8f3e9; border-radius: 14px 2px 22px 8px; }
+:root[data-world-skin="terrazzo"] .toast-item { background: #6b7e5e; color: #efe6d4; }
+:root[data-world-skin="terrazzo"] button:disabled { opacity: 0.45; }
+:root[data-world-skin="terrazzo"] :focus-visible { outline: 2px solid #6b7e5e; }
+
+:root[data-world-skin="shoji"][data-app-tab="Calendar"] .cal-day { border-radius: 0; border-color: #2a2420; }
+:root[data-world-skin="shoji"][data-app-tab="Settings"] .card { background: #fbf8f2; border: 1px solid #2a2420; }
+:root[data-world-skin="shoji"][data-app-tab="Paint"] .card { border: 1px dashed #2a2420; }
+:root[data-world-skin="shoji"][data-app-tab="Parallel"] .card { border-radius: 1px 1px 1px 20px; }
+:root[data-world-skin="shoji"][data-app-tab="Projects"] .card { background: #f7f3ec; }
+:root[data-world-skin="shoji"] .empty-state { background: #fbf8f2; border: 1px solid #2a2420; }
+:root[data-world-skin="shoji"] input,
+:root[data-world-skin="shoji"] textarea { border-radius: 0; background: #fbf8f2; }
+:root[data-world-skin="shoji"] .loot-shell-dialog { background: #fbf8f2; border: 1px solid #2a2420; }
+:root[data-world-skin="shoji"] .toast-item { background: #2a2420; color: #f4efe6; }
+:root[data-world-skin="shoji"] button:disabled { opacity: 0.4; }
+:root[data-world-skin="shoji"] :focus-visible { outline: 1px solid #2a2420; }
+
+:root[data-world-skin="beeswax"][data-app-tab="Calendar"] .cal-day { border-radius: 24px 6px; border-color: #c9a227; }
+:root[data-world-skin="beeswax"][data-app-tab="Settings"] .card { background: #4a3420; border: 1px solid #c9a227; }
+:root[data-world-skin="beeswax"][data-app-tab="Paint"] .card { box-shadow: 4px 4px 0 #c9a227; }
+:root[data-world-skin="beeswax"][data-app-tab="Parallel"] .card { border-radius: 24px 6px 24px 6px; }
+:root[data-world-skin="beeswax"][data-app-tab="Projects"] .card { background: #432f1c; }
+:root[data-world-skin="beeswax"] .empty-state { background: #3a2a18; color: #f4ead0; border: 1px solid #c9a227; }
+:root[data-world-skin="beeswax"] input,
+:root[data-world-skin="beeswax"] textarea { background: #3a2a18; color: #f4ead0; border-color: #c9a227; border-radius: 24px 6px; }
+:root[data-world-skin="beeswax"] .loot-shell-dialog { background: #3a2a18; color: #f4ead0; border: 2px solid #c9a227; }
+:root[data-world-skin="beeswax"] .toast-item { background: #c9a227; color: #3a2a18; }
+:root[data-world-skin="beeswax"] button:disabled { opacity: 0.4; }
+:root[data-world-skin="beeswax"] :focus-visible { outline: 2px solid #c9a227; }
+
+:root[data-world-skin="cork"][data-app-tab="Calendar"] .cal-day { border-radius: 8px 8px 2px 2px; background: #efe6d4; }
+:root[data-world-skin="cork"][data-app-tab="Settings"] .card { background: #efe6d4; box-shadow: 0 3px 0 #8a6a3a; }
+:root[data-world-skin="cork"][data-app-tab="Paint"] .card { background: #efe6d4; }
+:root[data-world-skin="cork"][data-app-tab="Parallel"] .card { border-radius: 8px 8px 2px 2px; }
+:root[data-world-skin="cork"][data-app-tab="Projects"] .card { background: #f4eee3; }
+:root[data-world-skin="cork"] .empty-state { background: #efe6d4; box-shadow: 0 3px 0 #8a6a3a; }
+:root[data-world-skin="cork"] input,
+:root[data-world-skin="cork"] textarea { background: #efe6d4; border-radius: 8px 8px 2px 2px; }
+:root[data-world-skin="cork"] .loot-shell-dialog { background: #efe6d4; box-shadow: 0 4px 0 #8a6a3a; }
+:root[data-world-skin="cork"] .toast-item { background: #8a6a3a; color: #efe6d4; }
+:root[data-world-skin="cork"] button:disabled { opacity: 0.45; }
+:root[data-world-skin="cork"] :focus-visible { outline: 2px solid #8a6a3a; }
+
+:root[data-world-skin="shibori"][data-app-tab="Calendar"] .cal-day { border-radius: 30px 2px; border-color: #d6cfc2; }
+:root[data-world-skin="shibori"][data-app-tab="Settings"] .card { background: #243c5e; border: 1px solid #d6cfc2; }
+:root[data-world-skin="shibori"][data-app-tab="Paint"] .card { border: 1px dashed #d6cfc2; }
+:root[data-world-skin="shibori"][data-app-tab="Parallel"] .card { border-radius: 30px 2px 30px 2px; }
+:root[data-world-skin="shibori"][data-app-tab="Projects"] .card { background: #1e3454; }
+:root[data-world-skin="shibori"] .empty-state { background: #1a2c4a; color: #f4efe6; border: 1px dashed #d6cfc2; }
+:root[data-world-skin="shibori"] input,
+:root[data-world-skin="shibori"] textarea { background: #1a2c4a; color: #f4efe6; border-radius: 30px 2px; }
+:root[data-world-skin="shibori"] .loot-shell-dialog { background: #1a2c4a; color: #f4efe6; }
+:root[data-world-skin="shibori"] .toast-item { background: #d6cfc2; color: #1a2c4a; }
+:root[data-world-skin="shibori"] button:disabled { opacity: 0.4; }
+:root[data-world-skin="shibori"] :focus-visible { outline: 2px dashed #d6cfc2; }
+
+:root[data-world-skin="solarium"][data-app-tab="Calendar"] .cal-day { border-radius: 12px; border-color: #c9a227; }
+:root[data-world-skin="solarium"][data-app-tab="Settings"] .card { background: #f8f3e9; border: 3px double #c9a227; }
+:root[data-world-skin="solarium"][data-app-tab="Paint"] .card { box-shadow: 0 0 0 3px #c9a227; }
+:root[data-world-skin="solarium"][data-app-tab="Parallel"] .card { border-radius: 22px 22px 4px 4px; }
+:root[data-world-skin="solarium"][data-app-tab="Projects"] .card { background: #f4eee3; }
+:root[data-world-skin="solarium"] .empty-state { background: #f8f3e9; border: 3px double #c9a227; border-radius: 22px 22px 4px 4px; }
+:root[data-world-skin="solarium"] input,
+:root[data-world-skin="solarium"] textarea { border-radius: 999px; background: #f8f3e9; border-color: #c9a227; }
+:root[data-world-skin="solarium"] .loot-shell-dialog { background: #f8f3e9; border: 3px double #c9a227; }
+:root[data-world-skin="solarium"] .toast-item { background: #c9a227; color: #3a2a14; border-radius: 999px; }
+:root[data-world-skin="solarium"] button:disabled { opacity: 0.4; }
+:root[data-world-skin="solarium"] :focus-visible { outline: 3px double #c9a227; }
+
+:root[data-world-skin="foundry"][data-app-tab="Calendar"] .cal-day { border-radius: 2px 18px; border-color: #cfd6de; }
+:root[data-world-skin="foundry"][data-app-tab="Settings"] .card { background: #272c34; border: 1px solid #cfd6de; }
+:root[data-world-skin="foundry"][data-app-tab="Paint"] .card { box-shadow: inset 0 1px 0 #cfd6de; }
+:root[data-world-skin="foundry"][data-app-tab="Parallel"] .card { border-radius: 2px 18px 2px 18px; }
+:root[data-world-skin="foundry"][data-app-tab="Projects"] .card { background: #20242b; }
+:root[data-world-skin="foundry"] .empty-state { background: #1a1d22; color: #e8edf2; border: 1px solid #cfd6de; }
+:root[data-world-skin="foundry"] input,
+:root[data-world-skin="foundry"] textarea { background: #1a1d22; color: #e8edf2; border-color: #cfd6de; border-radius: 2px 18px; }
+:root[data-world-skin="foundry"] .loot-shell-dialog { background: #1a1d22; color: #e8edf2; border: 1px solid #cfd6de; }
+:root[data-world-skin="foundry"] .toast-item { background: #cfd6de; color: #1a1d22; }
+:root[data-world-skin="foundry"] button:disabled { opacity: 0.4; filter: grayscale(0.5); }
+:root[data-world-skin="foundry"] :focus-visible { outline: 2px solid #cfd6de; }
+
+/* Older world rooms also get empty/input/focus so they do not fall through. */
+:root[data-world-skin="cabinet"] .empty-state { border: 3px solid #22d3ee; background: #0f172a; color: #a5f3fc; border-radius: 4px; }
+:root[data-world-skin="cabinet"] input { border-radius: 4px; border: 2px solid #22d3ee; background: #0f172a; color: #a5f3fc; }
+:root[data-world-skin="cabinet"] :focus-visible { outline: 2px solid #facc15; }
+:root[data-world-skin="parchment"] .empty-state { background: #f6ecd9; color: #2a1d12; box-shadow: 4px 4px 0 #92400e; }
+:root[data-world-skin="parchment"] input { background: #f6ecd9; border-color: #92400e; }
+:root[data-world-skin="harbor"] .empty-state { background: #164e63; color: #67e8f9; border-radius: 16px 8px; }
+:root[data-world-skin="harbor"] :focus-visible { outline: 3px solid #67e8f9; }
+:root[data-world-skin="nightmarket"] .empty-state { background: #7f1d1d; color: #fb923c; }
+:root[data-world-skin="signalbox"] .empty-state { background: #052e16; color: #4ade80; font-family: ui-monospace, monospace; }
+:root[data-world-skin="glasshouse"] .empty-state { background: #166534; color: #86efac; }
+:root[data-world-skin="velvet"] .empty-state { background: #4c0519; color: #fde68a; }
+:root[data-world-skin="isobar"] .empty-state { background: #0b1220; color: #93c5fd; }
+:root[data-world-skin="retro"] .empty-state { background: #1c1917; color: #fbbf24; font-family: ui-monospace, monospace; }
+:root[data-world-skin="retro"] input { background: #1c1917; color: #fbbf24; border-radius: 0; }
+
+@keyframes intent-caustic {
+  50% { opacity: 0.72; transform: translate3d(1.5%, -1%, 0) scale(1.02); }
+}
+@keyframes intent-refract {
+  to { transform: rotate(360deg); }
+}
+@keyframes intent-spec {
+  50% { transform: translateX(18%); opacity: 0.85; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-skin-family="sun"] .app-shell::before,
+  html[data-skin-family="sun"] .hud-brand-jewel::after,
+  html[data-skin-family="chrome"] .hud-brand-jewel::after {
+    animation: none !important;
+  }
+}

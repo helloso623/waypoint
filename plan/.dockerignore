@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.env
+planner.db
+.git/
+.vscode/
+backups/

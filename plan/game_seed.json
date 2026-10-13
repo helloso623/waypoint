@@ -1,0 +1,445 @@
+{
+  "world_date": "41st Day of the Dimming, Year 7 After the Fall",
+  "player": {
+    "name": "Unnamed (parallel-self; public symbols: Station Voice, Trial Speaker)",
+    "stage": "First Tier (late) — Stage 2 Specialization, approaching Stage 3 Coherence; proto-axiom path unlocked",
+    "resources": {
+      "lumens": ["electrolysis_breath", "calculator_estimation", "hydrogen_detonation", "hub"],
+      "equipment": ["lighter", "camo_armor_looted", "weapons_looted", "knife", "hub_device", "crude_calculator", "makeup_identity_kit", "boar_skull_helm_ally"],
+      "supplies": ["water", "food_scavenged", "scrap_metal", "chemical_reagents_basic"],
+      "luminessence": "elevated_post_hope_recognition",
+      "faction_tag": null,
+      "cash": "minimal_scavenger_trade_value"
+    },
+    "location": "ruins_city_emergency_shelter_district",
+    "reputation": {
+      "new_empire": "priority_elimination_target_constrained_by_law",
+      "public": "symbolic_martyr_figure_uncertain_origin",
+      "tower_criminals": "unpredictable_system_disruptor",
+      "allies": "irreplaceable_tech_knowledge_core",
+      "influential_families": "feared_possible_kidnapped_child"
+    },
+    "knowledge": [
+      "old_empire_technology_from_books_end_to_end",
+      "chemistry_and_improvised_processes",
+      "lumen_theory_practical_first_tier",
+      "hub_lumen_operation",
+      "new_empire_constitution_fairness_exploit",
+      "tower_layer_structure_third_exit_fifth_endgame",
+      "supersoldier_program_existence",
+      "probability_lock_fault_mechanics_post_hope",
+      "public_trial_five_phase_rhetoric",
+      "earth_has_no_luminescence_tech_civilization",
+      "andromeda_chain_culture_overview",
+      "no_internet_knowledge_gatekept"
+    ]
+  },
+  "characters": [
+    {
+      "id": "mc",
+      "name": "Unnamed MC",
+      "role": "player_character",
+      "location": "ruins_city_emergency_shelter_district",
+      "disposition_to_player": "self",
+      "goals": ["survive_empire_hunters", "consolidate_faction", "reach_fifth_layer", "stabilize_identity", "advance_axiom_to_transcendence_path"],
+      "status": "alive_causality_elevated_unknown_face",
+      "secrets": ["lied_about_being_new_empire_kidnapped_child_at_trial", "killed_house_militia_couple", "true_pre_burn_appearance_destroyed", "supersoldier_child_not_trans_supersoldier"]
+    },
+    {
+      "id": "criminal_ally",
+      "name": "Unnamed Criminal Ally",
+      "role": "ally_skill_lumen_leader",
+      "location": "ruins_city_emergency_shelter_district",
+      "disposition_to_player": "trusted_uneven",
+      "goals": ["reach_fifth_layer", "build_ricochet_physics_gun", "avoid_past_criminal_factions", "leverage_mc_tech_knowledge"],
+      "status": "alive_recovering_age_20",
+      "secrets": ["lied_about_age_initially", "adaptive_storyteller", "killed_forest_base_commander_indirectly_via_coup"]
+    },
+    {
+      "id": "string_girl",
+      "name": "Unnamed String-Girl",
+      "role": "ally_merchant_family_string_user",
+      "location": "ruins_city_emergency_shelter_district",
+      "disposition_to_player": "trusted_guarded",
+      "goals": ["reach_fifth_layer", "maintain_control", "study_andromeda_chain_techniques", "escape_merchant_contract_gravity"],
+      "status": "alive_contract_partially_on_criminal_ally",
+      "secrets": ["wealthy_merchant_family_origin", "refuses_to_discuss_family", "could_have_killed_mc_with_contract_lumin"]
+    },
+    {
+      "id": "tulson",
+      "name": "Tulson",
+      "role": "new_empire_armada_commander",
+      "location": "offsite_armada_hold",
+      "disposition_to_player": "cautious_pity_constrained",
+      "goals": ["maintain_empire_stability", "avoid_open_child_killing_scandal", "contain_mc_without_escalation"],
+      "status": "active_constrained_by_public_trial",
+      "secrets": ["felt_pity_at_surrender_hope_influenced", "commands_3rd_tier_cannon_capability"]
+    },
+    {
+      "id": "hope_transcendent",
+      "name": "Hope (Transcendent Principle)",
+      "role": "transcendent_force",
+      "location": "non_local_principle",
+      "disposition_to_player": "recognized",
+      "goals": ["preserve_structural_possibility", "explore_despair_civilizations"],
+      "status": "departed_echo_active",
+      "secrets": ["cannot_grant_power_or_luck", "fractured_probability_lock_permanently_faulted"]
+    },
+    {
+      "id": "doctor",
+      "name": "Unnamed District Doctor",
+      "role": "second_tier_healer",
+      "location": "supersoldier_district_unknown",
+      "disposition_to_player": "saved_then_lost_contact",
+      "goals": ["save_patients_always", "avoid_empire_coercion", "maintain_healer_path_coherence"],
+      "status": "alive_location_unknown",
+      "secrets": ["sent_mc_to_games_to_save_life", "kept_no_records", "identity_path_overrode_empire"]
+    },
+    {
+      "id": "anti_tech_leader",
+      "name": "Unnamed Anti-Tech Extremist Leader",
+      "role": "defeated_extremist_faction_head",
+      "location": "unknown_fugitive_or_dead",
+      "disposition_to_player": "hostile_broken",
+      "goals": ["destroy_ruins_city", "erase_old_empire", "punish_technology"],
+      "status": "faction_defeated_leader_fate_uncertain",
+      "secrets": ["child_died_tech_surgery_origin", "ideological_template_of_house_militia"]
+    },
+    {
+      "id": "militia_man",
+      "name": "Unnamed House Militia Man",
+      "role": "first_antagonist",
+      "location": "dead_burned_house",
+      "disposition_to_player": "dead_hostile",
+      "goals": [],
+      "status": "dead",
+      "secrets": ["government_paid_forbidden_operation", "professional_elimination_orders"]
+    },
+    {
+      "id": "militia_woman",
+      "name": "Unnamed House Militia Woman",
+      "role": "first_antagonist",
+      "location": "dead_burned_house",
+      "disposition_to_player": "dead_hesitant_hostile",
+      "goals": [],
+      "status": "dead",
+      "secrets": ["felt_pity_mc_too_young", "same_militia_as_extremists"]
+    },
+    {
+      "id": "forest_commander",
+      "name": "Unnamed Forest Base Commander",
+      "role": "minor_antagonist",
+      "location": "dead_forest_base",
+      "disposition_to_player": "dead_hostile",
+      "goals": [],
+      "status": "dead_killed_by_second",
+      "secrets": ["would_have_shot_mc_on_sight"]
+    },
+    {
+      "id": "forest_commander_second",
+      "name": "Unnamed Commander's Second",
+      "role": "coup_killer",
+      "location": "forest_base_unknown",
+      "disposition_to_player": "unknown",
+      "goals": ["seize_command", "avoid_bigger_faction_anger"],
+      "status": "unknown",
+      "secrets": ["killed_own_commander_for_promotion"]
+    },
+    {
+      "id": "empire_leadership",
+      "name": "New Empire Leadership Council",
+      "role": "primary_political_antagonist",
+      "location": "imperial_capital_offtower",
+      "disposition_to_player": "cold_elimination_policy",
+      "goals": ["erase_ruins_city_variable", "prevent_old_empire_revival", "maintain_stability_and_causality"],
+      "status": "active_constrained_by_trial_trap",
+      "secrets": ["deleted_supersoldier_records", "deployed_probability_lock", "cannot_fabricate_evidence_credibly"]
+    },
+    {
+      "id": "first_tier_hunters",
+      "name": "Empire First-Tier Hunter Detachment",
+      "role": "active_enforcement",
+      "location": "ruins_city_perimeter_infiltrating",
+      "disposition_to_player": "hostile_cautious",
+      "goals": ["eliminate_mc_indirectly", "map_tech_lumen_activity", "avoid_public_scandal"],
+      "status": "deploying",
+      "secrets": ["psychologically_afraid_of_mc_unpredictability"]
+    },
+    {
+      "id": "corrupt_guards",
+      "name": "Corrupt Supersoldier District Guards",
+      "role": "past_enablers",
+      "location": "supersoldier_district",
+      "disposition_to_player": "unknown",
+      "goals": ["follow_orders", "avoid_child_killing_backlash"],
+      "status": "active_unaware_of_full_escape_truth",
+      "secrets": ["bribed_to_ignore_house_operation", "empire_wanted_quiet_elimination"]
+    },
+    {
+      "id": "supersoldier_children",
+      "name": "Supersoldier Remnant Children (~90)",
+      "role": "political_macguffin_population",
+      "location": "scattered_hidden",
+      "disposition_to_player": "unknown",
+      "goals": ["survive", "recover_identity_maybe"],
+      "status": "alive_protected_by_public_narrative",
+      "secrets": ["true_origins_unknown_even_to_owner", "not_trans_supersoldiers", "public_fears_they_are_kidnapped_amnesiacs"]
+    }
+  ],
+  "factions": [
+    {
+      "id": "new_empire",
+      "name": "New Empire (Skill Empire)",
+      "agenda": "Skill_first_intention_phase_stability_eliminate_old_empire_revival",
+      "power": "milky_way_strong_3rd_tier_no_transcendent_support_pyrrhic_victory",
+      "stance": "hostile_constrained"
+    },
+    {
+      "id": "old_empire_remnants",
+      "name": "Old Empire Remnants",
+      "agenda": "Tech_legacy_scavenging_scattered_survivors",
+      "power": "collapsed_ruins_and_knowledge_fragments",
+      "stance": "neutral_exploitable"
+    },
+    {
+      "id": "mc_cell",
+      "name": "MC Allied Cell (Nascent)",
+      "agenda": "Reach_fifth_layer_dual_tech_skill_fusion_survive_empire",
+      "power": "first_tier_elite_synergy_high_causality_mc",
+      "stance": "player_faction_forming"
+    },
+    {
+      "id": "political_extremist_militia",
+      "name": "Political Extremist Militia",
+      "agenda": "Anti_tech_anti_supersoldier_destroy_ruins_city",
+      "power": "broken_scattered_cells",
+      "stance": "hostile_weakened"
+    },
+    {
+      "id": "tower_safe_zones",
+      "name": "Tower Safe-Zone Governments",
+      "agenda": "Controlled_progression_contract_binding_3rd_layer_exits",
+      "power": "moderate_institutional_90_percent_territory",
+      "stance": "neutral_suspicious_of_untagged"
+    },
+    {
+      "id": "tower_lawless",
+      "name": "Tower Lawless Zones",
+      "agenda": "Scavenge_survive_no_banner",
+      "power": "decentralized_criminal_loners_elite_teams",
+      "stance": "neutral_dangerous"
+    },
+    {
+      "id": "earth_government",
+      "name": "Earth Government (Tower Maintainer)",
+      "agenda": "Equilibrium_alternate_destiny_oversight",
+      "power": "transcendent_backed_high_visibility_enforcement",
+      "stance": "neutral_watchful"
+    },
+    {
+      "id": "merchant_families",
+      "name": "Wealthy Merchant Families",
+      "agenda": "Trade_control_contract_leverage",
+      "power": "economic_string_skill_traditions",
+      "stance": "neutral_string_girl_estranged"
+    },
+    {
+      "id": "humanity_collective",
+      "name": "Humanity (Transcendent-Scale Meta)",
+      "agenda": "Self_sustaining_species_protection",
+      "power": "transcendent_level_metaphysical_friction_against_genocide",
+      "stance": "passive_protective"
+    },
+    {
+      "id": "scavenger_economy",
+      "name": "Ruins Scavenger Consortium",
+      "agenda": "Loot_old_empire_artifacts_high_luminescence_items",
+      "power": "competitive_fragmented",
+      "stance": "neutral_competing"
+    }
+  ],
+  "threads": [
+    {
+      "id": "empire_hunters",
+      "title": "First-Tier Hunters Closing In",
+      "summary": "Empire deploys strongest 1st-tier agents under visibility constraints to eliminate MC indirectly in ruins city.",
+      "urgency": "high",
+      "involves": ["mc", "first_tier_hunters", "empire_leadership", "criminal_ally", "string_girl"]
+    },
+    {
+      "id": "probability_lock_faults",
+      "title": "Faulted Probability Lock",
+      "summary": "High 2nd/low 3rd tier outcome-clamp still partially active but permanently faulted after Hope; some corridors of fate remain closed.",
+      "urgency": "high",
+      "involves": ["mc", "hope_transcendent", "empire_leadership", "ruins_city"]
+    },
+    {
+      "id": "faction_consolidation",
+      "title": "Consolidate the Nascent Faction",
+      "summary": "Trio must formalize alliance, acquire resources, and become faction-tagged before empire isolates them.",
+      "urgency": "medium",
+      "involves": ["mc", "criminal_ally", "string_girl", "mc_cell"]
+    },
+    {
+      "id": "fifth_layer",
+      "title": "Reach the Fifth Layer",
+      "summary": "Shared ambition of all three allies; rare achievement with imperial benefits; requires navigating tower politics.",
+      "urgency": "medium",
+      "involves": ["mc", "criminal_ally", "string_girl", "tower_safe_zones"]
+    },
+    {
+      "id": "trial_trap",
+      "title": "Constitutional Trial Trap",
+      "summary": "MC's public trial forces empire to appear fair; killing or fabricating evidence carries causality damage to imperial stability.",
+      "urgency": "high",
+      "involves": ["mc", "tulson", "empire_leadership", "supersoldier_children"]
+    },
+    {
+      "id": "supersoldier_children",
+      "title": "Ninety Supersoldier Children",
+      "summary": "Public believes they may be kidnapped amnesiac children; mass execution politically impossible; truth unknown.",
+      "urgency": "medium",
+      "involves": ["supersoldier_children", "influential_families", "empire_leadership", "mc"]
+    },
+    {
+      "id": "tech_revival",
+      "title": "Old Empire Tech Revival",
+      "summary": "MC's tech-lumen capability threatens new empire ideology; scavengers and empire both race for artifacts.",
+      "urgency": "high",
+      "involves": ["mc", "old_empire_remnants", "scavenger_economy", "new_empire"]
+    },
+    {
+      "id": "identity_construction",
+      "title": "Stable Identity After Face-Loss",
+      "summary": "MC builds permanent makeup identity separating public symbol from private self; psychological arc ongoing.",
+      "urgency": "medium",
+      "involves": ["mc"]
+    },
+    {
+      "id": "extremist_survivors",
+      "title": "Broken Extremist Cells",
+      "summary": "Defeated anti-tech faction may have survivors seeking revenge or copying house-militia methods.",
+      "urgency": "medium",
+      "involves": ["anti_tech_leader", "political_extremist_militia", "ruins_city"]
+    },
+    {
+      "id": "andromeda_interest",
+      "title": "Andromeda Expedition Rumors",
+      "summary": "String-girl interested in chain techniques; Andromeda's logic/prediction culture may offer control synergies.",
+      "urgency": "low",
+      "involves": ["string_girl", "mc"]
+    },
+    {
+      "id": "axiom_path",
+      "title": "Axiom to Transcendence Path",
+      "summary": "Hope's recognition accelerated MC toward non-standard axiom then transcendence trajectory; long arc.",
+      "urgency": "low",
+      "involves": ["mc", "hope_transcendent"]
+    },
+    {
+      "id": "city_erasure_policy",
+      "title": "Empire City Erasure Policy",
+      "summary": "Empire leadership decided ruins city must be eliminated entirely as uncontrollable variable.",
+      "urgency": "high",
+      "involves": ["empire_leadership", "ruins_city", "mc_cell"]
+    },
+    {
+      "id": "ricochet_gun_project",
+      "title": "Criminal's Ricochet Gun",
+      "summary": "Criminal ally seeks physical-bolt ricochet firearm; requires materials and skill-lumen training time.",
+      "urgency": "low",
+      "involves": ["criminal_ally", "mc"]
+    },
+    {
+      "id": "doctor_fate",
+      "title": "The Doctor's Silence",
+      "summary": "Doctor who saved MC has unknown fate; empire deleted records; no paper trail remains.",
+      "urgency": "low",
+      "involves": ["doctor", "empire_leadership", "mc"]
+    },
+    {
+      "id": "scavenger_race",
+      "title": "Scavenger Artifact Race",
+      "summary": "Post-Fall looting phase; unstable ruins and hidden bombs; competition for high-luminescence electronics.",
+      "urgency": "medium",
+      "involves": ["scavenger_economy", "tower_lawless", "ruins_city"]
+    }
+  ],
+  "locations": [
+    {
+      "id": "supersoldier_district",
+      "name": "Sealed Supersoldier District",
+      "description": "MC's childhood prison-neighborhood; snowbound; old-empire remnant with chamber-locks; house burned; train station attached; guards corrupt."
+    },
+    {
+      "id": "train_station",
+      "name": "District Train Station",
+      "description": "Old-empire remnant installation; control room with public-network radio; site of MC's sabotage and explosion."
+    },
+    {
+      "id": "forest_spawn",
+      "name": "Tower Forest Spawn Zone",
+      "description": "Uncontrolled no-man's-land where MC entered Games; faction combat; corpse-looting site."
+    },
+    {
+      "id": "forest_base",
+      "name": "Abandoned Forest Military Base",
+      "description": "Half-torn fences; commander coup incident; hostile to untagged entrants."
+    },
+    {
+      "id": "cave_camp",
+      "name": "Cave Camp",
+      "description": "First MC-criminal bonding site; 20+ criminals eliminated; first lumens stabilized."
+    },
+    {
+      "id": "ruins_city",
+      "name": "Ruins City (Old Empire Tower-City)",
+      "description": "Faction warzone; 5 years post-Fall; relic tech; safe zones and lawless zones; high scavenger activity; current primary stage."
+    },
+    {
+      "id": "ruins_city_emergency_shelter_district",
+      "name": "Emergency Shelter District",
+      "description": "Half-ruined buildings with mechanical shelters; string-girl's trap site; trio's current base."
+    },
+    {
+      "id": "tower_third_layer",
+      "name": "Tower Third Layer",
+      "description": "Exit to New Empire small town if faction-tagged or contract-bound; 3-year study traps common."
+    },
+    {
+      "id": "tower_fifth_layer",
+      "name": "Tower Fifth Layer",
+      "description": "Imperial endgame; rare; major benefits; ultimate ambition of MC's cell."
+    },
+    {
+      "id": "trial_venue",
+      "name": "Public Trial Venue (Off-Tower)",
+      "description": "Site of MC's constitutional five-phase speech; international observation; no lie-detection devices."
+    },
+    {
+      "id": "earth",
+      "name": "Earth",
+      "description": "Protected center of civilization; transcendents; tech without luminescence historically; tower maintenance authority."
+    },
+    {
+      "id": "venus",
+      "name": "Venus (Historical)",
+      "description": "Old Empire mythic philosophical origin world; collapsed with tech empire."
+    },
+    {
+      "id": "andromeda",
+      "name": "Andromeda Region",
+      "description": "Logic-prediction-chain culture; flu manual luminescence origin; Eventroy reforms; future expedition interest."
+    },
+    {
+      "id": "imperial_capital",
+      "name": "New Empire Capital (Off-Tower)",
+      "description": "Empire leadership seat; 3rd-tier individuals; probability-lock deployment origin."
+    },
+    {
+      "id": "beach_endstate",
+      "name": "Beach (Future End-State)",
+      "description": "Documented future transcendence terminus; tea and open possibility; NOT current campaign location."
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+/* Home pass: dock only. Default launcher plates stay copperplate. */
+
+html.wp-hide-game .wp-focus-dock,
+body.wp-hide-game .wp-focus-dock,
+body.game-off .wp-focus-dock { display: none !important; }

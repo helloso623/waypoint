@@ -1,0 +1,1265 @@
+/* ═══════════════════════════════════════════════════════════════
+   SKIN FEELS — texture, 3D press, overlays, icon tint, motion.
+   Each effect is a different object, not a hue swap.
+   ═══════════════════════════════════════════════════════════════ */
+
+html[data-player-skin] {
+  --feel-a: var(--skin-a, var(--accent));
+  --feel-b: var(--skin-b, #7c2d12);
+  --feel-ink: color-mix(in srgb, var(--feel-a) 22%, var(--ink-primary));
+  /* Quiet default press. Chunky game slabs made every skin identical. */
+  --feel-3d: inset 0 1px 0 color-mix(in srgb, #fff 14%, transparent),
+             0 1px 2px rgba(0, 0, 0, 0.14);
+  --feel-3d-press: inset 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+
+html[data-player-skin] .ws-mark.wp-icon-refined,
+html[data-player-skin] .tab-chip-mark,
+html[data-player-skin] .hud-icon-svg,
+html[data-player-skin] .hud-metric-mark,
+html[data-player-skin] .brand-mark {
+  color: var(--feel-a);
+}
+
+html[data-player-skin] .ws-mark.wp-icon-refined {
+  filter:
+    drop-shadow(0 1px 0 color-mix(in srgb, #fff8f0 18%, transparent))
+    drop-shadow(0 6px 10px color-mix(in srgb, var(--feel-b) 35%, transparent));
+}
+
+html[data-player-skin] button.primary,
+html[data-player-skin] .tab-chip.active,
+html[data-player-skin] .hud-glyph-btn,
+html[data-player-skin] .hud-icon-btn {
+  transform-style: preserve-3d;
+  box-shadow: var(--feel-3d);
+  transition: transform 160ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+              box-shadow 160ms ease, filter 160ms ease, background 200ms ease;
+}
+
+html[data-player-skin] button.primary:active,
+html[data-player-skin] .tab-chip.active:active,
+html[data-player-skin] .hud-icon-btn:active {
+  transform: translateY(1px);
+  box-shadow: var(--feel-3d-press);
+}
+
+html[data-player-skin] body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+}
+
+/* ── bloom: living paper, petal press ───────────────────────── */
+
+html[data-skin-effect="bloom"] {
+  --bg-shell: color-mix(in srgb, var(--feel-b) 28%, #102016);
+  --bg-card: color-mix(in srgb, var(--feel-a) 10%, #1a2418);
+  --feel-3d: 0 1px 2px rgba(0, 0, 0, 0.16);
+}
+html[data-skin-effect="bloom"] body::after {
+  background:
+    radial-gradient(circle at 18% 22%, color-mix(in srgb, var(--feel-a) 18%, transparent) 0 2px, transparent 3px),
+    radial-gradient(circle at 72% 68%, color-mix(in srgb, var(--feel-b) 12%, transparent) 0 3px, transparent 4px);
+  background-size: 42px 48px, 36px 40px;
+  animation: none;
+  opacity: 0.1;
+}
+html[data-skin-effect="bloom"] button.primary:hover {
+  transform: translateY(-1px);
+}
+
+/* ── glow: emissive glass, halo press ───────────────────────── */
+
+html[data-skin-effect="glow"] {
+  --feel-3d: 0 0 0 1px color-mix(in srgb, var(--feel-a) 55%, transparent),
+             0 0 18px color-mix(in srgb, var(--feel-a) 45%, transparent),
+             0 8px 0 color-mix(in srgb, var(--feel-b) 40%, #000);
+}
+html[data-skin-effect="glow"] body::after {
+  background: radial-gradient(circle at 50% -10%, color-mix(in srgb, var(--feel-a) 35%, transparent), transparent 42%);
+  mix-blend-mode: screen;
+  animation: feel-halo 3.6s ease-in-out infinite;
+}
+html[data-skin-effect="glow"] button.primary {
+  animation: feel-halo-btn 2.4s ease-in-out infinite;
+}
+html[data-skin-effect="glow"] .ws-mark,
+html[data-skin-effect="glow"] .hud-icon-svg {
+  filter: drop-shadow(0 0 6px var(--feel-a));
+}
+
+/* ── void: black glass, sink press ──────────────────────────── */
+
+html[data-skin-effect="void"] {
+  --bg-shell: #05040a;
+  --ink-primary: #e8e4ff;
+  --feel-3d: inset 0 0 18px color-mix(in srgb, var(--feel-a) 28%, transparent),
+             0 0 0 1px color-mix(in srgb, var(--feel-a) 40%, transparent);
+}
+html[data-skin-effect="void"] body::after {
+  background:
+    radial-gradient(1px 1px at 20% 30%, #fff8, transparent 2px),
+    radial-gradient(1px 1px at 70% 18%, #fff6, transparent 2px),
+    radial-gradient(1.4px 1.4px at 84% 72%, color-mix(in srgb, var(--feel-a) 70%, #fff), transparent 2px);
+  mix-blend-mode: screen;
+  opacity: 0.55;
+  animation: feel-drift 14s linear infinite;
+}
+html[data-skin-effect="void"] button.primary:active {
+  transform: translateY(2px) scale(0.96);
+  filter: brightness(0.7);
+}
+html[data-skin-effect="void"] .ws-mark { filter: saturate(1.35) contrast(1.1); }
+
+/* ── tide: wet enamel, swell press ──────────────────────────── */
+
+html[data-skin-effect="tide"] {
+  --bg-shell: color-mix(in srgb, var(--feel-b) 40%, #082f49);
+  --feel-3d: 0 1px 0 rgba(255, 255, 255, 0.28) inset, 0 7px 0 color-mix(in srgb, var(--feel-b) 50%, #0f172a), 0 12px 16px rgba(8, 47, 73, 0.4);
+}
+html[data-skin-effect="tide"] body::after {
+  background: repeating-linear-gradient(180deg, transparent 0 18px, color-mix(in srgb, var(--feel-a) 10%, transparent) 18px 19px);
+  animation: feel-tide 6s ease-in-out infinite;
+  mix-blend-mode: soft-light;
+}
+html[data-skin-effect="tide"] button.primary:hover {
+  transform: translateY(-1px);
+}
+html[data-skin-effect="tide"] .ws-mark { filter: hue-rotate(12deg) saturate(1.2); }
+
+/* ── ember: forged steel, hammer press ──────────────────────── */
+
+html[data-skin-effect="ember"] {
+  --bg-shell: #140806;
+  --feel-3d: 0 2px 0 #3f140c inset, 0 8px 0 #4a150c, 0 12px 0 #1a0704;
+}
+html[data-skin-effect="ember"] body::after {
+  background:
+    repeating-linear-gradient(-18deg, transparent 0 11px, rgba(249, 115, 22, 0.06) 11px 12px),
+    radial-gradient(circle at 20% 110%, color-mix(in srgb, var(--feel-a) 40%, transparent), transparent 40%);
+  animation: feel-ember 2.2s steps(3) infinite;
+}
+html[data-skin-effect="ember"] button.primary:active {
+  transform: translateY(7px) scaleX(1.03);
+  filter: brightness(1.25) saturate(1.3);
+}
+html[data-skin-effect="ember"] .ws-mark { filter: sepia(0.25) saturate(1.4) hue-rotate(-8deg); }
+
+/* ── frost: cut crystal, crack press ────────────────────────── */
+
+html[data-skin-effect="frost"] {
+  --bg-shell: #0b1220;
+  --ink-primary: #e8f4ff;
+  --feel-3d: 0 0 0 1px color-mix(in srgb, var(--feel-a) 55%, #fff),
+             0 8px 0 color-mix(in srgb, var(--feel-b) 40%, #1e3a8a),
+             inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+html[data-skin-effect="frost"] body::after {
+  background:
+    linear-gradient(135deg, transparent 40%, rgba(186, 230, 253, 0.08) 41%, transparent 42%),
+    linear-gradient(45deg, transparent 60%, rgba(255, 255, 255, 0.05) 61%, transparent 62%);
+  animation: feel-frost 8s linear infinite;
+}
+html[data-skin-effect="frost"] button.primary:active {
+  transform: translateY(3px) skewX(-4deg);
+  filter: brightness(1.4);
+}
+html[data-skin-effect="frost"] .ws-mark { filter: saturate(0.85) brightness(1.15); }
+
+/* ── aurora / prism: curtain + facet ────────────────────────── */
+
+html[data-skin-effect="aurora"] body::after,
+html[data-skin-effect="prism"] body::after {
+  background: linear-gradient(110deg, color-mix(in srgb, var(--feel-a) 25%, transparent), transparent 30%, color-mix(in srgb, var(--feel-b) 22%, transparent) 62%, transparent);
+  mix-blend-mode: screen;
+  animation: feel-aurora 7s ease-in-out infinite;
+  opacity: 0.4;
+}
+html[data-skin-effect="aurora"] button.primary,
+html[data-skin-effect="prism"] button.primary {
+  background-size: 200% 100%;
+  animation: feel-prism-slide 4s linear infinite;
+}
+html[data-skin-effect="prism"] .ws-mark { filter: hue-rotate(20deg) saturate(1.35); }
+html[data-skin-effect="aurora"] .hud-icon-svg { animation: feel-hue 8s linear infinite; }
+
+/* ── sand: stamped clay ─────────────────────────────────────── */
+
+html[data-skin-effect="sand"] {
+  --bg-shell: color-mix(in srgb, var(--feel-b) 35%, #2a1a0c);
+  --feel-3d: 4px 6px 0 color-mix(in srgb, var(--feel-b) 45%, transparent);
+}
+html[data-skin-effect="sand"] body::after {
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(120, 53, 15, 0.08) 4px);
+  mix-blend-mode: multiply;
+}
+html[data-skin-effect="sand"] button.primary:active {
+  transform: translate(3px, 4px);
+  box-shadow: 1px 1px 0 color-mix(in srgb, var(--feel-b) 40%, transparent);
+}
+html[data-skin-effect="sand"] .ws-mark { filter: sepia(0.35) saturate(1.1); }
+
+/* ── signal: phosphor dash ──────────────────────────────────── */
+
+html[data-skin-effect="signal"] {
+  --font-display: ui-monospace, "Cascadia Mono", monospace;
+  --feel-3d: none;
+}
+html[data-skin-effect="signal"] body::after {
+  background: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 4px);
+  mix-blend-mode: multiply;
+  animation: feel-scan 8s linear infinite;
+}
+html[data-skin-effect="signal"] button.primary {
+  border-radius: 0;
+  animation: feel-morse 1.4s steps(2) infinite;
+}
+html[data-skin-effect="signal"] .ws-mark,
+html[data-skin-effect="signal"] .hud-icon-svg {
+  image-rendering: pixelated;
+  filter: contrast(1.25) saturate(1.4);
+}
+
+/* ── volt: live rail snap ───────────────────────────────────── */
+
+html[data-skin-effect="volt"] {
+  --feel-3d: 0 0 0 2px #111, 0 0 0 3px var(--feel-a), 0 8px 0 #111;
+}
+html[data-skin-effect="volt"] body::after {
+  background: repeating-linear-gradient(90deg, transparent 0 14px, color-mix(in srgb, var(--feel-a) 12%, transparent) 14px 15px);
+  animation: feel-volt 0.18s steps(2) infinite;
+  opacity: 0.18;
+}
+html[data-skin-effect="volt"] button.primary:hover {
+  transform: translateX(1px);
+  filter: brightness(1.2) saturate(1.3);
+}
+html[data-skin-effect="volt"] button.primary:active {
+  transform: translate(-2px, 4px);
+}
+html[data-skin-effect="volt"] .hud-icon-svg { animation: feel-volt 0.9s steps(2) infinite; }
+
+/* ── pulse / chrome / magma / sparkle ───────────────────────── */
+
+html[data-skin-effect="pulse"] button.primary,
+html[data-skin-effect="pulse"] .hud-status-pill {
+  animation: feel-beat 1.6s ease-in-out infinite;
+}
+html[data-skin-effect="chrome"] {
+  --ink-primary: #f8fafc;
+  --feel-3d: inset 0 1px 0 #fff, 0 8px 0 #334155, 0 10px 16px rgba(0, 0, 0, 0.4);
+}
+html[data-skin-effect="chrome"] button.primary {
+  background: linear-gradient(180deg, #f8fafc, #94a3b8 48%, #475569 52%, #e2e8f0);
+  color: #0f172a;
+}
+html[data-skin-effect="chrome"] .ws-mark { filter: grayscale(0.2) contrast(1.2) brightness(1.15); }
+html[data-skin-effect="magma"] body::after {
+  background: radial-gradient(ellipse 50% 30% at 30% 110%, color-mix(in srgb, var(--feel-a) 50%, transparent), transparent 50%);
+  animation: feel-ember 3s ease-in-out infinite;
+}
+html[data-skin-effect="magma"] button.primary:active {
+  filter: brightness(1.4) saturate(1.5);
+}
+html[data-skin-effect="sparkle"] body::after {
+  background:
+    radial-gradient(1px 1px at 12% 20%, #fff, transparent 2px),
+    radial-gradient(1.4px 1.4px at 68% 40%, var(--feel-a), transparent 2px),
+    radial-gradient(1px 1px at 40% 80%, #fff8, transparent 2px);
+  animation: feel-sparkle 2.8s steps(4) infinite;
+}
+html[data-skin-effect="sparkle"] .ws-mark,
+html[data-skin-effect="sparkle"] .launcher-tile-glyph {
+  animation: feel-sparkle 3.4s ease-in-out infinite;
+}
+
+/* ── pattern overlays on top of effect ──────────────────────── */
+
+html[data-skin-pattern="hex"] body::after {
+  background-image:
+    repeating-linear-gradient(60deg, transparent 0 16px, color-mix(in srgb, var(--feel-a) 10%, transparent) 16px 17px),
+    repeating-linear-gradient(-60deg, transparent 0 16px, color-mix(in srgb, var(--feel-a) 8%, transparent) 16px 17px);
+}
+html[data-skin-pattern="stars"] body::after {
+  background-image:
+    radial-gradient(1.2px 1.2px at 18% 22%, #fff, transparent 2px),
+    radial-gradient(1px 1px at 62% 48%, var(--feel-a), transparent 2px);
+}
+html[data-skin-pattern="grid"] body::after {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--feel-a) 12%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--feel-a) 12%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+html[data-skin-pattern="waves"] body::after {
+  background-image: repeating-radial-gradient(circle at 80% 120%, transparent 0 26px, color-mix(in srgb, var(--feel-a) 10%, transparent) 26px 27px);
+}
+
+/* ── 3D launcher plates ─────────────────────────────────────── */
+
+html[data-player-skin] .launcher-card {
+  transform: none;
+  box-shadow: var(--feel-3d);
+}
+html[data-player-skin] .launcher-card:hover,
+html[data-player-skin] .launcher-card--focused {
+  transform: translateY(-2px);
+}
+html[data-player-skin] .launcher-tile-glyph,
+html[data-player-skin] .loot-skin-avatar {
+  transform: none;
+  box-shadow: var(--feel-3d);
+}
+
+@keyframes feel-petal { 50% { transform: translateY(-8px); opacity: 0.3; } }
+@keyframes feel-halo { 50% { opacity: 0.4; } }
+@keyframes feel-halo-btn { 50% { filter: brightness(1.12); } }
+@keyframes feel-drift { to { background-position: 40px -30px, -20px 20px, 10px 40px; } }
+@keyframes feel-tide { 50% { transform: translateY(-10px); } }
+@keyframes feel-ember { 50% { opacity: 0.34; filter: hue-rotate(12deg); } }
+@keyframes feel-frost { to { background-position: 40px 40px, -30px 20px; } }
+@keyframes feel-aurora { 50% { transform: translateX(6%); opacity: 0.55; } }
+@keyframes feel-prism-slide { to { background-position: 200% 0; } }
+@keyframes feel-hue { to { filter: hue-rotate(360deg); } }
+@keyframes feel-scan { to { background-position: 0 48px; } }
+@keyframes feel-morse { 50% { opacity: 0.72; } }
+@keyframes feel-volt { 50% { opacity: 0.08; } }
+@keyframes feel-beat { 50% { transform: scale(1.03); } }
+@keyframes feel-sparkle { 50% { filter: brightness(1.25); opacity: 0.5; } }
+
+/* ── remaining pattern overlays ──────────────────────────────── */
+
+html[data-skin-pattern="dots"] body::after {
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--feel-a) 28%, transparent) 1.2px, transparent 1.6px);
+  background-size: 14px 14px;
+}
+html[data-skin-pattern="stripes"] body::after {
+  background-image: repeating-linear-gradient(-28deg, transparent 0 10px, color-mix(in srgb, var(--feel-a) 12%, transparent) 10px 12px);
+}
+html[data-skin-pattern="rings"] body::after {
+  background-image: repeating-radial-gradient(circle at 12% 18%, transparent 0 18px, color-mix(in srgb, var(--feel-a) 12%, transparent) 18px 19px);
+}
+html[data-skin-pattern="diagonal"] body::after {
+  background-image: repeating-linear-gradient(135deg, transparent 0 8px, color-mix(in srgb, var(--feel-b) 14%, transparent) 8px 9px);
+}
+
+/* ── none: copperplate paper, no FX skin still has grain ────── */
+
+html[data-skin-effect="none"] {
+  --feel-3d: 0 1px 0 rgba(255, 248, 240, 0.22) inset, 0 7px 0 color-mix(in srgb, var(--feel-b) 50%, #3f2a14), 0 12px 16px rgba(20, 12, 6, 0.35);
+}
+html[data-skin-effect="none"] body::after {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 3px, rgba(80, 50, 20, 0.05) 3px 4px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='48' height='48' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+  opacity: 0.28;
+}
+html[data-skin-effect="none"] button.primary:active {
+  transform: translateY(6px);
+}
+
+/* ── palette remaps so every equipped skin recolors chrome ──── */
+
+html[data-player-skin] {
+  --accent: var(--feel-a);
+  --ws-accent: var(--feel-a);
+  --accent-ink: color-mix(in srgb, #fff8f0 82%, var(--feel-a));
+  --bg-card: color-mix(in srgb, var(--feel-b) 22%, #1a1612);
+  --bg-card-hover: color-mix(in srgb, var(--feel-a) 14%, #231e18);
+  --border: color-mix(in srgb, var(--feel-a) 22%, #3a2e22);
+}
+
+html[data-player-skin] button.secondary,
+html[data-player-skin] .ghost-btn,
+html[data-player-skin] .tab-chip:not(.active) {
+  transition: transform 160ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+              box-shadow 160ms ease, filter 160ms ease, border-color 160ms ease;
+}
+
+/* ── secondary-button motion follows the effect ────────────── */
+
+html[data-skin-effect="bloom"] button.secondary:hover,
+html[data-skin-family="blossom"] button.secondary:hover,
+html[data-skin-effect="volt"] button.secondary:hover,
+html[data-skin-family="bolt"] button.secondary:hover,
+html[data-skin-effect="tide"] button.secondary:hover {
+  transform: translateY(-1px);
+}
+html[data-skin-effect="void"] button.secondary:active { transform: translateY(1px); }
+html[data-skin-effect="sand"] button.secondary:active,
+html[data-skin-family="dune"] button.secondary:active { transform: translateY(1px); }
+
+/* ═══════════════════════════════════════════════════════════════
+   ROUND 2 · FAMILY ROOMS — every family is a different object.
+   A family sets its own: radius scale (--at-r-*), display type,
+   grain (#main::after), press motion, icon filter, card plate
+   (--at-plate), and HUD hairline (.top-hud border). Two skins that
+   share `bloom` therefore no longer read as the same room.
+   Named skins below add a per-skin palette + signature on top.
+   ═══════════════════════════════════════════════════════════════ */
+
+html[data-player-skin] #main {
+  isolation: isolate;
+  position: relative;
+}
+html[data-player-skin] #main > * {
+  position: relative;
+  z-index: 1;
+}
+html[data-player-skin] #main::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: var(--feel-grain-opacity, 0);
+  mix-blend-mode: var(--feel-grain-blend, soft-light);
+  background: var(--feel-grain, none);
+  background-size: var(--feel-grain-size, auto);
+}
+html[data-player-skin] .top-hud {
+  border-bottom: var(--feel-hud-hair, 1px solid var(--at-hair));
+}
+html[data-player-skin] .ws-mark,
+html[data-player-skin] .hud-icon-svg,
+html[data-player-skin] .tab-chip-mark,
+html[data-player-skin] .launcher-tile-glyph svg {
+  filter: var(--feel-icon, none);
+}
+html[data-player-skin] .launcher-card,
+html[data-player-skin] .card,
+html[data-player-skin] .page-intent {
+  background-image: var(--feel-plate-image, none);
+  background-size: var(--feel-plate-size, auto);
+}
+html[data-player-skin] h1,
+html[data-player-skin] h2,
+html[data-player-skin] .page-title,
+html[data-player-skin] .launcher-title,
+html[data-player-skin] .hud-app-name {
+  font-style: var(--feel-title-style, normal);
+  letter-spacing: var(--feel-title-tracking, -0.015em);
+  text-transform: var(--feel-title-case, none);
+}
+
+/* ── compass · the starter kit: field notebook, brass and paper ── */
+html[data-skin-family="compass"] {
+  --bg-shell: #14110d;
+  --bg-card: #1d1813;
+  --at-plate: #1f1a14;
+  --at-hair: rgba(214, 196, 168, 0.12);
+  --feel-3d: 0 1px 0 rgba(255, 248, 240, 0.08) inset, 0 1px 0 rgba(0, 0, 0, 0.5);
+  --feel-3d-press: 0 1px 0 rgba(0, 0, 0, 0.4) inset;
+  --at-r-plate: 14px;
+  --at-r-card: 10px;
+  --at-r-ctl: 8px;
+  --at-r-chip: 8px;
+  --feel-grain-opacity: 0.16;
+  --feel-grain-blend: multiply;
+  --feel-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='96' height='96' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  --feel-hud-hair: 1px solid rgba(201, 162, 39, 0.28);
+  --feel-icon: saturate(0.82) contrast(1.02);
+  --feel-title-tracking: -0.01em;
+}
+html[data-skin-family="compass"] body::after { opacity: 0.1; }
+html[data-skin-family="compass"] button.primary,
+html[data-skin-family="compass"] .tab-chip.active,
+html[data-skin-family="compass"] .hud-glyph-btn,
+html[data-skin-family="compass"] .hud-icon-btn { transform-style: flat; }
+html[data-skin-family="compass"] button.primary:active,
+html[data-skin-family="compass"] .tab-chip.active:active,
+html[data-skin-family="compass"] .hud-icon-btn:active { transform: translateY(1px); }
+html[data-skin-family="compass"] .launcher-card { transform: none; }
+html[data-skin-family="compass"] .launcher-card:hover,
+html[data-skin-family="compass"] .launcher-card--focused { transform: translateY(-2px); }
+html[data-skin-family="compass"] .launcher-tile-glyph,
+html[data-skin-family="compass"] .loot-skin-avatar { transform: none; box-shadow: var(--feel-3d); }
+
+/* ── leaf · pressed botanical: asymmetric leaves, vein grain ──── */
+html[data-skin-family="leaf"] {
+  --bg-shell: color-mix(in srgb, var(--feel-b) 34%, #0f1a12);
+  --at-plate: color-mix(in srgb, var(--feel-a) 7%, #17211a);
+  --at-hair: color-mix(in srgb, var(--feel-a) 24%, transparent);
+  --at-r-plate: 30px 8px 30px 8px;
+  --at-r-card: 22px 6px 22px 6px;
+  --at-r-ctl: 14px 4px 14px 4px;
+  --at-r-chip: 16px 5px;
+  --at-r-cell: 8px 2px;
+  --at-font-display: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --feel-3d: 0 1px 0 rgba(236, 253, 245, 0.22) inset, 0 5px 0 color-mix(in srgb, var(--feel-b) 55%, #14532d), 0 10px 16px rgba(6, 30, 16, 0.35);
+  --feel-grain-opacity: 0.3;
+  --feel-grain-blend: soft-light;
+  --feel-grain:
+    repeating-radial-gradient(ellipse 140% 60% at 110% -20%, transparent 0 22px, color-mix(in srgb, var(--feel-a) 30%, transparent) 22px 23px),
+    repeating-radial-gradient(ellipse 120% 70% at -10% 120%, transparent 0 28px, color-mix(in srgb, var(--feel-b) 26%, transparent) 28px 29px);
+  --feel-hud-hair: 1px dashed color-mix(in srgb, var(--feel-a) 40%, transparent);
+  --feel-icon: hue-rotate(-10deg) saturate(1.05) contrast(0.96);
+  --feel-plate-image: radial-gradient(ellipse at 100% 0, color-mix(in srgb, var(--feel-a) 10%, transparent), transparent 55%);
+  --feel-title-style: italic;
+}
+html[data-skin-family="leaf"] button.primary:hover { transform: translateY(-1px); }
+html[data-skin-family="leaf"] button.primary:active { transform: translateY(1px); }
+html[data-skin-family="leaf"] .launcher-tile-glyph { border-radius: 50% 44% 50% 12px; }
+html[data-skin-family="leaf"] .tab-chip.active { border-radius: 16px 5px 16px 5px; }
+
+/* ── blossom · petal lacquer: pills, pale plate, drifting petals ── */
+html[data-skin-family="blossom"] {
+  --bg-shell: color-mix(in srgb, var(--feel-b) 16%, #1b1218);
+  --at-plate: color-mix(in srgb, var(--feel-a) 9%, #241a22);
+  --at-hair: color-mix(in srgb, var(--feel-a) 30%, transparent);
+  --at-r-plate: 28px;
+  --at-r-card: 22px;
+  --at-r-ctl: 10px;
+  --at-r-chip: 10px;
+  --at-r-cell: 12px;
+  --at-font-display: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --feel-3d: 0 1px 2px rgba(0, 0, 0, 0.16);
+  --feel-grain-opacity: 0.12;
+  --feel-grain-blend: soft-light;
+  --feel-grain:
+    radial-gradient(ellipse 5px 3px at 14% 18%, color-mix(in srgb, var(--feel-a) 28%, #fff) 0 60%, transparent 70%),
+    radial-gradient(ellipse 4px 6px at 66% 44%, color-mix(in srgb, var(--feel-a) 20%, #fff) 0 60%, transparent 70%);
+  --feel-grain-size: 260px 300px, 220px 260px;
+  --feel-hud-hair: 1px solid color-mix(in srgb, var(--feel-a) 40%, transparent);
+  --feel-icon: saturate(1.06) brightness(1.03);
+  --feel-plate-image: none;
+  --feel-title-style: normal;
+  --feel-title-tracking: 0.005em;
+}
+html[data-skin-family="blossom"] #main::after { animation: none; }
+html[data-skin-family="blossom"] button.primary:hover { transform: translateY(-1px); }
+html[data-skin-family="blossom"] button.primary:active { transform: translateY(1px); }
+html[data-skin-family="blossom"] .launcher-tile-glyph { border-radius: 50%; }
+html[data-skin-family="blossom"] .tab-chip.active { border-radius: 10px; }
+
+/* ── sun · brass sundial: rings, gold double rule, warm sepia ─── */
+html[data-skin-family="sun"] {
+  --bg-shell: #1a1308;
+  --at-plate: color-mix(in srgb, var(--feel-a) 6%, #231a0c);
+  --at-hair: color-mix(in srgb, var(--feel-a) 34%, transparent);
+  --at-r-plate: 20px;
+  --at-r-card: 16px;
+  --at-r-ctl: 10px;
+  --at-r-chip: 10px;
+  --at-font-display: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --feel-3d: 0 0 0 1px color-mix(in srgb, var(--feel-a) 55%, transparent), 0 6px 0 color-mix(in srgb, var(--feel-b) 55%, #9a3412), 0 12px 20px rgba(120, 53, 15, 0.3);
+  --feel-grain-opacity: 0.22;
+  --feel-grain-blend: overlay;
+  --feel-grain: repeating-conic-gradient(from 0deg at 50% -40%, transparent 0 4deg, color-mix(in srgb, var(--feel-a) 24%, transparent) 4deg 4.6deg);
+  --feel-hud-hair: 3px double color-mix(in srgb, var(--feel-a) 60%, transparent);
+  --feel-icon: sepia(0.25) saturate(1.3) brightness(1.06);
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.08em;
+}
+html[data-skin-family="sun"] h1,
+html[data-skin-family="sun"] .page-title,
+html[data-skin-family="sun"] .launcher-title { font-weight: 500; }
+html[data-skin-family="sun"] .launcher-tile-glyph { border-radius: 50%; box-shadow: 0 0 0 2px color-mix(in srgb, var(--feel-a) 60%, transparent), 0 0 0 5px var(--bg-shell), 0 0 0 6px color-mix(in srgb, var(--feel-a) 30%, transparent); }
+
+/* ── void · black glass: hard edges, inner ring, star drift ───── */
+html[data-skin-family="void"] {
+  --bg-shell: #05040a;
+  --bg-card: #0b0913;
+  --at-plate: #0c0a15;
+  --ink-primary: #ece8ff;
+  --at-hair: color-mix(in srgb, var(--feel-a) 34%, transparent);
+  --at-r-plate: 3px;
+  --at-r-card: 2px;
+  --at-r-ctl: 2px;
+  --at-r-chip: 2px;
+  --at-r-cell: 0;
+  --at-font-display: "Inter", "Segoe UI Variable", system-ui, sans-serif;
+  --feel-3d: inset 0 0 0 1px color-mix(in srgb, var(--feel-a) 45%, transparent), inset 0 0 22px color-mix(in srgb, var(--feel-a) 18%, transparent);
+  --feel-3d-press: inset 0 0 0 1px color-mix(in srgb, var(--feel-a) 70%, transparent), inset 0 0 34px color-mix(in srgb, var(--feel-a) 34%, transparent);
+  --feel-grain-opacity: 0.6;
+  --feel-grain-blend: screen;
+  --feel-grain:
+    radial-gradient(1px 1px at 20% 30%, #fff9, transparent 2px),
+    radial-gradient(1px 1px at 70% 18%, #fff6, transparent 2px),
+    radial-gradient(1.5px 1.5px at 84% 72%, color-mix(in srgb, var(--feel-a) 70%, #fff), transparent 2px),
+    radial-gradient(1px 1px at 42% 88%, #fff5, transparent 2px);
+  --feel-grain-size: 420px 380px, 360px 300px, 520px 460px, 300px 340px;
+  --feel-hud-hair: 1px solid color-mix(in srgb, var(--feel-a) 70%, transparent);
+  --feel-icon: saturate(1.3) contrast(1.15) brightness(1.05);
+  --feel-title-tracking: 0.06em;
+  --feel-title-case: uppercase;
+}
+html[data-skin-family="void"] #main::after { animation: feel-drift 40s linear infinite; }
+html[data-skin-family="void"] h1,
+html[data-skin-family="void"] .page-title,
+html[data-skin-family="void"] .launcher-title { font-weight: 300; }
+html[data-skin-family="void"] .top-hud { box-shadow: 0 1px 0 color-mix(in srgb, var(--feel-a) 20%, transparent), 0 8px 30px color-mix(in srgb, var(--feel-a) 12%, transparent); }
+html[data-skin-family="void"] button.primary:active { transform: scale(0.95); filter: brightness(0.7); }
+html[data-skin-family="void"] .launcher-tile-glyph { border-radius: 2px; }
+html[data-skin-family="void"] .launcher-card { transform: none; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--feel-a) 26%, transparent), inset 0 0 40px color-mix(in srgb, var(--feel-a) 10%, transparent); }
+
+/* ── moon · silver nocturne: soft mist, dotted rule ───────────── */
+html[data-skin-family="moon"] {
+  --bg-shell: #0c0f18;
+  --at-plate: #141826;
+  --ink-primary: #e6e9f4;
+  --at-r-plate: 24px;
+  --at-r-card: 18px;
+  --at-r-ctl: 12px;
+  --feel-3d: 0 1px 0 rgba(230, 233, 244, 0.18) inset, 0 4px 0 #1e2436, 0 10px 20px rgba(0, 0, 0, 0.4);
+  --feel-grain-opacity: 0.35;
+  --feel-grain-blend: screen;
+  --feel-grain: radial-gradient(ellipse 60% 40% at 80% -10%, color-mix(in srgb, var(--feel-a) 20%, transparent), transparent 70%);
+  --feel-hud-hair: 1px dotted rgba(230, 233, 244, 0.35);
+  --feel-icon: saturate(0.7) brightness(1.1);
+  --feel-title-style: italic;
+}
+
+/* ── wave · wet enamel: full pills, ripple rule, swell press ──── */
+html[data-skin-family="wave"] {
+  --bg-shell: color-mix(in srgb, var(--feel-b) 36%, #06202b);
+  --at-plate: color-mix(in srgb, var(--feel-a) 8%, #0b2a35);
+  --at-hair: color-mix(in srgb, var(--feel-a) 30%, transparent);
+  --at-r-plate: 24px 24px 16px 16px;
+  --at-r-card: 24px;
+  --at-r-ctl: 10px;
+  --at-r-chip: 10px;
+  --at-r-cell: 12px;
+  --at-font-display: "Inter", "Segoe UI Variable", system-ui, sans-serif;
+  --feel-3d: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 6px 0 color-mix(in srgb, var(--feel-b) 50%, #164e63), 0 12px 18px rgba(8, 47, 73, 0.4);
+  --feel-grain-opacity: 0.32;
+  --feel-grain-blend: soft-light;
+  --feel-grain: repeating-radial-gradient(ellipse 160% 60% at 50% 120%, transparent 0 34px, color-mix(in srgb, var(--feel-a) 34%, transparent) 34px 36px);
+  --feel-hud-hair: 2px solid transparent;
+  --feel-icon: hue-rotate(10deg) saturate(1.15) brightness(1.03);
+  --feel-plate-image: linear-gradient(180deg, color-mix(in srgb, #fff 5%, transparent), transparent 30%);
+  --feel-title-tracking: -0.03em;
+}
+html[data-skin-family="wave"] #main::after { animation: feel-swell 9s ease-in-out infinite; }
+html[data-skin-family="wave"] .top-hud { border-image: repeating-radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--feel-a) 60%, transparent) 0 6px, transparent 6px 12px) 0 0 2 0 / 0 0 2px 0; }
+html[data-skin-family="wave"] h1,
+html[data-skin-family="wave"] .page-title { font-weight: 700; }
+html[data-skin-family="wave"] button.primary:hover { transform: translateY(-1px); }
+html[data-skin-family="wave"] .launcher-tile-glyph { border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; }
+
+/* ── harbor · brass and rope: portholes, dashed rope rule ─────── */
+html[data-skin-family="harbor"] {
+  --bg-shell: #071820;
+  --at-plate: #0d2430;
+  --at-r-plate: 8px;
+  --at-r-card: 6px;
+  --at-r-ctl: 6px;
+  --at-r-chip: 8px;
+  --at-font-display: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --feel-3d: 0 1px 0 rgba(255, 236, 200, 0.25) inset, 0 5px 0 #7a5a1a, 0 10px 16px rgba(0, 0, 0, 0.4);
+  --feel-grain-opacity: 0.2;
+  --feel-grain-blend: multiply;
+  --feel-grain: repeating-linear-gradient(90deg, transparent 0 60px, rgba(0, 0, 0, 0.5) 60px 62px);
+  --feel-hud-hair: 3px dashed #b8892b;
+  --feel-icon: sepia(0.2) saturate(1.1) brightness(1.05);
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.12em;
+}
+html[data-skin-family="harbor"] .launcher-tile-glyph { border-radius: 50%; box-shadow: 0 0 0 3px #b8892b, 0 0 0 5px #3a2a0c, var(--feel-3d); }
+
+/* ── flame · forged steel: chamfered, hammer press, heat grain ── */
+html[data-skin-family="flame"] {
+  --bg-shell: #140806;
+  --bg-card: #1e0d09;
+  --at-plate: #21100b;
+  --at-hair: rgba(249, 115, 22, 0.28);
+  --at-r-plate: 3px;
+  --at-r-card: 3px;
+  --at-r-ctl: 2px;
+  --at-r-chip: 3px;
+  --at-r-cell: 1px;
+  --at-font-display: "Inter", "Segoe UI Variable", system-ui, sans-serif;
+  --feel-3d: 0 2px 0 #3f140c inset, 0 6px 0 #4a150c, 0 10px 0 #1a0704, 0 14px 22px rgba(0, 0, 0, 0.5);
+  --feel-3d-press: 0 2px 0 #3f140c inset, 0 1px 0 #4a150c, 0 2px 0 #1a0704;
+  --feel-grain-opacity: 0.34;
+  --feel-grain-blend: overlay;
+  --feel-grain:
+    repeating-linear-gradient(-18deg, transparent 0 11px, rgba(249, 115, 22, 0.16) 11px 12px),
+    radial-gradient(ellipse 60% 30% at 30% 110%, color-mix(in srgb, var(--feel-a) 60%, transparent), transparent 60%);
+  --feel-hud-hair: 2px solid color-mix(in srgb, var(--feel-a) 70%, #000);
+  --feel-icon: sepia(0.3) saturate(1.45) hue-rotate(-10deg) contrast(1.1);
+  --feel-plate-image: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 20%, transparent 80%, rgba(0, 0, 0, 0.3));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.04em;
+}
+html[data-skin-family="flame"] #main::after { animation: feel-ember 2.4s steps(4) infinite; }
+html[data-skin-family="flame"] .top-hud { box-shadow: 0 2px 18px color-mix(in srgb, var(--feel-a) 30%, transparent); }
+html[data-skin-family="flame"] h1,
+html[data-skin-family="flame"] .page-title { font-weight: 800; }
+html[data-skin-family="flame"] button.primary:active { transform: translateY(8px) scaleX(1.04); filter: brightness(1.3) saturate(1.4); }
+html[data-skin-family="flame"] .launcher-tile-glyph { border-radius: 3px; clip-path: polygon(8% 0, 92% 0, 100% 8%, 100% 92%, 92% 100%, 8% 100%, 0 92%, 0 8%); }
+
+/* ── frost · cut crystal: crisp 2px, white inner ring, cracks ─── */
+html[data-skin-family="frost"] {
+  --bg-shell: #0b1220;
+  --bg-card: #111b2e;
+  --at-plate: #121c30;
+  --ink-primary: #e8f4ff;
+  --at-hair: rgba(186, 230, 253, 0.26);
+  --at-r-plate: 6px;
+  --at-r-card: 4px;
+  --at-r-ctl: 3px;
+  --at-r-chip: 4px;
+  --at-r-cell: 2px;
+  --at-font-display: "Inter", "Segoe UI Variable", system-ui, sans-serif;
+  --feel-3d: 0 0 0 1px color-mix(in srgb, var(--feel-a) 55%, #fff), 0 6px 0 color-mix(in srgb, var(--feel-b) 40%, #1e3a8a), inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 12px 24px rgba(30, 58, 138, 0.3);
+  --feel-grain-opacity: 0.4;
+  --feel-grain-blend: screen;
+  --feel-grain:
+    linear-gradient(135deg, transparent 40%, rgba(186, 230, 253, 0.12) 40.4%, transparent 41%),
+    linear-gradient(45deg, transparent 60%, rgba(255, 255, 255, 0.08) 60.3%, transparent 61%),
+    linear-gradient(100deg, transparent 20%, rgba(186, 230, 253, 0.06) 20.2%, transparent 21%);
+  --feel-grain-size: 480px 480px, 620px 620px, 720px 720px;
+  --feel-hud-hair: 1px solid rgba(255, 255, 255, 0.55);
+  --feel-icon: saturate(0.75) brightness(1.2) contrast(1.05);
+  --feel-plate-image: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 40%);
+  --feel-title-tracking: 0.02em;
+}
+html[data-skin-family="frost"] .top-hud { box-shadow: inset 0 -1px 0 rgba(186, 230, 253, 0.2); }
+html[data-skin-family="frost"] h1,
+html[data-skin-family="frost"] .page-title { font-weight: 300; }
+html[data-skin-family="frost"] button.primary:active { transform: translateY(3px) skewX(-5deg); filter: brightness(1.4); }
+html[data-skin-family="frost"] .launcher-tile-glyph { border-radius: 4px; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); }
+
+/* ── prism · faceted glass: conic rule, hue-cycling marks ─────── */
+html[data-skin-family="prism"] {
+  --bg-shell: #0d0a16;
+  --at-plate: #161225;
+  --at-r-plate: 12px;
+  --at-r-card: 10px;
+  --at-r-ctl: 6px;
+  --at-r-chip: 6px;
+  --feel-3d: 0 0 0 1px rgba(255, 255, 255, 0.22) inset, 0 6px 0 color-mix(in srgb, var(--feel-b) 50%, #312e81), 0 12px 20px rgba(49, 46, 129, 0.3);
+  --feel-grain-opacity: 0.32;
+  --feel-grain-blend: screen;
+  --feel-grain: linear-gradient(110deg, color-mix(in srgb, var(--feel-a) 30%, transparent), transparent 30%, color-mix(in srgb, var(--feel-b) 26%, transparent) 62%, transparent);
+  --feel-hud-hair: 2px solid transparent;
+  --feel-icon: saturate(1.3);
+  --feel-plate-image: conic-gradient(from 200deg at 100% 0, color-mix(in srgb, var(--feel-a) 12%, transparent), transparent 22%, color-mix(in srgb, var(--feel-b) 10%, transparent) 40%, transparent 60%);
+}
+html[data-skin-family="prism"] #main::after { animation: feel-aurora 8s ease-in-out infinite; }
+html[data-skin-family="prism"] .top-hud { border-image: linear-gradient(90deg, var(--feel-a), var(--feel-b), var(--feel-a)) 0 0 2 0 / 0 0 2px 0; }
+html[data-skin-family="prism"] .ws-mark,
+html[data-skin-family="prism"] .hud-icon-svg { animation: feel-hue 10s linear infinite; }
+html[data-skin-family="prism"] .launcher-tile-glyph { clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%); border-radius: 0; }
+
+/* ── signal · phosphor terminal: zero radius, scanlines, mono ─── */
+html[data-skin-family="signal"] {
+  --bg-shell: #030b07;
+  --bg-card: #07130d;
+  --at-plate: #071409;
+  --ink-primary: #d9ffe7;
+  --at-hair: color-mix(in srgb, var(--feel-a) 40%, transparent);
+  --at-r-plate: 0;
+  --at-r-card: 0;
+  --at-r-ctl: 0;
+  --at-r-chip: 0;
+  --at-r-cell: 0;
+  --at-font-display: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
+  --at-font-ui: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
+  --feel-3d: 0 0 0 1px var(--feel-a), inset 0 0 12px color-mix(in srgb, var(--feel-a) 22%, transparent);
+  --feel-3d-press: 0 0 0 1px var(--feel-a), inset 0 0 24px color-mix(in srgb, var(--feel-a) 50%, transparent);
+  --feel-grain-opacity: 0.5;
+  --feel-grain-blend: multiply;
+  --feel-grain: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0 1px, transparent 1px 3px);
+  --feel-hud-hair: 1px solid var(--feel-a);
+  --feel-icon: contrast(1.3) saturate(1.4) drop-shadow(0 0 3px var(--feel-a));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.14em;
+}
+html[data-skin-family="signal"] #main::after { animation: feel-scan 6s linear infinite; }
+html[data-skin-family="signal"] body { text-shadow: 0 0 4px color-mix(in srgb, var(--feel-a) 40%, transparent); }
+html[data-skin-family="signal"] .top-hud { backdrop-filter: none; box-shadow: 0 0 20px color-mix(in srgb, var(--feel-a) 18%, transparent); }
+html[data-skin-family="signal"] .hud-app-name::after { content: "_"; animation: feel-morse 1s steps(2) infinite; }
+html[data-skin-family="signal"] button.primary { border-radius: 0; letter-spacing: 0.1em; text-transform: uppercase; }
+html[data-skin-family="signal"] button.primary:hover { filter: brightness(1.3); }
+html[data-skin-family="signal"] .ws-mark,
+html[data-skin-family="signal"] .hud-icon-svg { image-rendering: pixelated; }
+html[data-skin-family="signal"] .launcher-tile-glyph { border-radius: 0; }
+html[data-skin-family="signal"] .launcher-card { transform: none; }
+
+/* ── bolt · live rail: black outline, hazard rule, jitter ─────── */
+html[data-skin-family="bolt"] {
+  --bg-shell: #0a0a0a;
+  --bg-card: #141414;
+  --at-plate: #161616;
+  --at-hair: rgba(255, 255, 255, 0.14);
+  --at-r-plate: 0;
+  --at-r-card: 0;
+  --at-r-ctl: 0;
+  --at-r-chip: 0;
+  --at-r-cell: 0;
+  --at-font-display: "Inter", "Segoe UI Variable", system-ui, sans-serif;
+  --feel-3d: 0 0 0 2px #111, 0 0 0 3px var(--feel-a), 6px 6px 0 #111;
+  --feel-3d-press: 0 0 0 2px #111, 0 0 0 3px var(--feel-a), 1px 1px 0 #111;
+  --feel-grain-opacity: 0.24;
+  --feel-grain-blend: screen;
+  --feel-grain: repeating-linear-gradient(90deg, transparent 0 14px, color-mix(in srgb, var(--feel-a) 18%, transparent) 14px 15px);
+  --feel-hud-hair: 6px solid transparent;
+  --feel-icon: contrast(1.2) saturate(1.3);
+  --feel-title-case: uppercase;
+  --feel-title-tracking: -0.02em;
+}
+html[data-skin-family="bolt"] #main::after { animation: feel-volt 0.22s steps(2) infinite; }
+html[data-skin-family="bolt"] .top-hud { border-image: repeating-linear-gradient(-45deg, var(--feel-a) 0 10px, #111 10px 20px) 0 0 6 0 / 0 0 6px 0; }
+html[data-skin-family="bolt"] h1,
+html[data-skin-family="bolt"] .page-title { font-weight: 900; }
+html[data-skin-family="bolt"] button.primary { text-transform: uppercase; letter-spacing: 0.06em; }
+html[data-skin-family="bolt"] button.primary:hover { transform: translate(-1px, -1px); filter: brightness(1.2) saturate(1.3); }
+html[data-skin-family="bolt"] button.primary:active { transform: translate(4px, 4px); }
+html[data-skin-family="bolt"] .hud-icon-svg { animation: feel-volt 0.7s steps(2) infinite; }
+html[data-skin-family="bolt"] .launcher-tile-glyph { border-radius: 0; transform: skewX(-6deg); }
+html[data-skin-family="bolt"] .launcher-card { transform: none; }
+
+/* ── dune · stamped clay: offset hard shadow, sand ridges ─────── */
+html[data-skin-family="dune"] {
+  --bg-shell: color-mix(in srgb, var(--feel-b) 30%, #2a1a0c);
+  --at-plate: color-mix(in srgb, var(--feel-a) 10%, #33200f);
+  --ink-primary: #fbeedb;
+  --at-hair: rgba(251, 238, 219, 0.14);
+  --at-r-plate: 5px;
+  --at-r-card: 4px;
+  --at-r-ctl: 3px;
+  --at-r-chip: 3px;
+  --at-r-cell: 2px;
+  --at-font-display: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --feel-3d: 5px 6px 0 color-mix(in srgb, var(--feel-b) 55%, #1a0f06);
+  --feel-3d-press: 1px 1px 0 color-mix(in srgb, var(--feel-b) 55%, #1a0f06);
+  --feel-grain-opacity: 0.4;
+  --feel-grain-blend: multiply;
+  --feel-grain: repeating-radial-gradient(ellipse 200% 40% at 50% 130%, transparent 0 9px, rgba(120, 53, 15, 0.22) 9px 11px);
+  --feel-hud-hair: 4px solid color-mix(in srgb, var(--feel-b) 60%, #1a0f06);
+  --feel-icon: sepia(0.45) saturate(1.1) contrast(1.05);
+  --feel-plate-image: repeating-linear-gradient(0deg, transparent 0 3px, rgba(0, 0, 0, 0.06) 3px 4px);
+  --feel-title-tracking: 0.03em;
+}
+html[data-skin-family="dune"] button.primary:hover { transform: translate(-1px, -1px); }
+html[data-skin-family="dune"] button.primary:active { transform: translate(4px, 5px); }
+html[data-skin-family="dune"] .launcher-card { transform: none; }
+html[data-skin-family="dune"] .launcher-card:hover { transform: translate(-2px, -2px); }
+html[data-skin-family="dune"] .launcher-tile-glyph { border-radius: 4px; transform: none; }
+
+/* ── chrome · brushed steel: horizontal brush, metal gradients ── */
+html[data-skin-family="chrome"] {
+  --bg-shell: #0f1115;
+  --bg-card: #1a1d24;
+  --at-plate: #1c2028;
+  --ink-primary: #f8fafc;
+  --at-hair: rgba(226, 232, 240, 0.18);
+  --at-r-plate: 10px;
+  --at-r-card: 8px;
+  --at-r-ctl: 6px;
+  --at-r-chip: 6px;
+  --at-r-cell: 3px;
+  --at-font-display: "Inter", "Segoe UI Variable", system-ui, sans-serif;
+  --feel-3d: inset 0 1px 0 #fff, inset 0 -1px 0 #334155, 0 6px 0 #334155, 0 10px 16px rgba(0, 0, 0, 0.5);
+  --feel-grain-opacity: 0.28;
+  --feel-grain-blend: overlay;
+  --feel-grain: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px 2px, rgba(0, 0, 0, 0.12) 2px 3px, transparent 3px 5px);
+  --feel-hud-hair: 1px solid rgba(255, 255, 255, 0.45);
+  --feel-icon: grayscale(0.4) contrast(1.25) brightness(1.12);
+  --feel-plate-image: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02) 50%, rgba(0, 0, 0, 0.12) 51%, rgba(255, 255, 255, 0.03));
+  --feel-title-tracking: 0.1em;
+  --feel-title-case: uppercase;
+}
+html[data-skin-family="chrome"] .top-hud { box-shadow: inset 0 -1px 0 #334155, 0 1px 0 #000; }
+html[data-skin-family="chrome"] h1,
+html[data-skin-family="chrome"] .page-title { font-weight: 500; }
+html[data-skin-family="chrome"] button.primary {
+  background: linear-gradient(180deg, #f8fafc, #94a3b8 48%, #475569 52%, #e2e8f0);
+  color: #0f172a;
+  text-shadow: 0 1px 0 #fff;
+}
+html[data-skin-family="chrome"] .launcher-tile-glyph { border-radius: 8px; background: linear-gradient(180deg, #e2e8f0, #64748b 50%, #334155 52%, #94a3b8); }
+
+/* ── cabinet · arcade bezel: pixel edges, marquee rule ────────── */
+html[data-skin-family="cabinet"] {
+  --bg-shell: #12081c;
+  --bg-card: #1b0f2a;
+  --at-plate: #1c1030;
+  --at-hair: rgba(244, 114, 182, 0.35);
+  --at-r-plate: 4px;
+  --at-r-card: 2px;
+  --at-r-ctl: 2px;
+  --at-r-chip: 3px;
+  --at-r-cell: 0;
+  --at-font-display: "Courier New", ui-monospace, monospace;
+  --feel-3d: 0 0 0 2px #111, 0 6px 0 #111, 0 0 14px color-mix(in srgb, var(--feel-a) 40%, transparent);
+  --feel-3d-press: 0 0 0 2px #111, 0 1px 0 #111;
+  --feel-grain-opacity: 0.5;
+  --feel-grain-blend: multiply;
+  --feel-grain: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0 2px, transparent 2px 4px);
+  --feel-hud-hair: 4px solid transparent;
+  --feel-icon: contrast(1.3) saturate(1.5);
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.12em;
+}
+html[data-skin-family="cabinet"] .top-hud { border-image: repeating-linear-gradient(90deg, var(--feel-a) 0 8px, var(--feel-b) 8px 16px, #22d3ee 16px 24px) 0 0 4 0 / 0 0 4px 0; }
+html[data-skin-family="cabinet"] button.primary { border-radius: 0; animation: feel-morse 1.6s steps(2) infinite; text-transform: uppercase; }
+html[data-skin-family="cabinet"] .ws-mark,
+html[data-skin-family="cabinet"] .hud-icon-svg { image-rendering: pixelated; }
+html[data-skin-family="cabinet"] .launcher-tile-glyph { border-radius: 0; box-shadow: 0 0 0 2px #111, 0 0 0 4px var(--feel-a); }
+
+/* ── retro · amber CRT: zero radius, phosphor bloom, prompt ───── */
+html[data-skin-family="retro"] {
+  --bg-shell: #111006;
+  --bg-card: #1a170a;
+  --at-plate: #1a170a;
+  --ink-primary: #fbbf24;
+  --at-hair: rgba(245, 158, 11, 0.4);
+  --at-r-plate: 0;
+  --at-r-card: 0;
+  --at-r-ctl: 0;
+  --at-r-chip: 0;
+  --at-r-cell: 0;
+  --at-font-display: "IBM Plex Mono", "Courier New", ui-monospace, monospace;
+  --at-font-ui: "IBM Plex Mono", "Courier New", ui-monospace, monospace;
+  --feel-3d: inset 0 0 0 1px #44403c, 0 0 12px rgba(251, 191, 36, 0.2);
+  --feel-3d-press: inset 0 0 0 1px #f59e0b, inset 0 0 18px rgba(251, 191, 36, 0.4);
+  --feel-grain-opacity: 0.45;
+  --feel-grain-blend: multiply;
+  --feel-grain: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.28) 0 2px, transparent 2px 4px);
+  --feel-hud-hair: 2px solid #f59e0b;
+  --feel-icon: sepia(1) saturate(3) hue-rotate(-12deg) brightness(1.1);
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.14em;
+}
+html[data-skin-family="retro"] body { text-shadow: 0 0 6px rgba(251, 191, 36, 0.25); }
+html[data-skin-family="retro"] .hud-app-name::before { content: "> "; }
+html[data-skin-family="retro"] .hud-app-name::after { content: "▮"; margin-left: 2px; animation: feel-morse 1s steps(2) infinite; }
+html[data-skin-family="retro"] button.primary { border-radius: 0; text-transform: uppercase; letter-spacing: 0.1em; }
+html[data-skin-family="retro"] button.primary:hover { filter: brightness(1.2); }
+html[data-skin-family="retro"] .launcher-card { transform: none; }
+html[data-skin-family="retro"] .launcher-tile-glyph { border-radius: 0; transform: none; }
+
+/* ── paper · bond stock: laid lines, ruled double, stamp press ── */
+html[data-skin-family="paper"] {
+  --bg-shell: #2a1d12;
+  --bg-card: #f3e9d6;
+  --at-plate: #f6ecd9;
+  --at-plate-2: #ead9bd;
+  --at-well: #1d140b;
+  --ink-primary: #2a1d12;
+  --at-ink: #2a1d12;
+  --at-ink-2: #5a4632;
+  --at-ink-3: #7d6650;
+  --at-hair: rgba(42, 29, 18, 0.18);
+  --at-hair-2: rgba(42, 29, 18, 0.3);
+  --at-r-plate: 2px;
+  --at-r-card: 2px;
+  --at-r-ctl: 2px;
+  --at-r-chip: 2px;
+  --at-r-cell: 1px;
+  --at-font-display: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --feel-3d: 0 1px 0 rgba(42, 29, 18, 0.3), 0 4px 10px rgba(42, 29, 18, 0.18);
+  --feel-3d-press: 0 0 0 1px rgba(42, 29, 18, 0.4) inset;
+  --feel-grain-opacity: 0.3;
+  --feel-grain-blend: multiply;
+  --feel-grain: repeating-linear-gradient(0deg, transparent 0 2px, rgba(42, 29, 18, 0.08) 2px 3px), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='96' height='96' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
+  --feel-hud-hair: 3px double rgba(42, 29, 18, 0.55);
+  --feel-icon: sepia(0.5) saturate(0.8) contrast(1.1);
+  --feel-title-style: italic;
+  --feel-title-tracking: 0;
+}
+html[data-skin-family="paper"] .top-hud { background: #ead9bd; color: #2a1d12; }
+html[data-skin-family="paper"] .launcher-card:hover { transform: translateY(-2px); }
+html[data-skin-family="paper"] button.primary { background: #2a1d12; color: #f6ecd9; }
+html[data-skin-family="paper"] button.primary:active { transform: translateY(1px); }
+html[data-skin-family="paper"] .launcher-tile-glyph { border-radius: 2px; transform: none; }
+
+/* ── velvet · opera: gilt double rule, italic serif, spotlight ── */
+html[data-skin-family="velvet"] {
+  --bg-shell: #14080e;
+  --bg-card: #23101a;
+  --at-plate: #26111c;
+  --ink-primary: #fdf2f8;
+  --at-hair: rgba(212, 175, 55, 0.35);
+  --at-r-plate: 4px 22px;
+  --at-r-card: 4px 18px;
+  --at-r-ctl: 4px 14px;
+  --at-r-chip: 10px;
+  --at-font-display: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --feel-3d: inset 0 0 0 1px #d4af37, inset 0 0 0 3px #26111c, inset 0 0 0 4px rgba(212, 175, 55, 0.5), 0 10px 22px rgba(0, 0, 0, 0.5);
+  --feel-grain-opacity: 0.4;
+  --feel-grain-blend: soft-light;
+  --feel-grain: radial-gradient(ellipse 40% 60% at 50% 0, rgba(253, 242, 248, 0.5), transparent 70%), repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0 18px, transparent 18px 36px);
+  --feel-hud-hair: 3px double #d4af37;
+  --feel-icon: sepia(0.15) saturate(1.2) brightness(1.05);
+  --feel-title-style: italic;
+  --feel-title-tracking: 0.02em;
+}
+html[data-skin-family="velvet"] #main::after { animation: feel-spot 12s ease-in-out infinite; }
+html[data-skin-family="velvet"] button.primary { border-radius: 4px 18px; }
+html[data-skin-family="velvet"] .launcher-tile-glyph { border-radius: 4px 18px; }
+
+/* ── lantern · night market: paper ellipses, red string ───────── */
+html[data-skin-family="lantern"] {
+  --bg-shell: #180a0a;
+  --at-plate: #26110f;
+  --at-hair: rgba(251, 146, 60, 0.3);
+  --at-r-plate: 18px;
+  --at-r-card: 18px;
+  --at-r-ctl: 10px;
+  --at-r-chip: 10px;
+  --feel-3d: 0 1px 0 rgba(255, 237, 213, 0.2) inset, 0 0 24px color-mix(in srgb, var(--feel-a) 45%, transparent), 0 6px 0 #4a1a12;
+  --feel-grain-opacity: 0.4;
+  --feel-grain-blend: screen;
+  --feel-grain: radial-gradient(ellipse 30% 20% at 20% 10%, color-mix(in srgb, var(--feel-a) 40%, transparent), transparent 70%), radial-gradient(ellipse 25% 18% at 80% 30%, color-mix(in srgb, var(--feel-b) 40%, transparent), transparent 70%);
+  --feel-hud-hair: 2px dashed #dc2626;
+  --feel-icon: saturate(1.3) brightness(1.1) sepia(0.15);
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.2em;
+}
+html[data-skin-family="lantern"] .launcher-tile-glyph { border-radius: 50% / 40%; }
+
+/* ── glass · greenhouse: frosted panes, muntin grid ───────────── */
+html[data-skin-family="glass"] {
+  --bg-shell: #0e1a14;
+  --at-plate: rgba(240, 253, 244, 0.06);
+  --at-hair: rgba(240, 253, 244, 0.22);
+  --at-r-plate: 2px;
+  --at-r-card: 2px;
+  --at-r-ctl: 4px;
+  --at-r-chip: 4px;
+  --feel-3d: inset 0 0 0 1px rgba(240, 253, 244, 0.3), 0 8px 24px rgba(0, 0, 0, 0.3);
+  --feel-grain-opacity: 0.35;
+  --feel-grain-blend: screen;
+  --feel-grain: linear-gradient(rgba(240, 253, 244, 0.14) 2px, transparent 2px), linear-gradient(90deg, rgba(240, 253, 244, 0.14) 2px, transparent 2px);
+  --feel-grain-size: 220px 220px, 220px 220px;
+  --feel-hud-hair: 2px solid rgba(240, 253, 244, 0.35);
+  --feel-icon: brightness(1.1) saturate(0.9);
+  --feel-title-tracking: 0.01em;
+}
+html[data-skin-family="glass"] .card,
+html[data-skin-family="glass"] .launcher-card,
+html[data-skin-family="glass"] .top-hud { backdrop-filter: blur(10px) saturate(1.2); }
+
+/* ── storm · isobar desk: contour lines, graph paper ──────────── */
+html[data-skin-family="storm"] {
+  --bg-shell: #0b1220;
+  --at-plate: #111a2c;
+  --at-hair: rgba(56, 189, 248, 0.3);
+  --at-r-plate: 6px;
+  --at-r-card: 4px;
+  --at-r-ctl: 3px;
+  --at-r-chip: 3px;
+  --at-font-display: "IBM Plex Mono", ui-monospace, monospace;
+  --feel-3d: 0 0 0 1px rgba(56, 189, 248, 0.5), 0 4px 0 #1e293b;
+  --feel-grain-opacity: 0.32;
+  --feel-grain-blend: screen;
+  --feel-grain: repeating-radial-gradient(ellipse 120% 80% at 30% 40%, transparent 0 40px, rgba(56, 189, 248, 0.25) 40px 41px), repeating-radial-gradient(ellipse 100% 90% at 80% 70%, transparent 0 34px, rgba(56, 189, 248, 0.18) 34px 35px);
+  --feel-hud-hair: 1px solid rgba(56, 189, 248, 0.6);
+  --feel-icon: saturate(0.9) brightness(1.1);
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.1em;
+}
+html[data-skin-family="storm"] .hud-icon-svg { animation: feel-volt 1.1s steps(3) infinite; }
+
+/* ── crown · royal: double gold frame, small caps ─────────────── */
+html[data-skin-family="crown"] {
+  --bg-shell: #140c1c;
+  --at-plate: #1f1230;
+  --at-hair: rgba(250, 204, 21, 0.35);
+  --at-r-plate: 12px;
+  --at-r-card: 10px;
+  --at-r-ctl: 6px;
+  --at-font-display: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --feel-3d: 0 0 0 1px #facc15, 0 0 0 3px #140c1c, 0 0 0 4px rgba(250, 204, 21, 0.5), 0 8px 20px rgba(0, 0, 0, 0.5);
+  --feel-grain-opacity: 0.2;
+  --feel-grain-blend: overlay;
+  --feel-grain: repeating-linear-gradient(45deg, transparent 0 20px, rgba(250, 204, 21, 0.14) 20px 21px), repeating-linear-gradient(-45deg, transparent 0 20px, rgba(250, 204, 21, 0.14) 20px 21px);
+  --feel-hud-hair: 3px double #facc15;
+  --feel-icon: sepia(0.2) saturate(1.3);
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.16em;
+}
+
+/* ── scrap · junkyard: rivets, tilted glyphs, rust rule ───────── */
+html[data-skin-family="scrap"] {
+  --bg-shell: #17130f;
+  --at-plate: #23201a;
+  --at-hair: rgba(180, 83, 9, 0.4);
+  --at-r-plate: 3px;
+  --at-r-card: 2px;
+  --at-r-ctl: 2px;
+  --feel-3d: 0 0 0 2px #0f0d0a, 3px 4px 0 #0f0d0a;
+  --feel-grain-opacity: 0.34;
+  --feel-grain-blend: multiply;
+  --feel-grain: radial-gradient(circle, rgba(0, 0, 0, 0.5) 1.5px, transparent 2px);
+  --feel-grain-size: 28px 28px;
+  --feel-hud-hair: 3px solid #b45309;
+  --feel-icon: sepia(0.4) contrast(1.15);
+}
+html[data-skin-family="scrap"] .launcher-tile-glyph { transform: rotate(-6deg); border-radius: 3px; }
+html[data-skin-family="scrap"] .launcher-card:nth-child(odd) { transform: none; }
+
+/* ── metro · transit: slab, chevrons, line-map hairline ───────── */
+html[data-skin-family="metro"] {
+  --bg-shell: #0f1012;
+  --at-plate: #191b1f;
+  --at-r-plate: 8px;
+  --at-r-card: 6px;
+  --at-r-ctl: 4px;
+  --at-r-chip: 8px;
+  --at-font-display: "Inter", "Segoe UI Variable", system-ui, sans-serif;
+  --feel-3d: 0 4px 0 #000;
+  --feel-grain-opacity: 0.2;
+  --feel-grain-blend: screen;
+  --feel-grain: repeating-linear-gradient(90deg, transparent 0 48px, rgba(255, 255, 255, 0.2) 48px 50px);
+  --feel-hud-hair: 4px solid var(--feel-a);
+  --feel-icon: contrast(1.2);
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.08em;
+}
+html[data-skin-family="metro"] h1,
+html[data-skin-family="metro"] .page-title { font-weight: 900; }
+html[data-skin-family="metro"] button.primary:hover { transform: translateX(3px); }
+
+/* ═══════════════════════════════════════════════════════════════
+   ROUND 2 · NAMED SKIN ROOMS — same family, different painting.
+   Each named skin owns a palette (shell / plate / ink / hairline)
+   plus one signature detail so sakura ≠ lotus and moss ≠ forest.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* sakura — dusk pink lacquer, white petals, thin gold rule */
+html[data-player-skin="sakura"] {
+  --bg-shell: #1a1016;
+  --bg-card: #26161f;
+  --at-plate: #2a1822;
+  --ink-primary: #ffe4ef;
+  --at-hair: rgba(255, 228, 239, 0.16);
+  --feel-hud-hair: 1px solid rgba(251, 207, 232, 0.55);
+  --feel-grain-opacity: 0.1;
+  --feel-icon: saturate(1.05) hue-rotate(4deg) brightness(1.06);
+}
+html[data-player-skin="sakura"] .launcher-tile-glyph { background: radial-gradient(circle at 40% 30%, #fbcfe8, #db2777 70%); }
+
+/* moss — deep bog, lichen green plate, wet-stone hairline */
+html[data-player-skin="moss"] {
+  --bg-shell: #0b120c;
+  --bg-card: #141d14;
+  --at-plate: #172218;
+  --ink-primary: #e6f2df;
+  --at-hair: rgba(163, 230, 53, 0.2);
+  --feel-hud-hair: 1px dashed rgba(163, 230, 53, 0.45);
+  --at-r-plate: 34px 10px 34px 10px;
+  --feel-icon: hue-rotate(-16deg) saturate(1.1) contrast(0.95);
+  --feel-title-style: normal;
+}
+html[data-player-skin="moss"] .launcher-tile-glyph { border-radius: 50% 50% 50% 8px; }
+
+/* forest — pine night, tall serif, needle grain */
+html[data-player-skin="forest"] {
+  --bg-shell: #06110c;
+  --bg-card: #0e1a13;
+  --at-plate: #102017;
+  --ink-primary: #dcefe4;
+  --at-hair: rgba(52, 211, 153, 0.2);
+  --feel-hud-hair: 2px solid rgba(6, 78, 59, 0.9);
+  --at-r-plate: 8px;
+  --at-r-card: 6px;
+  --feel-grain: repeating-linear-gradient(112deg, transparent 0 7px, rgba(52, 211, 153, 0.12) 7px 8px), repeating-linear-gradient(68deg, transparent 0 9px, rgba(16, 185, 129, 0.1) 9px 10px);
+  --feel-grain-opacity: 0.35;
+  --feel-title-style: normal;
+  --feel-title-tracking: 0.04em;
+  --feel-title-case: uppercase;
+}
+html[data-player-skin="forest"] .launcher-tile-glyph { border-radius: 8px 8px 50% 50%; }
+
+/* pine — frosted needles, cool ink */
+html[data-player-skin="pine"] { --bg-shell: #0d1610; --at-plate: #14211a; --ink-primary: #e7f5ee; --feel-icon: saturate(0.9) brightness(1.1); }
+
+/* void — the original black glass, violet ring */
+html[data-player-skin="void"] {
+  --bg-shell: #05040a;
+  --at-plate: #0c0a15;
+  --ink-primary: #ece8ff;
+  --feel-hud-hair: 1px solid rgba(167, 139, 250, 0.8);
+}
+
+/* obsidian — volcanic glass, warm hairline, no stars */
+html[data-player-skin="obsidian"] {
+  --bg-shell: #08070a;
+  --at-plate: #121015;
+  --ink-primary: #f4efe8;
+  --feel-grain: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.06) 30.3%, transparent 31%), linear-gradient(60deg, transparent 70%, rgba(255, 255, 255, 0.04) 70.2%, transparent 71%);
+  --feel-grain-size: 700px 700px, 900px 900px;
+  --feel-grain-opacity: 0.5;
+  --feel-hud-hair: 1px solid rgba(244, 239, 232, 0.35);
+}
+html[data-player-skin="onyx"] { --bg-shell: #050505; --at-plate: #101010; --ink-primary: #f2f2f2; --feel-hud-hair: 1px solid rgba(255, 255, 255, 0.5); }
+
+/* solar — noon brass, black type on gold buttons */
+html[data-player-skin="solar"] {
+  --bg-shell: #1a1208;
+  --bg-card: #241a0c;
+  --at-plate: #281d0e;
+  --ink-primary: #fff4d6;
+  --at-hair: rgba(251, 191, 36, 0.3);
+  --feel-hud-hair: 3px double #f59e0b;
+}
+html[data-player-skin="solar"] button.primary { background: linear-gradient(180deg, #fde68a, #f59e0b); color: #1a1208; }
+html[data-player-skin="sunrise"] { --bg-shell: #1c0f0f; --at-plate: #2a1616; --ink-primary: #ffe9dc; --feel-hud-hair: 3px double #fb7185; }
+html[data-player-skin="gold"] { --bg-shell: #14110a; --at-plate: #1f1a0e; --ink-primary: #fbf3dc; --feel-icon: sepia(0.5) saturate(1.6) brightness(1.1); }
+
+/* tide / lagoon / harbor — three different waters */
+html[data-player-skin="tide"] { --bg-shell: #071820; --at-plate: #0c2833; --ink-primary: #e0fbff; }
+html[data-player-skin="lagoon"] { --bg-shell: #062a2a; --at-plate: #0b3a38; --ink-primary: #e6fffb; --feel-grain-opacity: 0.5; --feel-hud-hair: 2px solid rgba(94, 234, 212, 0.6); }
+html[data-player-skin="harbor"] { --bg-shell: #071820; --at-plate: #0d2430; }
+
+/* emberwing / magma / cinder — three heats */
+html[data-player-skin="emberwing"] { --bg-shell: #140806; --at-plate: #23100a; --ink-primary: #ffe8d6; }
+html[data-player-skin="magma"] { --bg-shell: #0d0405; --at-plate: #1c0a0a; --ink-primary: #ffdcd1; --feel-grain-opacity: 0.5; --feel-hud-hair: 2px solid #ef4444; }
+html[data-player-skin="cinder"] { --bg-shell: #121010; --at-plate: #1d1917; --ink-primary: #f1e9e4; --feel-icon: sepia(0.2) saturate(0.9) contrast(1.15); --feel-grain-opacity: 0.16; }
+
+/* frost / glacier / polar — three ices */
+html[data-player-skin="frost"] { --bg-shell: #0b1220; --at-plate: #121c30; --ink-primary: #e8f4ff; }
+html[data-player-skin="glacier"] { --bg-shell: #071a24; --at-plate: #0d2733; --ink-primary: #e3fbff; --feel-hud-hair: 1px solid rgba(165, 243, 252, 0.7); --feel-grain-opacity: 0.55; }
+html[data-player-skin="polar"] { --bg-shell: #101623; --at-plate: #182034; --ink-primary: #f5f9ff; --feel-icon: saturate(0.4) brightness(1.3); }
+
+/* chrome / marble / tungsten — three metals */
+html[data-player-skin="chrome"] { --ink-primary: #f8fafc; }
+html[data-player-skin="marble"] { --bg-shell: #1a1a1c; --bg-card: #f4f2ef; --at-plate: #f7f5f2; --ink-primary: #1a1a1c; --at-ink: #1a1a1c; --at-ink-2: #4a4a4f; --at-hair: rgba(26, 26, 28, 0.14); --feel-grain: linear-gradient(115deg, transparent 40%, rgba(26, 26, 28, 0.08) 40.5%, transparent 42%), linear-gradient(35deg, transparent 60%, rgba(26, 26, 28, 0.05) 60.3%, transparent 61%); --feel-grain-size: 640px 640px, 820px 820px; --feel-grain-blend: multiply; --feel-icon: grayscale(0.8) contrast(1.2); }
+html[data-player-skin="marble"] button.primary { background: #1a1a1c; color: #f7f5f2; }
+html[data-player-skin="tungsten"] { --bg-shell: #0a0b0d; --at-plate: #15171b; --ink-primary: #e5e7eb; --feel-icon: grayscale(0.6) contrast(1.3) brightness(1.05); }
+
+/* retro — amber CRT (the one and only retro id) */
+html[data-player-skin="retro"] { --bg-shell: #111006; --at-plate: #1a170a; --ink-primary: #fbbf24; }
+
+/* velvet — crimson house, gilt */
+html[data-player-skin="velvet"] { --bg-shell: #14080e; --at-plate: #26111c; --ink-primary: #fdf2f8; }
+
+/* parchment — light bond, sepia ink */
+html[data-player-skin="parchment"] { --bg-shell: #2a1d12; --at-plate: #f6ecd9; --ink-primary: #2a1d12; }
+html[data-player-skin="ivory"] { --bg-shell: #2b2620; --at-plate: #fbf7ef; --ink-primary: #2b2620; --at-ink: #2b2620; }
+html[data-player-skin="linen"] { --bg-shell: #2a2420; --at-plate: #efe7da; --ink-primary: #2a2420; --at-ink: #2a2420; --feel-grain: repeating-linear-gradient(0deg, transparent 0 3px, rgba(42, 36, 32, 0.08) 3px 4px), repeating-linear-gradient(90deg, transparent 0 3px, rgba(42, 36, 32, 0.08) 3px 4px); }
+
+/* cabinet — neon bezel */
+html[data-player-skin="cabinet"] { --bg-shell: #12081c; --at-plate: #1c1030; }
+
+/* prism — faceted white */
+html[data-player-skin="prism"] { --bg-shell: #0d0a16; --at-plate: #161225; --ink-primary: #f5f3ff; }
+
+@keyframes feel-petal-fall { to { background-position: -40px 300px, 30px 260px, -20px 340px, 40px 280px; } }
+@keyframes feel-swell { 50% { transform: translateY(-6px) scaleX(1.01); } }
+@keyframes feel-spot { 0%, 100% { background-position: 0 0, 0 0; } 50% { background-position: 80px 0, 0 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin] body::after,
+  html[data-player-skin] #main::after,
+  html[data-skin-effect] button.primary,
+  html[data-skin-effect] .ws-mark,
+  html[data-skin-effect] .hud-icon-svg,
+  html[data-skin-family] button.primary,
+  html[data-skin-family] .ws-mark,
+  html[data-skin-family] .hud-icon-svg,
+  html[data-skin-family] .hud-app-name::after {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,906 @@
+/* ═══════════════════════════════════════════════════════════════
+   VOLTAGE SPINE — a stacked insulator string, live in the canal.
+
+   The object: porcelain skirts threaded on one conductor. The HUD
+   is that string laid on its side — olive enamel discs, a lime
+   canal down the middle, flicker in the wire. Chips are single
+   vertebrae. You are looking at the spine, not riding a rail.
+
+   Not Volt Runner (teal gym, third-rail, contact shoe, current
+   that travels and never strobes). Not Thunder Kite (navy sky,
+   yellow ripstop, gust-lit panels). Not Venom (acid ticks, dots
+   that bite). Lime on moss. Stripes are stacked skirts, not
+   hazard tape and not longitudinal grooves.
+
+   Place is hud,chip. The spine and the discs are the room.
+   Cards, calendar, and tab pages stay quiet. Never clip #main
+   or .launcher-card. Glyphs may clip. No 42%/48% ovals.
+   Selectors carry :root so this room outranks bolt-family
+   stencils (square plates, skew parallelograms, page-wide
+   steps() flicker). Reduced motion kills the flicker.
+
+   Loot: colorA #bef264, colorB #365314, effect volt, pattern
+   stripes, place hud,chip.
+   Photograph: /img/skins/voltage.png
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — moss enamel, lime canal, one live wire ────── */
+
+html[data-player-skin="voltage"]:root {
+  color-scheme: dark;
+
+  --vs-room: #12180a;
+  --vs-well: #0c1006;
+  --vs-enamel: #1a240e;
+  --vs-skirt: #243016;
+  --vs-moss: #365314;
+  --vs-leaf: #4d7c0f;
+  --vs-lime: #bef264;
+  --vs-hot: #ecfccb;
+  --vs-arc: #d9f99d;
+  --vs-ink: #f7fee7;
+  --vs-ink-2: #d9e8b8;
+  --vs-mute: #9aaa72;
+
+  --vs-hair: rgba(190, 242, 100, 0.16);
+  --vs-hair-2: rgba(190, 242, 100, 0.38);
+  --vs-live: rgba(190, 242, 100, 0.7);
+
+  /* Vertebra in cranial view: rounded body, a spinous process as
+     the sharp trailing lobe, two short transverse feet. Nothing
+     else uses 19 / 6 / 15 / 8 with a 22px spinous vertical.
+     Never 42/48%. Never a contact-shoe. Never a kite billow. */
+  --vs-r-plate: 19px 6px 15px 8px / 13px 22px 11px 4px;
+  --vs-r-card: 15px 5px 12px 7px / 10px 18px 9px 4px;
+  --vs-r-ctl: 12px 4px 10px 6px / 8px 14px 7px 3px;
+  --vs-r-chip: 14px 4px 11px 6px / 9px 16px 8px 3px;
+  --vs-r-cell: 9px 3px 8px 4px / 6px 11px 6px 2px;
+
+  /* Stacked skirts — the loot stripes, vertical, disc after disc. */
+  --vs-skirts:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 7px,
+      rgba(54, 83, 20, 0.55) 7px 9px,
+      transparent 9px 16px,
+      rgba(190, 242, 100, 0.1) 16px 17px
+    );
+  --vs-skirts-soft:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 9px,
+      rgba(54, 83, 20, 0.32) 9px 10px,
+      transparent 10px 19px,
+      rgba(190, 242, 100, 0.06) 19px 20px
+    );
+
+  --bg-shell: var(--vs-room);
+  --bg-content: var(--vs-enamel);
+  --bg-card: var(--vs-skirt);
+  --bg-card-hover: #2c3a1a;
+  --ink-primary: var(--vs-ink);
+  --ink-secondary: var(--vs-ink-2);
+  --ink-muted: var(--vs-mute);
+  --border: rgba(54, 83, 20, 0.55);
+  --gridline: rgba(190, 242, 100, 0.1);
+  --accent: var(--vs-lime);
+  --ws-accent: var(--vs-lime);
+  --accent-ink: var(--vs-well);
+
+  /* Loot catalog source of truth. */
+  --skin-a: #bef264;
+  --skin-b: #365314;
+  --at-a: #bef264;
+  --at-b: #365314;
+  --feel-a: #bef264;
+  --feel-b: #365314;
+  --feel-accent: var(--vs-lime);
+  --feel-ground: var(--vs-room);
+  --feel-paper: var(--vs-skirt);
+  --feel-ink: var(--vs-ink);
+
+  --at-plate: var(--vs-skirt);
+  --at-plate-2: #2c3a1a;
+  --at-well: var(--vs-well);
+  --at-ink: var(--vs-ink);
+  --at-ink-2: var(--vs-ink-2);
+  --at-ink-3: var(--vs-mute);
+  --at-hair: var(--vs-hair);
+  --at-hair-2: var(--vs-hair-2);
+  --at-hair-a: rgba(190, 242, 100, 0.55);
+  --at-tint: rgba(190, 242, 100, 0.08);
+  --at-tint-b: rgba(54, 83, 20, 0.4);
+  --at-focus: 0 0 0 2px var(--vs-lime);
+  --at-gold: var(--vs-lime);
+  --at-gold-soft: var(--vs-arc);
+  --at-inset: inset 0 1px 0 rgba(236, 252, 203, 0.18);
+  --at-rise: 0 16px 32px -22px rgba(8, 12, 4, 0.9);
+  --at-rise-soft: 0 10px 20px -16px rgba(8, 12, 4, 0.7);
+  --at-r-plate: var(--vs-r-plate);
+  --at-r-card: var(--vs-r-card);
+  --at-r-ctl: var(--vs-r-ctl);
+  --at-r-chip: var(--vs-r-chip);
+  --at-r-cell: var(--vs-r-cell);
+
+  --vs-font: "Oswald", "Agency FB", "DIN Condensed", "Arial Narrow",
+    "Helvetica Neue", sans-serif;
+  --font-display: var(--vs-font);
+  --at-font-display: var(--vs-font);
+  --at-font-ui: var(--vs-font);
+
+  /* A disc on a pin, not bolt's black outline + offset, not a shoe. */
+  --feel-3d:
+    inset 0 1px 0 rgba(236, 252, 203, 0.16),
+    inset 0 -8px 12px rgba(54, 83, 20, 0.35),
+    0 0 0 1px #0c1006,
+    0 0 14px rgba(190, 242, 100, 0.12);
+  --feel-3d-press:
+    inset 0 3px 8px rgba(12, 16, 6, 0.62),
+    inset 0 1px 0 rgba(236, 252, 203, 0.08),
+    0 0 0 1px #0c1006;
+  --feel-grain-opacity: 0.28;
+  --feel-grain-blend: overlay;
+  --feel-grain: var(--vs-skirts-soft);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 0;
+  --feel-icon:
+    contrast(1.1) saturate(1.18)
+    drop-shadow(0 0 5px rgba(190, 242, 100, 0.55));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.18em;
+  --feel-plate-image:
+    linear-gradient(180deg, rgba(236, 252, 203, 0.08), transparent 32%),
+    var(--vs-skirts-soft);
+}
+
+/* ── 2 · Body — dark well behind the spine. Place is not page. ─ */
+
+html[data-player-skin="voltage"]:root body {
+  background-color: var(--vs-room) !important;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(18, 24, 10, 0.88) 0%,
+      rgba(26, 36, 12, 0.62) 28%,
+      rgba(12, 16, 6, 0.92) 100%
+    ),
+    url("/img/skins/voltage.png") !important;
+  background-position: center, center 22% !important;
+  background-size: cover, cover !important;
+  background-attachment: fixed, fixed !important;
+  background-repeat: no-repeat !important;
+  color: var(--vs-ink);
+  text-shadow: none;
+  animation: none;
+}
+
+/* Kill bolt-family / feel-volt page flicker. The canal owns it. */
+html[data-player-skin="voltage"]:root body::before,
+html[data-player-skin="voltage"]:root body::after {
+  animation: none !important;
+  opacity: 0.1;
+  mix-blend-mode: overlay;
+  background: var(--vs-skirts-soft) !important;
+}
+
+html[data-player-skin="voltage"]:root #main {
+  isolation: isolate;
+  position: relative;
+  clip-path: none !important;
+  overflow: visible;
+  background: color-mix(in srgb, var(--vs-room) 52%, transparent) !important;
+}
+
+html[data-player-skin="voltage"]:root #main::before,
+html[data-player-skin="voltage"]:root #main::after {
+  animation: none !important;
+  background: none !important;
+  clip-path: none !important;
+}
+
+/* Cards stay quiet. Neutralize bolt skew / square. Do not dress
+   them as shoes or sails. Place is hud,chip. */
+html[data-player-skin="voltage"]:root .launcher-card {
+  clip-path: none !important;
+  overflow: visible;
+  transform: none;
+  border-radius: var(--vs-r-card);
+}
+
+/* ── 3 · HUD — the spine: stacked skirts, live canal ────────── */
+
+html[data-player-skin="voltage"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  color: var(--vs-ink);
+  border-bottom: 0;
+  border-image: none;
+  border-radius: 0 0 15px 8px / 0 0 11px 4px;
+  backdrop-filter: none;
+  background:
+    linear-gradient(180deg, rgba(236, 252, 203, 0.08), transparent 30%),
+    linear-gradient(180deg, #243016 0%, #1a240e 72%, #12180a 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.1),
+    0 10px 22px rgba(8, 12, 4, 0.45);
+}
+
+html[data-player-skin="voltage"]:root[data-skin-place~="hud"] .top-hud {
+  background:
+    linear-gradient(180deg, rgba(236, 252, 203, 0.1), transparent 26%),
+    var(--vs-skirts),
+    linear-gradient(180deg, #2c3a1a 0%, #1a240e 68%, #12180a 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.16),
+    inset 0 -10px 14px rgba(54, 83, 20, 0.28),
+    0 0 0 1px #0c1006,
+    0 0 22px rgba(190, 242, 100, 0.12);
+}
+
+/* Stacked disc shadows walking the fascia. */
+html[data-player-skin="voltage"]:root[data-skin-place~="hud"] .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--vs-skirts);
+  opacity: 0.72;
+  mix-blend-mode: multiply;
+  animation: room-voltage-stack 14s linear infinite;
+}
+
+/* The canal — live rail, flicker owned here, not on the page. */
+html[data-player-skin="voltage"]:root[data-skin-place~="hud"] .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 8%;
+  right: 7%;
+  top: 50%;
+  height: 3px;
+  z-index: 2;
+  transform: translateY(-50%);
+  border-radius: 1px;
+  background: linear-gradient(
+    90deg,
+    #365314 0%,
+    #bef264 18%,
+    #ecfccb 50%,
+    #bef264 82%,
+    #365314 100%
+  );
+  box-shadow:
+    0 0 10px rgba(190, 242, 100, 0.7),
+    0 0 22px rgba(190, 242, 100, 0.28);
+  animation: room-voltage-flicker 0.28s steps(3, jump-end) infinite;
+}
+
+html[data-player-skin="voltage"]:root .top-hud > * {
+  position: relative;
+  z-index: 3;
+}
+
+html[data-player-skin="voltage"]:root .hud-app-name,
+html[data-player-skin="voltage"]:root .launcher-title,
+html[data-player-skin="voltage"]:root .page-title {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--vs-ink);
+  color: var(--vs-ink);
+  font-family: var(--vs-font);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 #0c1006;
+}
+
+/* A single skirt beside the name — one disc on the string. */
+html[data-player-skin="voltage"]:root[data-skin-place~="hud"] .hud-app-name::before {
+  content: "";
+  display: inline-block;
+  width: 0.7em;
+  height: 0.86em;
+  margin-right: 0.46em;
+  vertical-align: -0.12em;
+  border: 1.5px solid #0c1006;
+  border-radius: var(--vs-r-chip);
+  background:
+    linear-gradient(90deg, transparent 0 36%, #bef264 36% 64%, transparent 64%),
+    linear-gradient(180deg, #4d7c0f, #365314);
+  box-shadow: inset 0 1px 0 rgba(236, 252, 203, 0.28), 0 0 7px rgba(190, 242, 100, 0.45);
+  animation: room-voltage-canal 1.8s ease-in-out infinite;
+}
+
+html[data-player-skin="voltage"]:root .hud-app-name::after {
+  content: none !important;
+  animation: none !important;
+}
+
+html[data-player-skin="voltage"]:root .hud-intention,
+html[data-player-skin="voltage"]:root .hud-now-focus-kicker {
+  color: var(--vs-mute);
+  font-family: var(--vs-font);
+  letter-spacing: 0.1em;
+}
+
+html[data-player-skin="voltage"]:root :is(
+  .brand-mark,
+  .ws-mark,
+  .hud-icon-svg,
+  .tab-chip-mark,
+  .hud-metric-mark,
+  .wp-skin-mark
+) {
+  color: var(--vs-lime);
+  filter: var(--feel-icon);
+  image-rendering: auto;
+  animation: none;
+  transform: none;
+}
+
+html[data-player-skin="voltage"]:root[data-skin-place~="hud"] .hud-icon-svg {
+  animation: room-voltage-flicker 0.9s steps(3, jump-end) infinite;
+}
+
+/* Brand jewel: one insulator disc in section — ceramic ring,
+   lime canal. Not a shoe insulator, not a kite jewel. */
+html[data-player-skin="voltage"]:root .hud-brand-jewel,
+html[data-player-skin="voltage"]:root .hud-glyph-btn {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border-radius: var(--vs-r-chip);
+  border: 2px solid #0c1006;
+  background:
+    radial-gradient(circle at 34% 30%, rgba(236, 252, 203, 0.35), transparent 36%),
+    linear-gradient(90deg, #365314 0 28%, #bef264 28% 72%, #365314 72% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.28),
+    0 0 0 1px #243016;
+  transform: none;
+}
+
+html[data-player-skin="voltage"]:root[data-skin-place~="hud"] .hud-brand-jewel {
+  animation: room-voltage-canal 2.2s ease-in-out infinite;
+}
+
+html[data-player-skin="voltage"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 22% 36%;
+  border-radius: 1px;
+  background: linear-gradient(180deg, #ecfccb, #bef264 55%, #65a30d);
+  box-shadow: 0 0 8px rgba(190, 242, 100, 0.75);
+}
+
+html[data-player-skin="voltage"]:root[data-skin-place~="hud"] .top-hud :is(
+  .hud-icon-btn,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-chip,
+  .hud-game-cluster,
+  .hud-game-chip,
+  .hud-model-chip--status,
+  .hud-agent-chip,
+  .loot-profile-chip
+) {
+  color: var(--vs-ink);
+  border: 1px solid rgba(54, 83, 20, 0.7);
+  border-radius: var(--vs-r-chip);
+  background:
+    var(--vs-skirts-soft),
+    #1a240e;
+  box-shadow: inset 0 0 0 1px rgba(12, 16, 6, 0.5);
+  animation: none;
+}
+
+html[data-player-skin="voltage"]:root[data-skin-place~="hud"] .hud-status-pill::before,
+html[data-player-skin="voltage"]:root[data-skin-place~="hud"] .top-hud .hud-agent-chip::before {
+  border-radius: 1px;
+  background: #bef264;
+  box-shadow: 0 0 7px rgba(190, 242, 100, 0.7);
+  animation: room-voltage-flicker 0.36s steps(3, jump-end) infinite;
+}
+
+html[data-player-skin="voltage"]:root .tab-chip-bar {
+  overflow: visible;
+  background: color-mix(in srgb, var(--vs-room) 90%, var(--vs-moss));
+  border-bottom: 1px solid rgba(54, 83, 20, 0.55);
+  backdrop-filter: none;
+}
+
+/* ── 4 · Chips — each disc on the string ────────────────────── */
+
+html[data-player-skin="voltage"]:root[data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .hud-model-chip--status,
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .seg-pill-btn,
+  .tsk-day-chip,
+  .tsk-keyword-chip,
+  .tsk-bucket-chip,
+  .tsk-due-chip,
+  .tsk-bar-chip,
+  .hub-chip,
+  .nts-chip,
+  .pln-mode-chip,
+  .pln-commit-chip,
+  .pln-keyword-chip,
+  .tdy-cat-chip,
+  .tdy-week-chip,
+  .today-day-chip,
+  .cal-week-chip,
+  .cal-month-chip,
+  .repo-cat-chip,
+  .agc-followup-chip,
+  .quick-capture-chip,
+  .game-stamp-chip
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid #0c1006;
+  border-radius: var(--vs-r-chip);
+  background:
+    linear-gradient(180deg, rgba(236, 252, 203, 0.12), transparent 34%),
+    var(--vs-skirts-soft),
+    linear-gradient(180deg, #2c3a1a, #1a240e 70%, #12180a);
+  color: var(--vs-ink-2);
+  font-family: var(--vs-font);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.14),
+    0 0 0 1px rgba(54, 83, 20, 0.45);
+  transition:
+    filter 120ms ease,
+    box-shadow 120ms ease,
+    color 120ms ease;
+  animation: none;
+}
+
+/* Canal through every disc — a hairline of live wire. */
+html[data-player-skin="voltage"]:root[data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .tsk-day-chip,
+  .tsk-keyword-chip,
+  .tsk-bucket-chip,
+  .hub-chip,
+  .nts-chip,
+  .pln-mode-chip,
+  .tdy-cat-chip,
+  .today-day-chip,
+  .repo-cat-chip,
+  .quick-capture-chip
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 50%;
+  height: 2px;
+  z-index: 1;
+  transform: translateY(-50%);
+  border-radius: 1px;
+  background: linear-gradient(90deg, transparent, #bef264 22%, #ecfccb 50%, #bef264 78%, transparent);
+  opacity: 0.45;
+  box-shadow: 0 0 6px rgba(190, 242, 100, 0.25);
+}
+
+html[data-player-skin="voltage"]:root[data-skin-place~="chip"] :is(
+  .tab-chip:hover:not(.active):not(:disabled),
+  .hud-chip:hover:not(:disabled),
+  .hud-icon-btn:hover:not(:disabled),
+  .hud-glyph-btn:hover:not(:disabled),
+  .hud-status-pill:hover:not(:disabled),
+  .hud-metric:hover:not(:disabled),
+  .app-subnav-pill:hover:not(.active),
+  .pill:hover:not(.active):not([aria-pressed="true"]),
+  .seg-pill-btn:hover:not([aria-pressed="true"]),
+  .tsk-day-chip:hover,
+  .hub-chip:hover,
+  .nts-chip:hover,
+  .pln-mode-chip:hover,
+  .tdy-cat-chip:hover,
+  .loot-profile-chip:hover
+) {
+  color: var(--vs-ink);
+  border-color: rgba(190, 242, 100, 0.55);
+  filter: brightness(1.08);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.22),
+    0 0 0 1px #0c1006,
+    0 0 12px rgba(190, 242, 100, 0.28);
+  animation: room-voltage-live 0.32s steps(3, jump-end) 1;
+}
+
+html[data-player-skin="voltage"]:root[data-skin-place~="chip"] :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active,
+  .pill[aria-pressed="true"],
+  .tsk-day-chip-active,
+  .tsk-day-chip.active,
+  .hub-chip.active,
+  .nts-chip.active,
+  .pln-mode-chip-active,
+  .tdy-cat-armed,
+  .today-day-chip-selected,
+  .tdy-week-chip-selected,
+  .loot-profile-chip--complete
+) {
+  color: var(--vs-well);
+  font-weight: 700;
+  border-color: #bef264;
+  background:
+    linear-gradient(180deg, rgba(236, 252, 203, 0.28), transparent 36%),
+    var(--vs-skirts-soft),
+    linear-gradient(180deg, #ecfccb 0 18%, #bef264 18% 72%, #65a30d 72% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 0 0 1px #0c1006,
+    0 0 16px rgba(190, 242, 100, 0.4);
+}
+
+html[data-player-skin="voltage"]:root[data-skin-place~="chip"] :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active,
+  .loot-profile-chip--complete
+)::after {
+  opacity: 1;
+  background: linear-gradient(90deg, transparent, #365314 20%, #0c1006 50%, #365314 80%, transparent);
+  animation: room-voltage-flicker 0.4s steps(3, jump-end) infinite;
+}
+
+html[data-player-skin="voltage"]:root[data-skin-place~="chip"] .tab-chip.active .tab-chip-mark {
+  color: var(--vs-well);
+  opacity: 1;
+}
+
+html[data-player-skin="voltage"]:root[data-skin-place~="chip"] :is(
+  .tab-chip:active:not(:disabled),
+  .hud-icon-btn:active:not(:disabled),
+  .hud-glyph-btn:active:not(:disabled),
+  .hud-chip:active:not(:disabled)
+) {
+  transform: none;
+  filter: brightness(0.94);
+  box-shadow: var(--feel-3d-press);
+}
+
+/* ── 5 · Glyph — three skirts in elevation, canal through ───── */
+/* Glyphs may clip. Cards and #main may not. Not a shoe octagon,
+   not a kite diamond, not a bolt parallelogram. */
+
+html[data-player-skin="voltage"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .loot-skin-avatar,
+  .nav-app-glyph,
+  .launcher-custom-app-emoji
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 2px solid #0c1006;
+  border-radius: 0;
+  transform: none;
+  color: var(--vs-well);
+  clip-path: polygon(
+    24% 3%, 76% 3%, 94% 14%, 76% 24%,
+    94% 36%, 76% 46%,
+    94% 58%, 76% 68%,
+    94% 80%, 76% 91%, 50% 99%, 24% 91%,
+    6% 80%, 24% 68%,
+    6% 58%, 24% 46%,
+    6% 36%, 24% 24%,
+    6% 14%
+  );
+  background:
+    linear-gradient(90deg, transparent 0 38%, #bef264 38% 62%, transparent 62%),
+    linear-gradient(180deg, #4d7c0f 0 18%, #365314 18% 52%, #243016 52% 82%, #1a240e 82% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.28),
+    0 0 12px rgba(190, 242, 100, 0.32);
+}
+
+html[data-player-skin="voltage"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph
+) svg {
+  filter: brightness(0.2) contrast(1.2);
+}
+
+html[data-player-skin="voltage"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .loot-skin-avatar
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 38%;
+  right: 38%;
+  top: 8%;
+  bottom: 8%;
+  border-radius: 1px;
+  background: linear-gradient(180deg, #ecfccb, #bef264 50%, #65a30d);
+  box-shadow: 0 0 8px rgba(190, 242, 100, 0.7);
+  animation: room-voltage-canal 2s ease-in-out infinite;
+}
+
+/* ── 6 · Empty / input / focus — unpowered gap, live canal ──── */
+
+html[data-player-skin="voltage"]:root :is(
+  input,
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+) {
+  border: 1px solid rgba(54, 83, 20, 0.6);
+  border-radius: var(--vs-r-ctl);
+  background:
+    var(--vs-skirts-soft),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 34%),
+    var(--vs-well);
+  color: var(--vs-ink);
+  caret-color: var(--vs-lime);
+  box-shadow:
+    inset 0 2px 8px rgba(8, 12, 4, 0.55),
+    inset 0 -2px 0 rgba(190, 242, 100, 0.22);
+}
+
+html[data-player-skin="voltage"]:root :is(input, textarea)::placeholder {
+  color: var(--vs-mute);
+  opacity: 0.72;
+}
+
+html[data-player-skin="voltage"]:root :is(
+  input,
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+):focus,
+html[data-player-skin="voltage"]:root .agc-input-zone:focus-within {
+  outline: none;
+  border-color: rgba(190, 242, 100, 0.72);
+  box-shadow:
+    inset 0 2px 8px rgba(8, 12, 4, 0.55),
+    inset 0 -2px 0 #bef264,
+    0 0 0 3px rgba(190, 242, 100, 0.16),
+    0 0 14px rgba(190, 242, 100, 0.22);
+}
+
+html[data-player-skin="voltage"]:root :focus-visible {
+  outline: 2px solid #bef264;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(190, 242, 100, 0.16);
+}
+
+html[data-player-skin="voltage"]:root ::selection {
+  background: rgba(190, 242, 100, 0.4);
+  color: var(--vs-well);
+}
+
+/* Unpowered gap in the string — a dark canal, no flicker. */
+html[data-player-skin="voltage"]:root .empty-state {
+  position: relative;
+  border: 1.5px dashed rgba(54, 83, 20, 0.65);
+  border-radius: var(--vs-r-plate);
+  background:
+    var(--vs-skirts-soft),
+    linear-gradient(180deg, rgba(236, 252, 203, 0.04), transparent 36%),
+    #12180a;
+  color: var(--vs-ink-2);
+  box-shadow: inset 0 12px 24px rgba(8, 12, 4, 0.4);
+}
+
+html[data-player-skin="voltage"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 28px;
+  margin: 0 0 10px;
+  border: 1.5px solid #0c1006;
+  border-radius: var(--vs-r-chip);
+  background:
+    linear-gradient(90deg, transparent 0 36%, #365314 36% 64%, transparent 64%),
+    linear-gradient(180deg, #243016, #1a240e);
+  box-shadow: inset 0 1px 0 rgba(236, 252, 203, 0.08);
+  opacity: 0.7;
+}
+
+html[data-player-skin="voltage"]:root .empty-state-title {
+  color: var(--vs-ink);
+  font-family: var(--vs-font);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="voltage"]:root .empty-state-body,
+html[data-player-skin="voltage"]:root .empty-state-hint {
+  color: var(--vs-mute);
+}
+
+html[data-player-skin="voltage"]:root button.primary,
+html[data-player-skin="voltage"]:root .primary,
+html[data-player-skin="voltage"]:root .page-intent-primary,
+html[data-player-skin="voltage"]:root .agent-pane-chat .agc-send {
+  border: 1px solid rgba(190, 242, 100, 0.55);
+  border-radius: var(--vs-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(236, 252, 203, 0.22), transparent 34%),
+    linear-gradient(90deg, #bef264, #d9f99d 36%, #65a30d);
+  color: var(--vs-well);
+  font-family: var(--vs-font);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(236, 252, 203, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.4),
+    0 0 0 1px #0c1006,
+    0 0 14px rgba(190, 242, 100, 0.18);
+  animation: none;
+}
+
+html[data-player-skin="voltage"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="voltage"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.08);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.5),
+    0 0 0 1px #0c1006,
+    0 0 18px rgba(190, 242, 100, 0.38);
+  animation: room-voltage-live 0.28s steps(3, jump-end) 1;
+}
+
+html[data-player-skin="voltage"]:root button.primary:active:not(:disabled),
+html[data-player-skin="voltage"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  filter: brightness(0.94);
+  box-shadow: var(--feel-3d-press);
+  transform: none;
+}
+
+html[data-player-skin="voltage"]:root :is(button.secondary, .ghost-btn) {
+  border: 1px solid rgba(54, 83, 20, 0.6);
+  border-radius: var(--vs-r-ctl);
+  background: var(--vs-enamel);
+  color: var(--vs-ink-2);
+}
+
+html[data-player-skin="voltage"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: #243016;
+  background: #161c0e;
+  color: #6b7850;
+  opacity: 0.58;
+  filter: grayscale(0.5) brightness(0.82);
+  box-shadow: none;
+  text-shadow: none;
+  animation: none !important;
+}
+
+html[data-player-skin="voltage"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .wp-arcade-card,
+  .wp-alarm-card,
+  dialog
+) {
+  border: 1px solid rgba(190, 242, 100, 0.22);
+  border-radius: var(--vs-r-plate);
+  background:
+    var(--vs-skirts-soft),
+    linear-gradient(180deg, rgba(190, 242, 100, 0.08), transparent 22%),
+    #1a240e;
+  color: var(--vs-ink);
+  box-shadow:
+    inset 0 2px 0 #bef264,
+    0 0 20px rgba(190, 242, 100, 0.1),
+    0 26px 56px rgba(8, 12, 4, 0.62);
+}
+
+html[data-player-skin="voltage"]:root .toast-item {
+  border: 1px solid rgba(190, 242, 100, 0.4);
+  border-radius: var(--vs-r-chip);
+  background: #1a240e;
+  color: var(--vs-hot);
+  box-shadow: inset 0 -2px 0 #bef264, 0 0 12px rgba(190, 242, 100, 0.18);
+  animation: room-voltage-live 0.36s steps(3, jump-end) 1;
+}
+
+html[data-player-skin="voltage"]:root * {
+  scrollbar-color: rgba(190, 242, 100, 0.4) transparent;
+}
+
+/* ── 7 · Motion — flicker in the canal, skirts stacking ─────── */
+
+@keyframes room-voltage-flicker {
+  0% { opacity: 0.38; filter: brightness(0.82); }
+  25% { opacity: 1; filter: brightness(1.35); }
+  50% { opacity: 0.22; filter: brightness(0.7); }
+  75% { opacity: 0.92; filter: brightness(1.18); }
+  100% { opacity: 0.38; filter: brightness(0.82); }
+}
+
+@keyframes room-voltage-canal {
+  0%, 100% { filter: brightness(0.92); box-shadow: 0 0 6px rgba(190, 242, 100, 0.35); }
+  40% { filter: brightness(1.22); box-shadow: 0 0 12px rgba(190, 242, 100, 0.7); }
+  52% { filter: brightness(0.88); box-shadow: 0 0 5px rgba(190, 242, 100, 0.28); }
+}
+
+@keyframes room-voltage-stack {
+  0% { background-position: 0 0; }
+  100% { background-position: 17px 0; }
+}
+
+@keyframes room-voltage-live {
+  0% { filter: brightness(1); }
+  20% { filter: brightness(1.4); }
+  40% { filter: brightness(0.86); }
+  100% { filter: brightness(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="voltage"]:root *,
+  html[data-player-skin="voltage"]:root *::before,
+  html[data-player-skin="voltage"]:root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html[data-player-skin="voltage"]:root[data-skin-place~="hud"] .top-hud::after,
+  html[data-player-skin="voltage"]:root[data-skin-place~="hud"] .hud-icon-svg,
+  html[data-player-skin="voltage"]:root[data-skin-place~="hud"] .hud-status-pill::before {
+    opacity: 0.7;
+    filter: none;
+  }
+
+  html[data-player-skin="voltage"]:root button.primary:hover:not(:disabled),
+  html[data-player-skin="voltage"]:root[data-skin-place~="chip"] :is(
+    .tab-chip,
+    .hud-chip,
+    .pill
+  ):hover {
+    filter: none;
+    transform: none;
+  }
+}

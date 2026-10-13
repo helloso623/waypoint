@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Waypoint</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='8' y1='88' x2='88' y2='8'%3E%3Cstop offset='0' stop-color='%23c9a227'/%3E%3Cstop offset='1' stop-color='%23e84a2f'/%3E%3C/linearGradient%3E%3CradialGradient id='f' cx='36%25' cy='30%25' r='70%25'%3E%3Cstop offset='0' stop-color='%23c9a227' stop-opacity='0.45'/%3E%3Cstop offset='1' stop-color='%23e84a2f' stop-opacity='0.16'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='96' height='96' rx='22' fill='%230c0a08'/%3E%3Crect x='6' y='6' width='84' height='84' rx='20' fill='url(%23f)'/%3E%3Cpath d='M48 16 L84 76 H12 Z' fill='url(%23g)' fill-opacity='0.22' stroke='url(%23g)' stroke-width='5' stroke-linejoin='round'/%3E%3Cpath d='M48 34 L64 64 H32 Z' fill='%23e84a2f'/%3E%3Ccircle cx='48' cy='18' r='7' fill='%23e84a2f'/%3E%3C/svg%3E">
+<script src="/js/aa_error_capture.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js" defer></script>
+<link rel="stylesheet" href="/css/app.css">
+<link rel="stylesheet" href="/css/world-skins.css">
+<link rel="stylesheet" href="/css/napkin_remaining.css">
+<link rel="stylesheet" href="/css/napkin_depth.css">
+<link rel="stylesheet" href="/css/napkin_issues.css">
+<link rel="stylesheet" href="/css/atelier.css">
+<link rel="stylesheet" href="/css/skin-feels.css">
+<link rel="stylesheet" href="/css/parallel_atelier.css">
+<link rel="stylesheet" href="/css/atelier-home-pass.css">
+<link rel="stylesheet" href="/css/atelier-pass.css">
+<link rel="stylesheet" href="/css/skin-pass.css">
+<link rel="stylesheet" href="/css/skin-intent.css">
+<link rel="stylesheet" href="/css/skin-rooms.css">
+<link rel="stylesheet" href="/css/skin-fit.css">
+<link rel="stylesheet" href="/css/skin-icons.css">
+<link rel="stylesheet" href="/css/skin-spectacle.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-hud" id="top-hud">
+    <button type="button" class="hud-glyph-btn hud-brand-jewel" id="hud-home" data-i18n-title="hud.home" title="Home (Alt+H)" data-i18n-aria="hud.home" aria-label="Home">
+      <svg class="brand-mark" width="22" height="22" viewBox="0 0 96 96" aria-hidden="true">
+        <defs>
+          <linearGradient id="brand-g" x1="8" y1="88" x2="88" y2="8" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#c9a227"/>
+            <stop offset="1" stop-color="#e84a2f"/>
+          </linearGradient>
+          <radialGradient id="brand-fill" cx="36%" cy="28%" r="70%">
+            <stop offset="0" stop-color="#c9a227" stop-opacity="0.42"/>
+            <stop offset="1" stop-color="#e84a2f" stop-opacity="0.16"/>
+          </radialGradient>
+        </defs>
+        <rect x="6" y="6" width="84" height="84" rx="24" fill="url(#brand-fill)"/>
+        <path class="wp-brand-peak" d="M48 16 L84 76 H12 Z" fill="url(#brand-g)" fill-opacity="0.22" stroke="url(#brand-g)" stroke-width="5.5" stroke-linejoin="round"/>
+        <path class="wp-brand-core" d="M48 34 L64 64 H32 Z" fill="#e84a2f"/>
+        <circle class="wp-brand-jewel" cx="48" cy="18" r="7.5" fill="#e84a2f"/>
+      </svg>
+    </button>
+    <div class="hud-history">
+      <button id="nav-back" class="nav-history-btn hud-icon-btn" type="button" data-i18n-title="hud.back" title="Back (Alt+Left)" disabled data-i18n-aria="hud.back" aria-label="Back"><svg class="hud-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 5.3a1 1 0 0 1 0 1.4L10.4 11H19a1 1 0 1 1 0 2h-8.6l4.3 4.3a1 1 0 0 1-1.4 1.4l-6-6a1 1 0 0 1 0-1.4l6-6a1 1 0 0 1 1.4 0Z"/></svg></button>
+      <button id="nav-forward" class="nav-history-btn hud-icon-btn" type="button" data-i18n-title="hud.forward" title="Forward (Alt+Right)" disabled data-i18n-aria="hud.forward" aria-label="Forward"><svg class="hud-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.3 5.3a1 1 0 0 1 1.4 0l6 6a1 1 0 0 1 0 1.4l-6 6a1 1 0 0 1-1.4-1.4l4.3-4.3H5a1 1 0 1 1 0-2h8.6L9.3 6.7a1 1 0 0 1 0-1.4Z"/></svg></button>
+    </div>
+    <div class="hud-title-block" id="hud-title-block">
+      <span class="hud-app-name" id="hud-app-name">Waypoint</span>
+      <span class="hud-intention" id="hud-intention" data-i18n="hud.chooseWorld">Choose your world</span>
+    </div>
+    <button type="button" class="hud-now-focus" id="hud-now-focus" hidden data-i18n-title="hud.focusPrimary" title="Focus primary action">
+      <span class="hud-now-focus-kicker" data-i18n="hud.now">Now</span>
+      <span id="hud-now-focus-text">—</span>
+    </button>
+    <div class="hud-spacer" aria-hidden="true"></div>
+    <div class="hud-metrics">
+      <button type="button" class="hud-status-pill" id="hud-status-pill" data-i18n-title="hud.statusExpand" title="Status — click to expand" aria-expanded="false">
+        <span id="hud-status-pill-text">$— · 🔥—</span>
+      </button>
+      <div class="hud-metrics-detail" id="hud-metrics-detail" hidden>
+        <button type="button" class="hud-metric" id="hud-tokens-btn" data-i18n-title="hud.tokens" title="Token usage">
+          <span id="hud-tokens-label" data-i18n="hud.tokensLabel">— tokens</span>
+        </button>
+        <button type="button" class="hud-metric hud-budget-btn" id="hud-budget-btn" data-i18n-title="hud.budget" title="Daily budget — open Settings">
+          <span class="hud-budget-text" id="hud-budget-text">$— / $—</span>
+          <span class="hud-budget-bar" aria-hidden="true"><span class="hud-budget-fill" id="hud-budget-fill"></span></span>
+        </button>
+        <button type="button" class="hud-metric hud-trophies-btn" id="hud-trophies-btn" data-i18n-title="hud.trophies" title="Arcade trophies">
+          <svg class="hud-metric-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10a1 1 0 0 1 1 1v1h2a1 1 0 0 1 1 1c0 3-1.7 5.2-4.3 5.8A5 5 0 0 1 13 14.9V17h2a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1h2v-2.1a5 5 0 0 1-3.7-3.1C4.7 11.2 3 9 3 6a1 1 0 0 1 1-1h2V4a1 1 0 0 1 1-1Zm-1 4H5.2c.2 1.3.8 2.3 1.8 2.8V7Zm12 0v2.8c1-.5 1.6-1.5 1.8-2.8H18Z"/></svg>
+          <span id="hud-trophies-label">—</span>
+        </button>
+        <button type="button" class="hud-metric hud-streak-btn" id="hud-streak-btn" data-i18n-title="hud.streak" title="Practice streak">
+          <svg class="hud-metric-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.6 2.3a1 1 0 0 1 1.5.5c.9 2.5 2.9 4 4.3 6.3A8 8 0 0 1 12 21a8 8 0 0 1-7-11.9c.5-.9 1.2-1.7 1.9-2.4a1 1 0 0 1 1.7.5c.2 1.1.6 2 1.2 2.7.2-2.9 1.2-5.6 2.8-7.6ZM12 18a3 3 0 0 0 3-3c0-1.4-1-2.4-1.7-3.5a1 1 0 0 0-1.7.1c-.3.7-.7 1.2-1.3 1.6A3 3 0 0 0 12 18Z"/></svg>
+          <span id="hud-streak-label">—</span>
+        </button>
+        <button type="button" class="hud-chip" id="hud-model-chip" title="Change running AI">Cloud</button>
+      </div>
+      <button type="button" class="hud-chip hud-calm-pill" id="hud-calm-pill" hidden data-i18n-title="hud.calm" title="Calm mode active">calm</button>
+      <div class="hud-game-cluster" id="hud-game-cluster">
+        <button type="button" class="hud-loot-cluster" id="hud-xp-btn" title="Open rewards and loot">
+          <span class="hud-loot-coins" id="hud-coins-label">◉ —</span>
+          <span class="hud-loot-divider" aria-hidden="true"></span>
+          <span class="hud-xp-level" id="hud-xp-level">Lv 1</span>
+          <span class="hud-xp-bar" aria-hidden="true"><span class="hud-xp-fill" id="hud-xp-fill" style="width:0%"></span></span>
+          <span class="hud-gems-count" id="hud-gems-count">💎 0</span>
+        </button>
+        <button type="button" class="hud-quests-btn" id="hud-quests-btn" title="Daily quests">
+          <span id="hud-quests-label">⚔ 0/3</span>
+          <span class="hud-quest-dots" id="hud-quest-dots" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="hud-chest-btn" id="hud-chest-btn" hidden title="Claim today's quest chest" aria-label="Claim today's quest chest">📦</button>
+      </div>
+      <button type="button" class="hud-chip hud-agent-chip" id="hud-agent-chip" data-i18n-title="hud.agentStatus" title="Agent status" data-i18n="hud.agent">Agent</button>
+      <div class="hud-focus-cluster" id="hud-focus-cluster" hidden aria-hidden="true"></div>
+      <button type="button" class="hud-icon-btn" id="hud-pomodoro-btn" data-i18n-title="hud.pomodoro" title="Pomodoro timer"><svg class="hud-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2h6a1 1 0 1 1 0 2h-2v1.1A9 9 0 1 1 11 5.1V4H9a1 1 0 0 1 0-2Zm3 6a1 1 0 0 0-1 1v4.6l-2.2 2.2a1 1 0 1 0 1.4 1.4l2.5-2.5a1 1 0 0 0 .3-.7V9a1 1 0 0 0-1-1Z"/></svg></button>
+      <button id="open-command-palette" class="hud-icon-btn command-launch" type="button" data-i18n-title="hud.commandCenter" title="Command center (Ctrl+K)" data-i18n-aria="hud.commandCenter" aria-label="Command center"><svg class="hud-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6Zm3.3 3.3a1 1 0 0 0 0 1.4L9.6 13l-2.3 2.3a1 1 0 1 0 1.4 1.4l3-3a1 1 0 0 0 0-1.4l-3-3a1 1 0 0 0-1.4 0ZM12 15a1 1 0 1 0 0 2h4a1 1 0 1 0 0-2h-4Z"/></svg></button>
+      <button id="launch-automation-studio" class="hud-icon-btn automation-studio-launch" type="button" data-i18n-title="hud.automationStudio" title="Automation Studio" data-i18n-aria="hud.automationStudio" aria-label="Automation Studio"><svg class="hud-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3a3 3 0 0 1 2.8 2H11a1 1 0 0 1 1 1v5h4.2a3 3 0 1 1 0 2H12a1 1 0 0 1-1-1V7H7.8A3 3 0 1 1 5 3Zm0 12a3 3 0 1 1-2.8 4H2a1 1 0 1 1 0-2h.2A3 3 0 0 1 5 15Zm12-12a3 3 0 1 1 0 6 3 3 0 0 1 0-6Z"/></svg></button>
+      <button type="button" class="hud-icon-btn" id="hud-settings-btn" data-i18n-title="hud.settings" title="Settings" data-i18n-aria="hud.settings" aria-label="Settings"><svg class="hud-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.3 2.5a1 1 0 0 1 1-.5h1.4a1 1 0 0 1 1 .8l.3 1.8c.6.2 1.1.5 1.6.9l1.7-.7a1 1 0 0 1 1.2.4l.7 1.2a1 1 0 0 1-.2 1.3l-1.4 1.2a7 7 0 0 1 0 1.8l1.4 1.2a1 1 0 0 1 .2 1.3l-.7 1.2a1 1 0 0 1-1.2.4l-1.7-.7c-.5.4-1 .7-1.6.9l-.3 1.8a1 1 0 0 1-1 .8h-1.4a1 1 0 0 1-1-.8L10 17.7a6 6 0 0 1-1.6-.9l-1.7.7a1 1 0 0 1-1.2-.4l-.7-1.2a1 1 0 0 1 .2-1.3l1.4-1.2a7 7 0 0 1 0-1.8L5 10.4a1 1 0 0 1-.2-1.3l.7-1.2a1 1 0 0 1 1.2-.4l1.7.7c.5-.4 1-.7 1.6-.9l.3-1.8ZM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg></button>
+    </div>
+  </header>
+  <nav id="nav" class="tab-chip-bar tab-chip-bar--hidden" data-i18n-aria="nav.tabs" aria-label="Tabs"></nav>
+  <div class="hud-storage" aria-hidden="true">
+    <div id="usage-widget" class="usage-widget"></div>
+    <div id="global-agent-status" class="sidebar-status" data-i18n-title="hud.jumpAgent" title="Jump to Agent" data-i18n="hud.agentChecking">Agent status: checking...</div>
+    <div id="pomodoro-mount"></div>
+  </div>
+  <div class="hud-dropdown-anchor" id="hud-dropdown-anchor"></div>
+  <div id="main-progress" class="main-progress" hidden aria-hidden="true"></div>
+  <main id="main"></main>
+</div>
+<aside id="wp-focus-dock" class="wp-focus-dock" role="group" aria-label="Focus drills">
+  <button type="button" class="hud-icon-btn" id="wp-mini-math" title="Quick math" aria-label="Quick math"><svg class="hud-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h3v3h3v3H10v3H7v-3H4V7h3V4Zm8.2 9.2 1.8-1.8 1.8 1.8 1.8-1.8 1.4 1.4-1.8 1.8 1.8 1.8-1.4 1.4-1.8-1.8-1.8 1.8-1.4-1.4 1.8-1.8-1.8-1.8 1.4-1.4ZM5 16h6v2H5v-2Zm0 3h8v2H5v-2Z"/></svg></button>
+  <button type="button" class="hud-icon-btn" id="wp-mini-memory" title="Memory" aria-label="Memory"><svg class="hud-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 1 6 6c0 2.2-1.2 3.9-2.6 5.2-.7.6-1.3 1.3-1.6 2.1H10.2c-.3-.8-.9-1.5-1.6-2.1C7.2 12.9 6 11.2 6 9a6 6 0 0 1 6-6Zm-3 15h6v2H9v-2Zm1 3h4v1H10v-1Z"/></svg></button>
+  <button type="button" class="hud-icon-btn" id="wp-set-alarm" title="Set alarm" aria-label="Set alarm"><svg class="hud-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.3 4.3 3.2 6.4l1.4 1.4 2.1-2.1-1.4-1.4Zm15.5 2.1-2.1-2.1-1.4 1.4 2.1 2.1 1.4-1.4ZM12 7a7 7 0 1 1 0 14 7 7 0 0 1 0-14Zm0 2a1 1 0 0 0-1 1v3.2l-1.8 1.8a1 1 0 1 0 1.4 1.4l2.1-2.1a1 1 0 0 0 .3-.7V10a1 1 0 0 0-1-1Z"/></svg></button>
+</aside>
+<div id="launch-overlay" class="launch-overlay" aria-hidden="true"></div>
+<div id="automation-studio" style="display:none;"></div>
+
+<script src="/js/device.js" defer></script>
+<script src="/js/i18n.js" defer></script>
+<script src="/js/core.js" defer></script>
+<script src="/js/agent.js" defer></script>
+<script src="/js/today.js" defer></script>
+<script src="/js/tasks.js" defer></script>
+<script src="/js/goals.js" defer></script>
+<script src="/js/calendar.js" defer></script>
+<script src="/js/trends.js" defer></script>
+<script src="/js/ideas.js" defer></script>
+<script src="/js/projects.js" defer></script>
+<script src="/js/competitions.js" defer></script>
+  <script src="/js/classes.js" defer></script>
+  <script src="/js/observation.js" defer></script>
+<script src="/js/notes.js" defer></script>
+<script src="/js/people.js" defer></script>
+<script src="/js/events.js" defer></script>
+<script src="/js/code.js" defer></script>
+<script src="/js/style_paint.js" defer></script>
+<script src="/js/practice.js" defer></script>
+<script src="/js/blueprint_quests.js" defer></script>
+<script src="/js/automation.js" defer></script>
+<script src="/js/settings.js" defer></script>
+<script src="/js/hub.js" defer></script>
+<script src="/js/parallel.js" defer></script>
+<script src="/js/uieditor.js" defer></script>
+<script src="/js/custom_templates.js" defer></script>
+<script src="/js/repository.js" defer></script>
+<script src="/js/companion.js" defer></script>
+<script src="/js/loot.js" defer></script>
+<script src="/js/habits.js" defer></script>
+<script src="/js/misc.js" defer></script>
+<script src="/js/napkin_complete.js" defer></script>
+<script src="/js/napkin_remaining.js" defer></script>
+<script src="/js/napkin_depth.js" defer></script>
+<script src="/js/napkin_issues.js" defer></script>
+<script src="/js/image_atelier.js" defer></script>
+<script src="/js/eggs.js" defer></script>
+<script src="/js/setup.js" defer></script>
+<script src="/js/zz_boot_last.js" defer></script>
+</body>
+</html>

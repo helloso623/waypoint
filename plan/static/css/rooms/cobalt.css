@@ -1,0 +1,922 @@
+/* Cobalt Courier — enamel-blue industrial relay enclosure.
+   One cyan lamp carries the signal; everything else is steel, chalk and route ink. */
+
+html[data-player-skin="cobalt"] {
+  --bg-shell: #071426;
+  --bg-content: #0b1e37;
+  --bg-card: #10305a;
+  --ink-primary: #e7f2fb;
+  --ink-secondary: #a9bed2;
+  --ink-muted: #7891aa;
+  --accent: #38bdf8;
+  --ws-accent: #38bdf8;
+  --accent-ink: #06182c;
+  --border: #315578;
+  --cobalt-enamel: #124a8c;
+  --cobalt-deep: #061a35;
+  --cobalt-steel: #9dafba;
+  --cobalt-chalk: #c9d9e3;
+  --cobalt-lamp: #38bdf8;
+  --at-r-plate: 11px 7px 13px 6px;
+  --at-r-card: 9px 6px 11px 5px;
+  --at-r-ctl: 7px 4px 8px 3px;
+  --at-r-chip: 6px 3px 7px 3px;
+  --at-r-cell: 5px 3px 6px 3px;
+  --feel-3d: 0 1px 0 rgba(255, 255, 255, 0.22) inset,
+    0 -2px 0 rgba(2, 10, 21, 0.58) inset,
+    0 4px 0 #051325,
+    0 8px 14px rgba(0, 5, 15, 0.36);
+  --feel-3d-press: 0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 -1px 0 rgba(2, 10, 21, 0.56) inset,
+    0 1px 0 #051325,
+    0 3px 6px rgba(0, 5, 15, 0.3);
+  --feel-grain-opacity: 0.34;
+  --feel-grain-blend: overlay;
+  --feel-grain:
+    repeating-linear-gradient(94deg, transparent 0 5px, rgba(255, 255, 255, 0.055) 5px 6px, transparent 6px 13px),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 4px);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 2px solid #173f68;
+  --feel-icon: saturate(0.78) contrast(1.16) drop-shadow(0 1px 0 rgba(255, 255, 255, 0.24));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.075em;
+}
+
+html[data-player-skin="cobalt"] body {
+  background-color: #071426 !important;
+  background-image:
+    linear-gradient(90deg, rgba(3, 13, 27, 0.84), rgba(3, 13, 27, 0.38)),
+    url("/img/skins/cobalt.png") !important;
+  background-position: center, center;
+  background-size: cover, cover;
+  color: var(--ink-primary);
+}
+
+html[data-player-skin="cobalt"] body::after {
+  opacity: 0.2;
+  mix-blend-mode: overlay;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 41px, rgba(185, 208, 221, 0.055) 41px 42px),
+    repeating-linear-gradient(0deg, transparent 0 27px, rgba(3, 12, 24, 0.25) 27px 28px);
+}
+
+/* The relay fascia: a folded enamel plate with four mechanical corners. */
+html[data-player-skin="cobalt"] .top-hud {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.13), transparent 9px),
+    linear-gradient(90deg, #0a2750, #124a8c 46%, #0b346a 72%, #071d3c);
+  border-bottom: 2px solid #5c778c;
+  border-radius: 0 0 11px 7px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.26),
+    inset 0 -2px 0 rgba(2, 10, 24, 0.5),
+    0 7px 0 #041124,
+    0 12px 24px rgba(0, 5, 15, 0.4);
+}
+
+html[data-player-skin="cobalt"] .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 6px 12px;
+  z-index: 0;
+  border: 1px solid rgba(222, 237, 245, 0.22);
+  border-radius: 7px 4px 9px 3px;
+  background:
+    radial-gradient(circle at 1px 1px, #d6e2e7 0 1px, #263d50 1.4px 2.4px, transparent 2.7px) left top / 11px 11px no-repeat,
+    radial-gradient(circle at calc(100% - 1px) 1px, #d6e2e7 0 1px, #263d50 1.4px 2.4px, transparent 2.7px) right top / 11px 11px no-repeat,
+    radial-gradient(circle at 1px calc(100% - 1px), #d6e2e7 0 1px, #263d50 1.4px 2.4px, transparent 2.7px) left bottom / 11px 11px no-repeat,
+    radial-gradient(circle at calc(100% - 1px) calc(100% - 1px), #d6e2e7 0 1px, #263d50 1.4px 2.4px, transparent 2.7px) right bottom / 11px 11px no-repeat;
+}
+
+html[data-player-skin="cobalt"] .hud-app-name,
+html[data-player-skin="cobalt"] .launcher-title,
+html[data-player-skin="cobalt"] .page-title {
+  background: none;
+  color: #f0f8fc;
+  font-family: ui-monospace, "IBM Plex Mono", "Cascadia Mono", monospace;
+  font-weight: 760;
+  text-shadow: 0 1px 0 #061426;
+}
+
+html[data-player-skin="cobalt"] .hud-app-name::before {
+  content: "RLY / ";
+  color: #9dafba;
+  font-size: 0.72em;
+  letter-spacing: 0.12em;
+}
+
+/* This is the only emissive object: the courier's blue signal lamp. */
+html[data-player-skin="cobalt"] .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  border-radius: 50%;
+}
+
+html[data-player-skin="cobalt"] .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -5px;
+  z-index: -1;
+  border: 2px solid #10222e;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 31%, #e6fbff 0 11%, #8fe6ff 15%, #38bdf8 38%, #0b5d93 62%, #061a2c 66%);
+  box-shadow: 0 0 0 2px #9dafba, 0 0 0 4px #263f55, 0 0 13px rgba(56, 189, 248, 0.72);
+  animation: room-cobalt-lamp 4.8s ease-in-out infinite;
+}
+
+html[data-player-skin="cobalt"] .hud-icon-btn,
+html[data-player-skin="cobalt"] .hud-glyph-btn,
+html[data-player-skin="cobalt"] .hud-status-pill,
+html[data-player-skin="cobalt"] .hud-chip,
+html[data-player-skin="cobalt"] .hud-metric {
+  color: #e7f2fb;
+  border: 1px solid #7f9bad;
+  border-radius: 6px 3px 7px 3px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent 45%),
+    linear-gradient(135deg, #234e77, #0d315d);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 -2px 0 rgba(3, 14, 29, 0.42);
+}
+
+html[data-player-skin="cobalt"] .hud-icon-btn:hover:not(:disabled),
+html[data-player-skin="cobalt"] .hud-glyph-btn:hover:not(:disabled) {
+  border-color: #d6e2e7;
+  background: linear-gradient(180deg, #356b9a, #154675);
+  transform: translateY(-1px);
+}
+
+html[data-player-skin="cobalt"] .tab-chip-bar {
+  background: #06172e;
+  border-bottom: 1px solid #54758c;
+}
+
+html[data-player-skin="cobalt"] .tab-chip {
+  border: 1px solid #315578;
+  border-radius: 7px 3px 7px 3px;
+  background: #0c2850;
+  color: #b8cfdf;
+  font-family: ui-monospace, "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+html[data-player-skin="cobalt"] .tab-chip.active {
+  color: #061426;
+  border-color: #d9e4e9;
+  background: linear-gradient(180deg, #dce9ed, #91a9b8);
+  box-shadow: inset 0 1px 0 #fff, 0 2px 0 #061426;
+}
+
+/* Enamel badges are weighty, bolted objects rather than radio pings. */
+html[data-player-skin="cobalt"] .launcher-tile-glyph,
+html[data-player-skin="cobalt"] .launcher-card-glyph,
+html[data-player-skin="cobalt"] .loot-skin-avatar {
+  position: relative;
+  border: 2px solid #b8cad3;
+  border-radius: 9px 5px 10px 4px;
+  color: #eaf7fb;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.2), transparent 38%),
+    linear-gradient(135deg, #1d67a5, #0b3569 64%, #061e42);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.27), inset 0 -3px 0 #061a35, 0 2px 0 #020c1b;
+}
+
+html[data-player-skin="cobalt"] .launcher-tile-glyph::after,
+html[data-player-skin="cobalt"] .launcher-card-glyph::after {
+  content: "↟";
+  position: absolute;
+  right: -5px;
+  bottom: -6px;
+  display: grid;
+  width: 15px;
+  height: 15px;
+  place-items: center;
+  border: 1px solid #d9e4e9;
+  border-radius: 3px 2px 4px 2px;
+  background: #173850;
+  color: #d9e4e9;
+  font: 800 11px/1 ui-monospace, monospace;
+  box-shadow: 0 1px 0 #020c1b;
+}
+
+html[data-player-skin="cobalt"] .launcher-card,
+html[data-player-skin="cobalt"] .card,
+html[data-player-skin="cobalt"] .hub-card,
+html[data-player-skin="cobalt"] .pln-rail-card,
+html[data-player-skin="cobalt"] .evt-card,
+html[data-player-skin="cobalt"] .tsk-row {
+  border: 1px solid #597a91;
+  border-radius: 11px 7px 13px 6px;
+  background:
+    linear-gradient(104deg, rgba(255, 255, 255, 0.075) 0 1px, transparent 1px 22px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 17%, rgba(1, 9, 21, 0.2)),
+    #0e315d;
+  color: #e7f2fb;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 -2px 0 #061a35, 0 4px 0 #061426, 0 10px 17px rgba(0, 5, 15, 0.24);
+}
+
+html[data-player-skin="cobalt"] .launcher-card {
+  outline: 1px solid rgba(205, 221, 230, 0.16);
+  outline-offset: 3px;
+}
+
+html[data-player-skin="cobalt"] .launcher-card::before {
+  width: 8px;
+  height: 8px;
+  border: 1px solid #91a9b8;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 32%, #f1f7f8 0 15%, #556d7d 23%, #15283a 61%);
+  box-shadow: 0 0 0 1px #061426;
+}
+
+html[data-player-skin="cobalt"] .launcher-card:hover,
+html[data-player-skin="cobalt"] .launcher-card--focused,
+html[data-player-skin="cobalt"] .card:hover {
+  border-color: #c5d8e1;
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), inset 0 -2px 0 #061a35, 0 6px 0 #061426, 0 14px 20px rgba(0, 5, 15, 0.32);
+}
+
+/* A latch closes with a short mechanical throw. */
+html[data-player-skin="cobalt"] button.primary,
+html[data-player-skin="cobalt"] .agent-pane-chat .agc-send {
+  border: 1px solid #d8e4e8;
+  border-radius: 7px 4px 8px 3px;
+  background:
+    linear-gradient(180deg, #e6eff1, #a7bbc4 46%, #7792a1 52%, #c6d5d9);
+  color: #061426;
+  font-family: ui-monospace, "IBM Plex Mono", monospace;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 1px 0 #fff, inset 0 -2px 0 #6a7e88, 0 4px 0 #061426, 0 6px 10px rgba(0, 5, 15, 0.25);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+
+html[data-player-skin="cobalt"] button.primary:hover:not(:disabled),
+html[data-player-skin="cobalt"] .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+html[data-player-skin="cobalt"] button.primary:active:not(:disabled),
+html[data-player-skin="cobalt"] .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: inset 0 2px 0 #6a7e88, inset 0 -1px 0 rgba(255, 255, 255, 0.36), 0 1px 0 #061426;
+}
+
+html[data-player-skin="cobalt"] button.secondary,
+html[data-player-skin="cobalt"] .ghost-btn {
+  border: 1px solid #6f8fa6;
+  border-radius: 6px 3px 7px 3px;
+  background: #0a2448;
+  color: #c9d9e3;
+}
+
+html[data-player-skin="cobalt"] input,
+html[data-player-skin="cobalt"] textarea,
+html[data-player-skin="cobalt"] select,
+html[data-player-skin="cobalt"] .agc-input-zone {
+  border: 1px solid #6f8fa6;
+  border-radius: 7px 3px 8px 3px;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 23px, rgba(184, 202, 211, 0.12) 23px 24px),
+    #071d3c;
+  color: #e7f2fb;
+  caret-color: #38bdf8;
+  box-shadow: inset 0 2px 7px rgba(0, 5, 15, 0.45), 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+html[data-player-skin="cobalt"] input::placeholder,
+html[data-player-skin="cobalt"] textarea::placeholder { color: #8ea9bb; }
+
+html[data-player-skin="cobalt"] .empty-state {
+  border: 1px dashed #86a2b5;
+  border-radius: 11px 7px 13px 6px;
+  background:
+    linear-gradient(90deg, transparent 0 16px, rgba(184, 202, 211, 0.12) 16px 17px, transparent 17px 32px),
+    #09264b;
+  color: #c9d9e3;
+  box-shadow: inset 0 0 0 4px #061a35, inset 0 0 0 5px rgba(184, 202, 211, 0.16);
+}
+
+html[data-player-skin="cobalt"] .loot-shell-dialog,
+html[data-player-skin="cobalt"] .command-palette,
+html[data-player-skin="cobalt"] .napkin-capture-dialog {
+  border: 2px solid #9dafba;
+  border-radius: 13px 7px 15px 6px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.13), transparent 24%),
+    #0b2a52;
+  color: #e7f2fb;
+  box-shadow: inset 0 0 0 2px #061a35, 0 0 0 7px rgba(4, 16, 34, 0.86), 0 22px 55px rgba(0, 4, 12, 0.6);
+}
+
+html[data-player-skin="cobalt"] button:disabled,
+html[data-player-skin="cobalt"] input:disabled,
+html[data-player-skin="cobalt"] textarea:disabled,
+html[data-player-skin="cobalt"] select:disabled {
+  border-color: #405669;
+  background: #10243b;
+  color: #718596;
+  opacity: 0.72;
+  filter: grayscale(0.64);
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.38);
+}
+
+html[data-player-skin="cobalt"] :focus-visible {
+  outline: 2px solid #d9e4e9;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(56, 189, 248, 0.22);
+}
+
+/* Home is the closed relay door: a recessed enamel face, not a terminal. */
+html[data-player-skin="cobalt"][data-app-tab="Home"] #main {
+  clip-path: none !important;
+  background:
+    radial-gradient(circle at 18px 18px, #d9e4e9 0 1.2px, #2b465b 1.8px 3.4px, #061426 3.6px 4.2px, transparent 4.5px) 0 0 / 100% 100% no-repeat,
+    radial-gradient(circle at calc(100% - 18px) 18px, #d9e4e9 0 1.2px, #2b465b 1.8px 3.4px, #061426 3.6px 4.2px, transparent 4.5px) 0 0 / 100% 100% no-repeat,
+    radial-gradient(circle at 18px calc(100% - 18px), #d9e4e9 0 1.2px, #2b465b 1.8px 3.4px, #061426 3.6px 4.2px, transparent 4.5px) 0 0 / 100% 100% no-repeat,
+    radial-gradient(circle at calc(100% - 18px) calc(100% - 18px), #d9e4e9 0 1.2px, #2b465b 1.8px 3.4px, #061426 3.6px 4.2px, transparent 4.5px) 0 0 / 100% 100% no-repeat,
+    radial-gradient(circle at 50% 18px, #d9e4e9 0 1px, #2b465b 1.5px 3px, transparent 3.4px) 0 0 / 100% 100% no-repeat,
+    radial-gradient(circle at 50% calc(100% - 18px), #d9e4e9 0 1px, #2b465b 1.5px 3px, transparent 3.4px) 0 0 / 100% 100% no-repeat,
+    radial-gradient(circle at 18px 50%, #d9e4e9 0 1px, #2b465b 1.5px 3px, transparent 3.4px) 0 0 / 100% 100% no-repeat,
+    radial-gradient(circle at calc(100% - 18px) 50%, #d9e4e9 0 1px, #2b465b 1.5px 3px, transparent 3.4px) 0 0 / 100% 100% no-repeat,
+    radial-gradient(circle at 28% 18px, #c9d9e3 0 0.9px, #263d50 1.3px 2.4px, transparent 2.7px) 0 0 / 100% 100% no-repeat,
+    radial-gradient(circle at 72% 18px, #c9d9e3 0 0.9px, #263d50 1.3px 2.4px, transparent 2.7px) 0 0 / 100% 100% no-repeat,
+    radial-gradient(circle at 28% calc(100% - 18px), #c9d9e3 0 0.9px, #263d50 1.3px 2.4px, transparent 2.7px) 0 0 / 100% 100% no-repeat,
+    radial-gradient(circle at 72% calc(100% - 18px), #c9d9e3 0 0.9px, #263d50 1.3px 2.4px, transparent 2.7px) 0 0 / 100% 100% no-repeat,
+    linear-gradient(90deg, transparent 0 calc(100% - 30px), #9dafba calc(100% - 30px) calc(100% - 28px), rgba(157, 175, 186, 0.16) calc(100% - 28px) calc(100% - 16px), transparent calc(100% - 16px)),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.08), transparent 22%),
+    linear-gradient(135deg, #0b3162, #071d3c);
+  box-shadow: inset 0 0 0 12px rgba(3, 15, 31, 0.42), inset 0 0 0 13px rgba(184, 202, 211, 0.15);
+}
+
+/* Agent is the lamp room: one contained pool of cyan above the workbench. */
+html[data-player-skin="cobalt"][data-app-tab="Agent"] #main {
+  clip-path: none !important;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Agent"] #main .agent-pane {
+  border: 1px solid #63849b;
+  border-radius: 12px 7px 14px 6px;
+  background:
+    radial-gradient(circle at 50% 8%, rgba(185, 242, 255, 0.82) 0 2%, rgba(56, 189, 248, 0.3) 5%, rgba(56, 189, 248, 0.07) 16%, transparent 31%),
+    repeating-linear-gradient(90deg, transparent 0 36px, rgba(184, 202, 211, 0.055) 36px 37px),
+    #061a35;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 -2px 0 #020c1b, 0 5px 0 #041124;
+}
+
+/* Route flimsies under the lamp: thin chalk slips, one outbound steel back. */
+html[data-player-skin="cobalt"] .agent-msg.assistant .agent-bubble {
+  position: relative;
+  border: 1px solid #8ba4b4;
+  border-radius: 8px 4px 10px 4px;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 17px, rgba(30, 58, 138, 0.1) 17px 18px),
+    #dbe7ec;
+  color: #142b42;
+  box-shadow: 2px 3px 0 #041124, inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+html[data-player-skin="cobalt"] .agent-msg.assistant .agent-bubble::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 10px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #061a35;
+  box-shadow: inset 0 0 0 1px #9dafba;
+}
+
+html[data-player-skin="cobalt"] .agent-msg.user .agent-bubble {
+  position: relative;
+  border: 1px solid #a7bbc4;
+  border-radius: 4px 8px 4px 10px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 40%),
+    #315e84;
+  color: #f3f9fb;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 2px 3px 0 #041124;
+}
+
+/* Today is a courier's marked dispatch sheet pinned inside the door. */
+html[data-player-skin="cobalt"][data-app-tab="Today"] #main {
+  clip-path: none !important;
+  color: #142b42;
+  background:
+    radial-gradient(circle at 22px 18px, #9dafba 0 3px, #061426 3.4px 5px, transparent 5.4px) 0 0 / 100% 100% no-repeat,
+    radial-gradient(circle at calc(100% - 22px) 18px, #9dafba 0 3px, #061426 3.4px 5px, transparent 5.4px) 0 0 / 100% 100% no-repeat,
+    linear-gradient(90deg, transparent 0 34px, rgba(30, 58, 138, 0.28) 34px 36px, transparent 36px),
+    repeating-linear-gradient(0deg, #dbe7ec 0 30px, #adc2cf 30px 31px);
+  box-shadow: inset 0 0 0 10px #061a35, inset 0 0 0 11px #6f8fa6;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Today"] #main .page-title {
+  color: #173c63;
+  text-shadow: none;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Today"] #main .tdy-hour-cell {
+  border: 1px solid #8ba4b4;
+  border-radius: 4px 2px 5px 2px;
+  background: rgba(246, 250, 251, 0.84);
+  color: #173c63;
+  box-shadow: inset 2px 0 0 #dbe7ec;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Today"] #main .tdy-hour-time {
+  font-family: ui-monospace, "IBM Plex Mono", monospace;
+  letter-spacing: 0.06em;
+  color: #3a5870;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Today"] #main .tdy-hour-painted {
+  border-color: #1e3a8a;
+  background: #315e84;
+  color: #f4fafc;
+  box-shadow: inset 3px 0 0 #38bdf8, inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Today"] .tdy-now-marker {
+  background: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.55);
+}
+
+/* Calendar is a wall timetable — enamel grid, chalk numbers, one lamp cell. */
+html[data-player-skin="cobalt"][data-app-tab="Calendar"] #main {
+  clip-path: none !important;
+  color: #e7f2fb;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 46px, rgba(157, 175, 186, 0.2) 46px 47px),
+    repeating-linear-gradient(90deg, transparent 0 68px, rgba(157, 175, 186, 0.14) 68px 69px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 16%),
+    #0b3162;
+  box-shadow: inset 0 0 0 10px #061a35, inset 0 0 0 12px #9dafba;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Calendar"] #main .page-title {
+  color: #c9d9e3;
+  text-shadow: 0 1px 0 #061426;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Calendar"] #main :is(.cal-day, .cal-hour-cell),
+html[data-player-skin="cobalt"][data-app-tab="Calendar"] #main .cal-month-cell:not(.cal-month-cell-pad) {
+  border: 1px solid #597a91;
+  border-radius: 5px 3px 6px 3px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 38%),
+    #10305a;
+  color: #c9d9e3;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -2px 0 #061a35;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Calendar"] #main .cal-month-cell-pad {
+  border: 1px dashed #315578;
+  background: #071d3c;
+  box-shadow: inset 0 2px 6px rgba(0, 5, 15, 0.4);
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Calendar"] #main :is(.cal-month-daynum, .cal-week-day-head) {
+  font-family: ui-monospace, "IBM Plex Mono", monospace;
+  letter-spacing: 0.08em;
+  color: #c9d9e3;
+  text-shadow: 0 1px 0 #061426;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Calendar"] #main :is(.cal-week-chip, .cal-month-chip) {
+  border: 1px solid #7f9bad;
+  border-radius: 6px 3px 7px 3px;
+  background: linear-gradient(180deg, #dce9ed, #91a9b8);
+  color: #061426;
+  font-family: ui-monospace, "IBM Plex Mono", monospace;
+  box-shadow: inset 0 1px 0 #fff, 0 2px 0 #061426;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Calendar"] #main .cal-month-cell-today,
+html[data-player-skin="cobalt"][data-app-tab="Calendar"] #main .cal-week-day-today {
+  position: relative;
+  isolation: isolate;
+  border-color: #9dafba;
+  color: #061426;
+  background:
+    radial-gradient(circle at 50% 40%, #e6fbff 0 14%, #38bdf8 32%, #0b5d93 58%, #10305a 72%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 0 0 2px #9dafba,
+    0 0 12px rgba(56, 189, 248, 0.55);
+  animation: room-cobalt-lamp 4.8s ease-in-out infinite;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Calendar"] #main .cal-month-cell-today .cal-month-daynum {
+  color: #06182c;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* Tasks: punched ticket stack — a notch and a steel clip on each slip. */
+html[data-player-skin="cobalt"][data-app-tab="Tasks"] #main {
+  clip-path: none !important;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 36px, rgba(6, 26, 53, 0.5) 36px 44px),
+    #0a2448;
+  box-shadow: inset 0 0 0 10px #061a35, inset 0 0 0 11px #54758c;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Tasks"] #main :is(.card, .tsk-row, .task-row) {
+  position: relative;
+  overflow: visible;
+  border: 1px solid #8ba4b4;
+  border-radius: 3px 8px 4px 9px;
+  color: #142b42;
+  background:
+    radial-gradient(circle at 11px 50%, #0a2448 0 6px, transparent 6.4px),
+    linear-gradient(180deg, #e8eef1, #c9d9e3);
+  box-shadow: inset 0 1px 0 #fff, 0 3px 0 #041124, 0 8px 12px rgba(0, 5, 15, 0.22);
+  padding-left: 22px;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Tasks"] #main :is(.tsk-row, .task-row)::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background: #0a2448;
+  box-shadow: inset 0 0 0 1px #9dafba, 0 0 0 2px #c9d9e3;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Tasks"] #main :is(.tsk-row, .task-row)::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  right: 22px;
+  width: 18px;
+  height: 11px;
+  border: 1px solid #d9e4e9;
+  border-radius: 2px 6px 2px 5px;
+  background: linear-gradient(180deg, #e6eff1, #7f9bad);
+  box-shadow: inset 0 1px 0 #fff, 0 2px 0 #061426;
+  animation: room-cobalt-clip 3.6s ease-in-out infinite;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Tasks"] #main .tsk-row-title,
+html[data-player-skin="cobalt"][data-app-tab="Tasks"] #main .task-title {
+  color: #142b42;
+  font-family: ui-monospace, "IBM Plex Mono", monospace;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Tasks"] #main .tsk-day-chip {
+  border: 1px solid #7f9bad;
+  border-radius: 6px 3px 7px 3px;
+  background: #10305a;
+  color: #c9d9e3;
+  font-family: ui-monospace, "IBM Plex Mono", monospace;
+}
+
+/* Goals: a single destination plate. One lamp marks the stop. */
+html[data-player-skin="cobalt"][data-app-tab="Goals"] #main {
+  clip-path: none !important;
+  background:
+    radial-gradient(ellipse 46% 30% at 50% 18%, rgba(56, 189, 248, 0.08), transparent 64%),
+    linear-gradient(135deg, #0b3162, #061a35);
+  box-shadow: inset 0 0 0 12px rgba(3, 15, 31, 0.42), inset 0 0 0 13px rgba(184, 202, 211, 0.14);
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Goals"] #main .card {
+  position: relative;
+  border: 2px solid #9dafba;
+  border-radius: 11px 7px 13px 6px;
+  color: #e7f2fb;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 18%),
+    linear-gradient(135deg, #1d67a5, #0b3569 64%, #061e42);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 -3px 0 #061a35, 0 5px 0 #041124;
+  padding-left: 28px;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Goals"] #main .card::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 14px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #10222e;
+  background: radial-gradient(circle at 38% 31%, #e6fbff 0 18%, #38bdf8 40%, #061a2c 70%);
+  box-shadow: 0 0 0 1px #9dafba, 0 0 8px rgba(56, 189, 248, 0.55);
+  animation: room-cobalt-lamp 4.8s ease-in-out infinite;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Goals"] #main .page-title {
+  font-family: ui-monospace, "IBM Plex Mono", "Cascadia Mono", monospace;
+}
+
+/* Hub: relay switchboard — small enamel tiles on a steel bay. */
+html[data-player-skin="cobalt"][data-app-tab="Hub"] #main {
+  clip-path: none !important;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 54px, rgba(157, 175, 186, 0.08) 54px 55px),
+    repeating-linear-gradient(0deg, transparent 0 38px, rgba(6, 26, 53, 0.35) 38px 39px),
+    #071d3c;
+  box-shadow: inset 0 0 0 10px #041124, inset 0 0 0 11px #54758c;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Hub"] #main :is(.hub-card, .hub-glance-item) {
+  border: 1px solid #7f9bad;
+  border-radius: 9px 5px 10px 4px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 36%),
+    linear-gradient(135deg, #1a5a96, #0c315d);
+  color: #e7f2fb;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 0 #061a35, 0 3px 0 #041124;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Hub"] #main .hub-glance-item {
+  border-radius: 7px 4px 8px 3px;
+  min-height: 72px;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Hub"] #main .hub-chip {
+  border: 1px solid #9dafba;
+  border-radius: 6px 3px 7px 3px;
+  background: linear-gradient(180deg, #c9d9e3, #7f9bad);
+  color: #061426;
+  font-family: ui-monospace, "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  box-shadow: inset 0 1px 0 #fff, 0 2px 0 #061426;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Hub"] #main .hub-chip.active {
+  background: linear-gradient(180deg, #e6eff1, #91a9b8);
+  box-shadow: inset 0 2px 0 #6a7e88, 0 1px 0 #061426;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Hub"] #main .hub-card-head,
+html[data-player-skin="cobalt"][data-app-tab="Hub"] #main .hub-glance-label {
+  font-family: ui-monospace, "IBM Plex Mono", monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c9d9e3;
+}
+
+/* Practice: drill cards as stamped blanks — registration marks, unused plate. */
+html[data-player-skin="cobalt"][data-app-tab="Practice"] #main {
+  clip-path: none !important;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 11px, rgba(184, 202, 211, 0.04) 11px 12px),
+    #061a35;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Practice"] #main .card {
+  position: relative;
+  border: 1px dashed #86a2b5;
+  border-radius: 9px 6px 11px 5px;
+  background:
+    linear-gradient(90deg, transparent 0 10px, rgba(184, 202, 211, 0.16) 10px 11px, transparent 11px calc(100% - 11px), rgba(184, 202, 211, 0.16) calc(100% - 11px) calc(100% - 10px), transparent calc(100% - 10px)),
+    linear-gradient(180deg, transparent 0 10px, rgba(184, 202, 211, 0.16) 10px 11px, transparent 11px calc(100% - 11px), rgba(184, 202, 211, 0.16) calc(100% - 11px) calc(100% - 10px), transparent calc(100% - 10px)),
+    #0c2850;
+  color: #e7f2fb;
+  box-shadow: inset 0 0 0 4px #061a35, 0 4px 0 #041124;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Practice"] #main .card::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 9px;
+  height: 9px;
+  background:
+    linear-gradient(#9dafba, #9dafba) 50% 0 / 1px 100% no-repeat,
+    linear-gradient(#9dafba, #9dafba) 0 50% / 100% 1px no-repeat;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Practice"] #main .card::after {
+  content: "DRL";
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font: 800 9px/1 ui-monospace, monospace;
+  letter-spacing: 0.14em;
+  color: #9dafba;
+}
+
+/* Settings / About: fascia plate with engraved type. */
+html[data-player-skin="cobalt"][data-app-tab="Settings"] #main,
+html[data-player-skin="cobalt"][data-app-tab="About"] #main {
+  clip-path: none !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 14%),
+    linear-gradient(135deg, #0b3162, #071d3c);
+  box-shadow: inset 0 0 0 12px rgba(3, 15, 31, 0.4), inset 0 0 0 13px rgba(184, 202, 211, 0.12);
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Settings"] #main .card,
+html[data-player-skin="cobalt"][data-app-tab="About"] #main .card {
+  border: 1px solid #7f9bad;
+  border-radius: 11px 7px 13px 6px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 16%),
+    repeating-linear-gradient(90deg, transparent 0 19px, rgba(184, 202, 211, 0.04) 19px 20px),
+    #0e315d;
+  color: #e7f2fb;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 -2px 0 #061a35, 0 4px 0 #041124;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Settings"] #main .page-title,
+html[data-player-skin="cobalt"][data-app-tab="About"] #main .page-title,
+html[data-player-skin="cobalt"][data-app-tab="Settings"] #main .card h2,
+html[data-player-skin="cobalt"][data-app-tab="About"] #main .card h2,
+html[data-player-skin="cobalt"][data-app-tab="Settings"] #main label,
+html[data-player-skin="cobalt"][data-app-tab="About"] #main label {
+  font-family: ui-monospace, "IBM Plex Mono", "Cascadia Mono", monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c9d9e3;
+  text-shadow: 0 1px 0 #061426;
+}
+
+/* Paint: chalk stencil on enamel — dashed holes, dust, no second lamp. */
+html[data-player-skin="cobalt"][data-app-tab="Paint"] #main {
+  clip-path: none !important;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(201, 217, 227, 0.08) 0 1px, transparent 2px),
+    radial-gradient(circle at 72% 68%, rgba(201, 217, 227, 0.07) 0 1px, transparent 2px),
+    #0b3162;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Paint"] #main .card {
+  border: 2px dashed #9dafba;
+  border-radius: 11px 7px 13px 6px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 7px, rgba(201, 217, 227, 0.08) 7px 8px, transparent 8px 16px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 22%),
+    #124a8c;
+  color: #e7f2fb;
+  box-shadow: inset 0 0 0 5px #061a35, 0 4px 0 #041124;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Paint"] #main .page-title {
+  font-family: ui-monospace, "IBM Plex Mono", monospace;
+  letter-spacing: 0.16em;
+  color: #c9d9e3;
+}
+
+/* Parallel: a rack of slots. Projects: crate stencils. */
+html[data-player-skin="cobalt"][data-app-tab="Parallel"] #main {
+  clip-path: none !important;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 21px, rgba(157, 175, 186, 0.16) 21px 22px, transparent 22px 28px),
+    linear-gradient(90deg, #9dafba 0 4px, transparent 4px calc(100% - 4px), #9dafba calc(100% - 4px)),
+    #071d3c;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Projects"] #main {
+  clip-path: none !important;
+  background:
+    linear-gradient(90deg, rgba(157, 175, 186, 0.14) 0 10px, transparent 10px calc(100% - 10px), rgba(157, 175, 186, 0.14) calc(100% - 10px)),
+    linear-gradient(180deg, rgba(157, 175, 186, 0.14) 0 10px, transparent 10px calc(100% - 10px), rgba(157, 175, 186, 0.14) calc(100% - 10px)),
+    #0b3162;
+  box-shadow: inset 0 0 0 8px #061a35, inset 0 0 0 10px #7f9bad;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Parallel"] #main .card {
+  border: 1px solid #7f9bad;
+  border-left: 4px solid #9dafba;
+  border-radius: 5px 7px 6px 8px;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 18px, rgba(157, 175, 186, 0.1) 18px 19px),
+    #0c2850;
+  color: #e7f2fb;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 3px 0 #041124;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Projects"] #main .card {
+  position: relative;
+  border: 2px solid #9dafba;
+  border-radius: 4px 8px 5px 9px;
+  background:
+    linear-gradient(90deg, rgba(157, 175, 186, 0.16) 0 7px, transparent 7px calc(100% - 7px), rgba(157, 175, 186, 0.16) calc(100% - 7px)),
+    #0e315d;
+  color: #e7f2fb;
+  box-shadow: inset 0 0 0 1px #061a35, 0 4px 0 #041124;
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Projects"] #main .card::after {
+  content: "CRT";
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  font: 800 10px/1 ui-monospace, monospace;
+  letter-spacing: 0.18em;
+  color: rgba(201, 217, 227, 0.38);
+}
+
+html[data-player-skin="cobalt"][data-app-tab="Parallel"] #main .page-title,
+html[data-player-skin="cobalt"][data-app-tab="Projects"] #main .page-title {
+  font-family: ui-monospace, "IBM Plex Mono", monospace;
+  letter-spacing: 0.1em;
+}
+
+/* Toast is a steel flag thrown on the latch rail. */
+html[data-player-skin="cobalt"] .toast-item {
+  position: relative;
+  border: 1px solid #d9e4e9;
+  border-radius: 3px 11px 4px 7px;
+  background: linear-gradient(180deg, #e6eff1, #91a9b8 58%, #7f9bad);
+  color: #061426;
+  font-family: ui-monospace, "IBM Plex Mono", monospace;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+  box-shadow: inset 0 1px 0 #fff, inset 0 -2px 0 #6a7e88, 0 3px 0 #041124, 0 8px 14px rgba(0, 5, 15, 0.32);
+  animation: room-cobalt-flag 0.62s ease-out 1;
+}
+
+html[data-player-skin="cobalt"] .toast-item::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 50%;
+  width: 10px;
+  height: 14px;
+  margin-top: -7px;
+  border: 1px solid #d9e4e9;
+  border-radius: 2px 3px 2px 4px;
+  background: linear-gradient(90deg, #c9d9e3, #7f9bad);
+  box-shadow: 0 2px 0 #041124;
+}
+
+/* Companion is a small lamp — same signal, smaller bezel. */
+html[data-player-skin="cobalt"] .companion-launcher-orb,
+html[data-player-skin="cobalt"]:root[data-skin-place~="companion"] .companion-launcher-orb {
+  border-radius: 50%;
+  border: 2px solid #10222e;
+  background: radial-gradient(circle at 38% 31%, #e6fbff 0 11%, #8fe6ff 15%, #38bdf8 38%, #0b5d93 62%, #061a2c 66%);
+  box-shadow: 0 0 0 2px #9dafba, 0 0 0 4px #263f55, 0 0 11px rgba(56, 189, 248, 0.62);
+  animation: room-cobalt-lamp 4.8s ease-in-out infinite;
+}
+
+html[data-player-skin="cobalt"] .companion-launcher:hover .companion-launcher-orb {
+  filter: brightness(1.08);
+}
+
+html[data-player-skin="cobalt"] ::selection {
+  background: rgba(56, 189, 248, 0.32);
+  color: #e7f2fb;
+}
+
+html[data-player-skin="cobalt"] * {
+  scrollbar-color: #9dafba #061a35;
+}
+
+@keyframes room-cobalt-lamp {
+  0%, 100% { filter: brightness(0.96); }
+  47% { filter: brightness(1.08); }
+  53% { filter: brightness(0.99); }
+}
+
+@keyframes room-cobalt-flag {
+  0% { transform: translateX(10px) rotate(-3deg); opacity: 0; }
+  58% { transform: translateX(-2px) rotate(1deg); opacity: 1; }
+  100% { transform: translateX(0) rotate(0deg); opacity: 1; }
+}
+
+@keyframes room-cobalt-clip {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(1px); }
+  55% { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="cobalt"] *,
+  html[data-player-skin="cobalt"] *::before,
+  html[data-player-skin="cobalt"] *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html[data-player-skin="cobalt"] .launcher-card:hover,
+  html[data-player-skin="cobalt"] .launcher-card--focused,
+  html[data-player-skin="cobalt"] .card:hover,
+  html[data-player-skin="cobalt"] button.primary:hover:not(:disabled),
+  html[data-player-skin="cobalt"] button.primary:active:not(:disabled),
+  html[data-player-skin="cobalt"] .agent-pane-chat .agc-send:hover:not(:disabled),
+  html[data-player-skin="cobalt"] .agent-pane-chat .agc-send:active:not(:disabled),
+  html[data-player-skin="cobalt"] .companion-launcher:hover .companion-launcher-orb,
+  html[data-player-skin="cobalt"] .toast-item {
+    transform: none !important;
+    filter: none;
+  }
+}

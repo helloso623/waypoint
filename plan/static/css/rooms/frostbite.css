@@ -1,0 +1,1108 @@
+/* ═══════════════════════════════════════════════════════════════
+   FROSTBITE RELAY — ice crystals collect on the pulse row.
+
+   The object: a cold-metal relay strip. Needle ice nucleates on
+   each pulse tick and grows as sharp hexagonal dendrites. The
+   HUD is the fascia the crystals hang from. The pulse row is
+   where they collect. Painful cold: a sting of royal blue, not
+   a glacier wall, not a whiteout, not a fog.
+
+   Not Glacier Warden (ancient cyan mass, route cut, frosted
+   glass, thin ice lines). Not Blizzard Post (whiteout dots over
+   page). Not Mist Walker (dissolving veil). Not Polar Beacon
+   (a light at the top of the world). Not Iceberg Crown (a HUD
+   halo). Not Quartz Lens (one chamfer, violet vein). Not Cobalt
+   Courier (enamel lamp house).
+
+   Architecture:
+   - Signature cut: needle facets in px. Knife on two corners,
+     cleaved face on the other two. Never 42%/48% ovals.
+   - Signature glyph: a six-needle dendrite. Not the frost
+     family's hex body. Glyphs may clip; #main and launcher
+     cards may not.
+   - HUD: brushed relay fascia. Ice needles grow down the lip.
+   - Pulse: each happiness tick is a nucleation site. Crystals
+     collect along the row.
+   - Grid lives on hud + pulse only. Place is not page.
+
+   Loot: colorA #e0f2fe, colorB #1d4ed8, effect frost,
+   pattern grid, place hud,pulse.
+   Selectors carry :root so this room outranks frost-family
+   stencils. Reduced motion kills nucleation.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — sting ice on cold relay steel ─────────────── */
+
+html[data-player-skin="frostbite"]:root {
+  color-scheme: dark;
+
+  --fb-night: #05081a;
+  --fb-well: #070b1c;
+  --fb-steel: #10182e;
+  --fb-plate: #162038;
+  --fb-bezel: #1e2c4a;
+  --fb-metal: #2a3d62;
+  --fb-edge: #3d5a8a;
+  --fb-ice: #e0f2fe;
+  --fb-ice-hot: #f8fbff;
+  --fb-sting: #1d4ed8;
+  --fb-sting-hot: #2563eb;
+  --fb-vein: #60a5fa;
+  --fb-ink: #e8f1fb;
+  --fb-ink-2: #b8c9de;
+  --fb-mute: #7b8eaa;
+
+  --fb-hair: rgba(224, 242, 254, 0.16);
+  --fb-hair-2: rgba(29, 78, 216, 0.45);
+  --fb-glint: rgba(248, 251, 255, 0.72);
+
+  /* Needle facet: knife TL/BR, cleaved TR/BL. Slash so the
+     cut reads as a crystal, not a pill. All px. */
+  --fb-r-plate: 1px 16px 1px 12px / 12px 1px 16px 1px;
+  --fb-r-card: 1px 13px 1px 10px / 10px 1px 13px 1px;
+  --fb-r-ctl: 1px 10px 1px 8px / 8px 1px 10px 1px;
+  --fb-r-chip: 1px 8px 1px 6px / 6px 1px 8px 1px;
+  --fb-r-cell: 1px 7px 1px 5px / 5px 1px 7px 1px;
+  --fb-r-needle: 0 11px 0 11px / 11px 0 11px 0;
+
+  /* Lattice for hud + pulse. Orthogonal + 60° cleavage. */
+  --fb-lattice:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 13px,
+      rgba(224, 242, 254, 0.14) 13px 14px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 13px,
+      rgba(29, 78, 216, 0.22) 13px 14px
+    ),
+    repeating-linear-gradient(
+      60deg,
+      transparent 0 21px,
+      rgba(224, 242, 254, 0.08) 21px 22px
+    );
+
+  /* Six-needle dendrite — unique vs frost hexagon. */
+  --fb-dendrite: polygon(
+    50% 0%, 56% 18%, 82% 8%, 70% 28%, 100% 36%, 76% 50%,
+    100% 64%, 70% 72%, 82% 92%, 56% 82%, 50% 100%, 44% 82%,
+    18% 92%, 30% 72%, 0% 64%, 24% 50%, 0% 36%, 30% 28%,
+    18% 8%, 44% 18%
+  );
+
+  --bg-shell: var(--fb-night);
+  --bg-content: var(--fb-steel);
+  --bg-card: var(--fb-plate);
+  --bg-card-hover: var(--fb-bezel);
+  --ink-primary: var(--fb-ink);
+  --ink-secondary: var(--fb-ink-2);
+  --ink-muted: var(--fb-mute);
+  --border: rgba(61, 90, 138, 0.45);
+  --gridline: rgba(29, 78, 216, 0.18);
+  --accent: var(--fb-ice);
+  --ws-accent: var(--fb-ice);
+  --accent-ink: var(--fb-night);
+  --glow-accent: rgba(224, 242, 254, 0.22);
+  --glow-violet: rgba(29, 78, 216, 0.28);
+
+  --skin-a: #e0f2fe;
+  --skin-b: #1d4ed8;
+  --at-a: #e0f2fe;
+  --at-b: #1d4ed8;
+  --feel-a: #e0f2fe;
+  --feel-b: #1d4ed8;
+  --feel-accent: #e0f2fe;
+  --feel-ground: #05081a;
+  --feel-paper: #162038;
+  --feel-ink: #e8f1fb;
+
+  --at-plate: var(--fb-plate);
+  --at-plate-2: var(--fb-bezel);
+  --at-well: var(--fb-well);
+  --at-ink: var(--fb-ink);
+  --at-ink-2: var(--fb-ink-2);
+  --at-ink-3: var(--fb-mute);
+  --at-hair: var(--fb-hair);
+  --at-hair-2: var(--fb-hair-2);
+  --at-hair-a: rgba(224, 242, 254, 0.5);
+  --at-tint: rgba(224, 242, 254, 0.08);
+  --at-tint-b: rgba(29, 78, 216, 0.28);
+  --at-focus: 0 0 0 2px var(--fb-ice);
+  --at-inset: inset 0 1px 0 rgba(248, 251, 255, 0.14);
+  --at-rise: 0 16px 32px -20px rgba(2, 4, 12, 0.92);
+  --at-rise-soft: 0 8px 18px -14px rgba(2, 4, 12, 0.8);
+
+  --at-r-plate: var(--fb-r-plate);
+  --at-r-card: var(--fb-r-card);
+  --at-r-ctl: var(--fb-r-ctl);
+  --at-r-chip: var(--fb-r-chip);
+  --at-r-cell: var(--fb-r-cell);
+
+  --at-font-display: "Bahnschrift", "DIN Alternate", "Segoe UI Condensed",
+    "Arial Narrow", sans-serif;
+  --font-display: var(--at-font-display);
+  --font-ui: "Segoe UI", system-ui, sans-serif;
+  --at-font-ui: var(--font-ui);
+
+  /* Cleaved steel, not glacier glass, not frost-family offset. */
+  --feel-3d:
+    inset 0 1px 0 rgba(248, 251, 255, 0.16),
+    inset 0 -1px 0 rgba(29, 78, 216, 0.35),
+    3px 4px 0 #070b1c,
+    0 10px 18px rgba(2, 4, 12, 0.5);
+  --feel-3d-press:
+    inset 0 2px 6px rgba(5, 8, 26, 0.72),
+    1px 1px 0 #070b1c;
+  --feel-grain-opacity: 0.28;
+  --feel-grain-blend: overlay;
+  --feel-grain:
+    repeating-linear-gradient(
+      94deg,
+      transparent 0 7px,
+      rgba(224, 242, 254, 0.05) 7px 8px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 3px,
+      rgba(5, 8, 26, 0.28) 3px 4px
+    );
+  --feel-grain-size: auto;
+  --feel-hud-hair: 0;
+  --feel-icon:
+    contrast(1.12) saturate(0.85) brightness(1.08)
+    drop-shadow(0 0 4px rgba(224, 242, 254, 0.45));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.14em;
+  --feel-plate-image:
+    linear-gradient(135deg, rgba(224, 242, 254, 0.1), transparent 28%),
+    repeating-linear-gradient(
+      94deg,
+      transparent 0 9px,
+      rgba(29, 78, 216, 0.08) 9px 10px
+    );
+}
+
+/* ── 2 · Body — night steel. No whiteout. No fog. ───────────── */
+
+html[data-player-skin="frostbite"]:root body {
+  background-color: var(--fb-night) !important;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(5, 8, 26, 0.55) 0%,
+      rgba(16, 24, 46, 0.22) 28%,
+      rgba(5, 8, 26, 0.78) 100%
+    ),
+    repeating-linear-gradient(
+      94deg,
+      #10182e 0 11px,
+      #0c1428 11px 12px,
+      #162038 12px 23px
+    ) !important;
+  background-size: cover, 28px 100% !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat, repeat !important;
+  color: var(--fb-ink);
+  animation: none;
+}
+
+/* A few sharp glints — needles catching light, never a veil. */
+html[data-player-skin="frostbite"]:root body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.22;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(224, 242, 254, 0.28) 0 1px, transparent 2px),
+    radial-gradient(circle at 72% 14%, rgba(29, 78, 216, 0.35) 0 1px, transparent 2px),
+    radial-gradient(circle at 44% 6%, rgba(248, 251, 255, 0.22) 0 1px, transparent 2px);
+  background-size: 120px 80px, 160px 90px, 200px 70px;
+  animation: room-frostbite-glint 7.2s ease-in-out infinite;
+}
+
+html[data-player-skin="frostbite"]:root body::after {
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  animation: none !important;
+  background:
+    repeating-linear-gradient(
+      94deg,
+      transparent 0 8px,
+      rgba(224, 242, 254, 0.06) 8px 9px
+    );
+}
+
+/* Place is not page: kill the generic grid wallpaper. */
+html[data-player-skin="frostbite"]:root #main {
+  isolation: isolate;
+  position: relative;
+  clip-path: none !important;
+  overflow: visible;
+  background-image: none !important;
+  background-color: color-mix(in srgb, var(--fb-night) 38%, transparent) !important;
+}
+
+html[data-player-skin="frostbite"]:root #main::before,
+html[data-player-skin="frostbite"]:root #main::after {
+  animation: none !important;
+  background: none;
+  clip-path: none !important;
+}
+
+html[data-player-skin="frostbite"]:root .launcher-card {
+  clip-path: none !important;
+  overflow: visible;
+  backdrop-filter: none;
+}
+
+/* ── 3 · HUD — relay fascia. Ice needles hang from the lip. ─── */
+
+html[data-player-skin="frostbite"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  color: var(--fb-ink);
+  border-bottom: 0;
+  border-image: none;
+  border-radius: 0;
+  backdrop-filter: none;
+  background:
+    linear-gradient(180deg, rgba(248, 251, 255, 0.08), transparent 32%),
+    repeating-linear-gradient(
+      94deg,
+      #1e2c4a 0 8px,
+      #162038 8px 9px,
+      #1a2744 9px 17px
+    ),
+    var(--fb-plate);
+  box-shadow:
+    inset 0 1px 0 rgba(248, 251, 255, 0.14),
+    inset 0 -2px 0 var(--fb-sting),
+    0 12px 28px rgba(2, 4, 12, 0.5);
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="hud"] .top-hud {
+  background-image:
+    var(--fb-lattice),
+    linear-gradient(180deg, rgba(248, 251, 255, 0.08), transparent 32%),
+    repeating-linear-gradient(
+      94deg,
+      #1e2c4a 0 8px,
+      #162038 8px 9px,
+      #1a2744 9px 17px
+    );
+  background-size: 28px 28px, 28px 28px, 28px 28px, auto, auto;
+}
+
+/* Needles growing down the fascia — the collection, not a halo. */
+html[data-player-skin="frostbite"]:root[data-skin-place~="hud"] .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: -8px;
+  height: 14px;
+  z-index: 3;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 9px,
+      var(--fb-ice) 9px 10px,
+      transparent 10px 16px,
+      var(--fb-sting) 16px 17px,
+      transparent 17px 24px,
+      var(--fb-ice-hot) 24px 25px,
+      transparent 25px 34px
+    );
+  -webkit-mask-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 8px,
+    #000 8px 11px,
+    transparent 11px 15px,
+    #000 15px 19px,
+    transparent 19px 23px,
+    #000 23px 26px,
+    transparent 26px 34px
+  );
+  mask-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 8px,
+    #000 8px 11px,
+    transparent 11px 15px,
+    #000 15px 19px,
+    transparent 19px 23px,
+    #000 23px 26px,
+    transparent 26px 34px
+  );
+  -webkit-mask-size: 34px 100%;
+  mask-size: 34px 100%;
+  transform-origin: 50% 0;
+  box-shadow: 0 6px 12px rgba(29, 78, 216, 0.28);
+  animation:
+    room-frostbite-nucleate 5.6s ease-in-out infinite,
+    room-frostbite-relay 9.2s linear infinite;
+}
+
+html[data-player-skin="frostbite"]:root .top-hud > * {
+  position: relative;
+  z-index: 2;
+}
+
+html[data-player-skin="frostbite"]:root :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--fb-ink);
+  color: var(--fb-ink);
+  font-family: var(--at-font-display);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 #05081a, 0 0 10px rgba(224, 242, 254, 0.18);
+}
+
+/* Unique mark: a six-needle crystal, not a halo, not a stamp. */
+html[data-player-skin="frostbite"]:root .hud-app-name::before {
+  content: "";
+  display: inline-block;
+  width: 0.72em;
+  height: 0.72em;
+  margin-right: 0.46em;
+  vertical-align: -0.08em;
+  background:
+    linear-gradient(180deg, var(--fb-ice-hot), var(--fb-sting)),
+    linear-gradient(90deg, transparent 44%, var(--fb-ice) 44% 56%, transparent 56%),
+    linear-gradient(60deg, transparent 44%, var(--fb-ice) 44% 56%, transparent 56%),
+    linear-gradient(-60deg, transparent 44%, var(--fb-ice) 44% 56%, transparent 56%);
+  background-blend-mode: screen;
+  clip-path: var(--fb-dendrite);
+  box-shadow: 0 0 8px rgba(224, 242, 254, 0.55);
+  animation: room-frostbite-facet 3.8s ease-in-out infinite;
+}
+
+html[data-player-skin="frostbite"]:root .hud-app-name::after {
+  content: none !important;
+  animation: none !important;
+}
+
+html[data-player-skin="frostbite"]:root :is(.hud-intention, .hud-now-focus-kicker) {
+  color: var(--fb-mute);
+  letter-spacing: 0.08em;
+}
+
+html[data-player-skin="frostbite"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid var(--fb-edge);
+  border-radius: var(--fb-r-needle);
+  background:
+    linear-gradient(135deg, var(--fb-ice-hot) 0 12%, var(--fb-vein) 36%, var(--fb-sting) 68%, var(--fb-night) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(248, 251, 255, 0.5),
+    0 0 10px rgba(29, 78, 216, 0.4);
+  transform: none;
+}
+
+html[data-player-skin="frostbite"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 22%;
+  background: var(--fb-ice-hot);
+  clip-path: var(--fb-dendrite);
+  opacity: 0.85;
+  filter: drop-shadow(0 0 4px rgba(224, 242, 254, 0.8));
+  animation: room-frostbite-facet 2.8s ease-in-out infinite;
+}
+
+html[data-player-skin="frostbite"]:root .top-hud :is(
+  .hud-icon-btn,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-chip,
+  .hud-game-cluster,
+  .hud-game-chip,
+  .hud-model-chip--status,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .loot-profile-chip
+) {
+  color: var(--fb-ink);
+  border: 1px solid rgba(224, 242, 254, 0.22);
+  border-radius: var(--fb-r-chip);
+  background: var(--fb-steel);
+  box-shadow: inset 0 -2px 0 var(--fb-sting);
+  animation: none;
+}
+
+html[data-player-skin="frostbite"]:root .top-hud :is(
+  .hud-icon-btn,
+  .hud-status-pill,
+  .hud-chip,
+  .hud-game-chip,
+  .loot-profile-chip
+):hover:not(:disabled) {
+  border-color: rgba(224, 242, 254, 0.55);
+  color: var(--fb-ice-hot);
+  animation: room-frostbite-sting 0.36s ease-out 1;
+}
+
+html[data-player-skin="frostbite"]:root :is(
+  .brand-mark,
+  .ws-mark,
+  .hud-icon-svg,
+  .tab-chip-mark,
+  .wp-skin-mark
+) {
+  image-rendering: auto;
+  filter: var(--feel-icon);
+  animation: none !important;
+}
+
+html[data-player-skin="frostbite"]:root .tab-chip-bar {
+  background: rgba(5, 8, 26, 0.94);
+  border-bottom: 1px solid rgba(29, 78, 216, 0.28);
+  backdrop-filter: none;
+}
+
+html[data-player-skin="frostbite"]:root :is(
+  .tab-chip,
+  .pill,
+  .seg-pill-btn,
+  .pln-mode-chip,
+  .app-subnav-pill
+) {
+  border: 1px solid rgba(61, 90, 138, 0.4);
+  border-radius: var(--fb-r-chip);
+  background: var(--fb-steel);
+  color: var(--fb-ink-2);
+  font-family: var(--at-font-display);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: inset 0 -2px 0 rgba(29, 78, 216, 0.35);
+}
+
+html[data-player-skin="frostbite"]:root :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .pill.active,
+  .pill[aria-pressed="true"],
+  .app-subnav-pill.active
+) {
+  color: var(--fb-night);
+  background: linear-gradient(135deg, var(--fb-ice-hot), var(--fb-ice) 55%, var(--fb-vein));
+  border-color: var(--fb-ice);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 0 10px rgba(224, 242, 254, 0.28);
+}
+
+/* ── 4 · Glyph — six-needle dendrite ────────────────────────── */
+
+html[data-player-skin="frostbite"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .loot-skin-avatar,
+  .nav-app-glyph
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid var(--fb-edge);
+  border-radius: 0;
+  transform: none;
+  color: var(--fb-night);
+  background:
+    linear-gradient(180deg, transparent 46%, var(--fb-ice) 49%, var(--fb-ice-hot) 50%, var(--fb-ice) 51%, transparent 54%),
+    linear-gradient(60deg, transparent 46%, var(--fb-ice) 49%, transparent 54%),
+    linear-gradient(-60deg, transparent 46%, var(--fb-ice) 49%, transparent 54%),
+    linear-gradient(135deg, var(--fb-ice-hot) 0%, var(--fb-vein) 32%, var(--fb-sting) 68%, var(--fb-night) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 0 12px rgba(29, 78, 216, 0.4);
+  clip-path: var(--fb-dendrite);
+  filter: none;
+}
+
+html[data-player-skin="frostbite"]:root :is(.launcher-card-glyph, .launcher-tile-glyph) svg {
+  filter: brightness(0.2) contrast(1.3);
+}
+
+html[data-player-skin="frostbite"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .loot-skin-avatar
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  transform: translate(-50%, -50%);
+  background: var(--fb-ice-hot);
+  clip-path: var(--fb-dendrite);
+  box-shadow: 0 0 6px rgba(224, 242, 254, 0.85);
+  animation: room-frostbite-facet 2.4s ease-in-out infinite;
+}
+
+html[data-player-skin="frostbite"]:root .launcher-custom-app-emoji {
+  clip-path: var(--fb-dendrite);
+  background: rgba(29, 78, 216, 0.28);
+  border: 1px solid rgba(224, 242, 254, 0.35);
+}
+
+/* Quiet plates — place is not page. Facet language only. */
+html[data-player-skin="frostbite"]:root .launcher-card {
+  border: 1px solid rgba(61, 90, 138, 0.38);
+  border-radius: var(--fb-r-card);
+  background:
+    linear-gradient(135deg, rgba(224, 242, 254, 0.08), transparent 26%),
+    var(--fb-plate) !important;
+  color: var(--fb-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(248, 251, 255, 0.08),
+    3px 4px 0 #070b1c,
+    0 12px 24px rgba(2, 4, 12, 0.36);
+}
+
+html[data-player-skin="frostbite"]:root .launcher-card::before {
+  left: 12px;
+  top: 10px;
+  width: 11px;
+  height: 11px;
+  border-radius: 0;
+  background: linear-gradient(135deg, var(--fb-ice-hot), var(--fb-sting));
+  clip-path: var(--fb-dendrite);
+  box-shadow: 0 0 8px rgba(224, 242, 254, 0.45);
+  animation: room-frostbite-nucleate 4.2s ease-in-out infinite;
+}
+
+html[data-player-skin="frostbite"]:root :is(.launcher-card:hover, .launcher-card--focused) {
+  transform: none;
+  border-color: rgba(224, 242, 254, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(248, 251, 255, 0.14),
+    3px 4px 0 #070b1c,
+    0 0 0 1px rgba(29, 78, 216, 0.28),
+    0 14px 28px rgba(2, 4, 12, 0.44);
+}
+
+html[data-player-skin="frostbite"]:root :is(
+  .card,
+  .hub-card,
+  .pln-rail-card,
+  .evt-card,
+  .tsk-row,
+  .page-intent
+) {
+  border: 1px solid rgba(61, 90, 138, 0.32);
+  border-radius: var(--fb-r-card);
+  background: var(--fb-plate);
+  color: var(--fb-ink);
+  backdrop-filter: none;
+  box-shadow: inset 0 1px 0 rgba(248, 251, 255, 0.06), 0 8px 18px rgba(2, 4, 12, 0.28);
+}
+
+html[data-player-skin="frostbite"]:root :is(.launcher-card-name, .launcher-tile-name) {
+  color: var(--fb-ink);
+}
+
+html[data-player-skin="frostbite"]:root .launcher-card-intention {
+  color: var(--fb-ink-2);
+}
+
+/* ── 5 · Pulse — ice crystals collect on the row ────────────── */
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] :is(
+  .tdy-pulse,
+  .pls-card,
+  .pls-form,
+  .pln-pulse-compact
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid rgba(224, 242, 254, 0.28);
+  border-radius: var(--fb-r-plate);
+  background:
+    var(--fb-lattice),
+    linear-gradient(180deg, rgba(224, 242, 254, 0.08), transparent 36%),
+    var(--fb-steel);
+  background-size: 28px 28px, 28px 28px, 28px 28px, auto, auto;
+  box-shadow:
+    inset 0 1px 0 rgba(248, 251, 255, 0.12),
+    inset 0 -3px 0 var(--fb-sting),
+    0 10px 22px rgba(2, 4, 12, 0.4);
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .pls-card::after,
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .tdy-pulse::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: -6px;
+  height: 12px;
+  z-index: 2;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 8px,
+      var(--fb-ice) 8px 9px,
+      transparent 9px 15px,
+      var(--fb-sting) 15px 16px,
+      transparent 16px 23px,
+      var(--fb-ice-hot) 23px 24px,
+      transparent 24px 32px
+    );
+  transform-origin: 50% 100%;
+  animation: room-frostbite-collect 4.4s ease-in-out infinite;
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] :is(.pls-h-row, .pls-e-row) {
+  position: relative;
+  gap: 6px;
+  padding: 6px 2px 8px;
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .pls-h-btn {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  flex: 1;
+  min-width: 28px;
+  max-width: 42px;
+  height: 36px;
+  border: 1px solid rgba(224, 242, 254, 0.35);
+  border-radius: var(--fb-r-needle);
+  color: var(--fb-night);
+  font-family: var(--at-font-display);
+  font-weight: 700;
+  background:
+    linear-gradient(135deg, var(--fb-ice-hot) 0 18%, var(--fb-vein) 50%, var(--fb-sting) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 0 8px rgba(29, 78, 216, 0.28);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  animation: room-frostbite-nucleate 5.2s ease-in-out infinite;
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .pls-h-btn:nth-child(odd) {
+  animation-delay: -1.4s;
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .pls-h-btn:nth-child(3n) {
+  animation-delay: -2.6s;
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .pls-h-btn:hover:not(:disabled) {
+  filter: brightness(1.12);
+  animation: room-frostbite-sting 0.32s ease-out 1;
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .pls-h-btn.pls-selected {
+  outline: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 0 0 2px var(--fb-ice),
+    0 0 16px rgba(224, 242, 254, 0.55);
+  animation: room-frostbite-sting 0.8s ease-in-out infinite;
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .pls-e-btn {
+  min-width: 24px;
+  height: 24px;
+  border: 1px solid rgba(61, 90, 138, 0.5);
+  border-radius: var(--fb-r-chip);
+  background: var(--fb-well);
+  color: var(--fb-ink-2);
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .pls-e-btn.pls-selected {
+  border-color: var(--fb-ice);
+  background: color-mix(in srgb, var(--fb-sting) 55%, var(--fb-well));
+  color: var(--fb-ice-hot);
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .pls-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 0;
+  background: var(--fb-bezel);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  box-shadow: none;
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .pls-dot-filled {
+  background: linear-gradient(135deg, var(--fb-ice-hot), var(--fb-sting));
+  box-shadow: 0 0 8px rgba(224, 242, 254, 0.7);
+  animation: room-frostbite-facet 2.6s ease-in-out infinite;
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .pls-timeline-dot {
+  border-radius: 0;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  box-shadow: 0 0 6px rgba(29, 78, 216, 0.45);
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .tdy-hour-painted {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  filter: none;
+  border-color: rgba(224, 242, 254, 0.45);
+  background:
+    var(--fb-lattice),
+    linear-gradient(180deg, rgba(224, 242, 254, 0.16), var(--fb-bezel));
+  background-size: 22px 22px, 22px 22px, 22px 22px, auto;
+  box-shadow:
+    inset 0 0 0 1px rgba(224, 242, 254, 0.22),
+    inset 0 -10px 16px rgba(29, 78, 216, 0.18);
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .tdy-hour-painted::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: 2px;
+  height: 8px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 5px,
+      var(--fb-ice) 5px 6px,
+      transparent 6px 11px
+    );
+  opacity: 0.85;
+  animation: room-frostbite-collect 3.6s ease-in-out infinite;
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .pls-note {
+  border-radius: var(--fb-r-ctl);
+  background: var(--fb-well);
+  border-color: rgba(61, 90, 138, 0.45);
+  caret-color: var(--fb-ice);
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .pls-label {
+  color: var(--fb-ink-2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-family: var(--at-font-display);
+}
+
+html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .pls-compact-summary {
+  color: var(--fb-ink);
+}
+
+/* ── 6 · Buttons — a cleaved ice press ──────────────────────── */
+
+html[data-player-skin="frostbite"]:root button.primary,
+html[data-player-skin="frostbite"]:root .primary,
+html[data-player-skin="frostbite"]:root .page-intent-primary,
+html[data-player-skin="frostbite"]:root .agent-pane-chat .agc-send {
+  border: 1px solid rgba(224, 242, 254, 0.55);
+  border-radius: var(--fb-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(248, 251, 255, 0.35), transparent 36%),
+    linear-gradient(135deg, var(--fb-ice) 0%, var(--fb-vein) 46%, var(--fb-sting) 100%);
+  color: var(--fb-night);
+  font-family: var(--at-font-display);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+  box-shadow: var(--feel-3d);
+  transition: transform 80ms ease, box-shadow 80ms ease, filter 80ms ease;
+  animation: none;
+}
+
+html[data-player-skin="frostbite"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="frostbite"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.08);
+  animation: room-frostbite-sting 0.28s ease-out 1;
+}
+
+html[data-player-skin="frostbite"]:root button.primary:active:not(:disabled),
+html[data-player-skin="frostbite"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translate(1px, 3px);
+  box-shadow: var(--feel-3d-press);
+  filter: brightness(0.94);
+}
+
+html[data-player-skin="frostbite"]:root :is(button.secondary, .ghost-btn) {
+  border: 1px solid rgba(61, 90, 138, 0.45);
+  border-radius: var(--fb-r-ctl);
+  background: var(--fb-steel);
+  color: var(--fb-ink-2);
+}
+
+html[data-player-skin="frostbite"]:root :is(button.secondary, .ghost-btn):hover:not(:disabled) {
+  border-color: rgba(224, 242, 254, 0.45);
+  color: var(--fb-ink);
+}
+
+html[data-player-skin="frostbite"]:root #quick-capture-fab.quick-capture-fab {
+  background: linear-gradient(135deg, var(--fb-ice), var(--fb-sting)) !important;
+  color: var(--fb-night) !important;
+  border-color: rgba(224, 242, 254, 0.55) !important;
+  border-radius: var(--fb-r-plate) !important;
+  box-shadow: 0 0 14px rgba(29, 78, 216, 0.35), 3px 4px 0 #070b1c !important;
+}
+
+/* ── 7 · Empty / input / focus ──────────────────────────────── */
+
+html[data-player-skin="frostbite"]:root :is(input, textarea, select, .agc-input-zone) {
+  border: 1px solid rgba(61, 90, 138, 0.4);
+  border-bottom: 2px solid var(--fb-sting);
+  border-radius: var(--fb-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 40%),
+    var(--fb-well);
+  color: var(--fb-ink);
+  caret-color: var(--fb-ice);
+  box-shadow:
+    inset 0 2px 8px rgba(2, 4, 12, 0.55),
+    inset 0 -2px 0 rgba(224, 242, 254, 0.18);
+}
+
+html[data-player-skin="frostbite"]:root :is(input, textarea)::placeholder {
+  color: #5a6d88;
+}
+
+html[data-player-skin="frostbite"]:root :is(input, textarea, select, .agc-input-zone):focus,
+html[data-player-skin="frostbite"]:root .agc-input-zone:focus-within {
+  outline: none;
+  border-color: rgba(224, 242, 254, 0.55);
+  border-bottom-color: var(--fb-ice);
+  box-shadow:
+    inset 0 2px 8px rgba(2, 4, 12, 0.55),
+    inset 0 -2px 0 var(--fb-ice),
+    0 0 0 3px rgba(29, 78, 216, 0.28);
+  animation: room-frostbite-sting 0.4s ease-out 1;
+}
+
+html[data-player-skin="frostbite"]:root :focus-visible {
+  outline: 2px solid var(--fb-ice);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(29, 78, 216, 0.22);
+}
+
+/* Bare metal strip, one crystal waiting to nucleate. */
+html[data-player-skin="frostbite"]:root .empty-state {
+  position: relative;
+  border: 1px dashed rgba(224, 242, 254, 0.32);
+  border-radius: var(--fb-r-plate);
+  background:
+    linear-gradient(135deg, rgba(224, 242, 254, 0.06), transparent 30%),
+    repeating-linear-gradient(
+      94deg,
+      transparent 0 11px,
+      rgba(29, 78, 216, 0.1) 11px 12px
+    ),
+    var(--fb-steel);
+  color: var(--fb-ink-2);
+  box-shadow: inset 0 12px 28px rgba(2, 4, 12, 0.4);
+}
+
+html[data-player-skin="frostbite"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: 0 auto 10px;
+  background: linear-gradient(135deg, var(--fb-ice-hot), var(--fb-sting));
+  clip-path: var(--fb-dendrite);
+  opacity: 0.7;
+  box-shadow: 0 0 10px rgba(224, 242, 254, 0.4);
+  animation: room-frostbite-nucleate 4.8s ease-in-out infinite;
+}
+
+html[data-player-skin="frostbite"]:root .empty-state-title {
+  color: var(--fb-ink);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-family: var(--at-font-display);
+}
+
+html[data-player-skin="frostbite"]:root :is(.empty-state-body, .empty-state-hint) {
+  color: var(--fb-ink-2);
+}
+
+html[data-player-skin="frostbite"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .wp-arcade-card,
+  dialog
+) {
+  border: 1px solid rgba(224, 242, 254, 0.24);
+  border-radius: var(--fb-r-plate);
+  background:
+    linear-gradient(180deg, rgba(224, 242, 254, 0.08), transparent 22%),
+    var(--fb-plate);
+  color: var(--fb-ink);
+  box-shadow:
+    inset 0 2px 0 var(--fb-ice),
+    0 24px 52px rgba(2, 4, 12, 0.62);
+}
+
+html[data-player-skin="frostbite"]:root :is(.loot-shell-backdrop, .wp-arcade-overlay) {
+  background: rgba(2, 4, 12, 0.82);
+}
+
+html[data-player-skin="frostbite"]:root .toast-item {
+  border-radius: var(--fb-r-chip);
+  background: var(--fb-bezel);
+  color: var(--fb-ice-hot);
+  border: 1px solid rgba(224, 242, 254, 0.4);
+  box-shadow: inset 0 -2px 0 var(--fb-sting), 0 0 12px rgba(29, 78, 216, 0.22);
+  animation: room-frostbite-sting 0.4s ease-out 1;
+}
+
+html[data-player-skin="frostbite"]:root .companion-launcher-orb {
+  border-radius: var(--fb-r-needle);
+  background: linear-gradient(135deg, var(--fb-ice), var(--fb-sting));
+  box-shadow: 0 0 0 1px rgba(224, 242, 254, 0.4), 0 0 12px rgba(29, 78, 216, 0.3);
+  clip-path: var(--fb-dendrite);
+}
+
+html[data-player-skin="frostbite"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: #1a2740;
+  background: #0c1424;
+  color: #4a5a72;
+  opacity: 0.55;
+  filter: grayscale(0.45) brightness(0.82);
+  box-shadow: none;
+  text-shadow: none;
+  animation: none !important;
+}
+
+html[data-player-skin="frostbite"]:root ::selection {
+  background: rgba(29, 78, 216, 0.45);
+  color: var(--fb-ice-hot);
+}
+
+html[data-player-skin="frostbite"]:root * {
+  scrollbar-color: rgba(224, 242, 254, 0.35) transparent;
+}
+
+html[data-player-skin="frostbite"]:root .agent-bubble {
+  background: var(--fb-plate);
+  color: var(--fb-ink);
+  border-radius: var(--fb-r-card);
+}
+
+html[data-player-skin="frostbite"]:root .agent-msg.assistant .agent-bubble {
+  border-left: 2px solid var(--fb-ice);
+}
+
+html[data-player-skin="frostbite"]:root .agent-msg.user .agent-bubble {
+  border: 1px solid rgba(29, 78, 216, 0.4);
+  background: var(--fb-bezel);
+  color: var(--fb-ice);
+}
+
+html[data-player-skin="frostbite"]:root[data-app-tab="Today"] :is(.tdy-hour-cell, .cal-hour-cell) {
+  border-radius: var(--fb-r-cell);
+  border-color: rgba(61, 90, 138, 0.35);
+  background: var(--fb-steel);
+}
+
+html[data-player-skin="frostbite"]:root[data-app-tab="Agent"] #main .agent-pane {
+  border-radius: var(--fb-r-plate);
+  border: 1px solid rgba(61, 90, 138, 0.35);
+  background: color-mix(in srgb, var(--fb-plate) 92%, var(--fb-night));
+}
+
+/* ── 8 · Motion — nucleate, collect, sting, facet ───────────── */
+
+@keyframes room-frostbite-nucleate {
+  0%, 100% {
+    transform: scaleY(0.55);
+    opacity: 0.55;
+    filter: brightness(0.9);
+  }
+  40% {
+    transform: scaleY(1);
+    opacity: 1;
+    filter: brightness(1.18);
+  }
+  70% {
+    transform: scaleY(0.88);
+    opacity: 0.86;
+    filter: brightness(1.02);
+  }
+}
+
+@keyframes room-frostbite-collect {
+  0%, 100% {
+    transform: scaleY(0.4);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes room-frostbite-sting {
+  0% { filter: brightness(1); }
+  18% {
+    filter: brightness(1.45);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      0 0 16px rgba(224, 242, 254, 0.7);
+  }
+  100% { filter: brightness(1); }
+}
+
+@keyframes room-frostbite-facet {
+  0%, 100% { opacity: 0.7; filter: brightness(0.95); }
+  50% { opacity: 1; filter: brightness(1.25); }
+}
+
+@keyframes room-frostbite-glint {
+  0%, 100% { background-position: 0 0, 20px 8px, 40px 0; opacity: 0.18; }
+  50% { background-position: 12px 4px, 8px 0, 28px 6px; opacity: 0.28; }
+}
+
+@keyframes room-frostbite-relay {
+  0% { background-position: 0 0; }
+  100% { background-position: 34px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="frostbite"]:root *,
+  html[data-player-skin="frostbite"]:root *::before,
+  html[data-player-skin="frostbite"]:root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html[data-player-skin="frostbite"]:root[data-skin-place~="hud"] .top-hud::after,
+  html[data-player-skin="frostbite"]:root[data-skin-place~="pulse"] .pls-h-btn,
+  html[data-player-skin="frostbite"]:root .empty-state::before {
+    transform: none;
+    opacity: 0.85;
+  }
+}

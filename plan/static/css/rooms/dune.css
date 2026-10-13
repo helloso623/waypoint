@@ -1,0 +1,927 @@
+/* ── dune · Dune Surveyor — noon on a mesa, one instrument, one sun ──
+   The room is a plateau at solar noon, not a beach and not a canyon.
+   Everything here follows from one physical fact: the light source is
+   directly overhead and utterly hard. So there is no blur anywhere in
+   this file. Every shadow is a short, opaque, un-feathered offset that
+   sits directly beneath the object it belongs to. Contrast is high,
+   air is dry, edges are legible at a distance.
+
+   Ground: sun-bleached limestone (--dn-bone). Accent: one gold sun
+   (--dn-sun #fbbf24, loot colorA) reached through worked brass; deep
+   ochre (--dn-ochre-deep #92400e, loot colorB) is the shadow side and
+   the ink of the graduations. Nothing else is allowed to glow.
+
+   Signature cut: the mesa cap. Every plate in the room uses an
+   elliptical radius whose top corners are wide and shallow and whose
+   bottom corners are tight — the profile of a flat-topped butte.
+   Signature object: the graduated brass dial with a plumb vane.
+   Signature edge: the HUD is a hard horizon with a bearing scale.
+   Signature motion: nothing rises. Controls traverse sideways in
+   stepped detents, the way a tangent screw walks a vernier.
+
+   Photograph: /img/skins/dune.png (brass theodolite, cracked ochre
+   pavement, ruler-straight horizon, one sun; no water, no palms).
+   Never clip-path #main or .launcher-card.
+   ══════════════════════════════════════════════════════════════ */
+
+html[data-player-skin="dune"] {
+  color-scheme: light;
+
+  /* the plateau: bleached stone above, ochre body, umber shadow */
+  --dn-sky: #fbf4e2;
+  --dn-sky-low: #f6ecd4;
+  --dn-bone: #efe4cb;
+  --dn-bone-2: #e5d7b8;
+  --dn-slab: #f7f0de;
+  --dn-slab-2: #ece0c1;
+  --dn-well: #dbc9a3;
+  --dn-ochre: #c08a4a;
+  --dn-ochre-deep: #92400e;
+  --dn-umber: #5a3010;
+  --dn-ink: #2f1c0b;
+
+  /* the instrument: worked brass, and the one sun it is aimed at */
+  --dn-brass: #b4741f;
+  --dn-brass-hi: #e6b657;
+  --dn-brass-lo: #7c4a10;
+  --dn-sun: #fbbf24;
+  --dn-flare: #fff4cd;
+
+  --dn-hair: rgba(92, 48, 16, 0.26);
+  --dn-hair-2: rgba(92, 48, 16, 0.42);
+  --dn-grad: rgba(47, 28, 11, 0.52);
+
+  /* noon shadow: short, hard, directly beneath. never blurred. */
+  --dn-cast-1: 0 2px 0 rgba(92, 48, 16, 0.34);
+  --dn-cast-2: 0 3px 0 rgba(92, 48, 16, 0.3), 0 4px 0 rgba(92, 48, 16, 0.14);
+  --dn-cast-3: 0 5px 0 rgba(92, 48, 16, 0.26), 0 6px 0 rgba(92, 48, 16, 0.12);
+  --dn-cast-press: 0 1px 0 rgba(92, 48, 16, 0.4);
+
+  /* the mesa cap: wide shallow crown, tight footing */
+  --dn-r-plate: 46px 46px 5px 5px / 17px 17px 5px 5px;
+  --dn-r-card: 38px 38px 4px 4px / 14px 14px 4px 4px;
+  --dn-r-ctl: 24px 24px 3px 3px / 9px 9px 3px 3px;
+  --dn-r-chip: 18px 18px 2px 2px / 7px 7px 2px 2px;
+  --dn-r-cell: 13px 13px 2px 2px / 5px 5px 2px 2px;
+
+  --dn-font-display: "Avenir Next Condensed", "Roboto Condensed",
+    "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --dn-font-figure: ui-monospace, "SF Mono", "IBM Plex Mono", Menlo, monospace;
+
+  --bg-shell: var(--dn-bone);
+  --bg-content: var(--dn-bone-2);
+  --bg-card: var(--dn-slab);
+  --bg-card-hover: #fffaee;
+  --ink-primary: var(--dn-ink);
+  --ink-secondary: #6b4520;
+  --ink-muted: #8a6434;
+  --border: var(--dn-hair);
+  --gridline: rgba(92, 48, 16, 0.14);
+  --accent: #9a5b12;
+  --ws-accent: #9a5b12;
+  --accent-ink: #2f1c0b;
+  --glow-accent: rgba(180, 116, 31, 0.28);
+  --glow-violet: rgba(192, 138, 74, 0.2);
+
+  --at-a: var(--dn-sun);
+  --at-b: var(--dn-ochre-deep);
+  --at-plate: var(--dn-slab);
+  --at-plate-2: var(--dn-slab-2);
+  --at-well: var(--dn-well);
+  --at-ink: var(--dn-ink);
+  --at-ink-2: #6b4520;
+  --at-ink-3: #8a6434;
+  --at-hair: var(--dn-hair);
+  --at-hair-2: var(--dn-hair-2);
+  --at-hair-a: rgba(180, 116, 31, 0.5);
+  --at-focus: var(--dn-sun);
+  --at-gold: var(--dn-brass);
+  --at-gold-soft: var(--dn-brass-hi);
+  --at-inset: inset 0 2px 0 rgba(92, 48, 16, 0.14);
+  --at-rise: var(--dn-cast-3);
+  --at-rise-soft: var(--dn-cast-2);
+  --at-r-plate: var(--dn-r-plate);
+  --at-r-card: var(--dn-r-card);
+  --at-r-ctl: var(--dn-r-ctl);
+  --at-r-chip: var(--dn-r-chip);
+  --at-r-cell: var(--dn-r-cell);
+  --at-font-display: var(--dn-font-display);
+  --at-font-mono: var(--dn-font-figure);
+
+  --feel-3d: var(--dn-cast-2);
+  --feel-3d-press: var(--dn-cast-press);
+  --feel-grain-opacity: 0.36;
+  --feel-grain-blend: multiply;
+  --feel-grain:
+    repeating-linear-gradient(96deg, transparent 0 8px, rgba(92, 48, 16, 0.05) 8px 9px),
+    radial-gradient(circle at 22% 33%, rgba(92, 48, 16, 0.07) 0 1px, transparent 2px),
+    radial-gradient(circle at 71% 68%, rgba(92, 48, 16, 0.055) 0 1px, transparent 2px);
+  --feel-grain-size: auto, 23px 19px, 31px 27px;
+  --feel-hud-hair: 3px solid var(--dn-brass-lo);
+  --feel-icon: saturate(1.1) contrast(1.22) brightness(1.02)
+    drop-shadow(0 2px 0 rgba(92, 48, 16, 0.4));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.13em;
+  --plate-shadow: var(--dn-cast-2);
+  --plate-shadow-hover: var(--dn-cast-3);
+}
+
+/* The photograph is washed out, the way a plateau is washed out at
+   noon. It reads as distance behind the interface, not as wallpaper. */
+html[data-player-skin="dune"] body {
+  background-color: var(--dn-bone) !important;
+  background-image:
+    linear-gradient(180deg,
+      rgba(252, 246, 231, 0.34) 0 20%,
+      rgba(246, 236, 212, 0.5) 46%,
+      rgba(233, 220, 190, 0.62) 100%),
+    url("/img/skins/dune.png") !important;
+  background-position: center, center 22%;
+  background-size: cover, cover;
+  background-attachment: fixed, fixed;
+  color: var(--ink-primary);
+}
+
+/* Solar glare. The only screen-blend layer in the room, and it sits
+   high, where the horizon is — it never washes the working surface. */
+html[data-player-skin="dune"] body::after {
+  opacity: 0.3;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(ellipse 30% 17% at 50% 1%,
+      rgba(255, 251, 228, 0.95), rgba(255, 240, 186, 0.32) 48%, transparent 74%),
+    linear-gradient(180deg, rgba(255, 247, 219, 0.22) 0 24%, transparent 52%);
+  animation: room-dune-noon 11s ease-in-out infinite;
+}
+
+html[data-player-skin="dune"] #main {
+  clip-path: none;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg,
+      rgba(252, 246, 231, 0.4) 0 26%,
+      rgba(239, 228, 203, 0.5) 60%,
+      rgba(227, 212, 181, 0.58) 100%);
+  border-inline: 1px solid rgba(92, 48, 16, 0.14);
+}
+
+html[data-player-skin="dune"] #main::after {
+  clip-path: none;
+  animation: room-dune-creep 54s linear infinite;
+}
+
+/* ── HUD · the hard horizon ──────────────────────────────────
+   Bleached sky on top, a 2px umber cut, then the plateau surface
+   carrying an azimuth scale. Text lives in the sky half so that
+   nothing legible ever straddles the line. */
+
+html[data-player-skin="dune"] .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  min-height: 66px;
+  background:
+    linear-gradient(180deg,
+      #fdf9ee 0 26%,
+      #f7eed8 26% 78%,
+      #5a3010 78% calc(78% + 2px),
+      #f2d49c calc(78% + 2px) calc(78% + 4px),
+      #d6a768 calc(78% + 4px) 92%,
+      #bd8546 92% 100%);
+  border-bottom: 3px solid var(--dn-brass-lo);
+  border-radius: 0;
+  box-shadow: 0 3px 0 rgba(92, 48, 16, 0.2);
+  backdrop-filter: none;
+  color: var(--dn-ink);
+}
+
+/* The bearing scale, graduated along the plateau edge: fine ticks
+   every 11px, a taller station mark every fifth. */
+html[data-player-skin="dune"] .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 13px;
+  z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(47, 28, 11, 0.5) 0 1px, transparent 1px 11px),
+    repeating-linear-gradient(90deg, rgba(47, 28, 11, 0.82) 0 1px, transparent 1px 55px);
+  background-repeat: repeat-x, repeat-x;
+  background-size: 100% 5px, 100% 11px;
+  background-position: 0 100%, 0 100%;
+}
+
+/* Heat sitting on the horizon. It is the only thing in the room
+   that moves on its own, and it moves almost not at all. */
+html[data-player-skin="dune"] .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 74%;
+  height: 12px;
+  z-index: 0;
+  background: linear-gradient(180deg,
+    rgba(255, 246, 214, 0), rgba(255, 246, 214, 0.9) 50%, rgba(255, 246, 214, 0));
+  mix-blend-mode: screen;
+  opacity: 0.5;
+  animation: room-dune-shimmer 6.2s ease-in-out infinite;
+}
+
+html[data-player-skin="dune"] .top-hud > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-player-skin="dune"] .hud-app-name,
+html[data-player-skin="dune"] .launcher-title,
+html[data-player-skin="dune"] .page-title {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: currentColor;
+  color: var(--dn-ink);
+  font-family: var(--dn-font-display);
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255, 250, 232, 0.9);
+}
+
+html[data-player-skin="dune"] .hud-intention {
+  color: #7a4f22;
+  font-family: var(--dn-font-figure);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+}
+
+/* ── the one sun ─────────────────────────────────────────────
+   Hard core, one thin corona step, no bloom. It is the only
+   emissive object in the room; nothing else may glow. */
+
+html[data-player-skin="dune"] .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  border-radius: 50%;
+  border: 1px solid var(--dn-brass-lo);
+  background: linear-gradient(180deg, #fffaea, #f0e2c2);
+}
+
+html[data-player-skin="dune"] .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -9px;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%,
+    #fffdf3 0 27%,
+    #fff0b6 35%,
+    var(--dn-sun) 46%,
+    rgba(251, 191, 36, 0.52) 50%,
+    rgba(251, 191, 36, 0.18) 64%,
+    rgba(251, 191, 36, 0.06) 78%,
+    transparent 86%);
+  animation: room-dune-noon 9.4s ease-in-out infinite;
+}
+
+html[data-player-skin="dune"] .brand-mark,
+html[data-player-skin="dune"] .ws-mark,
+html[data-player-skin="dune"] .hud-icon-svg,
+html[data-player-skin="dune"] .tab-chip-mark {
+  filter: var(--feel-icon);
+  transform: none;
+}
+
+/* ── brass fittings: HUD controls ────────────────────────── */
+
+html[data-player-skin="dune"] .hud-icon-btn,
+html[data-player-skin="dune"] .hud-glyph-btn,
+html[data-player-skin="dune"] .hud-status-pill,
+html[data-player-skin="dune"] .hud-chip,
+html[data-player-skin="dune"] .hud-metric {
+  border: 1px solid var(--dn-brass-lo);
+  border-radius: var(--dn-r-chip);
+  background:
+    linear-gradient(180deg, #fffaea 0 42%, #f0e0bd 43% 100%);
+  color: #4a2c10;
+  font-family: var(--dn-font-figure);
+  letter-spacing: 0.05em;
+  box-shadow: var(--dn-cast-1);
+  transition: transform 130ms cubic-bezier(0.2, 0.9, 0.1, 1),
+    box-shadow 130ms ease, background-color 130ms ease;
+}
+
+html[data-player-skin="dune"] .hud-icon-btn:hover:not(:disabled),
+html[data-player-skin="dune"] .hud-glyph-btn:hover:not(:disabled),
+html[data-player-skin="dune"] .hud-chip:hover:not(:disabled),
+html[data-player-skin="dune"] .hud-metric:hover:not(:disabled) {
+  border-color: var(--dn-brass);
+  background: linear-gradient(180deg, #fffdf5 0 42%, #f6ead0 43% 100%);
+  transform: translateX(-2px);
+  box-shadow: var(--dn-cast-2);
+}
+
+html[data-player-skin="dune"] .hud-icon-btn:active:not(:disabled),
+html[data-player-skin="dune"] .hud-glyph-btn:active:not(:disabled) {
+  transform: translateX(3px);
+  box-shadow: var(--dn-cast-press);
+}
+
+html[data-player-skin="dune"] .tab-chip-bar {
+  background: rgba(239, 228, 203, 0.92);
+  border-bottom: 1px solid var(--dn-hair-2);
+  backdrop-filter: none;
+}
+
+html[data-player-skin="dune"] .tab-chip,
+html[data-player-skin="dune"] .app-subnav-pill,
+html[data-player-skin="dune"] .pill,
+html[data-player-skin="dune"] .tsk-day-chip {
+  border: 1px solid var(--dn-hair-2);
+  border-radius: var(--dn-r-chip);
+  background: linear-gradient(180deg, #f9f2e0 0 46%, #eadcbc 47% 100%);
+  color: #5c3a16;
+  font-family: var(--dn-font-display);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  box-shadow: var(--dn-cast-1);
+  transition: transform 130ms cubic-bezier(0.2, 0.9, 0.1, 1), box-shadow 130ms ease;
+}
+
+html[data-player-skin="dune"] .tab-chip:hover:not(.active) {
+  transform: translateX(-2px);
+  border-color: var(--dn-brass);
+}
+
+html[data-player-skin="dune"] .tab-chip.active,
+html[data-player-skin="dune"] .app-subnav-pill.active {
+  color: #3a2208;
+  border-color: var(--dn-brass-lo);
+  background: linear-gradient(180deg, #fff2c4 0 40%, var(--dn-sun) 41% 76%, #d79612 77% 100%);
+  box-shadow: var(--dn-cast-1);
+}
+
+html[data-player-skin="dune"] .tab-chip.active:active:not(:disabled) {
+  transform: translateX(3px);
+  box-shadow: var(--dn-cast-press);
+}
+
+/* ── the graduated brass dial ────────────────────────────────
+   Not a badge and not a bolt: a theodolite's horizontal circle
+   read from above, with a plumb vane hanging off its underside
+   and a short hard noon shadow. */
+
+html[data-player-skin="dune"] .launcher-tile-glyph,
+html[data-player-skin="dune"] .launcher-card-glyph,
+html[data-player-skin="dune"] .loot-skin-avatar {
+  position: relative;
+  overflow: visible;
+  border: 2px solid var(--dn-brass-lo);
+  border-radius: 50%;
+  transform: none;
+  color: #3a2208;
+  background:
+    radial-gradient(circle at 50% 46%,
+      #fffdf4 0 44%, #f4ead0 62%, rgba(244, 234, 208, 0) 63%),
+    radial-gradient(circle at 34% 26%,
+      #ffeec2 0 8%, var(--dn-brass-hi) 24%, var(--dn-brass) 54%,
+      var(--dn-brass-lo) 82%, #5a3010 100%);
+  box-shadow: 0 3px 0 rgba(92, 48, 16, 0.45), inset 0 1px 0 rgba(255, 248, 222, 0.5);
+  filter: none;
+  transition: transform 170ms cubic-bezier(0.2, 0.9, 0.1, 1),
+    box-shadow 170ms ease, border-color 170ms ease;
+}
+
+/* rim graduations, masked to an annulus so the face stays clean */
+html[data-player-skin="dune"] .launcher-tile-glyph::before,
+html[data-player-skin="dune"] .launcher-card-glyph::before,
+html[data-player-skin="dune"] .loot-skin-avatar::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 1px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from -90deg,
+    rgba(47, 28, 11, 0.62) 0deg 1.1deg, transparent 1.1deg 7.5deg);
+  -webkit-mask: radial-gradient(circle, transparent 0 68%, #000 71% 100%);
+  mask: radial-gradient(circle, transparent 0 68%, #000 71% 100%);
+}
+
+/* the plumb vane */
+html[data-player-skin="dune"] .launcher-tile-glyph::after,
+html[data-player-skin="dune"] .launcher-card-glyph::after,
+html[data-player-skin="dune"] .loot-skin-avatar::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 12px;
+  height: 10px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, var(--dn-brass-hi) 0 34%, var(--dn-brass) 35% 68%, #5a3010 69% 100%);
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+  filter: drop-shadow(0 2px 0 rgba(92, 48, 16, 0.5));
+}
+
+/* ── stone slabs: every plate is a little mesa ─────────────── */
+
+html[data-player-skin="dune"] .launcher-card,
+html[data-player-skin="dune"] .card,
+html[data-player-skin="dune"] .hub-card,
+html[data-player-skin="dune"] .pln-rail-card,
+html[data-player-skin="dune"] .evt-card,
+html[data-player-skin="dune"] .tsk-row {
+  border: 1px solid var(--dn-hair-2);
+  border-top: 2px solid rgba(255, 252, 240, 0.9);
+  border-radius: var(--dn-r-card);
+  background:
+    linear-gradient(180deg, rgba(255, 253, 244, 0.92) 0 18%, transparent 19%),
+    linear-gradient(176deg, var(--dn-slab) 0 62%, var(--dn-slab-2) 100%);
+  color: var(--dn-ink);
+  box-shadow: var(--dn-cast-2);
+  overflow: visible;
+}
+
+html[data-player-skin="dune"] .launcher-card {
+  outline: none;
+  transform: none;
+  transition: transform 150ms cubic-bezier(0.2, 0.9, 0.1, 1),
+    box-shadow 150ms ease, border-color 150ms ease;
+}
+
+/* the horizon, repeated inside every card */
+html[data-player-skin="dune"] .launcher-card::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 13px;
+  width: auto;
+  height: 3px;
+  border-radius: 0;
+  opacity: 1;
+  background-color: transparent;
+  background-image:
+    linear-gradient(90deg, transparent 0 26px, var(--dn-sun) 26px 38px, transparent 38px),
+    linear-gradient(90deg, rgba(92, 48, 16, 0.85), rgba(92, 48, 16, 0.85));
+  background-repeat: no-repeat, no-repeat;
+  background-size: 100% 3px, 100% 1px;
+  background-position: 0 0, 0 1px;
+}
+
+/* a bearing scale along the card's footing, read on hover */
+html[data-player-skin="dune"] .launcher-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 16px 9px 16px;
+  right: 16px;
+  bottom: 9px;
+  width: auto;
+  height: 6px;
+  aspect-ratio: auto;
+  border-radius: 0;
+  opacity: 0.5;
+  transform: none;
+  background-color: transparent;
+  background-image: repeating-linear-gradient(90deg,
+    rgba(92, 48, 16, 0.55) 0 1px, transparent 1px 9px);
+  transition: opacity 150ms ease;
+}
+
+html[data-player-skin="dune"] .launcher-card-name,
+html[data-player-skin="dune"] .launcher-tile-name {
+  color: var(--dn-ink);
+  font-family: var(--dn-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="dune"] .launcher-card-intention,
+html[data-player-skin="dune"] .launcher-card-sub,
+html[data-player-skin="dune"] .launcher-card-stats {
+  color: #6b4520;
+  font-family: var(--dn-font-figure);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Nothing in this room rises on hover — at noon there is nowhere to
+   rise to. The slab stays put, its footing shadow lengthens, and the
+   instrument on it traverses to index, the way a sighting is taken. */
+html[data-player-skin="dune"] .launcher-card:hover,
+html[data-player-skin="dune"] .launcher-card--focused {
+  transform: none;
+  border-color: var(--dn-brass);
+  box-shadow: var(--dn-cast-3), inset 0 2px 0 rgba(251, 191, 36, 0.45);
+  filter: none;
+}
+
+html[data-player-skin="dune"] .launcher-card:hover .launcher-card-glyph,
+html[data-player-skin="dune"] .launcher-card--focused .launcher-card-glyph,
+html[data-player-skin="dune"] .launcher-card:hover .launcher-tile-glyph,
+html[data-player-skin="dune"] .launcher-card--focused .launcher-tile-glyph {
+  transform: translateX(-4px);
+  border-color: var(--dn-brass);
+  box-shadow: 0 5px 0 rgba(92, 48, 16, 0.5), inset 0 1px 0 rgba(255, 248, 222, 0.62);
+}
+
+html[data-player-skin="dune"] .launcher-card:hover::after,
+html[data-player-skin="dune"] .launcher-card--focused::after {
+  opacity: 0.95;
+  transform: none;
+}
+
+html[data-player-skin="dune"] .card:hover,
+html[data-player-skin="dune"] .hub-card:hover {
+  border-color: var(--dn-brass);
+  box-shadow: var(--dn-cast-3);
+}
+
+/* ── the vernier drum ────────────────────────────────────────
+   The primary control does not push down; it traverses. Hover
+   walks it back a fraction, press throws it forward and the
+   graduation strip under it steps one full division. */
+
+html[data-player-skin="dune"] button.primary,
+html[data-player-skin="dune"] .agent-pane-chat .agc-send {
+  position: relative;
+  border: 1px solid var(--dn-brass-lo);
+  border-radius: var(--dn-r-ctl);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(47, 28, 11, 0.45) 0 1px, transparent 1px 7px),
+    linear-gradient(180deg, #fff2c4 0 34%, var(--dn-sun) 35% 72%, #d79612 73% 100%);
+  background-repeat: repeat-x, no-repeat;
+  background-size: 100% 5px, 100% 100%;
+  background-position: 0 100%, 0 0;
+  color: #3a2208;
+  font-family: var(--dn-font-display);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255, 249, 220, 0.72);
+  box-shadow: 0 3px 0 #8a5412, 0 4px 0 rgba(92, 48, 16, 0.24);
+  transition:
+    transform 130ms cubic-bezier(0.2, 0.9, 0.1, 1),
+    background-position 130ms steps(2, end),
+    box-shadow 130ms ease,
+    filter 130ms ease;
+}
+
+html[data-player-skin="dune"] button.primary:hover:not(:disabled),
+html[data-player-skin="dune"] .agent-pane-chat .agc-send:hover:not(:disabled) {
+  transform: translateX(-2px);
+  background-position: -4px 100%, 0 0;
+  filter: brightness(1.05);
+  box-shadow: 0 3px 0 #8a5412, 0 4px 0 rgba(92, 48, 16, 0.3);
+}
+
+html[data-player-skin="dune"] button.primary:active:not(:disabled),
+html[data-player-skin="dune"] .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translateX(5px);
+  background-position: 7px 100%, 0 0;
+  filter: brightness(0.99);
+  box-shadow: 0 1px 0 #8a5412, 0 2px 0 rgba(92, 48, 16, 0.2);
+}
+
+html[data-player-skin="dune"] button.secondary,
+html[data-player-skin="dune"] .ghost-btn {
+  border: 1px solid var(--dn-hair-2);
+  border-radius: var(--dn-r-ctl);
+  background: linear-gradient(180deg, #faf3e2 0 44%, #ecdfc0 45% 100%);
+  color: #5c3a16;
+  font-family: var(--dn-font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: var(--dn-cast-1);
+  transition: transform 130ms cubic-bezier(0.2, 0.9, 0.1, 1), box-shadow 130ms ease;
+}
+
+html[data-player-skin="dune"] button.secondary:hover:not(:disabled),
+html[data-player-skin="dune"] .ghost-btn:hover:not(:disabled) {
+  transform: translateX(-2px);
+  border-color: var(--dn-brass);
+  box-shadow: var(--dn-cast-2);
+}
+
+html[data-player-skin="dune"] button.secondary:active:not(:disabled),
+html[data-player-skin="dune"] .ghost-btn:active:not(:disabled) {
+  transform: translateX(3px);
+  box-shadow: var(--dn-cast-press);
+}
+
+/* ── field notebook: inputs rule to a single baseline ─────── */
+
+html[data-player-skin="dune"] input,
+html[data-player-skin="dune"] textarea,
+html[data-player-skin="dune"] select,
+html[data-player-skin="dune"] .agc-input-zone {
+  border: 1px solid var(--dn-hair-2);
+  border-bottom: 2px solid var(--dn-brass-lo);
+  border-radius: var(--dn-r-ctl);
+  background:
+    linear-gradient(180deg, #fffcf2 0 70%, #f4ead2 100%);
+  color: var(--dn-ink);
+  font-family: var(--dn-font-figure);
+  font-variant-numeric: tabular-nums;
+  caret-color: var(--dn-brass);
+  box-shadow: inset 0 2px 0 rgba(92, 48, 16, 0.12);
+}
+
+html[data-player-skin="dune"] input::placeholder,
+html[data-player-skin="dune"] textarea::placeholder {
+  color: #9c7846;
+  letter-spacing: 0.04em;
+}
+
+html[data-player-skin="dune"] input:focus,
+html[data-player-skin="dune"] textarea:focus,
+html[data-player-skin="dune"] select:focus {
+  outline: none;
+  border-bottom-color: var(--dn-sun);
+  background: #fffdf6;
+  box-shadow: inset 0 2px 0 rgba(92, 48, 16, 0.1), 0 2px 0 rgba(251, 191, 36, 0.55);
+}
+
+/* ── nothing on this bearing ─────────────────────────────── */
+
+html[data-player-skin="dune"] .empty-state {
+  position: relative;
+  border: 1px solid var(--dn-hair-2);
+  border-top: 2px solid rgba(255, 252, 240, 0.9);
+  border-radius: var(--dn-r-card);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(92, 48, 16, 0.4) 0 1px, transparent 1px 13px),
+    linear-gradient(180deg, #f8f1df 0 58%, #e8dabb 100%);
+  background-repeat: repeat-x, no-repeat;
+  background-size: 100% 5px, 100% 100%;
+  background-position: 0 100%, 0 0;
+  color: #6b4520;
+  box-shadow: var(--dn-cast-2);
+}
+
+html[data-player-skin="dune"] .empty-state-title {
+  color: var(--dn-ink);
+  font-family: var(--dn-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── dialogs: a slab lifted off the pavement ─────────────── */
+
+html[data-player-skin="dune"] .loot-shell-dialog,
+html[data-player-skin="dune"] .command-palette,
+html[data-player-skin="dune"] .napkin-capture-dialog,
+html[data-player-skin="dune"] .wp-alarm-card {
+  border: 1px solid var(--dn-brass-lo);
+  border-top: 3px solid var(--dn-brass-hi);
+  border-radius: var(--dn-r-plate);
+  background:
+    linear-gradient(180deg, rgba(255, 253, 244, 0.95) 0 12%, transparent 13%),
+    linear-gradient(176deg, #faf4e4 0 60%, #ecdfc0 100%);
+  color: var(--dn-ink);
+  box-shadow:
+    0 8px 0 rgba(92, 48, 16, 0.26),
+    0 10px 0 rgba(92, 48, 16, 0.12);
+}
+
+html[data-player-skin="dune"] .toast,
+html[data-player-skin="dune"] .toast-item {
+  border: 1px solid var(--dn-brass-lo);
+  border-radius: var(--dn-r-ctl);
+  background: linear-gradient(180deg, #fff2c4 0 38%, var(--dn-sun) 39% 100%);
+  color: #3a2208;
+  font-family: var(--dn-font-figure);
+  box-shadow: var(--dn-cast-2);
+}
+
+/* a toast arrives the way a needle finds its graduation */
+html[data-player-skin="dune"] .toast-item {
+  animation: room-dune-detent 340ms cubic-bezier(0.2, 0.9, 0.1, 1) both;
+}
+
+/* ── disabled is sun-bleached, not greyed out ────────────── */
+
+html[data-player-skin="dune"] button:disabled,
+html[data-player-skin="dune"] input:disabled,
+html[data-player-skin="dune"] textarea:disabled,
+html[data-player-skin="dune"] select:disabled {
+  border-color: rgba(92, 48, 16, 0.18);
+  background: #f0e8d4;
+  background-image: none;
+  color: #8f7c5b;
+  opacity: 1;
+  filter: saturate(0.28) brightness(1.05);
+  text-shadow: none;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ── focus is a sight line ───────────────────────────────── */
+
+html[data-player-skin="dune"] :focus-visible {
+  outline: 3px solid var(--dn-sun);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px rgba(92, 48, 16, 0.5);
+}
+
+html[data-player-skin="dune"] .companion-launcher-orb {
+  border: 2px solid var(--dn-brass-lo);
+  background:
+    radial-gradient(circle at 50% 50%, #fffdf3 0 18%, var(--dn-sun) 34%, transparent 42%),
+    radial-gradient(circle at 36% 30%, var(--dn-brass-hi) 0 30%, var(--dn-brass) 62%, #7c4a10 100%);
+  box-shadow: 0 3px 0 rgba(92, 48, 16, 0.42);
+  animation: room-dune-noon 9.4s ease-in-out infinite;
+}
+
+/* ── Home · standing on the plateau ──────────────────────── */
+
+html[data-player-skin="dune"][data-app-tab="Home"] #main {
+  clip-path: none;
+  background-image:
+    linear-gradient(180deg, transparent 0 calc(100% - 13px),
+      rgba(92, 48, 16, 0.3) calc(100% - 13px) calc(100% - 12px), transparent calc(100% - 12px)),
+    repeating-linear-gradient(90deg, rgba(92, 48, 16, 0.26) 0 1px, transparent 1px 22px),
+    linear-gradient(180deg,
+      rgba(252, 246, 231, 0.34) 0 24%,
+      rgba(239, 228, 203, 0.42) 60%,
+      rgba(222, 205, 170, 0.56) 100%);
+  background-repeat: no-repeat, repeat-x, no-repeat;
+  background-size: 100% 100%, 100% 11px, 100% 100%;
+  background-position: 0 0, 0 100%, 0 0;
+}
+
+/* ── Today & Calendar · the level book ───────────────────── */
+
+html[data-player-skin="dune"][data-app-tab="Today"] #main,
+html[data-player-skin="dune"][data-app-tab="Calendar"] #main {
+  clip-path: none;
+  color: #3a2208;
+  background-image:
+    linear-gradient(90deg, transparent 0 46px, rgba(146, 64, 14, 0.55) 46px 48px, transparent 48px),
+    repeating-linear-gradient(180deg, #f8f2e2 0 29px, #e3d3ae 29px 30px);
+  background-repeat: no-repeat, repeat;
+  background-size: 100% 100%, 100% 30px;
+  box-shadow: inset 0 0 0 9px #e0cda6, inset 0 0 0 10px var(--dn-brass-lo);
+}
+
+html[data-player-skin="dune"][data-app-tab="Today"] #main .page-title,
+html[data-player-skin="dune"][data-app-tab="Calendar"] #main .page-title {
+  color: #5a3010;
+  text-shadow: none;
+}
+
+html[data-player-skin="dune"][data-app-tab="Today"] #main .tdy-hour-cell,
+html[data-player-skin="dune"][data-app-tab="Calendar"] #main .tdy-hour-cell,
+html[data-player-skin="dune"][data-app-tab="Calendar"] #main .cal-hour-cell {
+  border: 1px solid rgba(92, 48, 16, 0.3);
+  border-radius: var(--dn-r-cell);
+  background: rgba(253, 249, 238, 0.86);
+  color: #4a2c10;
+  font-family: var(--dn-font-figure);
+  font-variant-numeric: tabular-nums;
+  box-shadow: inset 2px 0 0 rgba(146, 64, 14, 0.3);
+}
+
+html[data-player-skin="dune"][data-app-tab="Today"] #main .tdy-hour-painted,
+html[data-player-skin="dune"][data-app-tab="Calendar"] #main .tdy-hour-painted,
+html[data-player-skin="dune"][data-app-tab="Calendar"] #main .cal-hour-painted {
+  border-color: var(--dn-brass-lo);
+  background: linear-gradient(180deg, #fff2c4 0 38%, var(--dn-sun) 39% 100%);
+  color: #3a2208;
+  box-shadow: inset 3px 0 0 var(--dn-ochre-deep);
+}
+
+html[data-player-skin="dune"][data-app-tab="Calendar"] #main .cal-day,
+html[data-player-skin="dune"][data-app-tab="Calendar"] #main .cal-month-cell {
+  border-radius: var(--dn-r-cell);
+  border: 1px solid rgba(92, 48, 16, 0.26);
+  background: rgba(253, 249, 238, 0.82);
+  color: #3a2208;
+}
+
+html[data-player-skin="dune"][data-app-tab="Calendar"] #main .cal-month-daynum,
+html[data-player-skin="dune"][data-app-tab="Calendar"] #main .cal-week-day-head {
+  font-family: var(--dn-font-figure);
+  font-variant-numeric: tabular-nums;
+  color: #5a3010;
+}
+
+html[data-player-skin="dune"][data-app-tab="Calendar"] #main .cal-month-cell-today,
+html[data-player-skin="dune"][data-app-tab="Calendar"] #main .cal-week-day-today {
+  border-color: var(--dn-brass-lo);
+  box-shadow: inset 0 -3px 0 var(--dn-sun);
+}
+
+/* ── Tasks · slabs laid flat, each with its footing shadow ─ */
+
+html[data-player-skin="dune"][data-app-tab="Tasks"] #main .card,
+html[data-player-skin="dune"][data-app-tab="Tasks"] #main .tsk-row {
+  border-left: 1px solid var(--dn-hair-2);
+  border-bottom: 1px solid var(--dn-hair-2);
+  box-shadow: var(--dn-cast-1);
+  background: linear-gradient(176deg, #f8f2e1 0 64%, #eadcbb 100%);
+}
+
+/* ── Agent · the shade under the instrument ──────────────── */
+
+html[data-player-skin="dune"][data-app-tab="Agent"] #main .agent-pane {
+  border: 1px solid var(--dn-hair-2);
+  border-top: 2px solid var(--dn-brass-lo);
+  border-radius: var(--dn-r-plate);
+  background:
+    linear-gradient(180deg, rgba(146, 64, 14, 0.14) 0 4px, transparent 4px),
+    linear-gradient(176deg, #ece0c4 0 58%, #ddcda9 100%);
+  box-shadow: inset 0 3px 0 rgba(92, 48, 16, 0.16);
+}
+
+html[data-player-skin="dune"] .agent-msg.assistant .agent-bubble {
+  border: 1px solid var(--dn-hair-2);
+  border-radius: 22px 22px 5px 5px / 9px 9px 5px 5px;
+  background: #f8f2e1;
+  color: var(--dn-ink);
+  box-shadow: var(--dn-cast-1);
+}
+
+html[data-player-skin="dune"] .agent-msg.user .agent-bubble {
+  border: 1px solid var(--dn-brass-lo);
+  border-radius: 22px 22px 5px 5px / 9px 9px 5px 5px;
+  background: linear-gradient(180deg, #fff2c4 0 38%, var(--dn-sun) 39% 100%);
+  color: #3a2208;
+  box-shadow: var(--dn-cast-1);
+}
+
+/* ── remaining pages hold the same cut, quietly ──────────── */
+
+html[data-player-skin="dune"][data-app-tab="Hub"] #main .hub-card,
+html[data-player-skin="dune"][data-app-tab="Hub"] #main .hub-glance-item {
+  border-radius: var(--dn-r-card);
+  border: 1px solid var(--dn-hair-2);
+  background: linear-gradient(176deg, #f8f2e1 0 62%, #eadcbb 100%);
+  color: var(--dn-ink);
+  box-shadow: var(--dn-cast-1);
+}
+
+html[data-player-skin="dune"][data-app-tab="Practice"] #main .card,
+html[data-player-skin="dune"][data-app-tab="Settings"] #main .card,
+html[data-player-skin="dune"][data-app-tab="Paint"] #main .card,
+html[data-player-skin="dune"][data-app-tab="Projects"] #main .card,
+html[data-player-skin="dune"][data-app-tab="Parallel"] #main .card,
+html[data-player-skin="dune"][data-app-tab="Goals"] #main .card {
+  border-radius: var(--dn-r-card);
+  border: 1px solid var(--dn-hair-2);
+  background: linear-gradient(176deg, #f8f2e1 0 64%, #eadcbb 100%);
+  box-shadow: var(--dn-cast-1);
+}
+
+html[data-player-skin="dune"] .loot-skin-card,
+html[data-player-skin="dune"] .loot-collection-card {
+  border-radius: var(--dn-r-card);
+  border: 1px solid var(--dn-hair-2);
+  background: linear-gradient(176deg, #f8f2e1 0 62%, #e8dabb 100%);
+  color: var(--dn-ink);
+  box-shadow: var(--dn-cast-1);
+}
+
+/* ── motion ──────────────────────────────────────────────── */
+
+/* the sun does not travel at noon; it only burns a little harder */
+@keyframes room-dune-noon {
+  0%, 100% { filter: brightness(1); }
+  46% { filter: brightness(1.07); }
+  54% { filter: brightness(1.01); }
+}
+
+/* heat standing on the horizon line */
+@keyframes room-dune-shimmer {
+  0%, 100% { opacity: 0.34; transform: translateY(0) scaleY(1); }
+  50% { opacity: 0.62; transform: translateY(-1px) scaleY(1.5); }
+}
+
+/* dry grit walking across the pavement, one direction, very slowly */
+@keyframes room-dune-creep {
+  0% { background-position: 0 0, 0 0, 0 0; }
+  100% { background-position: 96px 0, 69px 0, 93px 0; }
+}
+
+/* a value settling: it overruns its graduation, then walks back one */
+@keyframes room-dune-detent {
+  0% { transform: translateX(12px); opacity: 0; }
+  58% { transform: translateX(-3px); opacity: 1; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="dune"] *,
+  html[data-player-skin="dune"] *::before,
+  html[data-player-skin="dune"] *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,1240 @@
+/* Merlot Archive — a dust-soft cellar, cream bottle labels, one wax seal. */
+
+html[data-player-skin="merlot"] {
+  --merlot-cellar: #12070a;
+  --merlot-bottle: #210a11;
+  --merlot-burgundy: #4c0519;
+  --merlot-wax: #9f1239;
+  --merlot-label: #f1e3c5;
+  --merlot-label-deep: #e4d0aa;
+  --merlot-label-ink: #3c111a;
+  --merlot-dust: #bda989;
+  --bg-shell: var(--merlot-cellar);
+  --bg-content: #1b0a10;
+  --bg-card: #2a0d17;
+  --bg-card-hover: #35111d;
+  --ink-primary: #f4ead6;
+  --ink-secondary: #d6c7ad;
+  --ink-muted: #aa9880;
+  --border: rgba(228, 208, 170, 0.22);
+  --gridline: rgba(228, 208, 170, 0.13);
+  --ws-accent: var(--merlot-wax);
+  --accent: var(--merlot-wax);
+  --accent-ink: #fff4dc;
+  --at-a: var(--merlot-wax);
+  --at-b: var(--merlot-label-deep);
+  --at-plate: rgba(39, 12, 20, 0.92);
+  --at-plate-2: rgba(53, 17, 29, 0.94);
+  --at-well: rgba(15, 5, 8, 0.82);
+  --at-ink: #f4ead6;
+  --at-ink-2: #d6c7ad;
+  --at-ink-3: #aa9880;
+  --at-hair: rgba(228, 208, 170, 0.16);
+  --at-hair-2: rgba(228, 208, 170, 0.26);
+  --at-hair-a: rgba(159, 18, 57, 0.68);
+  --at-focus: 0 0 0 3px rgba(241, 227, 197, 0.24);
+  --glow-accent: rgba(159, 18, 57, 0.16);
+  --glow-violet: rgba(76, 5, 25, 0.12);
+  --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --at-font-display: var(--font-display);
+  color-scheme: dark;
+}
+
+html[data-player-skin="merlot"] body {
+  background-color: var(--merlot-cellar) !important;
+  background-image:
+    linear-gradient(90deg, rgba(12, 3, 5, 0.78) 0%, rgba(33, 7, 14, 0.34) 48%, rgba(18, 4, 8, 0.68) 100%),
+    linear-gradient(180deg, rgba(76, 5, 25, 0.26), rgba(9, 3, 5, 0.54)),
+    url("/img/skins/merlot.png") !important;
+  background-position: center, center, center 42% !important;
+  background-size: cover, cover, cover !important;
+  background-attachment: fixed !important;
+  color: var(--ink-primary);
+}
+
+html[data-player-skin="merlot"] body::before {
+  opacity: 0.3 !important;
+  background-image:
+    radial-gradient(circle at 18% 23%, rgba(241, 227, 197, 0.38) 0 0.7px, transparent 1px),
+    radial-gradient(circle at 72% 61%, rgba(189, 169, 137, 0.3) 0 0.6px, transparent 1px),
+    linear-gradient(180deg, transparent, rgba(18, 7, 10, 0.2)) !important;
+  background-size: 43px 47px, 67px 71px, cover !important;
+  animation: room-merlot-dust-drift 28s linear infinite;
+}
+
+html[data-player-skin="merlot"] body::after {
+  opacity: 0.46;
+  mix-blend-mode: multiply;
+  background:
+    radial-gradient(ellipse at 52% 40%, transparent 22%, rgba(8, 2, 4, 0.28) 72%, rgba(4, 1, 2, 0.7) 100%),
+    linear-gradient(180deg, rgba(76, 5, 25, 0.08), rgba(10, 3, 5, 0.34));
+}
+
+html[data-player-skin="merlot"] #main {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(29, 8, 14, 0.48), rgba(13, 4, 7, 0.7)) !important;
+  border-inline: 1px solid rgba(228, 208, 170, 0.08);
+  box-shadow:
+    inset 0 1px rgba(241, 227, 197, 0.08),
+    inset 0 28px 70px rgba(76, 5, 25, 0.08);
+}
+
+/* The HUD is the cellar shelf: restrained wood-dark controls, no neon glow. */
+html[data-player-skin="merlot"] .top-hud {
+  background:
+    linear-gradient(90deg, rgba(16, 5, 8, 0.96), rgba(54, 10, 23, 0.91) 58%, rgba(17, 5, 9, 0.96)),
+    url("/img/skins/merlot.png") right 38% / 720px auto !important;
+  color: var(--merlot-label);
+  border-bottom: 1px solid rgba(228, 208, 170, 0.34);
+  box-shadow:
+    0 8px 28px rgba(5, 1, 2, 0.48),
+    inset 0 -2px rgba(76, 5, 25, 0.8);
+  backdrop-filter: blur(15px) saturate(0.78);
+}
+
+html[data-player-skin="merlot"] .hud-app-name {
+  background: none;
+  color: var(--merlot-label);
+  -webkit-text-fill-color: var(--merlot-label);
+  font-family: var(--font-display);
+  letter-spacing: 0.025em;
+}
+
+html[data-player-skin="merlot"] .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-game-cluster,
+  .hud-game-chip,
+  .hud-model-chip--status,
+  .hud-agent-chip,
+  .loot-profile-chip
+) {
+  background: rgba(25, 7, 12, 0.78);
+  color: var(--merlot-label);
+  border-color: rgba(228, 208, 170, 0.22);
+  border-radius: 4px 9px 4px 11px;
+  box-shadow: inset 0 1px rgba(241, 227, 197, 0.06);
+}
+
+html[data-player-skin="merlot"] .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-game-cluster,
+  .hud-game-chip,
+  .hud-model-chip--status,
+  .hud-agent-chip,
+  .loot-profile-chip
+):hover:not(:disabled) {
+  background: rgba(76, 5, 25, 0.78);
+  border-color: rgba(228, 208, 170, 0.42);
+  color: #fff3da;
+  box-shadow: inset 0 1px rgba(241, 227, 197, 0.12);
+  transform: translateY(-1px);
+}
+
+html[data-player-skin="merlot"] .hud-status-pill::before,
+html[data-player-skin="merlot"] .top-hud .hud-agent-chip::before {
+  background: var(--merlot-wax);
+  box-shadow: 0 0 0 2px rgba(241, 227, 197, 0.11);
+}
+
+html[data-player-skin="merlot"] .tab-chip-bar {
+  background: rgba(18, 6, 10, 0.9);
+  border-bottom-color: rgba(228, 208, 170, 0.13);
+  backdrop-filter: blur(13px);
+}
+
+html[data-player-skin="merlot"] .tab-chip {
+  color: var(--merlot-label-deep);
+  border-radius: 3px 8px 3px 10px;
+}
+
+html[data-player-skin="merlot"] .tab-chip:hover {
+  background: rgba(76, 5, 25, 0.46);
+  border-color: rgba(228, 208, 170, 0.18);
+}
+
+html[data-player-skin="merlot"] .tab-chip.active {
+  background: var(--merlot-label);
+  color: var(--merlot-label-ink);
+  border-color: var(--merlot-label-deep);
+  box-shadow:
+    inset 0 0 0 1px rgba(76, 5, 25, 0.16),
+    0 2px 8px rgba(5, 1, 2, 0.3);
+}
+
+html[data-player-skin="merlot"] .tab-chip.active .tab-chip-mark {
+  color: var(--merlot-wax);
+}
+
+/* Launcher cards are individual paper labels pasted onto bottle-dark shelves. */
+html[data-player-skin="merlot"] .launcher-card {
+  --ink-primary: var(--merlot-label-ink);
+  --ink-secondary: #65404a;
+  --ink-muted: #795f5b;
+  overflow: visible;
+  border-radius: 2px 15px 5px 24px;
+  border: 1px solid #cbb58e;
+  background:
+    linear-gradient(105deg, rgba(255, 255, 255, 0.24), transparent 28%),
+    radial-gradient(circle at 82% 17%, rgba(76, 5, 25, 0.055) 0 1px, transparent 1.5px),
+    linear-gradient(180deg, #f4e8cf, var(--merlot-label)) !important;
+  background-size: auto, 11px 13px, auto !important;
+  color: var(--merlot-label-ink);
+  box-shadow:
+    0 16px 35px rgba(4, 1, 2, 0.42),
+    inset 0 0 0 4px rgba(76, 5, 25, 0.065),
+    inset 0 -2px rgba(124, 90, 64, 0.18);
+  animation: room-merlot-label-settle 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+html[data-player-skin="merlot"] .launcher-card::before {
+  left: 18px;
+  right: 18px;
+  top: 10px;
+  width: auto;
+  height: 4px;
+  border-radius: 0;
+  opacity: 0.72;
+  background:
+    linear-gradient(
+      180deg,
+      var(--merlot-burgundy) 0 1px,
+      transparent 1px 3px,
+      rgba(76, 5, 25, 0.48) 3px 4px
+    );
+}
+
+html[data-player-skin="merlot"] .launcher-card::after {
+  content: "M";
+  right: 13px;
+  bottom: 7px;
+  width: auto;
+  aspect-ratio: auto;
+  color: rgba(76, 5, 25, 0.12);
+  background: none;
+  font: 700 42px/1 var(--font-display);
+  letter-spacing: -0.08em;
+  transform: rotate(-7deg);
+}
+
+html[data-player-skin="merlot"] .launcher-card:hover,
+html[data-player-skin="merlot"] .launcher-card--focused {
+  transform: translateY(-3px) rotate(-0.18deg);
+  border-color: #b18f67;
+  box-shadow:
+    0 20px 44px rgba(4, 1, 2, 0.52),
+    inset 0 0 0 4px rgba(76, 5, 25, 0.08),
+    inset 0 -2px rgba(124, 90, 64, 0.22);
+}
+
+html[data-player-skin="merlot"] .launcher-card--focused {
+  outline: 2px solid var(--merlot-wax);
+  outline-offset: 4px;
+}
+
+html[data-player-skin="merlot"] .launcher-card :is(
+  .launcher-card-name,
+  .launcher-tile-name,
+  .launcher-card-intention,
+  .launcher-card-sub,
+  .launcher-card-context,
+  .launcher-card-stat
+) {
+  color: inherit;
+}
+
+/* Bottle silhouette: the app mark remains legible on its own cellar glyph. */
+html[data-player-skin="merlot"] .launcher-card-glyph,
+html[data-player-skin="merlot"] .launcher-tile-glyph {
+  position: relative;
+  width: 52px;
+  height: 60px;
+  overflow: visible;
+  border: 1px solid rgba(241, 227, 197, 0.68);
+  border-radius: 5px 5px 15px 17px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.09), transparent 26%),
+    linear-gradient(160deg, #64102a, var(--merlot-burgundy) 48%, #240811);
+  color: var(--merlot-label);
+  box-shadow:
+    0 9px 15px rgba(27, 5, 11, 0.28),
+    inset 0 0 0 3px rgba(16, 4, 8, 0.22);
+}
+
+html[data-player-skin="merlot"] .launcher-card-glyph::before,
+html[data-player-skin="merlot"] .launcher-tile-glyph::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  width: 18px;
+  height: 9px;
+  border: 1px solid rgba(241, 227, 197, 0.5);
+  border-bottom: 0;
+  border-radius: 3px 3px 0 0;
+  background: #2a0913;
+  transform: translateX(-50%);
+}
+
+html[data-player-skin="merlot"] .launcher-card-glyph svg,
+html[data-player-skin="merlot"] .launcher-tile-glyph svg {
+  position: relative;
+  z-index: 1;
+  width: 31px;
+  height: 31px;
+  color: var(--merlot-label);
+  filter: drop-shadow(0 1px rgba(17, 4, 8, 0.52));
+}
+
+/* Fallback cream-label plate. Each data-app-tab room below overrides this. */
+html[data-player-skin="merlot"] :is(
+  .card,
+  .task-row,
+  .hub-card,
+  .empty-state,
+  .agent-bubble
+) {
+  --ink-primary: var(--merlot-label-ink);
+  --ink-secondary: #65404a;
+  --ink-muted: #795f5b;
+  --border: rgba(76, 5, 25, 0.24);
+  --gridline: rgba(76, 5, 25, 0.14);
+  background: var(--merlot-label);
+  color: var(--merlot-label-ink);
+  border-color: rgba(91, 47, 47, 0.3);
+  border-radius: 3px 11px 4px 15px;
+  box-shadow:
+    inset 0 0 0 3px rgba(76, 5, 25, 0.04),
+    0 10px 24px rgba(5, 1, 2, 0.24);
+}
+
+html[data-player-skin="merlot"] :is(.card, .task-row, .hub-card, .empty-state, .agent-bubble)
+  :is(h1, h2, h3, h4, p, span, label, strong, small) {
+  color: inherit;
+}
+
+html[data-player-skin="merlot"] .page-intent,
+html[data-player-skin="merlot"] .agent-pane {
+  background:
+    linear-gradient(140deg, rgba(91, 9, 32, 0.88), rgba(28, 7, 13, 0.95));
+  color: var(--merlot-label);
+  border: 1px solid rgba(228, 208, 170, 0.22);
+  border-radius: 5px 14px 5px 18px;
+  box-shadow: 0 14px 32px rgba(4, 1, 2, 0.34);
+}
+
+html[data-player-skin="merlot"] .empty-state {
+  border-style: double;
+  border-width: 3px;
+  padding: 20px 18px;
+}
+
+html[data-player-skin="merlot"] .empty-state::before {
+  content: "CELLAR NOTE";
+  color: var(--merlot-wax);
+  font: 700 9px/1 var(--at-font-mono);
+  letter-spacing: 0.2em;
+}
+
+/* Inputs are writable paper labels; dialogs remain the bottle-dark room. */
+html[data-player-skin="merlot"] :is(input, textarea, select, [contenteditable="true"]) {
+  background: #f6ead2;
+  color: var(--merlot-label-ink);
+  border: 1px solid #bda57f;
+  border-radius: 2px 8px 2px 11px;
+  box-shadow:
+    inset 0 0 0 2px rgba(76, 5, 25, 0.045),
+    inset 0 1px 3px rgba(77, 51, 34, 0.1);
+  caret-color: var(--merlot-wax);
+}
+
+html[data-player-skin="merlot"] :is(input, textarea)::placeholder {
+  color: #775c58;
+  opacity: 0.82;
+}
+
+html[data-player-skin="merlot"] :is(input[type="checkbox"], input[type="radio"], input[type="range"]) {
+  accent-color: var(--merlot-wax);
+}
+
+html[data-player-skin="merlot"] :is(
+  dialog,
+  .command-palette,
+  .command-palette-overlay .command-list,
+  .quick-capture,
+  .napkin-capture-dialog,
+  .loot-shell-dialog
+) {
+  background:
+    linear-gradient(145deg, rgba(76, 5, 25, 0.94), rgba(20, 5, 10, 0.98));
+  color: var(--merlot-label);
+  border: 1px solid rgba(228, 208, 170, 0.34);
+  border-radius: 5px 18px 6px 24px;
+  box-shadow:
+    0 32px 90px rgba(3, 1, 2, 0.72),
+    inset 0 0 0 4px rgba(241, 227, 197, 0.035);
+}
+
+html[data-player-skin="merlot"] :is(.command-palette-overlay, .loot-shell-backdrop) {
+  background: rgba(8, 2, 4, 0.82);
+  backdrop-filter: blur(12px) saturate(0.65);
+}
+
+/* A primary action is a pressed wax seal, never a luminous arcade button. */
+html[data-player-skin="merlot"] button.primary {
+  border: 1px solid #c96179;
+  border-bottom-color: #2d0611;
+  border-radius: 15px 19px 14px 20px;
+  background:
+    radial-gradient(circle at 35% 25%, #b72a4f 0%, var(--merlot-wax) 34%, #710b29 72%, var(--merlot-burgundy) 100%);
+  color: #fff2d7;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  text-shadow: 0 1px #3b0615;
+  box-shadow:
+    0 4px 0 #2a0610,
+    0 8px 18px rgba(7, 1, 3, 0.3),
+    inset 0 1px rgba(255, 232, 216, 0.24);
+}
+
+html[data-player-skin="merlot"] button.primary:hover:not(:disabled) {
+  filter: none;
+  transform: translateY(-1px);
+  box-shadow:
+    0 5px 0 #2a0610,
+    0 10px 20px rgba(7, 1, 3, 0.34),
+    inset 0 1px rgba(255, 232, 216, 0.28);
+}
+
+html[data-player-skin="merlot"] button.primary:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow:
+    0 1px 0 #2a0610,
+    0 4px 10px rgba(7, 1, 3, 0.3),
+    inset 0 2px 4px rgba(42, 6, 16, 0.28);
+  animation: room-merlot-seal-press 160ms ease-out;
+}
+
+html[data-player-skin="merlot"] :is(button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--merlot-label);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px rgba(159, 18, 57, 0.68);
+}
+
+html[data-player-skin="merlot"] :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  opacity: 0.46;
+  filter: saturate(0.35);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* A toast is a cellar slip: cream paper, one pressed wax. */
+html[data-player-skin="merlot"] .toast-item {
+  position: relative;
+  overflow: visible;
+  border: 1px solid #cbb58e;
+  border-radius: 2px 12px 3px 14px;
+  background:
+    linear-gradient(105deg, rgba(255, 255, 255, 0.2), transparent 26%),
+    linear-gradient(180deg, #f4e8cf, var(--merlot-label));
+  color: var(--merlot-label-ink);
+  box-shadow:
+    inset 0 0 0 3px rgba(76, 5, 25, 0.045),
+    0 12px 28px rgba(4, 1, 2, 0.4);
+  animation: room-merlot-label-settle 380ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+html[data-player-skin="merlot"] .toast-item::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  width: 11px;
+  height: 11px;
+  border-radius: 6px 8px 5px 7px;
+  background:
+    radial-gradient(circle at 35% 28%, #b72a4f 0%, var(--merlot-wax) 42%, #710b29 78%, var(--merlot-burgundy) 100%);
+  box-shadow:
+    0 1px 0 #2a0610,
+    inset 0 1px rgba(255, 232, 216, 0.28);
+}
+
+html[data-player-skin="merlot"] .companion-launcher-orb {
+  border-radius: 14px 18px 13px 19px;
+  background:
+    radial-gradient(circle at 34% 26%, #c43a5a 0%, var(--merlot-wax) 38%, #710b29 72%, var(--merlot-burgundy) 100%);
+  box-shadow:
+    0 3px 0 #2a0610,
+    inset 0 1px rgba(255, 232, 216, 0.26),
+    0 0 0 2px rgba(241, 227, 197, 0.12);
+  animation: room-merlot-lamp-breathe 7.2s ease-in-out infinite;
+}
+
+html[data-player-skin="merlot"] .companion-panel {
+  background:
+    linear-gradient(160deg, rgba(76, 5, 25, 0.92), rgba(18, 5, 9, 0.97));
+  color: var(--merlot-label);
+  border: 1px solid rgba(228, 208, 170, 0.28);
+  border-radius: 5px 16px 6px 20px;
+  box-shadow:
+    0 24px 60px rgba(3, 1, 2, 0.62),
+    inset 0 0 0 3px rgba(241, 227, 197, 0.04);
+}
+
+html[data-player-skin="merlot"] .companion-msg-assistant .companion-bubble {
+  background: var(--merlot-label);
+  color: var(--merlot-label-ink);
+  border: 1px solid #cbb58e;
+  border-radius: 2px 11px 3px 13px;
+}
+
+html[data-player-skin="merlot"] .companion-msg-user .companion-bubble {
+  background:
+    radial-gradient(circle at 88% 18%, rgba(159, 18, 57, 0.22) 0 7px, transparent 9px),
+    linear-gradient(180deg, #5a1026, var(--merlot-burgundy));
+  color: var(--merlot-label);
+  border: 1px solid #c96179;
+  border-radius: 11px 3px 14px 4px;
+}
+
+/* ═══ Per-tab rooms — each a different cellar object ═══════════ */
+
+/* Home · the shelf void. Bottles recede; cream labels sit on the rack. */
+html[data-player-skin="merlot"][data-app-tab="Home"] #main {
+  background:
+    linear-gradient(118deg, transparent 0 22%, rgba(241, 227, 197, 0.07) 32%, transparent 44%),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 26px,
+      rgba(18, 5, 8, 0.55) 26px 40px,
+      rgba(76, 5, 25, 0.18) 40px 42px,
+      transparent 42px 70px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 118px,
+      #12070a 118px 126px,
+      rgba(76, 5, 25, 0.55) 126px 128px,
+      transparent 128px 246px
+    ),
+    radial-gradient(ellipse 46% 38% at 36% 8%, rgba(241, 227, 197, 0.08), transparent 62%),
+    linear-gradient(180deg, rgba(18, 6, 10, 0.42), rgba(8, 2, 4, 0.78)) !important;
+  box-shadow:
+    inset 0 1px rgba(241, 227, 197, 0.06),
+    inset 0 80px 120px rgba(241, 227, 197, 0.03),
+    inset 0 -40px 80px rgba(4, 1, 2, 0.45);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Home"] #main::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle at 28% 22%, rgba(241, 227, 197, 0.55) 0 0.7px, transparent 1.2px),
+    radial-gradient(circle at 41% 48%, rgba(189, 169, 137, 0.4) 0 0.55px, transparent 1px),
+    linear-gradient(118deg, transparent 18%, rgba(241, 227, 197, 0.05) 34%, transparent 48%);
+  background-size: 39px 44px, 61px 67px, auto;
+  animation: room-merlot-shaft 26s linear infinite;
+  mix-blend-mode: screen;
+  opacity: 0.42;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Home"] #main > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Home"] .launcher-card {
+  box-shadow:
+    0 16px 35px rgba(4, 1, 2, 0.42),
+    inset 0 0 0 4px rgba(76, 5, 25, 0.065),
+    inset 0 -2px rgba(124, 90, 64, 0.18),
+    0 22px 0 -12px #12070a,
+    0 26px 0 -12px rgba(76, 5, 25, 0.72);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Home"] .empty-state {
+  background: rgba(18, 6, 10, 0.72);
+  color: var(--merlot-label);
+  --ink-primary: var(--merlot-label);
+  --ink-secondary: #d6c7ad;
+  border: 1px solid rgba(228, 208, 170, 0.18);
+  border-radius: 3px 10px 3px 12px;
+}
+
+/* Today · a tasting notebook laid on the bar. */
+html[data-player-skin="merlot"][data-app-tab="Today"] #main {
+  --ink-primary: var(--merlot-label-ink);
+  --ink-secondary: #65404a;
+  --ink-muted: #795f5b;
+  color: var(--merlot-label-ink);
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 27px,
+      rgba(76, 5, 25, 0.09) 27px 28px
+    ),
+    linear-gradient(90deg, var(--merlot-burgundy) 0 16px, #c4a37a 16px 19px, transparent 19px),
+    linear-gradient(180deg, #f6ead2 0%, var(--merlot-label) 100%) !important;
+  box-shadow:
+    inset 0 1px rgba(255, 248, 230, 0.55),
+    inset 28px 0 0 rgba(76, 5, 25, 0.06),
+    0 18px 40px rgba(4, 1, 2, 0.28);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Today"] .page-intent {
+  background: #f3e6c8;
+  color: var(--merlot-label-ink);
+  border: 1px solid #cbb58e;
+  border-left: 3px solid var(--merlot-burgundy);
+  border-radius: 2px 8px 2px 6px;
+  box-shadow: none;
+  font-family: var(--font-display);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Today"] #main .tdy-hour-row {
+  border-bottom: 0;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Today"] #main .tdy-hour-time {
+  color: #7a4a52;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Today"] #main .tdy-hour-cell,
+html[data-player-skin="merlot"][data-app-tab="Today"] #main .cal-hour-cell {
+  position: relative;
+  border: 0;
+  border-bottom: 1px solid rgba(76, 5, 25, 0.14);
+  border-radius: 0 2px 0 0;
+  background: transparent;
+  color: var(--merlot-label-ink);
+  font-family: var(--font-display);
+  box-shadow: none;
+  min-height: 28px;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Today"] #main .tdy-hour-row:nth-child(even) .tdy-hour-cell {
+  background: rgba(76, 5, 25, 0.035);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Today"] #main .tdy-hour-painted,
+html[data-player-skin="merlot"][data-app-tab="Today"] #main .cal-hour-painted {
+  background: transparent !important;
+  color: var(--merlot-label-ink) !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  padding-left: 18px;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Today"] #main .tdy-hour-painted::after,
+html[data-player-skin="merlot"][data-app-tab="Today"] #main .cal-hour-painted::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 6px 8px 5px 7px;
+  background:
+    radial-gradient(circle at 35% 28%, #b72a4f 0%, var(--merlot-wax) 48%, #710b29 100%);
+  box-shadow:
+    0 1px 0 #2a0610,
+    inset 0 1px rgba(255, 232, 216, 0.3);
+  transform: translateY(-50%);
+  animation: room-merlot-wax-set 420ms ease-out both;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Today"] .tdy-now-marker {
+  background: var(--merlot-wax);
+  height: 2px;
+  box-shadow: 0 0 0 1px rgba(241, 227, 197, 0.18);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Today"] #tdy-completion-bar {
+  background: linear-gradient(90deg, var(--merlot-burgundy), var(--merlot-wax) 62%, #cbb58e);
+  height: 3px;
+  box-shadow: none;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Today"] #main :is(.card, .empty-state) {
+  background: #f6ead2;
+  border: 1px solid #cbb58e;
+  border-left: 3px solid var(--merlot-burgundy);
+  border-radius: 2px 8px 2px 6px;
+  box-shadow: 1px 2px 0 rgba(76, 5, 25, 0.08);
+}
+
+/* Calendar · vintage years. Cells are bottle necks with year labels. */
+html[data-player-skin="merlot"][data-app-tab="Calendar"] #main {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 58px,
+      rgba(18, 5, 8, 0.35) 58px 72px
+    ),
+    linear-gradient(180deg, rgba(22, 7, 12, 0.62), rgba(10, 3, 5, 0.84)) !important;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Calendar"] .cal-month-label,
+html[data-player-skin="merlot"][data-app-tab="Calendar"] .cal-month-weekday,
+html[data-player-skin="merlot"][data-app-tab="Calendar"] .cal-week-day-head {
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--merlot-label-deep);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Calendar"] #main .cal-month-cell-pad {
+  background: rgba(12, 4, 7, 0.4);
+  border: 1px dashed rgba(228, 208, 170, 0.08);
+  border-radius: 3px;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Calendar"] #main :is(
+  .cal-day,
+  .cal-month-cell:not(.cal-month-cell-pad)
+) {
+  position: relative;
+  isolation: isolate;
+  padding-top: 16px;
+  border: 1px solid rgba(228, 208, 170, 0.16);
+  border-top-width: 0;
+  border-radius: 0 0 8px 10px;
+  background:
+    linear-gradient(180deg, transparent 0 13px, var(--merlot-label) 13px 36px, transparent 36px),
+    linear-gradient(180deg, #2a0c14, #210a11 40%, var(--merlot-burgundy));
+  color: var(--merlot-label-ink);
+  box-shadow:
+    inset 0 0 0 1px rgba(18, 5, 8, 0.28),
+    0 8px 14px rgba(4, 1, 2, 0.28);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Calendar"] #main .cal-hour-cell {
+  border: 1px solid rgba(228, 208, 170, 0.14);
+  border-radius: 2px 6px 3px 8px;
+  background:
+    linear-gradient(180deg, var(--merlot-label) 0 18px, #210a11 18px);
+  color: var(--merlot-label-ink);
+  box-shadow: inset 0 0 0 1px rgba(18, 5, 8, 0.2);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Calendar"] #main .cal-month-cell:not(.cal-month-cell-pad)::before,
+html[data-player-skin="merlot"][data-app-tab="Calendar"] #main .cal-day::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 11px;
+  height: 13px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(241, 227, 197, 0.28);
+  border-bottom: 0;
+  border-radius: 3px 3px 0 0;
+  background: #2a0913;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Calendar"] #main :is(.cal-month-daynum, .cal-week-day-head) {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--merlot-label-ink);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Calendar"] #main .cal-month-cell-today,
+html[data-player-skin="merlot"][data-app-tab="Calendar"] #main .cal-week-day-today {
+  border-color: rgba(159, 18, 57, 0.55);
+  box-shadow:
+    inset 0 0 0 1px rgba(18, 5, 8, 0.28),
+    0 0 0 2px rgba(159, 18, 57, 0.35),
+    0 10px 16px rgba(4, 1, 2, 0.34);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Calendar"] #main .cal-month-chip {
+  border: 1px solid #cbb58e;
+  border-radius: 2px 6px 2px 7px;
+  background: var(--merlot-label);
+  color: var(--merlot-label-ink);
+  font-family: var(--font-display);
+  font-size: 10px;
+  box-shadow: 1px 1px 0 rgba(18, 5, 8, 0.25);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Calendar"] #main .cal-month-cell-today::after {
+  content: "";
+  position: absolute;
+  right: 7px;
+  top: 18px;
+  width: 13px;
+  height: 13px;
+  border-radius: 7px 9px 6px 10px;
+  background:
+    radial-gradient(circle at 35% 28%, #b72a4f 0%, var(--merlot-wax) 48%, #710b29 100%);
+  box-shadow:
+    0 1px 0 #2a0610,
+    inset 0 1px rgba(255, 232, 216, 0.28);
+  animation: room-merlot-wax-set 480ms ease-out both;
+}
+
+/* Tasks · cellar inventory ledger — paper slips, left wax tick. */
+html[data-player-skin="merlot"][data-app-tab="Tasks"] #main {
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 31px,
+      rgba(228, 208, 170, 0.04) 31px 32px
+    ),
+    linear-gradient(180deg, rgba(22, 7, 12, 0.58), rgba(10, 3, 5, 0.8)) !important;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Tasks"] #main :is(.card, .tsk-row, .task-row) {
+  position: relative;
+  --ink-primary: var(--merlot-label-ink);
+  --ink-secondary: #65404a;
+  --ink-muted: #795f5b;
+  padding-left: 22px;
+  border: 1px solid #cbb58e;
+  border-left-width: 0;
+  border-radius: 1px 8px 2px 4px;
+  background:
+    linear-gradient(90deg, #e8d4aa 0 14px, #f4e8cf 14px),
+    var(--merlot-label);
+  color: var(--merlot-label-ink);
+  box-shadow:
+    3px 3px 0 rgba(18, 7, 10, 0.28),
+    inset 0 0 0 1px rgba(76, 5, 25, 0.04);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Tasks"] #main :is(.tsk-row, .task-row)::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 5px 7px 4px 6px;
+  background:
+    radial-gradient(circle at 35% 28%, #b72a4f 0%, var(--merlot-wax) 52%, #710b29 100%);
+  box-shadow: 0 1px 0 #2a0610, inset 0 1px rgba(255, 232, 216, 0.28);
+  transform: translateY(-50%);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Tasks"] #main .tsk-row-title,
+html[data-player-skin="merlot"][data-app-tab="Tasks"] #main .task-title {
+  font-family: var(--font-display);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Tasks"] #main .empty-state {
+  background: #f3e6c8;
+  border: 1px dashed #cbb58e;
+  border-radius: 2px 8px 2px 6px;
+}
+
+/* Goals · one prized bottle on a plinth. More void, one label. */
+html[data-player-skin="merlot"][data-app-tab="Goals"] #main {
+  background:
+    radial-gradient(ellipse 36% 16% at 50% 92%, rgba(76, 5, 25, 0.7), transparent 72%),
+    radial-gradient(ellipse 28% 22% at 50% 10%, rgba(241, 227, 197, 0.06), transparent 64%),
+    linear-gradient(180deg, rgba(10, 3, 5, 0.72), rgba(6, 2, 3, 0.9)) !important;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Goals"] #main .goal-card,
+html[data-player-skin="merlot"][data-app-tab="Goals"] #main .card {
+  position: relative;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 28px;
+  --ink-primary: var(--merlot-label-ink);
+  border: 1px solid #cbb58e;
+  border-top-color: #2a0913;
+  border-radius: 8px 8px 16px 18px;
+  background:
+    linear-gradient(180deg, #210a11 0 22px, var(--merlot-label) 22px);
+  color: var(--merlot-label-ink);
+  box-shadow:
+    0 18px 0 -8px #12070a,
+    0 22px 0 -4px #2a0d17,
+    0 36px 48px rgba(4, 1, 2, 0.52),
+    inset 0 0 0 4px rgba(76, 5, 25, 0.05);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Goals"] #main .goal-card::before,
+html[data-player-skin="merlot"][data-app-tab="Goals"] #main .card::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 18px;
+  height: 12px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(241, 227, 197, 0.4);
+  border-bottom: 0;
+  border-radius: 4px 4px 0 0;
+  background: #2a0913;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Goals"] #main .empty-state {
+  max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
+  background: var(--merlot-label);
+  border-style: double;
+}
+
+/* Agent · tasting desk under one warm lamp. */
+html[data-player-skin="merlot"][data-app-tab="Agent"] #main {
+  background:
+    radial-gradient(ellipse 48% 32% at 50% 0%, rgba(241, 227, 197, 0.16), transparent 64%),
+    linear-gradient(180deg, rgba(28, 8, 14, 0.5), rgba(8, 2, 4, 0.86)) !important;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Agent"] #main .agent-pane,
+html[data-player-skin="merlot"][data-app-tab="Agent"] .agent-pane {
+  border: 1px solid rgba(228, 208, 170, 0.2);
+  border-top: 3px solid rgba(241, 227, 197, 0.22);
+  border-radius: 4px 12px 6px 16px;
+  background:
+    radial-gradient(ellipse 54% 26% at 50% 0%, rgba(241, 227, 197, 0.1), transparent 70%),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 48px,
+      rgba(18, 5, 8, 0.28) 48px 49px
+    ),
+    #16080c;
+  color: var(--merlot-label);
+  box-shadow:
+    inset 0 40px 70px rgba(241, 227, 197, 0.04),
+    inset 0 -8px 0 #0c0406,
+    0 18px 36px rgba(4, 1, 2, 0.4);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Agent"] .agent-msg.assistant .agent-bubble {
+  --ink-primary: var(--merlot-label-ink);
+  --ink-secondary: #65404a;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 20px,
+      rgba(76, 5, 25, 0.08) 20px 21px
+    ),
+    var(--merlot-label);
+  color: var(--merlot-label-ink);
+  border: 1px solid #cbb58e;
+  border-left: 3px solid var(--merlot-burgundy);
+  border-radius: 2px 11px 3px 13px;
+  box-shadow: 2px 3px 0 rgba(18, 7, 10, 0.22);
+  font-family: var(--font-display);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Agent"] .agent-msg.user .agent-bubble {
+  position: relative;
+  --ink-primary: var(--merlot-label);
+  --ink-secondary: #d6c7ad;
+  background:
+    linear-gradient(180deg, #64102a, var(--merlot-burgundy));
+  color: var(--merlot-label);
+  border: 1px solid #c96179;
+  border-radius: 12px 4px 14px 5px;
+  box-shadow:
+    0 3px 0 #2a0610,
+    inset 0 1px rgba(255, 232, 216, 0.16);
+  padding-right: 22px;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Agent"] .agent-msg.user .agent-bubble::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  border-radius: 7px 9px 6px 8px;
+  background:
+    radial-gradient(circle at 35% 28%, #b72a4f 0%, var(--merlot-wax) 48%, #710b29 100%);
+  box-shadow: 0 1px 0 #2a0610, inset 0 1px rgba(255, 232, 216, 0.28);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Agent"] .empty-state {
+  background: rgba(18, 6, 10, 0.7);
+  color: var(--merlot-label);
+  --ink-primary: var(--merlot-label);
+  border: 1px solid rgba(228, 208, 170, 0.18);
+}
+
+/* Hub · label rack / pigeonholes. */
+html[data-player-skin="merlot"][data-app-tab="Hub"] #main {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 7px,
+      rgba(18, 5, 8, 0.45) 7px 9px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 7px,
+      rgba(18, 5, 8, 0.35) 7px 9px
+    ),
+    linear-gradient(180deg, rgba(24, 8, 13, 0.62), rgba(10, 3, 5, 0.84)) !important;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Hub"] #main :is(.hub-card, .hub-glance-item) {
+  --ink-primary: var(--merlot-label);
+  --ink-secondary: #d6c7ad;
+  --ink-muted: #aa9880;
+  border: 7px solid #2a0d17;
+  border-radius: 2px 4px 2px 4px;
+  background:
+    linear-gradient(180deg, #1a080e 0 8px, var(--merlot-label) 8px 34px, #210a11 34px);
+  color: var(--merlot-label);
+  box-shadow:
+    inset 0 12px 22px rgba(4, 1, 2, 0.45),
+    0 4px 0 #12070a;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Hub"] #main .hub-card-head {
+  color: var(--merlot-label-ink);
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Hub"] #main .empty-state {
+  border: 7px solid #2a0d17;
+  background: #210a11;
+  color: var(--merlot-label);
+  --ink-primary: var(--merlot-label);
+}
+
+/* Practice · decanting cloth. Softer, one ring stain. */
+html[data-player-skin="merlot"][data-app-tab="Practice"] #main {
+  background:
+    repeating-linear-gradient(90deg, rgba(241, 227, 197, 0.035) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(0deg, rgba(241, 227, 197, 0.03) 0 2px, transparent 2px 9px),
+    radial-gradient(circle at 78% 70%, transparent 22px, rgba(159, 18, 57, 0.1) 23px 26px, transparent 28px),
+    linear-gradient(180deg, rgba(28, 10, 16, 0.55), rgba(14, 5, 8, 0.78)) !important;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Practice"] #main .card {
+  --ink-primary: var(--merlot-label-ink);
+  border: 1px solid #c4ae86;
+  border-radius: 10px 16px 12px 18px;
+  background:
+    radial-gradient(circle at 82% 78%, transparent 14px, rgba(159, 18, 57, 0.14) 15px 17px, transparent 19px),
+    linear-gradient(165deg, #f4ead6, #e8d4aa);
+  color: var(--merlot-label-ink);
+  box-shadow:
+    inset 0 0 0 3px rgba(76, 5, 25, 0.03),
+    0 10px 22px rgba(4, 1, 2, 0.22);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Practice"] #main .empty-state {
+  border-radius: 12px 18px 14px 20px;
+  background:
+    radial-gradient(circle at 70% 72%, transparent 16px, rgba(159, 18, 57, 0.12) 17px 19px, transparent 22px),
+    #f1e3c5;
+}
+
+/* Settings / About · cellar bookplate, quieter serif. */
+html[data-player-skin="merlot"][data-app-tab="Settings"] #main,
+html[data-player-skin="merlot"][data-app-tab="About"] #main {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 42%, rgba(33, 10, 17, 0.2), rgba(10, 3, 5, 0.78)),
+    linear-gradient(180deg, rgba(18, 6, 10, 0.55), rgba(8, 2, 4, 0.82)) !important;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Settings"] #main .card,
+html[data-player-skin="merlot"][data-app-tab="About"] #main .card,
+html[data-player-skin="merlot"][data-app-tab="Settings"] #main .empty-state,
+html[data-player-skin="merlot"][data-app-tab="About"] #main .empty-state {
+  position: relative;
+  --ink-primary: var(--merlot-label-ink);
+  border: 1px solid #cbb58e;
+  border-radius: 3px 8px 3px 10px;
+  background: var(--merlot-label);
+  color: var(--merlot-label-ink);
+  font-family: var(--font-display);
+  box-shadow:
+    inset 0 0 0 5px rgba(76, 5, 25, 0.06),
+    inset 0 0 0 6px #cbb58e,
+    0 12px 28px rgba(4, 1, 2, 0.28);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Settings"] #main .card::before,
+html[data-player-skin="merlot"][data-app-tab="About"] #main .card::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 14px;
+  height: 14px;
+  border-radius: 8px 10px 7px 9px;
+  background:
+    radial-gradient(circle at 35% 28%, #b72a4f 0%, var(--merlot-wax) 50%, #710b29 100%);
+  box-shadow: 0 1px 0 #2a0610, inset 0 1px rgba(255, 232, 216, 0.26);
+  opacity: 0.88;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Settings"] :is(.page-title, h1, h2, h3),
+html[data-player-skin="merlot"][data-app-tab="About"] :is(.page-title, h1, h2, h3) {
+  font-family: var(--font-display);
+  letter-spacing: 0.03em;
+}
+
+/* Paint · label-design desk — cream card, one burgundy hairline. */
+html[data-player-skin="merlot"][data-app-tab="Paint"] #main {
+  background:
+    linear-gradient(180deg, rgba(241, 227, 197, 0.06) 0 28px, transparent 72px),
+    linear-gradient(90deg, rgba(18, 5, 8, 0.35) 0 22px, transparent 22px),
+    linear-gradient(180deg, rgba(22, 8, 13, 0.55), rgba(12, 4, 7, 0.8)) !important;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Paint"] #main .card,
+html[data-player-skin="merlot"][data-app-tab="Paint"] #main .empty-state {
+  --ink-primary: var(--merlot-label-ink);
+  border: 1px solid #cbb58e;
+  border-radius: 2px 5px 2px 5px;
+  background:
+    linear-gradient(180deg, var(--merlot-burgundy) 0 1px, transparent 1px),
+    linear-gradient(180deg, #f7edd6, var(--merlot-label));
+  color: var(--merlot-label-ink);
+  box-shadow:
+    inset 0 0 0 1px rgba(76, 5, 25, 0.04),
+    0 8px 18px rgba(4, 1, 2, 0.2);
+}
+
+/* Parallel / Projects · stacked cases. Heavier footing, less cream. */
+html[data-player-skin="merlot"][data-app-tab="Parallel"] #main,
+html[data-player-skin="merlot"][data-app-tab="Projects"] #main {
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 22px,
+      rgba(18, 5, 8, 0.45) 22px 24px
+    ),
+    linear-gradient(180deg, rgba(20, 7, 12, 0.6), rgba(8, 2, 4, 0.86)) !important;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Parallel"] #main :is(.card, .prj-tile),
+html[data-player-skin="merlot"][data-app-tab="Projects"] #main :is(.card, .prj-tile) {
+  --ink-primary: var(--merlot-label);
+  --ink-secondary: #d6c7ad;
+  --ink-muted: #aa9880;
+  border: 2px solid #1a080e;
+  border-bottom-width: 9px;
+  border-radius: 4px 6px 2px 3px;
+  background:
+    linear-gradient(90deg, rgba(241, 227, 197, 0.06) 0 3px, transparent 3px),
+    repeating-linear-gradient(
+      180deg,
+      #2a0d17 0 12px,
+      #210a11 12px 13px,
+      #35111d 13px 24px
+    );
+  color: var(--merlot-label);
+  box-shadow:
+    0 10px 0 #12070a,
+    0 16px 28px rgba(4, 1, 2, 0.4),
+    inset 0 1px rgba(241, 227, 197, 0.06);
+}
+
+html[data-player-skin="merlot"][data-app-tab="Parallel"] #main :is(.card, .prj-tile) :is(h1, h2, h3, h4, p, span, label, strong, small),
+html[data-player-skin="merlot"][data-app-tab="Projects"] #main :is(.card, .prj-tile) :is(h1, h2, h3, h4, p, span, label, strong, small) {
+  color: inherit;
+}
+
+html[data-player-skin="merlot"][data-app-tab="Parallel"] #main .empty-state,
+html[data-player-skin="merlot"][data-app-tab="Projects"] #main .empty-state {
+  --ink-primary: var(--merlot-label);
+  background: #210a11;
+  color: var(--merlot-label);
+  border: 2px solid #1a080e;
+  border-bottom-width: 8px;
+  border-radius: 4px 6px 2px 3px;
+}
+
+@keyframes room-merlot-dust-drift {
+  from { background-position: 0 0, 0 0, center; }
+  to { background-position: 43px 47px, -67px 71px, center; }
+}
+
+@keyframes room-merlot-label-settle {
+  from { opacity: 0; transform: translateY(7px) rotate(0.35deg); }
+  to { opacity: 1; transform: translateY(0) rotate(0); }
+}
+
+@keyframes room-merlot-seal-press {
+  0% { filter: brightness(1); }
+  48% { filter: brightness(0.84); }
+  100% { filter: brightness(1); }
+}
+
+@keyframes room-merlot-shaft {
+  from { background-position: 0 0, 0 0, 0 0; }
+  to { background-position: 39px 44px, -61px 67px, 0 0; }
+}
+
+@keyframes room-merlot-wax-set {
+  from { opacity: 0; transform: translateY(-50%) scale(0.7); }
+  62% { opacity: 1; transform: translateY(-50%) scale(1.08); }
+  to { opacity: 1; transform: translateY(-50%) scale(1); }
+}
+
+@keyframes room-merlot-lamp-breathe {
+  0%, 100% { filter: brightness(0.96); }
+  50% { filter: brightness(1.08); }
+}
+
+@media (max-width: 720px) {
+  html[data-player-skin="merlot"] body {
+    background-position: center, center, 62% center !important;
+  }
+
+  html[data-player-skin="merlot"] .launcher-card {
+    border-radius: 2px 12px 4px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="merlot"] body::before,
+  html[data-player-skin="merlot"][data-app-tab="Home"] #main::before,
+  html[data-player-skin="merlot"] .launcher-card,
+  html[data-player-skin="merlot"] .toast-item,
+  html[data-player-skin="merlot"] .companion-launcher-orb,
+  html[data-player-skin="merlot"] button.primary:active:not(:disabled),
+  html[data-player-skin="merlot"][data-app-tab="Today"] #main .tdy-hour-painted::after,
+  html[data-player-skin="merlot"][data-app-tab="Today"] #main .cal-hour-painted::after,
+  html[data-player-skin="merlot"][data-app-tab="Calendar"] #main .cal-month-cell-today::after {
+    animation: none !important;
+  }
+
+  html[data-player-skin="merlot"] .launcher-card,
+  html[data-player-skin="merlot"] .launcher-card::after,
+  html[data-player-skin="merlot"] button {
+    transition: none !important;
+  }
+
+  html[data-player-skin="merlot"] .launcher-card:hover,
+  html[data-player-skin="merlot"] .launcher-card--focused,
+  html[data-player-skin="merlot"] button.primary:hover:not(:disabled),
+  html[data-player-skin="merlot"] button.primary:active:not(:disabled) {
+    transform: none;
+  }
+}

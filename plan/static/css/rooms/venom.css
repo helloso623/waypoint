@@ -1,0 +1,872 @@
+/* ═══════════════════════════════════════════════════════════════
+   VENOM SIGNAL — acid-green ticks that bite the HUD.
+
+   The object: a scorpion warning fascia. Dark olive night. A row
+   of acid LED ticks along the lip, each one a telson tap that
+   drops, bites, and lifts. Warning dots, not blood. A signal,
+   not a wound. You read a hazard strip, not a kitchen, not a gym.
+
+   Place is hud,chip. The fascia and the warning tags are the room.
+   Cards, calendar, and tab pages stay quiet. Companion is not a
+   nest. Never clip #main or .launcher-card. Glyphs may clip.
+   No 42%/48% ovals.
+
+   Not Volt Runner (oxidized teal gym, live third-rail, contact
+   shoe). Not Voltage Spine (HUD flicker rail, stripe current).
+   Not Basil Scout (kitchen-green notes, hex leaf). Not bolt-family
+   hazard tape, square radius, or steps() strobe.
+
+   Loot: colorA #a3e635, colorB #365314, effect volt, pattern dots,
+   place hud,chip. Selectors carry :root so this room outranks the
+   bolt stencil. Reduced motion kills the bite.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — olive night, acid tick, moss well ─────────── */
+
+html[data-player-skin="venom"]:root {
+  color-scheme: dark;
+
+  --vn-night: #0c1206;
+  --vn-well: #101808;
+  --vn-plate: #18220c;
+  --vn-fascia: #1e2c10;
+  --vn-moss: #365314;
+  --vn-moss-hot: #4d7c0f;
+  --vn-acid: #a3e635;
+  --vn-acid-hot: #d9f99d;
+  --vn-sting: #ecfccb;
+  --vn-ink: #eaf6c8;
+  --vn-ink-2: #c6d6a0;
+  --vn-mute: #8a9a6a;
+
+  --vn-hair: rgba(163, 230, 53, 0.2);
+  --vn-hair-2: rgba(163, 230, 53, 0.45);
+  --vn-cast: rgba(54, 83, 20, 0.55);
+
+  /* Telson barb: bulbous vesicle left, needle aculeus top-right,
+     hooked foot bottom-left. Nothing else uses 13 / 1 / 9 / 21
+     with slash 1 / 17 / 21 / 4. Not a contact shoe, not 0. */
+  --vn-r-plate: 13px 1px 9px 21px / 1px 17px 21px 4px;
+  --vn-r-card: 11px 1px 8px 17px / 1px 14px 17px 3px;
+  --vn-r-ctl: 9px 1px 6px 13px / 1px 11px 13px 3px;
+  --vn-r-chip: 8px 0 5px 15px / 0 10px 15px 2px;
+  --vn-r-cell: 6px 0 4px 11px / 0 8px 11px 2px;
+
+  /* Warning dots — loot pattern. LEDs, not gore, not rail grooves. */
+  --vn-dots:
+    radial-gradient(circle, rgba(163, 230, 53, 0.88) 1.05px, transparent 1.3px);
+  --vn-dots-size: 13px 13px;
+  --vn-dots-soft:
+    radial-gradient(circle, rgba(163, 230, 53, 0.22) 1px, transparent 1.35px);
+  --vn-dots-soft-size: 15px 15px;
+
+  /* Scorpion in silhouette: pincers left, telson raised right.
+     Not a bolt octagon, not a volt insulator, not a leaf. */
+  --vn-telson: polygon(
+    4% 62%, 10% 38%, 22% 22%, 38% 16%, 50% 28%,
+    54% 46%, 68% 18%, 86% 4%, 100% 16%, 82% 32%,
+    66% 52%, 80% 70%, 62% 86%, 44% 74%, 26% 90%,
+    12% 78%, 8% 64%
+  );
+
+  --vn-font: "Teko", "Oswald", "Agency FB", "Arial Narrow", "Segoe UI", sans-serif;
+
+  --bg-shell: var(--vn-night);
+  --bg-content: var(--vn-well);
+  --bg-card: var(--vn-plate);
+  --bg-card-hover: var(--vn-fascia);
+  --ink-primary: var(--vn-ink);
+  --ink-secondary: var(--vn-ink-2);
+  --ink-muted: var(--vn-mute);
+  --border: rgba(163, 230, 53, 0.22);
+  --gridline: rgba(54, 83, 20, 0.35);
+  --accent: var(--vn-acid);
+  --ws-accent: var(--vn-acid);
+  --accent-ink: var(--vn-night);
+
+  --skin-a: #a3e635;
+  --skin-b: #365314;
+  --at-a: #a3e635;
+  --at-b: #365314;
+  --feel-a: #a3e635;
+  --feel-b: #365314;
+  --feel-accent: #a3e635;
+  --feel-ground: #0c1206;
+  --feel-paper: #18220c;
+  --feel-ink: #eaf6c8;
+
+  --at-plate: var(--vn-plate);
+  --at-plate-2: var(--vn-fascia);
+  --at-well: var(--vn-well);
+  --at-ink: var(--vn-ink);
+  --at-ink-2: var(--vn-ink-2);
+  --at-ink-3: var(--vn-mute);
+  --at-hair: var(--vn-hair);
+  --at-hair-2: var(--vn-hair-2);
+  --at-hair-a: rgba(163, 230, 53, 0.58);
+  --at-tint: rgba(163, 230, 53, 0.08);
+  --at-tint-b: rgba(54, 83, 20, 0.4);
+  --at-focus: 0 0 0 2px var(--vn-acid-hot);
+  --at-gold: var(--vn-acid);
+  --at-gold-soft: var(--vn-acid-hot);
+  --at-inset: inset 0 1px 0 rgba(236, 252, 203, 0.18);
+  --at-rise: 0 12px 24px -16px rgba(6, 10, 3, 0.8);
+  --at-rise-soft: 0 8px 16px -12px rgba(6, 10, 3, 0.62);
+  --at-r-plate: var(--vn-r-plate);
+  --at-r-card: var(--vn-r-card);
+  --at-r-ctl: var(--vn-r-ctl);
+  --at-r-chip: var(--vn-r-chip);
+  --at-r-cell: var(--vn-r-cell);
+  --at-font-display: var(--vn-font);
+  --font-display: var(--vn-font);
+  --font-ui: var(--vn-font);
+
+  /* A sting landing, not bolt's offset hard box, not a rail shoe. */
+  --feel-3d:
+    inset 0 1px 0 rgba(236, 252, 203, 0.2),
+    4px 6px 0 -3px #101808,
+    0 0 14px rgba(163, 230, 53, 0.1);
+  --feel-3d-press:
+    inset 0 3px 7px rgba(12, 18, 6, 0.7),
+    1px 2px 0 -1px #101808;
+  --feel-grain-opacity: 0.26;
+  --feel-grain-blend: overlay;
+  --feel-grain: var(--vn-dots-soft);
+  --feel-grain-size: var(--vn-dots-soft-size);
+  --feel-hud-hair: 0;
+  --feel-icon:
+    contrast(1.08) saturate(1.18)
+    drop-shadow(0 0 5px rgba(163, 230, 53, 0.5));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.18em;
+  --feel-plate-image:
+    linear-gradient(180deg, rgba(236, 252, 203, 0.06), transparent 34%),
+    var(--vn-dots-soft);
+}
+
+/* ── 2 · Night well. Place is not page. Kill the bolt strobe. ─ */
+
+html[data-player-skin="venom"]:root body {
+  background-color: var(--vn-night) !important;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(12, 18, 6, 0.9) 0%,
+      rgba(16, 24, 8, 0.7) 28%,
+      rgba(12, 18, 6, 0.94) 100%
+    ),
+    url("/img/skins/venom.png") !important;
+  background-position: center, center 16% !important;
+  background-size: cover, cover !important;
+  background-attachment: fixed, fixed !important;
+  background-repeat: no-repeat !important;
+  color: var(--vn-ink);
+  text-shadow: none;
+  animation: none;
+}
+
+html[data-player-skin="venom"]:root body::before {
+  opacity: 0.14 !important;
+  mix-blend-mode: overlay;
+  background-image: var(--vn-dots-soft) !important;
+  background-size: var(--vn-dots-soft-size) !important;
+  animation: none !important;
+}
+
+/* Kill feel-volt steps() flicker. Quiet olive, not a live rail. */
+html[data-player-skin="venom"]:root body::after {
+  opacity: 0.1;
+  mix-blend-mode: soft-light;
+  animation: none !important;
+  background:
+    radial-gradient(ellipse 58% 18% at 50% 6%, rgba(163, 230, 53, 0.12), transparent 72%),
+    linear-gradient(180deg, transparent 70%, rgba(12, 18, 6, 0.5) 100%);
+}
+
+html[data-player-skin="venom"]:root #main {
+  isolation: isolate;
+  position: relative;
+  clip-path: none !important;
+  overflow: visible;
+  background: color-mix(in srgb, var(--vn-night) 36%, transparent) !important;
+}
+
+html[data-player-skin="venom"]:root #main::before,
+html[data-player-skin="venom"]:root #main::after {
+  animation: none !important;
+  background: none !important;
+  clip-path: none !important;
+}
+
+html[data-player-skin="venom"]:root .launcher-card {
+  clip-path: none !important;
+  transform: none;
+}
+
+/* ── 3 · HUD — warning fascia. Ticks bite the lip. ──────────── */
+
+html[data-player-skin="venom"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  color: var(--vn-ink);
+  border-bottom: 0;
+  border-image: none;
+  border-radius: 0 0 9px 21px / 0 0 21px 4px;
+  backdrop-filter: none;
+  background:
+    linear-gradient(180deg, rgba(236, 252, 203, 0.08), transparent 30%),
+    var(--vn-fascia);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.1),
+    0 2px 0 var(--vn-moss),
+    0 14px 28px rgba(6, 10, 3, 0.5);
+}
+
+html[data-player-skin="venom"]:root[data-skin-place~="hud"] .top-hud {
+  background-image:
+    var(--vn-dots),
+    linear-gradient(180deg, rgba(236, 252, 203, 0.1), transparent 30%),
+    linear-gradient(180deg, #243614 0%, var(--vn-fascia) 62%, #16200c 100%);
+  background-size: var(--vn-dots-size), auto, auto;
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.12),
+    0 2px 0 var(--vn-moss),
+    0 3px 0 var(--vn-acid),
+    0 14px 28px rgba(6, 10, 3, 0.5);
+}
+
+/* Acid ticks along the lip. Each one drops, bites, lifts.
+   Dots, not hazard tape, not a traveling current. */
+html[data-player-skin="venom"]:root[data-skin-place~="hud"] .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 22px;
+  bottom: -4px;
+  width: 5px;
+  height: 5px;
+  z-index: 3;
+  border-radius: 50%;
+  background: var(--vn-acid);
+  box-shadow:
+    13px 0 0 var(--vn-moss-hot),
+    26px 0 0 var(--vn-acid),
+    39px 0 0 var(--vn-acid-hot),
+    52px 0 0 var(--vn-moss),
+    65px 0 0 var(--vn-acid),
+    78px 0 0 var(--vn-acid-hot),
+    91px 0 0 var(--vn-moss-hot),
+    104px 0 0 var(--vn-acid),
+    117px 0 0 var(--vn-moss),
+    130px 0 0 var(--vn-acid-hot),
+    0 0 8px rgba(163, 230, 53, 0.7);
+  animation: room-venom-bite 2.6s ease-in-out infinite;
+}
+
+html[data-player-skin="venom"]:root .top-hud > * {
+  position: relative;
+  z-index: 2;
+}
+
+html[data-player-skin="venom"]:root :is(
+  .hud-app-name,
+  .launcher-title,
+  .page-title
+) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--vn-ink);
+  color: var(--vn-ink);
+  font-family: var(--vn-font);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 #0c1206;
+}
+
+html[data-player-skin="venom"]:root .hud-app-name::before {
+  content: "";
+  display: inline-block;
+  width: 0.78em;
+  height: 0.78em;
+  margin-right: 0.42em;
+  vertical-align: -0.1em;
+  background: linear-gradient(135deg, var(--vn-sting), var(--vn-acid) 55%, var(--vn-moss));
+  clip-path: var(--vn-telson);
+  box-shadow: none;
+  filter: drop-shadow(0 0 5px rgba(163, 230, 53, 0.7));
+  animation: room-venom-warn 3.2s ease-in-out infinite;
+}
+
+html[data-player-skin="venom"]:root .hud-app-name::after {
+  content: none !important;
+  animation: none !important;
+}
+
+html[data-player-skin="venom"]:root :is(.hud-intention, .hud-now-focus-kicker) {
+  color: var(--vn-mute);
+  letter-spacing: 0.08em;
+}
+
+/* Brand jewel is the telson vesicle, not a ceramic insulator. */
+html[data-player-skin="venom"]:root .hud-brand-jewel,
+html[data-player-skin="venom"]:root .hud-glyph-btn {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid var(--vn-moss);
+  border-radius: var(--vn-r-chip);
+  background:
+    radial-gradient(circle at 34% 32%, var(--vn-sting) 0 12%, var(--vn-acid) 34%, var(--vn-moss) 78%);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.35),
+    0 0 10px rgba(163, 230, 53, 0.4);
+  transform: none;
+}
+
+html[data-player-skin="venom"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 22%;
+  background: var(--vn-acid-hot);
+  clip-path: var(--vn-telson);
+  opacity: 0.9;
+  filter: drop-shadow(0 0 4px rgba(163, 230, 53, 0.85));
+  animation: room-venom-warn 2.4s ease-in-out infinite;
+}
+
+html[data-player-skin="venom"]:root .top-hud :is(
+  .hud-icon-btn,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-chip,
+  .hud-game-cluster,
+  .hud-game-chip,
+  .hud-model-chip--status,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .loot-profile-chip
+) {
+  color: var(--vn-ink);
+  border: 1px solid rgba(163, 230, 53, 0.24);
+  border-radius: var(--vn-r-chip);
+  background: var(--vn-plate);
+  box-shadow: inset 0 -2px 0 var(--vn-moss);
+  animation: none;
+}
+
+html[data-player-skin="venom"]:root[data-skin-place~="hud"] .hud-status-pill::before,
+html[data-player-skin="venom"]:root[data-skin-place~="hud"] .top-hud .hud-agent-chip::before {
+  border-radius: 50%;
+  background: var(--vn-acid);
+  animation: room-venom-tick 1.8s ease-in-out infinite !important;
+  box-shadow: 0 0 7px rgba(163, 230, 53, 0.75);
+}
+
+html[data-player-skin="venom"]:root :is(
+  .brand-mark,
+  .ws-mark,
+  .hud-icon-svg,
+  .tab-chip-mark,
+  .hud-metric-mark,
+  .wp-skin-mark
+) {
+  color: var(--vn-acid);
+  filter: var(--feel-icon);
+  image-rendering: auto;
+  animation: none !important;
+  transform: none;
+}
+
+html[data-player-skin="venom"]:root .tab-chip-bar {
+  overflow: visible;
+  background: rgba(12, 18, 6, 0.94);
+  border-bottom: 1px solid rgba(54, 83, 20, 0.45);
+  backdrop-filter: none;
+}
+
+/* ── 4 · Place · CHIP — warning tags with a sting barb ──────── */
+
+html[data-player-skin="venom"]:root .tab-chip {
+  border-radius: var(--vn-r-chip);
+  border: 1px solid rgba(54, 83, 20, 0.5);
+  background: var(--vn-plate);
+  color: var(--vn-ink-2);
+}
+
+html[data-player-skin="venom"]:root[data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .hud-model-chip--status,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .tsk-day-chip,
+  .tsk-keyword-chip,
+  .tsk-bucket-chip,
+  .tsk-due-chip,
+  .tsk-bar-chip,
+  .hub-chip,
+  .nts-chip,
+  .pln-mode-chip,
+  .pln-commit-chip,
+  .pln-keyword-chip,
+  .tdy-cat-chip,
+  .tdy-week-chip,
+  .today-day-chip,
+  .cal-week-chip,
+  .cal-month-chip,
+  .repo-cat-chip,
+  .agc-followup-chip,
+  .quick-capture-chip,
+  .seg-pill-btn
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid rgba(163, 230, 53, 0.28);
+  border-radius: var(--vn-r-chip);
+  background:
+    var(--vn-dots-soft),
+    linear-gradient(180deg, rgba(236, 252, 203, 0.08), transparent 36%),
+    var(--vn-plate);
+  background-size: var(--vn-dots-soft-size), auto, auto;
+  color: var(--vn-ink-2);
+  font-family: var(--vn-font);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.1),
+    inset 0 -2px 0 var(--vn-moss);
+  transition:
+    transform 140ms cubic-bezier(0.2, 0.85, 0.25, 1),
+    box-shadow 140ms ease,
+    filter 140ms ease,
+    border-color 140ms ease;
+  animation: none;
+}
+
+/* Three warning LEDs on the tag. They bite on the active tick. */
+html[data-player-skin="venom"]:root[data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .tsk-day-chip,
+  .hub-chip,
+  .nts-chip,
+  .pln-mode-chip,
+  .tdy-cat-chip,
+  .today-day-chip,
+  .quick-capture-chip
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  width: 4px;
+  height: 4px;
+  z-index: 1;
+  border-radius: 50%;
+  background: var(--vn-acid);
+  box-shadow:
+    7px 0 0 var(--vn-moss-hot),
+    14px 0 0 var(--vn-acid-hot),
+    0 0 6px rgba(163, 230, 53, 0.55);
+  animation: room-venom-tick 2.1s ease-in-out infinite;
+}
+
+html[data-player-skin="venom"]:root[data-skin-place~="chip"] :is(
+  .tab-chip:hover:not(.active):not(:disabled),
+  .hud-chip:hover:not(:disabled),
+  .hud-icon-btn:hover:not(:disabled),
+  .app-subnav-pill:hover:not(.active),
+  .pill:hover:not(.active):not([aria-pressed="true"]),
+  .tsk-day-chip:hover,
+  .hub-chip:hover,
+  .nts-chip:hover,
+  .pln-mode-chip:hover,
+  .tdy-cat-chip:hover,
+  .loot-profile-chip:hover,
+  .seg-pill-btn:hover:not([aria-pressed="true"])
+) {
+  border-color: rgba(163, 230, 53, 0.55);
+  color: var(--vn-ink);
+  filter: brightness(1.06);
+  transform: translateY(2px);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.16),
+    inset 0 -2px 0 var(--vn-acid),
+    0 0 12px rgba(163, 230, 53, 0.22);
+}
+
+html[data-player-skin="venom"]:root[data-skin-place~="chip"] :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active,
+  .pill[aria-pressed="true"],
+  .tsk-day-chip-active,
+  .tsk-day-chip.active,
+  .hub-chip.active,
+  .nts-chip.active,
+  .pln-mode-chip-active,
+  .tdy-cat-armed,
+  .today-day-chip-selected,
+  .loot-profile-chip--complete
+) {
+  border-color: var(--vn-acid);
+  background:
+    var(--vn-dots),
+    linear-gradient(180deg, var(--vn-acid-hot), var(--vn-acid) 55%, var(--vn-moss-hot));
+  background-size: var(--vn-dots-size), auto;
+  color: var(--vn-night);
+  font-weight: 700;
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.45),
+    0 0 14px rgba(163, 230, 53, 0.32);
+}
+
+html[data-player-skin="venom"]:root[data-skin-place~="chip"] .tab-chip.active .tab-chip-mark {
+  color: var(--vn-night);
+  opacity: 1;
+}
+
+html[data-player-skin="venom"]:root[data-skin-place~="chip"] :is(
+  .tab-chip:active:not(:disabled),
+  .hud-chip:active:not(:disabled),
+  .hud-icon-btn:active:not(:disabled)
+) {
+  transform: translateY(3px);
+  box-shadow: var(--feel-3d-press);
+  animation: room-venom-sting 0.2s ease-out 1;
+}
+
+/* ── 5 · Glyph — raised telson. Glyphs may clip. ────────────── */
+
+html[data-player-skin="venom"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .nav-app-glyph,
+  .loot-skin-avatar,
+  .launcher-custom-app-emoji
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid var(--vn-moss);
+  border-radius: 0;
+  transform: none;
+  color: var(--vn-night);
+  clip-path: var(--vn-telson);
+  background:
+    radial-gradient(circle at 36% 34%, var(--vn-sting) 0 14%, var(--vn-acid) 40%, var(--vn-moss) 82%);
+  box-shadow: 0 0 12px rgba(163, 230, 53, 0.38);
+  filter: none;
+}
+
+html[data-player-skin="venom"]:root :is(
+  .launcher-tile-glyph svg,
+  .launcher-card-glyph svg
+) {
+  filter: brightness(0.16) contrast(1.2);
+}
+
+html[data-player-skin="venom"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  right: 6%;
+  top: 8%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--vn-acid-hot);
+  box-shadow: 0 0 8px rgba(163, 230, 53, 0.9);
+  animation: room-venom-tick 1.6s ease-in-out infinite;
+}
+
+/* ── 6 · Buttons — a warning tag you press ──────────────────── */
+
+html[data-player-skin="venom"]:root button.primary,
+html[data-player-skin="venom"]:root .primary,
+html[data-player-skin="venom"]:root .page-intent-primary,
+html[data-player-skin="venom"]:root .agent-pane-chat .agc-send {
+  border: 1px solid rgba(163, 230, 53, 0.55);
+  border-radius: var(--vn-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(236, 252, 203, 0.28), transparent 34%),
+    linear-gradient(180deg, var(--vn-acid-hot), var(--vn-acid) 58%, var(--vn-moss-hot));
+  color: var(--vn-night);
+  font-family: var(--vn-font);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(236, 252, 203, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.4),
+    0 3px 0 var(--vn-moss),
+    0 8px 14px rgba(163, 230, 53, 0.14);
+  transition:
+    transform 80ms cubic-bezier(0.2, 0.85, 0.25, 1),
+    box-shadow 80ms ease,
+    filter 80ms ease;
+  animation: none;
+}
+
+html[data-player-skin="venom"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="venom"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(2px);
+  box-shadow:
+    inset 0 1px 0 rgba(236, 252, 203, 0.5),
+    0 3px 0 var(--vn-moss),
+    0 0 14px rgba(163, 230, 53, 0.32);
+}
+
+html[data-player-skin="venom"]:root button.primary:active:not(:disabled),
+html[data-player-skin="venom"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: var(--feel-3d-press);
+  animation: room-venom-sting 0.18s ease-out 1;
+}
+
+html[data-player-skin="venom"]:root :is(button.secondary, .ghost-btn) {
+  border: 1px solid rgba(54, 83, 20, 0.55);
+  border-radius: var(--vn-r-ctl);
+  background: var(--vn-plate);
+  color: var(--vn-ink-2);
+}
+
+html[data-player-skin="venom"]:root :is(button.secondary, .ghost-btn):hover:not(:disabled) {
+  border-color: rgba(163, 230, 53, 0.45);
+  color: var(--vn-ink);
+}
+
+html[data-player-skin="venom"]:root #quick-capture-fab.quick-capture-fab {
+  background: linear-gradient(180deg, var(--vn-acid), var(--vn-moss-hot)) !important;
+  color: var(--vn-night) !important;
+  border-color: rgba(163, 230, 53, 0.55) !important;
+  border-radius: var(--vn-r-plate) !important;
+  box-shadow: 0 0 14px rgba(163, 230, 53, 0.28), 0 3px 0 var(--vn-moss) !important;
+}
+
+/* ── 7 · Empty / input / focus ──────────────────────────────── */
+
+html[data-player-skin="venom"]:root :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]) {
+  border: 1px solid rgba(54, 83, 20, 0.55);
+  border-radius: var(--vn-r-ctl);
+  background:
+    var(--vn-dots-soft),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 40%),
+    var(--vn-well);
+  background-size: var(--vn-dots-soft-size), auto, auto;
+  color: var(--vn-ink);
+  caret-color: var(--vn-acid);
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.45),
+    inset 0 -2px 0 rgba(163, 230, 53, 0.28);
+}
+
+html[data-player-skin="venom"]:root :is(input, textarea)::placeholder {
+  color: var(--vn-mute);
+  opacity: 0.85;
+}
+
+html[data-player-skin="venom"]:root :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]):focus,
+html[data-player-skin="venom"]:root .agc-input-zone:focus-within {
+  outline: none;
+  border-color: rgba(163, 230, 53, 0.7);
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.45),
+    inset 0 -2px 0 var(--vn-acid),
+    0 0 0 3px rgba(163, 230, 53, 0.16);
+}
+
+html[data-player-skin="venom"]:root :focus-visible {
+  outline: 2px solid var(--vn-acid);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(163, 230, 53, 0.16);
+}
+
+html[data-player-skin="venom"]:root ::selection {
+  background: rgba(163, 230, 53, 0.4);
+  color: var(--vn-night);
+}
+
+/* Dormant warning panel: three unlit dots waiting for a sting. */
+html[data-player-skin="venom"]:root .empty-state {
+  position: relative;
+  border: 1px dashed rgba(54, 83, 20, 0.55);
+  border-radius: var(--vn-r-plate);
+  background:
+    var(--vn-dots-soft),
+    linear-gradient(180deg, rgba(163, 230, 53, 0.04), transparent 40%),
+    var(--vn-well);
+  background-size: var(--vn-dots-soft-size), auto, auto;
+  color: var(--vn-ink-2);
+  box-shadow: inset 0 10px 22px rgba(0, 0, 0, 0.28);
+}
+
+html[data-player-skin="venom"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 6px;
+  height: 6px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background: var(--vn-moss);
+  box-shadow:
+    12px 0 0 var(--vn-moss),
+    24px 0 0 var(--vn-moss);
+  transform: translateX(-12px);
+  opacity: 0.75;
+}
+
+html[data-player-skin="venom"]:root .empty-state-title {
+  color: var(--vn-ink);
+  font-family: var(--vn-font);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="venom"]:root :is(.empty-state-body, .empty-state-hint) {
+  color: var(--vn-mute);
+}
+
+html[data-player-skin="venom"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .wp-arcade-card,
+  dialog
+) {
+  border: 1px solid rgba(163, 230, 53, 0.28);
+  border-radius: var(--vn-r-plate);
+  background:
+    linear-gradient(180deg, rgba(163, 230, 53, 0.08), transparent 22%),
+    var(--vn-plate);
+  color: var(--vn-ink);
+  box-shadow:
+    inset 0 2px 0 var(--vn-acid),
+    0 24px 52px rgba(6, 10, 3, 0.62);
+}
+
+html[data-player-skin="venom"]:root :is(.loot-shell-backdrop, .wp-arcade-overlay) {
+  background: rgba(6, 10, 3, 0.82);
+}
+
+html[data-player-skin="venom"]:root .toast-item {
+  border: 1px solid rgba(163, 230, 53, 0.45);
+  border-radius: var(--vn-r-chip);
+  background: var(--vn-plate);
+  color: var(--vn-sting);
+  box-shadow: inset 0 -2px 0 var(--vn-acid), 0 0 12px rgba(163, 230, 53, 0.18);
+  animation: room-venom-sting 0.32s ease-out 1;
+}
+
+html[data-player-skin="venom"]:root .companion-launcher-orb {
+  border-radius: var(--vn-r-chip);
+  background: var(--vn-plate);
+  box-shadow: 0 0 0 1px rgba(163, 230, 53, 0.4), inset 0 0 10px rgba(163, 230, 53, 0.12);
+}
+
+html[data-player-skin="venom"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: #243014;
+  background: #141c0c;
+  color: #5c6a44;
+  opacity: 0.58;
+  filter: grayscale(0.55) brightness(0.82);
+  box-shadow: none;
+  text-shadow: none;
+  animation: none !important;
+}
+
+html[data-player-skin="venom"]:root * {
+  scrollbar-color: rgba(163, 230, 53, 0.4) transparent;
+}
+
+/* ── 8 · Motion — tick, bite, warn, sting ───────────────────── */
+
+/* Status LED: on, off, on. A warning, not a strobe. */
+@keyframes room-venom-tick {
+  0%, 100% { opacity: 0.4; filter: brightness(0.85); }
+  18% { opacity: 1; filter: brightness(1.35); }
+  32% { opacity: 0.55; filter: brightness(0.95); }
+  58% { opacity: 1; filter: brightness(1.2); }
+  72% { opacity: 0.45; filter: brightness(0.88); }
+}
+
+/* Telson tap: drop, bite the fascia, lift. Double-tap. */
+@keyframes room-venom-bite {
+  0%, 100% { transform: translateY(0); filter: brightness(0.9); }
+  12% { transform: translateY(4px); filter: brightness(1.4); }
+  22% { transform: translateY(0); filter: brightness(1); }
+  52% { transform: translateY(3px); filter: brightness(1.22); }
+  62% { transform: translateY(0); filter: brightness(0.95); }
+}
+
+/* Vesicle glow — the warning held, not a rail charge. */
+@keyframes room-venom-warn {
+  0%, 100% { opacity: 0.72; filter: brightness(0.94); }
+  40% { opacity: 1; filter: brightness(1.18); }
+  55% { opacity: 0.82; filter: brightness(1.02); }
+}
+
+/* Press: one acid flash, then still. */
+@keyframes room-venom-sting {
+  0% { filter: brightness(1.45); }
+  40% { filter: brightness(0.92); }
+  100% { filter: brightness(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="venom"]:root *,
+  html[data-player-skin="venom"]:root *::before,
+  html[data-player-skin="venom"]:root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html[data-player-skin="venom"]:root[data-skin-place~="hud"] .top-hud::after {
+    transform: none;
+    opacity: 0.85;
+  }
+
+  html[data-player-skin="venom"]:root button.primary:hover:not(:disabled),
+  html[data-player-skin="venom"]:root button.primary:active:not(:disabled),
+  html[data-player-skin="venom"]:root[data-skin-place~="chip"] :is(
+    .tab-chip,
+    .hud-chip,
+    .hud-icon-btn
+  ):hover:not(:disabled),
+  html[data-player-skin="venom"]:root[data-skin-place~="chip"] :is(
+    .tab-chip,
+    .hud-chip,
+    .hud-icon-btn
+  ):active:not(:disabled) {
+    transform: none;
+  }
+}

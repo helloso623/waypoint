@@ -1,0 +1,1181 @@
+/* ═══════════════════════════════════════════════════════════════
+   TERRACOTTA MILE — baked clay borders on the page.
+
+   Critique: the object is a paved mile of kiln-fired tiles. You
+   walk a stretcher course; grout holds every joint; the page is
+   framed by soldier bricks stood on end. It is masonry, not
+   geology. If the wall reads as canyon beds, a rust gondola, or
+   wet fresco plaster, the object has failed. Place is page + chip:
+   the mile is the working surface, each chip a paver. HUD is only
+   the lintel you pass under.
+
+   Not Canyon Guide (sedimentary beds, trail bench, cairn).
+   Not Rust Cart (iron gondola, wiped hub, floor ribs).
+   Not Fresco Wall (wet plaster, burnt sienna on cream, dots).
+   Not Kiln Fire (a furnace's last soak). Not Dune Surveyor
+   (mesa cap, brass dial). Not Harvest Flag (husk, pennant).
+
+   Architecture:
+   - Signature cut: the fired stretcher. Kiln-square arrises on
+     the struck face, a shallow mortar lip on the bed, one header
+     slightly tumbled. Pixel radii. Never 42%/48% ovals.
+   - Signature glyph: one chamfered brick with a frog. Glyphs
+     may clip; #main and .launcher-card may not.
+   - Signature edge: soldier-course borders on the page
+     (loot pattern `grid` as grout). Chips are pavers.
+   - Signature grit: kiln dust in the joints (loot effect `sand`),
+     not canyon talus and not mill-scale flakes.
+
+   Loot: colorA #fdba74 · colorB #9a3412 · effect sand ·
+   pattern grid · place page,chip. Selectors carry :root to
+   outrank the dune-family stencil. Never clip #main or
+   .launcher-card.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — grout, biscuit, one glazed arris ──────────── */
+
+html[data-player-skin="terracotta"]:root {
+  color-scheme: dark;
+
+  --tc-grout: #140c09;
+  --tc-well: #1c100c;
+  --tc-mortar: #2a1812;
+  --tc-bed: #3a1e14;
+  --tc-clay: #9a3412;
+  --tc-biscuit: #c2410c;
+  --tc-peach: #fdba74;
+  --tc-glaze: #fed7aa;
+  --tc-slip: #fff1dc;
+  --tc-ink: #fde8d0;
+  --tc-ink-2: #e8c4a0;
+  --tc-mute: #c08a62;
+  --tc-stamp: #7c2d12;
+
+  --tc-hair: rgba(253, 186, 116, 0.22);
+  --tc-hair-2: rgba(154, 52, 18, 0.55);
+  --tc-joint: rgba(20, 12, 9, 0.78);
+
+  /* Fired stretcher: square struck face, mortar lip on the bed,
+     one header tumbled from the mason's thumb.
+     1 / 4 / 9 / 2 over 1 / 3 / 7 / 2 — a brick you could pick up.
+     Never a mesa crown, never a gondola belly, never a trail bench. */
+  --tc-r-plate: 1px 4px 9px 2px / 1px 3px 7px 2px;
+  --tc-r-card: 1px 3px 8px 2px / 1px 3px 6px 2px;
+  --tc-r-ctl: 1px 3px 6px 2px / 1px 2px 5px 2px;
+  --tc-r-chip: 1px 2px 5px 1px / 1px 2px 4px 1px;
+  --tc-r-cell: 1px 2px 4px 1px / 1px 2px 3px 1px;
+  --tc-r-frog: 2px 3px 4px 2px / 2px 2px 3px 2px;
+
+  /* Grout lattice — loot pattern `grid`. Stack-bond joints,
+     not canyon beds, not rust ribs, not fresco spatters. */
+  --tc-grid:
+    repeating-linear-gradient(
+      0deg,
+      var(--tc-joint) 0 2px,
+      transparent 2px 16px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      var(--tc-joint) 0 2px,
+      transparent 2px 28px
+    );
+  --tc-grid-soft:
+    repeating-linear-gradient(
+      0deg,
+      rgba(20, 12, 9, 0.45) 0 1px,
+      transparent 1px 15px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(20, 12, 9, 0.4) 0 1px,
+      transparent 1px 26px
+    );
+
+  /* Soldier course: bricks stood on end. The baked clay border. */
+  --tc-soldier:
+    repeating-linear-gradient(
+      180deg,
+      #fdba74 0 11px,
+      #9a3412 11px 13px,
+      #c2410c 13px 24px,
+      #7c2d12 24px 26px
+    );
+  --tc-header:
+    repeating-linear-gradient(
+      90deg,
+      #fdba74 0 22px,
+      #9a3412 22px 24px,
+      #c2410c 24px 46px,
+      #7c2d12 46px 48px
+    );
+
+  --tc-font: "Gill Sans", "Optima", "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  --tc-figure: ui-monospace, "IBM Plex Mono", "Courier New", monospace;
+
+  --bg-shell: var(--tc-grout);
+  --bg-content: var(--tc-well);
+  --bg-card: var(--tc-bed);
+  --bg-card-hover: #4a2618;
+  --ink-primary: var(--tc-ink);
+  --ink-secondary: var(--tc-ink-2);
+  --ink-muted: var(--tc-mute);
+  --border: rgba(154, 52, 18, 0.5);
+  --gridline: rgba(124, 45, 18, 0.35);
+  --accent: var(--tc-peach);
+  --ws-accent: var(--tc-peach);
+  --accent-ink: var(--tc-grout);
+  --glow-accent: rgba(253, 186, 116, 0.28);
+  --glow-violet: rgba(154, 52, 18, 0.22);
+
+  --skin-a: #fdba74;
+  --skin-b: #9a3412;
+  --at-a: #fdba74;
+  --at-b: #9a3412;
+  --feel-a: #fdba74;
+  --feel-b: #9a3412;
+  --feel-accent: #fdba74;
+  --feel-ground: #140c09;
+  --feel-paper: #3a1e14;
+  --feel-ink: #fde8d0;
+
+  --at-plate: var(--tc-bed);
+  --at-plate-2: #4a2618;
+  --at-well: var(--tc-well);
+  --at-ink: var(--tc-ink);
+  --at-ink-2: var(--tc-ink-2);
+  --at-ink-3: var(--tc-mute);
+  --at-hair: var(--tc-hair);
+  --at-hair-2: var(--tc-hair-2);
+  --at-hair-a: rgba(253, 186, 116, 0.55);
+  --at-tint: rgba(253, 186, 116, 0.12);
+  --at-tint-b: rgba(154, 52, 18, 0.3);
+  --at-focus: 0 0 0 2px var(--tc-peach);
+  --at-gold: var(--tc-peach);
+  --at-gold-soft: var(--tc-glaze);
+  --at-inset: inset 0 1px 0 rgba(254, 215, 170, 0.28);
+  --at-rise: 0 4px 0 var(--tc-grout), 0 10px 18px rgba(8, 4, 2, 0.5);
+  --at-rise-soft: 0 3px 0 var(--tc-grout), 0 6px 12px rgba(8, 4, 2, 0.36);
+  --at-r-plate: var(--tc-r-plate);
+  --at-r-card: var(--tc-r-card);
+  --at-r-ctl: var(--tc-r-ctl);
+  --at-r-chip: var(--tc-r-chip);
+  --at-r-cell: var(--tc-r-cell);
+  --at-font-display: var(--tc-font);
+  --at-font-mono: var(--tc-figure);
+  --font-display: var(--tc-font);
+  --font-ui: var(--tc-font);
+
+  /* Laid brick: glaze on the struck face, mortar shadow in the bed. */
+  --feel-3d:
+    inset 0 1px 0 rgba(255, 241, 220, 0.35),
+    inset 0 -3px 0 rgba(20, 12, 9, 0.55),
+    0 4px 0 var(--tc-grout),
+    0 10px 16px rgba(8, 4, 2, 0.42);
+  --feel-3d-press:
+    inset 0 3px 6px rgba(20, 12, 9, 0.6),
+    inset 0 1px 0 rgba(254, 215, 170, 0.16),
+    0 1px 0 var(--tc-grout),
+    0 4px 8px rgba(8, 4, 2, 0.36);
+  --feel-grain-opacity: 0.3;
+  --feel-grain-blend: multiply;
+  --feel-grain:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 15px,
+      rgba(20, 12, 9, 0.35) 15px 16px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 27px,
+      rgba(20, 12, 9, 0.28) 27px 28px
+    ),
+    radial-gradient(circle at 22% 31%, rgba(253, 186, 116, 0.18) 0 0.8px, transparent 1.5px);
+  --feel-grain-size: auto, auto, 23px 19px;
+  --feel-hud-hair: 3px solid #9a3412;
+  --feel-icon:
+    sepia(0.22) saturate(1.12) contrast(1.06)
+    drop-shadow(0 1px 0 rgba(20, 12, 9, 0.7));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.08em;
+  --feel-plate-image: var(--tc-grid-soft);
+  --plate-shadow: var(--at-rise-soft);
+  --plate-shadow-hover: var(--at-rise);
+}
+
+/* Kill dune-family mesa: no stamped offset, no sand ridges, no lift. */
+html[data-player-skin="terracotta"]:root .app-shell::before {
+  content: none;
+  background: none;
+  animation: none;
+}
+
+/* ── 2 · Body — standing on the mile, looking down the course ─ */
+
+html[data-player-skin="terracotta"]:root body {
+  background-color: var(--tc-grout) !important;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(20, 12, 9, 0.82) 0%,
+      transparent 12%,
+      transparent 88%,
+      rgba(20, 12, 9, 0.82) 100%
+    ),
+    var(--tc-grid),
+    linear-gradient(180deg, #3a1e14 0%, #2a1812 36%, #1c100c 100%) !important;
+  background-attachment: fixed, fixed, fixed !important;
+  color: var(--tc-ink);
+}
+
+/* Kiln dust in the joints. Sand of this room: grout grit, not talus. */
+html[data-player-skin="terracotta"]:root body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.28;
+  mix-blend-mode: overlay;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(253, 186, 116, 0.4) 0 0.9px, transparent 1.6px),
+    radial-gradient(circle at 64% 41%, rgba(154, 52, 18, 0.35) 0 0.8px, transparent 1.5px),
+    radial-gradient(circle at 81% 73%, rgba(254, 215, 170, 0.22) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 37% 82%, rgba(20, 12, 9, 0.4) 0 0.7px, transparent 1.4px);
+  background-size: 29px 23px, 21px 17px, 37px 31px, 15px 19px;
+  animation: room-terracotta-dust 28s linear infinite;
+}
+
+html[data-player-skin="terracotta"]:root body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+  background: var(--tc-grid-soft);
+  animation: room-terracotta-kiln 16s ease-in-out infinite;
+}
+
+/* ── 3 · Page — the mile. Honor place. Baked clay borders. ──── */
+
+html[data-player-skin="terracotta"]:root #main {
+  clip-path: none !important;
+  isolation: isolate;
+  position: relative;
+  overflow: visible;
+  background:
+    var(--tc-grid-soft),
+    linear-gradient(180deg, rgba(58, 30, 20, 0.45), rgba(20, 12, 9, 0.55)) !important;
+}
+
+html[data-player-skin="terracotta"]:root[data-skin-place~="page"] #main {
+  overflow: visible;
+  background:
+    var(--tc-soldier) 0 0 / 14px 100% no-repeat,
+    var(--tc-soldier) 100% 0 / 14px 100% no-repeat,
+    var(--tc-grid),
+    linear-gradient(180deg, rgba(194, 65, 12, 0.18) 0%, rgba(28, 16, 12, 0.55) 100%) !important;
+  border-inline: 14px solid var(--tc-clay);
+  box-shadow:
+    inset 18px 0 22px -16px rgba(20, 12, 9, 0.7),
+    inset -18px 0 22px -16px rgba(20, 12, 9, 0.7),
+    inset 0 1px 0 rgba(254, 215, 170, 0.18);
+}
+
+/* Header course along the lintel of the page — baked clay, standing. */
+html[data-player-skin="terracotta"]:root[data-skin-place~="page"] #main::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 14px;
+  right: 14px;
+  height: 12px;
+  border-radius: 0;
+  background: var(--tc-header);
+  box-shadow: 0 2px 0 var(--tc-grout);
+  animation: room-terracotta-course 11s ease-in-out infinite;
+}
+
+html[data-player-skin="terracotta"]:root #main::after {
+  clip-path: none !important;
+}
+
+/* Kiln dust walking the grout, not a trail cut. */
+html[data-player-skin="terracotta"]:root[data-skin-place~="page"] #main::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 12px 14px 0 14px;
+  z-index: 0;
+  clip-path: none !important;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+  background:
+    var(--tc-grid-soft),
+    radial-gradient(circle at 30% 20%, rgba(253, 186, 116, 0.18) 0 1px, transparent 1.8px);
+  background-size: auto, 27px 21px;
+  animation: room-terracotta-dust 32s linear infinite;
+}
+
+html[data-player-skin="terracotta"]:root[data-app-tab="Home"][data-skin-place~="page"] #main {
+  clip-path: none !important;
+  background:
+    var(--tc-soldier) 0 0 / 14px 100% no-repeat,
+    var(--tc-soldier) 100% 0 / 14px 100% no-repeat,
+    var(--tc-grid),
+    linear-gradient(180deg, rgba(253, 186, 116, 0.12) 0%, rgba(28, 16, 12, 0.5) 100%) !important;
+}
+
+/* ── 4 · HUD — a lintel. Not the mile. Place is not hud. ────── */
+
+html[data-player-skin="terracotta"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border-image: none;
+  min-height: 58px;
+  background:
+    linear-gradient(180deg, rgba(254, 215, 170, 0.14), transparent 28%),
+    linear-gradient(180deg, #4a2618 0 22%, #3a1e14 22% 100%);
+  border-bottom: 3px solid var(--tc-clay);
+  border-radius: 0 0 8px 6px / 0 0 6px 4px;
+  color: var(--tc-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 241, 220, 0.22),
+    0 3px 0 var(--tc-grout);
+  backdrop-filter: none;
+}
+
+/* One header course under the lintel. Quiet. */
+html[data-player-skin="terracotta"]:root .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 0;
+  height: 6px;
+  z-index: 0;
+  background: var(--tc-header);
+  opacity: 0.85;
+}
+
+html[data-player-skin="terracotta"]:root .top-hud::after {
+  content: none;
+}
+
+html[data-player-skin="terracotta"]:root .top-hud > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-player-skin="terracotta"]:root :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--tc-ink);
+  color: var(--tc-ink);
+  font-family: var(--tc-font);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 var(--tc-grout);
+}
+
+html[data-player-skin="terracotta"]:root :is(.hud-intention, .hud-now-focus-kicker) {
+  color: var(--tc-ink-2);
+  font-family: var(--tc-figure);
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: lowercase;
+}
+
+/* Jewel is a frog — the indent stamped in a brick, not a cairn. */
+html[data-player-skin="terracotta"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--tc-r-frog);
+  border: 1px solid var(--tc-peach);
+  background:
+    linear-gradient(180deg, var(--tc-glaze) 0 28%, var(--tc-biscuit) 28% 64%, var(--tc-clay) 64% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 241, 220, 0.45),
+    inset 0 -2px 0 var(--tc-grout),
+    0 2px 0 var(--tc-grout);
+}
+
+html[data-player-skin="terracotta"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 28% 18%;
+  border-radius: var(--tc-r-frog);
+  background: rgba(20, 12, 9, 0.45);
+  box-shadow: inset 0 1px 2px rgba(20, 12, 9, 0.6);
+}
+
+html[data-player-skin="terracotta"]:root :is(
+  .brand-mark,
+  .ws-mark,
+  .hud-icon-svg,
+  .tab-chip-mark,
+  .wp-skin-mark
+) {
+  color: var(--tc-peach);
+  filter: var(--feel-icon);
+  image-rendering: auto;
+  transform: none;
+}
+
+html[data-player-skin="terracotta"]:root .tab-chip-bar {
+  background: rgba(20, 12, 9, 0.88);
+  border-bottom: 2px solid var(--tc-clay);
+  backdrop-filter: none;
+}
+
+/* ── 5 · Chips — each one a paver. Honor place. ─────────────── */
+
+html[data-player-skin="terracotta"]:root[data-skin-place~="chip"] :is(
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .tab-chip,
+  .pill,
+  .tsk-day-chip,
+  .hud-chip,
+  .tdy-cat-chip,
+  .seg-pill-btn,
+  .pln-mode-chip,
+  .cal-week-chip,
+  .cal-month-chip,
+  .hud-status-pill,
+  .hud-game-chip,
+  .hud-agent-chip
+) {
+  position: relative;
+  overflow: visible;
+  border: 2px solid var(--tc-grout);
+  border-radius: var(--tc-r-chip);
+  background:
+    linear-gradient(180deg, rgba(254, 215, 170, 0.35) 0 22%, transparent 22%),
+    linear-gradient(180deg, var(--tc-biscuit), var(--tc-clay) 72%);
+  color: var(--tc-ink);
+  font-family: var(--tc-font);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 241, 220, 0.28),
+    0 3px 0 var(--tc-grout);
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+
+/* Grout tick on the paver — a joint, not a drip and not a trail. */
+html[data-player-skin="terracotta"]:root[data-skin-place~="chip"] :is(
+  .loot-profile-chip,
+  .tab-chip,
+  .pill,
+  .hud-chip,
+  .tsk-day-chip,
+  .app-subnav-pill
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 3px;
+  height: 2px;
+  border-radius: 0;
+  background: var(--tc-grout);
+  opacity: 0.7;
+}
+
+html[data-player-skin="terracotta"]:root[data-skin-place~="chip"] :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active,
+  .pill[aria-pressed="true"]
+) {
+  color: var(--tc-grout);
+  border-color: var(--tc-peach);
+  background:
+    linear-gradient(180deg, var(--tc-slip) 0 26%, var(--tc-peach) 26% 70%, var(--tc-biscuit) 70% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 241, 220, 0.55),
+    0 3px 0 var(--tc-stamp);
+}
+
+html[data-player-skin="terracotta"]:root[data-skin-place~="chip"] .tab-chip:hover:not(.active) {
+  transform: translateY(1px);
+  filter: brightness(1.06);
+  border-color: var(--tc-peach);
+}
+
+html[data-player-skin="terracotta"]:root .tab-chip,
+html[data-player-skin="terracotta"]:root .pill,
+html[data-player-skin="terracotta"]:root .app-subnav-pill {
+  border-radius: var(--tc-r-chip);
+  border: 2px solid var(--tc-grout);
+  background: var(--tc-bed);
+  color: var(--tc-ink-2);
+  font-family: var(--tc-font);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="terracotta"]:root .tab-chip.active,
+html[data-player-skin="terracotta"]:root .tab-chip[aria-selected="true"],
+html[data-player-skin="terracotta"]:root .app-subnav-pill.active {
+  color: var(--tc-grout);
+  border-color: var(--tc-peach);
+  background: linear-gradient(180deg, var(--tc-peach), var(--tc-biscuit));
+}
+
+html[data-player-skin="terracotta"]:root .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-chip,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .loot-profile-chip
+) {
+  border: 1px solid rgba(154, 52, 18, 0.45);
+  border-radius: var(--tc-r-chip);
+  background: var(--tc-bed);
+  color: var(--tc-ink);
+  box-shadow: 0 2px 0 var(--tc-grout);
+  animation: none;
+}
+
+html[data-player-skin="terracotta"]:root .top-hud :is(.hud-icon-btn, .hud-glyph-btn):hover:not(:disabled) {
+  border-color: var(--tc-peach);
+  filter: brightness(1.06);
+}
+
+/* ── 6 · Glyph — one chamfered brick with a frog ────────────── */
+/* Struck face, kiln chamfers. Not a switchback, not a gondola. */
+
+html[data-player-skin="terracotta"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .nav-app-glyph,
+  .loot-skin-avatar
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: none;
+  transform: none;
+  color: var(--tc-grout);
+  clip-path: polygon(
+    8% 22%, 92% 22%, 97% 30%, 97% 70%, 92% 78%, 8% 78%, 3% 70%, 3% 30%
+  );
+  background:
+    linear-gradient(180deg, var(--tc-glaze) 0 22%, var(--tc-peach) 22% 50%, var(--tc-biscuit) 50% 78%, var(--tc-clay) 78% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 241, 220, 0.45),
+    0 4px 0 var(--tc-grout);
+  filter: none;
+}
+
+/* The frog — maker's indent in the bed face. */
+html[data-player-skin="terracotta"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .loot-skin-avatar
+)::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 34% 22% 34% 22%;
+  border-radius: var(--tc-r-frog);
+  background: rgba(20, 12, 9, 0.4);
+  box-shadow: inset 0 1px 2px rgba(20, 12, 9, 0.55);
+  clip-path: none;
+}
+
+html[data-player-skin="terracotta"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .loot-skin-avatar
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 14%;
+  height: 2px;
+  background: var(--tc-grout);
+  opacity: 0.65;
+  clip-path: none;
+}
+
+html[data-player-skin="terracotta"]:root .launcher-custom-app-emoji {
+  clip-path: polygon(
+    8% 22%, 92% 22%, 97% 30%, 97% 70%, 92% 78%, 8% 78%, 3% 70%, 3% 30%
+  );
+  background: rgba(154, 52, 18, 0.55);
+  border: 1px solid rgba(253, 186, 116, 0.4);
+}
+
+html[data-player-skin="terracotta"]:root :is(.launcher-card-glyph, .launcher-tile-glyph) svg {
+  filter: brightness(0.28) sepia(0.35) saturate(1.1);
+}
+
+/* ── 7 · Cards — pavers laid on the mile ────────────────────── */
+
+html[data-player-skin="terracotta"]:root .launcher-card {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  outline: none;
+  clip-path: none !important;
+  border: 2px solid var(--tc-grout);
+  border-radius: var(--tc-r-card);
+  background:
+    var(--tc-grid-soft),
+    linear-gradient(180deg, rgba(254, 215, 170, 0.22) 0 18%, transparent 18%),
+    linear-gradient(180deg, var(--tc-biscuit), var(--tc-bed) 78%);
+  color: var(--tc-ink);
+  box-shadow: var(--feel-3d);
+  transform: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+html[data-player-skin="terracotta"]:root :is(
+  .card,
+  .hub-card,
+  .pln-rail-card,
+  .evt-card,
+  .tsk-row,
+  .task-row,
+  .hub-glance-item,
+  .page-intent,
+  .napkin-entry,
+  .loot-skin-card,
+  .loot-collection-card
+) {
+  clip-path: none !important;
+  border: 2px solid var(--tc-grout);
+  border-radius: var(--tc-r-card);
+  background:
+    var(--tc-grid-soft),
+    var(--tc-bed);
+  color: var(--tc-ink);
+  box-shadow: inset 0 1px 0 rgba(254, 215, 170, 0.16), 0 3px 0 var(--tc-grout);
+}
+
+/* Running bond: odd pavers sit a half-header to the right. */
+html[data-player-skin="terracotta"]:root .launcher-card:nth-child(even) {
+  background-color: rgba(154, 52, 18, 0.35);
+}
+
+/* Frog stamp on the paver. Not a rivet, not a bedding joint. */
+html[data-player-skin="terracotta"]:root .launcher-card::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 12px;
+  top: 10px;
+  width: 22px;
+  height: 10px;
+  border-radius: var(--tc-r-frog);
+  border: 1px solid rgba(20, 12, 9, 0.45);
+  background: rgba(20, 12, 9, 0.28);
+  opacity: 1;
+  box-shadow: inset 0 1px 2px rgba(20, 12, 9, 0.5);
+}
+
+/* Bed joint catching kiln light along the foot. */
+html[data-player-skin="terracotta"]:root .launcher-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 12px 8px 12px;
+  right: 12px;
+  bottom: 8px;
+  width: auto;
+  height: 3px;
+  aspect-ratio: auto;
+  border-radius: 0;
+  opacity: 0.55;
+  transform: none;
+  background-color: transparent;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--tc-grout) 0 18px,
+    var(--tc-clay) 18px 20px,
+    var(--tc-grout) 20px 38px
+  );
+}
+
+html[data-player-skin="terracotta"]:root :is(.launcher-card-name, .launcher-tile-name) {
+  color: var(--tc-ink);
+  font-family: var(--tc-font);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 var(--tc-grout);
+}
+
+html[data-player-skin="terracotta"]:root :is(
+  .launcher-card-intention,
+  .launcher-card-sub,
+  .launcher-card-stats
+) {
+  color: var(--tc-ink-2);
+  font-family: var(--tc-figure);
+}
+
+/* A paver settles into grout. Nothing lifts — dune's mesa offset dies here. */
+html[data-player-skin="terracotta"]:root .launcher-card:hover,
+html[data-player-skin="terracotta"]:root .launcher-card--focused {
+  transform: translateY(2px);
+  border-color: var(--tc-peach);
+  filter: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 241, 220, 0.4),
+    inset 0 -3px 0 rgba(20, 12, 9, 0.6),
+    0 2px 0 var(--tc-grout),
+    0 8px 14px rgba(8, 4, 2, 0.5);
+}
+
+html[data-player-skin="terracotta"]:root .launcher-card:hover::after,
+html[data-player-skin="terracotta"]:root .launcher-card--focused::after {
+  opacity: 0.95;
+}
+
+html[data-player-skin="terracotta"]:root :is(.card, .hub-card):hover {
+  border-color: var(--tc-peach);
+}
+
+/* ── 8 · Buttons — a brick you press into the bed ───────────── */
+
+html[data-player-skin="terracotta"]:root button.primary,
+html[data-player-skin="terracotta"]:root .primary,
+html[data-player-skin="terracotta"]:root .page-intent-primary,
+html[data-player-skin="terracotta"]:root .agent-pane-chat .agc-send {
+  position: relative;
+  border: 2px solid var(--tc-grout);
+  border-radius: var(--tc-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(255, 241, 220, 0.35), transparent 32%),
+    linear-gradient(180deg, var(--tc-peach), var(--tc-biscuit) 55%, var(--tc-clay));
+  color: var(--tc-grout);
+  font-family: var(--tc-font);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255, 241, 220, 0.35);
+  box-shadow: var(--feel-3d);
+  animation: none;
+  transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+}
+
+html[data-player-skin="terracotta"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="terracotta"]:root .primary:hover:not(:disabled),
+html[data-player-skin="terracotta"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.05);
+  transform: translateY(1px);
+}
+
+html[data-player-skin="terracotta"]:root button.primary:active:not(:disabled),
+html[data-player-skin="terracotta"]:root .primary:active:not(:disabled),
+html[data-player-skin="terracotta"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: var(--feel-3d-press);
+}
+
+html[data-player-skin="terracotta"]:root :is(button.secondary, .secondary, .ghost-btn) {
+  border: 2px solid var(--tc-grout);
+  border-radius: var(--tc-r-ctl);
+  background: linear-gradient(180deg, var(--tc-bed), var(--tc-mortar));
+  color: var(--tc-ink-2);
+  font-family: var(--tc-font);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: inset 0 1px 0 rgba(254, 215, 170, 0.12), 0 3px 0 var(--tc-grout);
+}
+
+html[data-player-skin="terracotta"]:root button.secondary:hover:not(:disabled),
+html[data-player-skin="terracotta"]:root .ghost-btn:hover:not(:disabled) {
+  border-color: var(--tc-peach);
+  color: var(--tc-ink);
+  transform: translateY(1px);
+}
+
+html[data-player-skin="terracotta"]:root #quick-capture-fab.quick-capture-fab {
+  background: linear-gradient(180deg, var(--tc-peach), var(--tc-clay)) !important;
+  color: var(--tc-grout) !important;
+  border-color: var(--tc-grout) !important;
+  border-radius: var(--tc-r-card) !important;
+  box-shadow: 0 4px 0 var(--tc-grout) !important;
+}
+
+/* ── 9 · Empty / input / focus / disabled ───────────────────── */
+
+/* Empty: an unlaid course. Grout bed, no pavers, the frog still marked. */
+html[data-player-skin="terracotta"]:root .empty-state {
+  position: relative;
+  border: 2px dashed rgba(253, 186, 116, 0.45);
+  border-radius: var(--tc-r-plate);
+  background:
+    var(--tc-grid),
+    var(--tc-well);
+  color: var(--tc-ink-2);
+  box-shadow:
+    inset 0 0 0 6px var(--tc-grout),
+    0 4px 0 var(--tc-grout);
+  padding: 28px 20px 24px;
+}
+
+html[data-player-skin="terracotta"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 18px;
+  margin: 0 0 10px;
+  clip-path: polygon(
+    8% 22%, 92% 22%, 97% 30%, 97% 70%, 92% 78%, 8% 78%, 3% 70%, 3% 30%
+  );
+  background: linear-gradient(180deg, var(--tc-peach) 0 40%, var(--tc-clay) 40% 100%);
+  opacity: 0.7;
+}
+
+html[data-player-skin="terracotta"]:root .empty-state-title {
+  color: var(--tc-peach);
+  font-family: var(--tc-font);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="terracotta"]:root :is(.empty-state-body, .empty-state-hint) {
+  color: var(--tc-ink-2);
+}
+
+/* Input is a frog: a recessed stamp in the clay. */
+html[data-player-skin="terracotta"]:root :is(
+  input,
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+) {
+  border: 2px solid var(--tc-grout);
+  border-bottom: 3px solid var(--tc-clay);
+  border-radius: var(--tc-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(20, 12, 9, 0.5), transparent 36%),
+    var(--tc-grid-soft),
+    var(--tc-well);
+  color: var(--tc-ink);
+  caret-color: var(--tc-peach);
+  font-family: var(--tc-figure);
+  box-shadow:
+    inset 0 3px 8px rgba(8, 4, 2, 0.55),
+    inset 0 0 0 1px var(--tc-mortar);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+html[data-player-skin="terracotta"]:root :is(input, textarea)::placeholder {
+  color: var(--tc-mute);
+  letter-spacing: 0.04em;
+}
+
+html[data-player-skin="terracotta"]:root :is(
+  input,
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+):focus,
+html[data-player-skin="terracotta"]:root .agc-input-zone:focus-within {
+  outline: none;
+  border-color: var(--tc-peach);
+  border-bottom-color: var(--tc-glaze);
+  background-color: rgba(36, 18, 14, 0.92);
+  box-shadow:
+    inset 0 3px 8px rgba(8, 4, 2, 0.45),
+    0 0 0 2px var(--tc-grout),
+    0 0 0 4px rgba(253, 186, 116, 0.45);
+}
+
+/* Focus is the glazed arris: inner grout, then the peach kiln rim. */
+html[data-player-skin="terracotta"]:root :focus-visible {
+  outline: 2px solid var(--tc-peach);
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 5px var(--tc-grout),
+    0 0 0 6px var(--tc-clay);
+}
+
+html[data-player-skin="terracotta"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: #4a3028;
+  background: #221614;
+  color: #7a5c50;
+  opacity: 0.58;
+  filter: grayscale(0.35) saturate(0.5);
+  box-shadow: none;
+  cursor: not-allowed;
+  animation: none !important;
+}
+
+html[data-player-skin="terracotta"]:root ::selection {
+  background: rgba(253, 186, 116, 0.4);
+  color: var(--tc-grout);
+}
+
+html[data-player-skin="terracotta"]:root * {
+  scrollbar-color: rgba(154, 52, 18, 0.45) transparent;
+}
+
+/* ── 10 · Dialogs, toast, companion, agent ──────────────────── */
+
+html[data-player-skin="terracotta"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .launcher-search-panel,
+  .launcher-dock-panel,
+  .companion-panel,
+  .wf-code-modal,
+  .rich-fs-modal,
+  .wp-board,
+  .wp-alarm-card,
+  dialog
+) {
+  border: 2px solid var(--tc-grout);
+  border-top: 4px solid var(--tc-peach);
+  border-radius: var(--tc-r-plate);
+  background:
+    var(--tc-grid-soft),
+    var(--tc-bed);
+  color: var(--tc-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(254, 215, 170, 0.18),
+    0 6px 0 var(--tc-grout),
+    0 28px 56px rgba(8, 4, 2, 0.64);
+}
+
+html[data-player-skin="terracotta"]:root :is(
+  .loot-chest-overlay,
+  .command-palette-overlay,
+  .launcher-search-overlay,
+  .wf-code-modal-overlay,
+  .wp-board-overlay,
+  .rit-overlay,
+  .wp-alarm-overlay,
+  .wp-arcade-overlay
+) {
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgba(253, 186, 116, 0.1) 0%, rgba(20, 12, 9, 0) 62%),
+    rgba(20, 12, 9, 0.88);
+  backdrop-filter: blur(3px);
+}
+
+html[data-player-skin="terracotta"]:root .toast,
+html[data-player-skin="terracotta"]:root .toast-item {
+  border: 2px solid var(--tc-grout);
+  border-radius: var(--tc-r-chip);
+  background: linear-gradient(180deg, var(--tc-peach), var(--tc-biscuit) 62%, var(--tc-clay));
+  color: var(--tc-grout);
+  font-family: var(--tc-figure);
+  box-shadow: 0 4px 0 var(--tc-grout);
+}
+
+html[data-player-skin="terracotta"]:root .toast-item {
+  animation: room-terracotta-lay 340ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
+}
+
+html[data-player-skin="terracotta"]:root .companion-launcher {
+  background: rgba(20, 12, 9, 0.92);
+  border: 2px solid var(--tc-grout);
+  border-radius: var(--tc-r-plate);
+  box-shadow: 0 10px 22px -14px rgba(8, 4, 2, 0.9);
+}
+
+html[data-player-skin="terracotta"]:root .companion-launcher-orb {
+  border-radius: var(--tc-r-frog);
+  border: 2px solid var(--tc-peach);
+  background:
+    linear-gradient(180deg, var(--tc-glaze) 0 30%, var(--tc-biscuit) 30% 68%, var(--tc-clay) 68% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 241, 220, 0.4),
+    0 4px 0 var(--tc-grout);
+  animation: room-terracotta-kiln 8.2s ease-in-out infinite;
+}
+
+html[data-player-skin="terracotta"]:root .agent-bubble {
+  background: var(--tc-bed);
+  color: var(--tc-ink);
+  border: 2px solid var(--tc-grout);
+  border-radius: var(--tc-r-card);
+}
+
+html[data-player-skin="terracotta"]:root .agent-msg.assistant .agent-bubble {
+  background: var(--tc-mortar);
+  border-left: 3px solid var(--tc-peach);
+}
+
+html[data-player-skin="terracotta"]:root .agent-msg.user .agent-bubble {
+  background: linear-gradient(180deg, rgba(253, 186, 116, 0.28) 0 22%, var(--tc-bed) 22% 100%);
+  border-left: none;
+  border-right: 3px solid var(--tc-peach);
+  color: var(--tc-ink);
+}
+
+/* ═══ 11 · Per-tab rooms ═══════════════════════════════════════ */
+
+html[data-player-skin="terracotta"]:root[data-app-tab="Today"][data-skin-place~="page"] #main,
+html[data-player-skin="terracotta"]:root[data-app-tab="Calendar"][data-skin-place~="page"] #main {
+  clip-path: none !important;
+  background:
+    var(--tc-soldier) 0 0 / 14px 100% no-repeat,
+    var(--tc-soldier) 100% 0 / 14px 100% no-repeat,
+    var(--tc-grid),
+    var(--tc-well) !important;
+}
+
+/* Today: each hour is a paver in the course. Running bond, not a trail. */
+html[data-player-skin="terracotta"]:root[data-app-tab="Today"] #main .tdy-hour-cell,
+html[data-player-skin="terracotta"]:root[data-app-tab="Calendar"] #main .tdy-hour-cell,
+html[data-player-skin="terracotta"]:root[data-app-tab="Calendar"] #main .cal-hour-cell {
+  border: 2px solid var(--tc-grout);
+  border-radius: var(--tc-r-cell);
+  background:
+    linear-gradient(180deg, rgba(254, 215, 170, 0.12), transparent 32%),
+    var(--tc-bed);
+  color: var(--tc-ink);
+  box-shadow: 0 3px 0 var(--tc-grout);
+}
+
+html[data-player-skin="terracotta"]:root[data-app-tab="Today"] .tdy-hour-row:nth-child(even) .tdy-hour-cell {
+  margin-left: 10px;
+}
+
+html[data-player-skin="terracotta"]:root[data-app-tab="Today"] .tdy-hour-time {
+  color: var(--tc-mute);
+  font-family: var(--tc-figure);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+}
+
+html[data-player-skin="terracotta"]:root :is(.tdy-hour-painted, .cal-hour-painted) {
+  background: linear-gradient(180deg, var(--tc-peach), var(--tc-biscuit)) !important;
+  border-color: var(--tc-grout) !important;
+  color: var(--tc-grout) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 241, 220, 0.4), 0 3px 0 var(--tc-grout) !important;
+}
+
+html[data-player-skin="terracotta"]:root[data-app-tab="Today"] .tdy-now-marker {
+  background: var(--tc-peach);
+  box-shadow: 0 0 8px rgba(253, 186, 116, 0.55), 0 2px 0 var(--tc-grout);
+}
+
+html[data-player-skin="terracotta"]:root[data-app-tab="Today"] #tdy-completion-bar {
+  background: linear-gradient(90deg, #9a3412 0%, #c2410c 40%, #fdba74 78%, #fed7aa 100%);
+}
+
+html[data-player-skin="terracotta"]:root[data-app-tab="Calendar"] #main :is(.cal-day, .cal-month-cell) {
+  border: 2px solid var(--tc-grout);
+  border-radius: var(--tc-r-cell);
+  background: var(--tc-bed);
+  color: var(--tc-ink);
+}
+
+html[data-player-skin="terracotta"]:root[data-app-tab="Calendar"] #main :is(.cal-month-daynum, .cal-week-day-head) {
+  font-family: var(--tc-figure);
+  font-variant-numeric: tabular-nums;
+  color: var(--tc-peach);
+}
+
+html[data-player-skin="terracotta"]:root[data-app-tab="Calendar"] #main :is(.cal-month-cell-today, .cal-week-day-today) {
+  border-color: var(--tc-peach);
+  box-shadow: inset 0 -3px 0 var(--tc-peach);
+}
+
+html[data-player-skin="terracotta"]:root[data-app-tab="Tasks"] #main :is(.card, .tsk-row, .task-row),
+html[data-player-skin="terracotta"]:root[data-app-tab="Goals"] #main .card,
+html[data-player-skin="terracotta"]:root[data-app-tab="Projects"] #main .card,
+html[data-player-skin="terracotta"]:root[data-app-tab="Parallel"] #main .card {
+  border-left: 4px solid var(--tc-peach);
+  background:
+    linear-gradient(90deg, rgba(253, 186, 116, 0.1), transparent 22%),
+    var(--tc-bed);
+}
+
+html[data-player-skin="terracotta"]:root[data-app-tab="Agent"] #main .agent-pane,
+html[data-player-skin="terracotta"]:root .agent-pane {
+  border: 2px solid var(--tc-grout);
+  border-top: 4px solid var(--tc-peach);
+  border-radius: var(--tc-r-plate);
+  background:
+    var(--tc-grid-soft),
+    var(--tc-well);
+  color: var(--tc-ink);
+  box-shadow: inset 0 1px 0 rgba(254, 215, 170, 0.12), inset 0 -3px 0 var(--tc-grout);
+}
+
+html[data-player-skin="terracotta"]:root[data-app-tab="Hub"] #main :is(.hub-card, .hub-glance-item),
+html[data-player-skin="terracotta"]:root:is(
+  [data-app-tab="Practice"],
+  [data-app-tab="Settings"],
+  [data-app-tab="About"],
+  [data-app-tab="Paint"]
+) #main .card {
+  border-radius: var(--tc-r-card);
+  background:
+    var(--tc-grid-soft),
+    var(--tc-bed);
+}
+
+/* ── 12 · Motion — dust in the joints, kiln soak, a brick laid ─ */
+
+@keyframes room-terracotta-dust {
+  0% { background-position: 0 0, 0 0, 0 0, 0 0; }
+  100% { background-position: 28px 16px, -16px 21px, 12px 37px, -8px 15px; }
+}
+
+@keyframes room-terracotta-kiln {
+  0%, 100% { opacity: 0.14; filter: brightness(1); }
+  50% { opacity: 0.22; filter: brightness(1.08); }
+}
+
+@keyframes room-terracotta-course {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.1); }
+}
+
+@keyframes room-terracotta-lay {
+  0% { transform: translateY(-10px); opacity: 0; }
+  62% { transform: translateY(2px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="terracotta"]:root *,
+  html[data-player-skin="terracotta"]:root *::before,
+  html[data-player-skin="terracotta"]:root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  html[data-player-skin="terracotta"]:root .launcher-card:hover,
+  html[data-player-skin="terracotta"]:root .launcher-card--focused,
+  html[data-player-skin="terracotta"]:root button.primary:hover:not(:disabled),
+  html[data-player-skin="terracotta"]:root[data-skin-place~="chip"] .tab-chip:hover:not(.active) {
+    transform: none;
+  }
+}

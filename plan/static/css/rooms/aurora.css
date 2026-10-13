@@ -1,0 +1,756 @@
+/* ═══════════════════════════════════════════════════════════════
+   AURORA SCOUT — one teal curtain hung over arctic night.
+
+   The object: a curtain. Not a gradient, not a sky. Fabric pinned
+   to a machined steel rod that runs the width of the HUD, falling
+   in vertical pleats over a frozen plain. Panels hang from rails
+   and sway from the point they are pinned. Rings thread the rod.
+   Hems drape at the bottom-right where the weight gathers.
+
+   One ground: arctic night (#060a12 → #0e1a28).
+   One accent: the curtain light (#2dd4bf). Steel and snow are
+   neutral hardware, not a second chroma. There is no violet here —
+   the loot catalog's old #7c3aed is overridden at the token line.
+
+   Selectors carry :root so this room outranks the family stencils
+   in skin-pass.css / skin-feels.css (aurora is mapped to `prism`
+   upstream, which would otherwise hue-rotate the marks into a
+   rainbow). Never clip #main or .launcher-card. Glyphs may clip.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — the whole room is two temperatures ─────────── */
+
+html[data-player-skin="aurora"]:root {
+  --room-aurora-night: #060a12;
+  --room-aurora-deep: #0b1220;
+  --room-aurora-panel: #0e1a28;
+  --room-aurora-well: #04080f;
+  --room-aurora-light: #2dd4bf;
+  --room-aurora-light-hot: #7ff0e2;
+  --room-aurora-light-deep: #0d6f68;
+  --room-aurora-snow: #dbeaf2;
+  --room-aurora-snow-2: #9fb9c8;
+  --room-aurora-rod: #cbdce7;
+  --room-aurora-rod-2: #7890a2;
+  --room-aurora-rod-3: #2c4053;
+  --room-aurora-pleat: rgba(219, 234, 242, 0.05);
+  --room-aurora-hem: rgba(45, 212, 191, 0.18);
+  --room-aurora-drape: 2px 2px 30px 10px / 2px 2px 52px 20px;
+
+  --bg-shell: #060a12;
+  --bg-content: #0a1220;
+  --bg-card: #0e1a28;
+  --ink-primary: #dbeaf2;
+  --ink-secondary: #9fb9c8;
+  --ink-muted: #7f9bad;
+  --border: #1d3040;
+  --accent: #2dd4bf;
+  --ws-accent: #2dd4bf;
+  --accent-ink: #04131a;
+  --at-ink: #dbeaf2;
+
+  /* Kill the catalog violet at the source: colorB becomes the night. */
+  --skin-a: #2dd4bf;
+  --skin-b: #0b1220;
+  --at-a: #2dd4bf;
+  --at-b: #0b1220;
+  --feel-a: #2dd4bf;
+  --feel-b: #0b1220;
+  --feel-accent: #2dd4bf;
+  --feel-ground: #060a12;
+  --feel-paper: #0e1a28;
+  --feel-ink: #dbeaf2;
+
+  --at-plate: #0e1a28;
+  --at-plate-2: #0a1220;
+  --at-well: #04080f;
+  --at-hair: rgba(159, 185, 200, 0.18);
+  --at-hair-2: rgba(159, 185, 200, 0.28);
+  --at-hair-a: rgba(45, 212, 191, 0.34);
+  --at-tint: rgba(45, 212, 191, 0.1);
+  --at-tint-b: rgba(11, 18, 32, 0.4);
+  --at-focus: 0 0 0 4px rgba(45, 212, 191, 0.18);
+  --at-rise: 0 26px 52px -30px rgba(2, 5, 10, 0.95);
+  --at-rise-soft: 0 14px 30px -20px rgba(2, 5, 10, 0.85);
+  --at-inset: inset 0 1px 0 rgba(219, 234, 242, 0.1);
+
+  /* Pleats are tall and narrow, so every radius is tall and narrow. */
+  --at-r-plate: 2px 2px 26px 8px;
+  --at-r-card: 1px 1px 20px 6px;
+  --at-r-ctl: 2px 2px 12px 4px;
+  --at-r-chip: 999px;
+  --at-r-cell: 2px 2px 10px 3px;
+
+  --font-display: "Avenir Next", "Segoe UI Variable Display", "Inter", system-ui, sans-serif;
+  --at-font-display: "Avenir Next", "Segoe UI Variable Display", "Inter", system-ui, sans-serif;
+
+  /* skin-feels grain hooks — vertical filaments, not noise.
+     The prism family's plinth carries a hardcoded indigo (#312e81);
+     cloth has no plinth, so it is replaced with a hanging shadow. */
+  --feel-3d: inset 0 1px 0 rgba(219, 234, 242, 0.1), 0 20px 36px -26px rgba(2, 5, 10, 0.92);
+  --feel-3d-press: inset 0 3px 8px -3px rgba(2, 5, 10, 0.75);
+  --feel-grain-opacity: 0.4;
+  --feel-grain-blend: screen;
+  --feel-grain: repeating-linear-gradient(90deg, rgba(45, 212, 191, 0.07) 0 1px, transparent 1px 19px);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 1px solid rgba(45, 212, 191, 0.3);
+  --feel-icon: none;
+  --feel-plate-image: linear-gradient(180deg, rgba(45, 212, 191, 0.12), transparent 44%);
+  --feel-title-tracking: 0.1em;
+  --feel-title-case: uppercase;
+}
+
+/* ── 2 · The photograph — arctic night, one band of light ───── */
+
+html[data-player-skin="aurora"]:root body {
+  background-color: #060a12 !important;
+  background-image: url("/img/skins/aurora.png") !important;
+  background-size: cover !important;
+  background-position: center bottom !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  color: #dbeaf2;
+  animation: none;
+}
+
+/* The fabric itself: tall folds that barely move. */
+html[data-player-skin="aurora"]:root body::before {
+  content: "";
+  position: fixed;
+  inset: -2% -6% -2% -6%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.62;
+  mix-blend-mode: normal;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(4, 8, 15, 0) 0px,
+      rgba(4, 8, 15, 0.5) 36px,
+      rgba(45, 212, 191, 0.05) 62px,
+      rgba(4, 8, 15, 0) 98px
+    ),
+    repeating-linear-gradient(90deg, rgba(219, 234, 242, 0.035) 0 1px, transparent 1px 17px);
+  animation: room-aurora-fold-breathe 34s ease-in-out infinite;
+}
+
+/* The light, lifted back over the room — masked so body copy stays clean. */
+html[data-player-skin="aurora"]:root body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.2;
+  mix-blend-mode: screen;
+  background: url("/img/skins/aurora.png") center top / cover no-repeat;
+  -webkit-mask-image: linear-gradient(180deg, #000 0 40%, rgba(0, 0, 0, 0.35) 62%, transparent 82%);
+  mask-image: linear-gradient(180deg, #000 0 40%, rgba(0, 0, 0, 0.35) 62%, transparent 82%);
+  animation: room-aurora-curtain-drift 48s ease-in-out infinite;
+}
+
+/* ── 3 · #main — the frozen plain the curtain hangs over ────── */
+
+html[data-player-skin="aurora"]:root #main {
+  position: relative;
+  isolation: isolate;
+  border-top: 1px solid rgba(45, 212, 191, 0.2);
+  background-color: rgba(6, 10, 18, 0.46);
+  background-image:
+    linear-gradient(180deg, rgba(45, 212, 191, 0.09), rgba(6, 10, 18, 0) 34%),
+    linear-gradient(0deg, rgba(159, 185, 200, 0.07), rgba(6, 10, 18, 0) 30%);
+  box-shadow: inset 0 1px 0 rgba(203, 220, 231, 0.12);
+}
+html[data-player-skin="aurora"]:root #main::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.4;
+  mix-blend-mode: screen;
+  background: repeating-linear-gradient(90deg, rgba(45, 212, 191, 0.07) 0 1px, transparent 1px 19px);
+  background-size: auto;
+  animation: none;
+}
+
+/* ── 4 · The HUD is the curtain rod ─────────────────────────── */
+
+/* .top-hud is position:sticky upstream — it already anchors ::after. */
+html[data-player-skin="aurora"]:root .top-hud {
+  color: #dbeaf2;
+  border-bottom: 1px solid rgba(45, 212, 191, 0.3);
+  border-image: none;
+  padding-top: 11px;
+  background-color: rgba(6, 10, 18, 0.95);
+  background-image:
+    /* rings threaded on the rod */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 33px,
+      rgba(203, 220, 231, 0.72) 33px 36px,
+      transparent 36px 74px
+    ),
+    /* the machined rod, pinned to the very top edge */
+    linear-gradient(
+      180deg,
+      #cbdce7 0 2px,
+      #7890a2 2px 5px,
+      #2c4053 5px 8px,
+      rgba(6, 10, 18, 0) 8px
+    ),
+    /* the hem hanging off it */
+    repeating-linear-gradient(90deg, rgba(219, 234, 242, 0.05) 0 1px, transparent 1px 15px),
+    linear-gradient(180deg, rgba(45, 212, 191, 0.15), rgba(6, 10, 18, 0) 66%);
+  background-repeat: repeat-x, repeat-x, repeat, no-repeat;
+  background-size: 74px 13px, 100% 8px, auto, 100% 100%;
+  background-position: 0 1px, 0 0, 0 0, 0 0;
+  box-shadow: 0 14px 34px -22px rgba(2, 5, 10, 0.95);
+}
+/* One travelling glint down the length of the rod. */
+html[data-player-skin="aurora"]:root .top-hud::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.72), transparent);
+  background-size: 180px 100%;
+  background-repeat: no-repeat;
+  animation: room-aurora-rod-glint 13s ease-in-out infinite;
+}
+html[data-player-skin="aurora"]:root .hud-app-name {
+  color: #dbeaf2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 12px;
+  animation: none;
+}
+html[data-player-skin="aurora"]:root .hud-intention,
+html[data-player-skin="aurora"]:root .hud-now-focus-kicker {
+  color: #9fb9c8;
+  letter-spacing: 0.04em;
+}
+/* Chips read as more rings on the same rod. */
+html[data-player-skin="aurora"]:root .hud-chip,
+html[data-player-skin="aurora"]:root .hud-status-pill,
+html[data-player-skin="aurora"]:root .hud-metric,
+html[data-player-skin="aurora"]:root .hud-calm-pill,
+html[data-player-skin="aurora"]:root .tab-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(203, 220, 231, 0.26);
+  background: rgba(6, 10, 18, 0.55);
+  color: #9fb9c8;
+}
+html[data-player-skin="aurora"]:root .tab-chip.active,
+html[data-player-skin="aurora"]:root .tab-chip[aria-selected="true"] {
+  border-color: rgba(45, 212, 191, 0.7);
+  background: rgba(45, 212, 191, 0.13);
+  color: #dbeaf2;
+}
+html[data-player-skin="aurora"]:root .hud-game-cluster {
+  border-color: rgba(203, 220, 231, 0.2);
+  background: rgba(6, 10, 18, 0.5);
+  box-shadow: none;
+  animation: none;
+}
+/* No hue-rotate. The room has exactly one light. */
+html[data-player-skin="aurora"]:root .ws-mark,
+html[data-player-skin="aurora"]:root .hud-icon-svg,
+html[data-player-skin="aurora"]:root .tab-chip-mark,
+html[data-player-skin="aurora"]:root .launcher-tile-glyph svg,
+html[data-player-skin="aurora"]:root .wp-skin-mark {
+  filter: none;
+  animation: none;
+}
+
+/* ── 5 · Launcher — panels hung from a rail ─────────────────── */
+
+html[data-player-skin="aurora"]:root .launcher-grid,
+html[data-player-skin="aurora"]:root .launcher-my-apps-row {
+  position: relative;
+  padding-top: 18px;
+  background-image:
+    linear-gradient(90deg, rgba(203, 220, 231, 0.18), rgba(203, 220, 231, 0.6) 12%, rgba(203, 220, 231, 0.6) 88%, rgba(203, 220, 231, 0.18)),
+    linear-gradient(180deg, rgba(45, 212, 191, 0.22), rgba(6, 10, 18, 0));
+  background-repeat: no-repeat, no-repeat;
+  background-size: 100% 2px, 100% 14px;
+  background-position: 0 0, 0 2px;
+}
+html[data-player-skin="aurora"]:root .launcher-card {
+  border-radius: var(--room-aurora-drape);
+  overflow: visible;
+  color: #dbeaf2;
+  background-color: rgba(12, 22, 36, 0.9);
+  background-image:
+    linear-gradient(180deg, rgba(45, 212, 191, 0.16), rgba(45, 212, 191, 0) 36%),
+    /* the cloth gathers and darkens where it falls */
+    linear-gradient(0deg, rgba(3, 7, 13, 0.5), rgba(3, 7, 13, 0) 30%),
+    repeating-linear-gradient(90deg, rgba(219, 234, 242, 0.05) 0 1px, transparent 1px 13px);
+  border: 1px solid rgba(45, 212, 191, 0.18);
+  border-top: 2px solid rgba(203, 220, 231, 0.6);
+  box-shadow:
+    0 24px 44px -30px rgba(2, 5, 10, 0.95),
+    inset 0 -30px 38px -34px rgba(45, 212, 191, 0.6);
+  transform-origin: 22% 0;
+  transition:
+    transform 300ms cubic-bezier(0.22, 0.72, 0.3, 1),
+    box-shadow 260ms ease,
+    border-color 220ms ease;
+}
+/* Pinned at one point, so it sways rather than lifts. */
+html[data-player-skin="aurora"]:root .launcher-card:hover {
+  transform: rotate(0.45deg) translateY(1px);
+  border-color: rgba(45, 212, 191, 0.45);
+  box-shadow:
+    0 30px 52px -30px rgba(2, 5, 10, 0.98),
+    inset 0 -34px 42px -34px rgba(45, 212, 191, 0.85);
+}
+html[data-player-skin="aurora"]:root .launcher-card--focused {
+  border-color: #2dd4bf;
+  box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.5), 0 24px 44px -30px rgba(2, 5, 10, 0.95);
+}
+html[data-player-skin="aurora"]:root .launcher-card-name {
+  color: #dbeaf2;
+  letter-spacing: 0.02em;
+}
+html[data-player-skin="aurora"]:root .launcher-card-intention {
+  color: #9fb9c8;
+}
+
+/* ── 6 · Glyphs — a pennant of fabric, weighted at the tip ──── */
+
+html[data-player-skin="aurora"]:root .launcher-card-glyph,
+html[data-player-skin="aurora"]:root .launcher-tile-glyph,
+html[data-player-skin="aurora"]:root .nav-app-glyph {
+  border-radius: 0;
+  clip-path: polygon(8% 0, 92% 0, 100% 64%, 50% 100%, 0 64%);
+  background: linear-gradient(180deg, #7ff0e2, #2dd4bf 38%, #0d6f68);
+  color: #04131a;
+  box-shadow: none;
+}
+html[data-player-skin="aurora"]:root .launcher-custom-app-emoji {
+  border-radius: 0;
+  clip-path: polygon(8% 0, 92% 0, 100% 64%, 50% 100%, 0 64%);
+  background: rgba(45, 212, 191, 0.18);
+}
+
+/* ── 7 · Primary button — the draw ──────────────────────────── */
+/* Pleats gather from 22px to 9px on hover: the curtain is pulled. */
+
+html[data-player-skin="aurora"]:root button.primary,
+html[data-player-skin="aurora"]:root .primary {
+  background-color: #2dd4bf;
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(4, 19, 26, 0.2)),
+    repeating-linear-gradient(90deg, rgba(4, 19, 26, 0.22) 0 1px, transparent 1px 11px);
+  background-size: 100% 100%, 22px 100%;
+  background-position: 0 0, 0 0;
+  background-repeat: no-repeat, repeat-x;
+  color: #04131a;
+  border: 1px solid #16a99a;
+  border-radius: 2px 2px 14px 4px;
+  transform-origin: top center;
+  transition:
+    background-size 320ms cubic-bezier(0.2, 0.75, 0.3, 1),
+    box-shadow 240ms ease,
+    transform 150ms ease;
+}
+html[data-player-skin="aurora"]:root button.primary:hover,
+html[data-player-skin="aurora"]:root .primary:hover {
+  background-size: 100% 100%, 9px 100%;
+  transform: none;
+  box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.4), 0 14px 30px -16px rgba(45, 212, 191, 0.85);
+}
+/* Fabric dropping back onto the rod. */
+html[data-player-skin="aurora"]:root button.primary:active,
+html[data-player-skin="aurora"]:root .primary:active {
+  transform: scaleY(0.93);
+  background-size: 100% 100%, 7px 100%;
+  box-shadow: inset 0 3px 8px -3px rgba(4, 19, 26, 0.6);
+}
+
+/* ── 8 · Controls, focus, disabled ──────────────────────────── */
+
+html[data-player-skin="aurora"]:root button.secondary,
+html[data-player-skin="aurora"]:root .secondary {
+  background: transparent;
+  color: #9fb9c8;
+  border: 1px solid rgba(203, 220, 231, 0.24);
+  border-bottom-color: rgba(45, 212, 191, 0.34);
+  border-radius: 2px 2px 12px 4px;
+}
+html[data-player-skin="aurora"]:root button.secondary:hover,
+html[data-player-skin="aurora"]:root .secondary:hover {
+  color: #dbeaf2;
+  border-color: rgba(45, 212, 191, 0.5);
+}
+
+html[data-player-skin="aurora"]:root input,
+html[data-player-skin="aurora"]:root textarea,
+html[data-player-skin="aurora"]:root select {
+  background-color: rgba(4, 8, 15, 0.72);
+  background-image: repeating-linear-gradient(90deg, rgba(219, 234, 242, 0.035) 0 1px, transparent 1px 13px);
+  color: #dbeaf2;
+  border: 1px solid rgba(159, 185, 200, 0.24);
+  border-bottom: 2px solid rgba(45, 212, 191, 0.32);
+  border-radius: 2px 2px 10px 3px;
+  transition:
+    border-bottom-color 220ms ease,
+    box-shadow 220ms ease,
+    background-color 220ms ease;
+}
+html[data-player-skin="aurora"]:root input:focus,
+html[data-player-skin="aurora"]:root textarea:focus,
+html[data-player-skin="aurora"]:root select:focus {
+  outline: none;
+  border-bottom-color: #2dd4bf;
+  background-color: rgba(10, 18, 32, 0.9);
+  box-shadow: 0 8px 20px -14px #2dd4bf;
+}
+html[data-player-skin="aurora"]:root input::placeholder,
+html[data-player-skin="aurora"]:root textarea::placeholder {
+  color: rgba(159, 185, 200, 0.55);
+}
+
+html[data-player-skin="aurora"]:root :focus-visible {
+  outline: 2px solid #2dd4bf;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 7px rgba(45, 212, 191, 0.12);
+}
+
+/* Closed curtain: still there, no longer letting light through. */
+html[data-player-skin="aurora"]:root button:disabled,
+html[data-player-skin="aurora"]:root input:disabled,
+html[data-player-skin="aurora"]:root select:disabled,
+html[data-player-skin="aurora"]:root textarea:disabled,
+html[data-player-skin="aurora"]:root [aria-disabled="true"] {
+  opacity: 0.7;
+  cursor: not-allowed;
+  color: rgba(159, 185, 200, 0.72);
+  border: 1px solid rgba(159, 185, 200, 0.2);
+  box-shadow: none;
+  background-color: rgba(10, 18, 32, 0.78);
+  /* Pleats pulled tight shut — same fabric, no light through it. */
+  background-image: repeating-linear-gradient(90deg, rgba(219, 234, 242, 0.07) 0 1px, transparent 1px 6px);
+  background-size: auto;
+}
+
+/* ── 9 · Empty state — polar quiet, one horizon ─────────────── */
+
+html[data-player-skin="aurora"]:root .empty-state {
+  border: 1px dashed rgba(45, 212, 191, 0.42);
+  border-top: 2px solid rgba(203, 220, 231, 0.5);
+  border-radius: 2px 2px 24px 8px;
+  background-color: rgba(8, 14, 24, 0.74);
+  background-image:
+    linear-gradient(180deg, rgba(45, 212, 191, 0.1), rgba(6, 10, 18, 0) 38%),
+    linear-gradient(
+      180deg,
+      transparent 0 63%,
+      rgba(159, 185, 200, 0.16) 63% 63.4%,
+      transparent 63.4%
+    );
+  padding: 26px 18px 22px;
+}
+html[data-player-skin="aurora"]:root .empty-state-title {
+  color: #2dd4bf;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+}
+html[data-player-skin="aurora"]:root .empty-state-body,
+html[data-player-skin="aurora"]:root .empty-state-hint {
+  color: #9fb9c8;
+}
+
+/* ── 10 · Dialogs — the curtain parts ───────────────────────── */
+
+html[data-player-skin="aurora"]:root .loot-shell-dialog,
+html[data-player-skin="aurora"]:root .napkin-capture-dialog,
+html[data-player-skin="aurora"]:root .launcher-search-panel,
+html[data-player-skin="aurora"]:root .launcher-dock-panel,
+html[data-player-skin="aurora"]:root .companion-panel,
+html[data-player-skin="aurora"]:root .wf-code-modal,
+html[data-player-skin="aurora"]:root .rich-fs-modal,
+html[data-player-skin="aurora"]:root .wp-board {
+  border-radius: 2px 2px 28px 10px;
+  background-color: #0a1220;
+  background-image:
+    linear-gradient(180deg, rgba(45, 212, 191, 0.13), rgba(10, 18, 32, 0) 30%),
+    repeating-linear-gradient(90deg, rgba(219, 234, 242, 0.04) 0 1px, transparent 1px 15px);
+  color: #dbeaf2;
+  border: 1px solid rgba(45, 212, 191, 0.22);
+  border-top: 3px solid rgba(203, 220, 231, 0.55);
+  box-shadow: 0 48px 96px -44px rgba(0, 0, 0, 0.92);
+  animation: room-aurora-part 320ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
+}
+html[data-player-skin="aurora"]:root .loot-chest-overlay,
+html[data-player-skin="aurora"]:root .command-palette-overlay,
+html[data-player-skin="aurora"]:root .launcher-search-overlay,
+html[data-player-skin="aurora"]:root .wf-code-modal-overlay,
+html[data-player-skin="aurora"]:root .wp-board-overlay,
+html[data-player-skin="aurora"]:root .rit-overlay,
+html[data-player-skin="aurora"]:root .wp-alarm-overlay,
+html[data-player-skin="aurora"]:root .wp-arcade-overlay {
+  background:
+    radial-gradient(130% 84% at 50% 0, rgba(45, 212, 191, 0.12), rgba(3, 6, 12, 0) 58%),
+    rgba(3, 6, 12, 0.88);
+  backdrop-filter: blur(3px);
+}
+
+/* ── 11 · Companion orb — the polar light itself ────────────── */
+
+html[data-player-skin="aurora"]:root .companion-launcher {
+  background: rgba(6, 10, 18, 0.9);
+  border: 1px solid rgba(45, 212, 191, 0.3);
+  border-radius: 50% 50% 38% 38%;
+  box-shadow: 0 18px 36px -22px rgba(2, 5, 10, 0.95);
+}
+html[data-player-skin="aurora"]:root .companion-launcher-orb {
+  border-radius: 50% 50% 45% 55% / 64% 58% 38% 41%;
+  background: radial-gradient(circle at 38% 24%, #e6fffa, #2dd4bf 40%, #0d6f68 72%, #061421);
+  box-shadow:
+    0 0 14px rgba(45, 212, 191, 0.55),
+    0 0 34px -6px rgba(45, 212, 191, 0.42);
+  animation: room-aurora-polar-breathe 6.4s ease-in-out infinite;
+}
+html[data-player-skin="aurora"]:root .companion-launcher:hover .companion-launcher-orb {
+  box-shadow:
+    0 0 20px rgba(45, 212, 191, 0.8),
+    0 0 48px -6px rgba(45, 212, 191, 0.55);
+}
+
+/* ── 12 · Plates and copy that must stay readable ───────────── */
+
+html[data-player-skin="aurora"]:root .card,
+html[data-player-skin="aurora"]:root .hub-card,
+html[data-player-skin="aurora"]:root .page-intent,
+html[data-player-skin="aurora"]:root .napkin-entry,
+html[data-player-skin="aurora"]:root .task-row {
+  background-color: rgba(14, 26, 40, 0.86);
+  color: #dbeaf2;
+  border-color: rgba(45, 212, 191, 0.18);
+  border-radius: 1px 1px 20px 6px;
+}
+html[data-player-skin="aurora"]:root .agent-bubble {
+  background: rgba(14, 26, 40, 0.94);
+  color: #dbeaf2;
+  border-left: 2px solid rgba(45, 212, 191, 0.55);
+  border-radius: 2px 14px 14px 2px;
+}
+html[data-player-skin="aurora"]:root .loot-shell-brand > span {
+  background: linear-gradient(180deg, #7ff0e2, #2dd4bf 46%, #0d6f68);
+  animation: none;
+  filter: none;
+}
+
+/* ═══ 13 · Per-tab rooms — one curtain, eight vantage points ═══ */
+
+/* Home · standing back: the whole horizon, cards on one long rail. */
+html[data-player-skin="aurora"]:root[data-app-tab="Home"] body {
+  background-position: center bottom !important;
+  background-size: cover !important;
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Home"] #main {
+  background-color: rgba(6, 10, 18, 0.34);
+  border-top-color: transparent;
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Home"] .launcher-cinematic,
+html[data-player-skin="aurora"]:root[data-app-tab="Home"] .launcher-ambient {
+  opacity: 0.35;
+  filter: saturate(0.6);
+}
+
+/* Today · standing under it: the band fills the frame, hours are rings. */
+html[data-player-skin="aurora"]:root[data-app-tab="Today"] body {
+  background-size: 172% auto !important;
+  background-position: 62% 6% !important;
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Today"] #main {
+  background-color: rgba(6, 10, 18, 0.58);
+  box-shadow: inset 0 2px 0 rgba(203, 220, 231, 0.5);
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Today"] .tdy-hour-cell {
+  border-radius: 999px 999px 3px 3px;
+  border-color: rgba(203, 220, 231, 0.28);
+  background-color: rgba(10, 18, 32, 0.5);
+  background-image: linear-gradient(180deg, rgba(45, 212, 191, 0.12), rgba(6, 10, 18, 0) 46%);
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Today"] .tdy-now-marker {
+  background: #2dd4bf;
+  box-shadow: 0 0 14px rgba(45, 212, 191, 0.9);
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Today"] .tdy-now-marker::before {
+  background: #7ff0e2;
+  box-shadow: 0 0 12px rgba(127, 240, 226, 0.9);
+}
+
+/* Tasks · each task is its own panel, eyeleted onto the rail. */
+html[data-player-skin="aurora"]:root[data-app-tab="Tasks"] body {
+  background-position: center 76% !important;
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Tasks"] #main .card,
+html[data-player-skin="aurora"]:root[data-app-tab="Tasks"] #main .task-row {
+  border-radius: 1px 1px 22px 6px;
+  border: 1px solid rgba(45, 212, 191, 0.16);
+  border-top: 2px solid rgba(203, 220, 231, 0.45);
+  padding-top: 16px;
+  background-color: rgba(14, 26, 40, 0.88);
+  background-image:
+    radial-gradient(circle, rgba(203, 220, 231, 0.55) 0 2px, rgba(203, 220, 231, 0) 2.6px),
+    repeating-linear-gradient(90deg, rgba(219, 234, 242, 0.045) 0 1px, transparent 1px 13px);
+  background-repeat: repeat-x, repeat;
+  background-size: 46px 14px, auto;
+  background-position: 12px 4px, 0 0;
+}
+
+/* Agent · the curtain drawn back to both sides of the conversation. */
+html[data-player-skin="aurora"]:root[data-app-tab="Agent"] body {
+  background-position: center 30% !important;
+  background-size: 128% auto !important;
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Agent"] #main .agent-pane {
+  border-radius: 2px 2px 22px 22px;
+  background-color: rgba(8, 14, 24, 0.9);
+  background-image:
+    linear-gradient(90deg, rgba(45, 212, 191, 0.16), rgba(6, 10, 18, 0) 13%),
+    linear-gradient(270deg, rgba(45, 212, 191, 0.16), rgba(6, 10, 18, 0) 13%),
+    repeating-linear-gradient(90deg, rgba(219, 234, 242, 0.035) 0 1px, transparent 1px 21px);
+  border: 1px solid rgba(45, 212, 191, 0.16);
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Agent"] .agent-splitter {
+  background: linear-gradient(180deg, rgba(203, 220, 231, 0.5), rgba(45, 212, 191, 0.2));
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Agent"] .agent-live-dot {
+  background: #2dd4bf;
+  box-shadow: 0 0 10px rgba(45, 212, 191, 0.8);
+}
+
+/* Hub · every card hung off one steel rail at the top. */
+html[data-player-skin="aurora"]:root[data-app-tab="Hub"] body {
+  background-position: 18% bottom !important;
+  background-size: 138% auto !important;
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Hub"] #main .hub-card,
+html[data-player-skin="aurora"]:root[data-app-tab="Hub"] #main .hub-glance-item {
+  border-radius: 1px 1px 26px 8px;
+  border: 1px solid rgba(45, 212, 191, 0.16);
+  border-top: 3px solid rgba(203, 220, 231, 0.5);
+  background-color: rgba(14, 26, 40, 0.86);
+  background-image:
+    linear-gradient(180deg, rgba(45, 212, 191, 0.12), rgba(6, 10, 18, 0) 36%),
+    repeating-linear-gradient(90deg, rgba(219, 234, 242, 0.05) 0 1px, transparent 1px 12px);
+  transform-origin: 50% 0;
+  transition: transform 280ms cubic-bezier(0.22, 0.72, 0.3, 1);
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Hub"] #main .hub-card:hover {
+  transform: rotate(-0.35deg);
+}
+
+/* Practice · frost on the inside of the glass. */
+html[data-player-skin="aurora"]:root[data-app-tab="Practice"] body {
+  background-position: center 20% !important;
+  background-size: 134% auto !important;
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Practice"] #main .card {
+  border: 1px dashed rgba(45, 212, 191, 0.38);
+  border-radius: 2px;
+  background-color: rgba(6, 10, 18, 0.8);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(219, 234, 242, 0.05) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(0deg, rgba(219, 234, 242, 0.03) 0 1px, transparent 1px 9px);
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Practice"] #main .card:hover {
+  border-color: rgba(45, 212, 191, 0.7);
+}
+
+/* Calendar · the polar ledger — each day a narrow fold of the same cloth. */
+html[data-player-skin="aurora"]:root[data-app-tab="Calendar"] body {
+  background-position: center 92% !important;
+  background-size: 118% auto !important;
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Calendar"] #main .cal-month-cell,
+html[data-player-skin="aurora"]:root[data-app-tab="Calendar"] #main .cal-day-panel {
+  border-radius: 0 0 16px 2px;
+  border-top: 2px solid rgba(203, 220, 231, 0.34);
+  border-left: 1px solid rgba(45, 212, 191, 0.14);
+  background-color: rgba(10, 18, 32, 0.76);
+  background-image: linear-gradient(180deg, rgba(45, 212, 191, 0.1), rgba(6, 10, 18, 0) 54%);
+}
+
+/* Settings · the rail seen end-on — every row clipped to one vertical rod. */
+html[data-player-skin="aurora"]:root[data-app-tab="Settings"] body {
+  background-position: 82% bottom !important;
+  background-size: 146% auto !important;
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Settings"] #main .card {
+  border-radius: 0 2px 18px 0;
+  border-left: 3px solid rgba(203, 220, 231, 0.5);
+  border-top: 1px solid rgba(45, 212, 191, 0.12);
+  background-color: rgba(10, 18, 32, 0.84);
+  background-image: linear-gradient(90deg, rgba(45, 212, 191, 0.13), rgba(6, 10, 18, 0) 16%);
+}
+html[data-player-skin="aurora"]:root[data-app-tab="Settings"] #main .settings-ai-kv,
+html[data-player-skin="aurora"]:root[data-app-tab="Settings"] #main .settings-model-grid {
+  border-radius: 0 2px 12px 0;
+  border-left: 2px solid rgba(45, 212, 191, 0.3);
+}
+
+/* ── 14 · Motion — slow, polar, never busy ──────────────────── */
+
+@keyframes room-aurora-fold-breathe {
+  0%, 100% { background-position: 0 0, 0 0; }
+  50% { background-position: 9px 0, -5px 0; }
+}
+@keyframes room-aurora-curtain-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.03); opacity: 0.2; }
+  50% { transform: translate3d(-1.6%, 0.6%, 0) scale(1.06); opacity: 0.27; }
+}
+@keyframes room-aurora-rod-glint {
+  0%, 62% { background-position: -200px 0; }
+  100% { background-position: calc(100% + 200px) 0; }
+}
+@keyframes room-aurora-polar-breathe {
+  0%, 100% { transform: scale(1) translateY(0); opacity: 0.88; }
+  50% { transform: scale(1.08) translateY(-1px); opacity: 1; }
+}
+@keyframes room-aurora-part {
+  from { opacity: 0; transform: scaleX(0.94) translateY(-6px); }
+  to { opacity: 1; transform: scaleX(1) translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="aurora"]:root body::before,
+  html[data-player-skin="aurora"]:root body::after,
+  html[data-player-skin="aurora"]:root #main::after,
+  html[data-player-skin="aurora"]:root .top-hud::after,
+  html[data-player-skin="aurora"]:root .companion-launcher-orb,
+  html[data-player-skin="aurora"]:root .loot-shell-dialog,
+  html[data-player-skin="aurora"]:root .napkin-capture-dialog,
+  html[data-player-skin="aurora"]:root .launcher-search-panel,
+  html[data-player-skin="aurora"]:root .launcher-dock-panel,
+  html[data-player-skin="aurora"]:root .companion-panel,
+  html[data-player-skin="aurora"]:root .wf-code-modal,
+  html[data-player-skin="aurora"]:root .rich-fs-modal,
+  html[data-player-skin="aurora"]:root .wp-board {
+    animation: none !important;
+  }
+  html[data-player-skin="aurora"]:root .top-hud::after { opacity: 0.25; }
+  html[data-player-skin="aurora"]:root .launcher-card,
+  html[data-player-skin="aurora"]:root button.primary,
+  html[data-player-skin="aurora"]:root .primary,
+  html[data-player-skin="aurora"]:root[data-app-tab="Hub"] #main .hub-card {
+    transition: none;
+  }
+  html[data-player-skin="aurora"]:root .launcher-card:hover,
+  html[data-player-skin="aurora"]:root button.primary:hover,
+  html[data-player-skin="aurora"]:root .primary:hover,
+  html[data-player-skin="aurora"]:root button.primary:active,
+  html[data-player-skin="aurora"]:root .primary:active,
+  html[data-player-skin="aurora"]:root[data-app-tab="Hub"] #main .hub-card:hover {
+    transform: none;
+  }
+}

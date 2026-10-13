@@ -1,0 +1,78 @@
+/* ═══════════════════════════════════════════════════════════════
+   ATELIER PASS — last-loaded utilities only.
+   Does NOT restyle the default copperplate room. Skins live in
+   skin-pass.css. Keep capture grow-down and the focus dock.
+   ═══════════════════════════════════════════════════════════════ */
+
+.wp-focus-dock {
+  position: fixed;
+  left: calc(14px + env(safe-area-inset-left));
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 45;
+  display: flex;
+  gap: 6px;
+  padding: 7px;
+  border-radius: 20px;
+  border: 1px solid var(--at-hair-2, var(--border));
+  background: color-mix(in srgb, var(--bg-card) 88%, transparent);
+  box-shadow: var(--at-inset, inset 0 1px 0 rgba(255,248,240,.12)), 0 12px 32px rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(16px);
+}
+
+.wp-focus-dock .hud-icon-btn,
+.wp-focus-dock button {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 14px;
+  border: 1px solid var(--at-hair, var(--border));
+  background: var(--at-plate, var(--bg-card));
+  color: var(--at-ink-2, var(--ink-secondary));
+  display: grid;
+  place-items: center;
+}
+
+.wp-focus-dock .hud-icon-svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+html.wp-hide-game .wp-focus-dock,
+body.wp-hide-game .wp-focus-dock,
+body.game-off .wp-focus-dock,
+html[data-wp-hide-game="on"] .wp-focus-dock { display: none !important; }
+
+.wp-mini-dock { display: none !important; }
+
+@media (max-width: 640px) {
+  .wp-focus-dock {
+    left: calc(10px + env(safe-area-inset-left));
+    bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+}
+
+.command-palette-overlay:has(.napkin-capture-dialog) {
+  align-items: flex-start !important;
+  padding: 3vh 18px 18px !important;
+}
+
+.napkin-capture-dialog.napkin-gg-doc {
+  width: min(1280px, calc(100vw - 20px)) !important;
+  max-height: min(96vh, 980px) !important;
+}
+
+.napkin-capture-dialog #quick-capture-details,
+.napkin-gg-body {
+  min-height: 62vh !important;
+}
+
+.napkin-entry-list {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
+  max-height: min(28vh, 240px) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-focus-dock .hud-icon-btn:hover { transform: none; }
+}

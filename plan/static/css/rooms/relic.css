@@ -1,0 +1,74 @@
+/* Relic Compass — astrolabe rete.
+   Concentric degree rings. Old gold on bole. Iowan display. */
+
+html[data-player-skin="relic"] {
+  --at-r-plate: 14px 2px 14px 2px;
+  --at-r-card: 14px 2px 14px 2px;
+  --at-r-ctl: 8px 2px;
+  --at-r-chip: 8px 2px;
+  --at-r-cell: 6px 2px;
+  --at-font-display: "Iowan Old Style", Palatino, serif;
+  --bg-shell: #1c1008;
+  --bg-card: #2a180c;
+  --ink-primary: #fde68a;
+  --accent: #fde047;
+  --accent-ink: #3a1a04;
+}
+
+html[data-player-skin="relic"] body {
+  background:
+    radial-gradient(circle at 50% 0%, transparent 28%, rgba(253, 224, 71, 0.08) 29% 30%, transparent 31%),
+    #1c1008 !important;
+}
+html[data-player-skin="relic"] body::after {
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.25;
+  background:
+    repeating-radial-gradient(circle at 50% 0%, transparent 0 18px, rgba(253, 224, 71, 0.12) 18px 19px);
+}
+
+html[data-player-skin="relic"] .top-hud {
+  background: #2a180c;
+  border-bottom: 2px solid #fde047;
+}
+html[data-player-skin="relic"] .top-hud::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  width: 26px;
+  height: 26px;
+  margin-left: -13px;
+  border: 1px solid rgba(253, 224, 71, 0.7);
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 4px rgba(253, 224, 71, 0.15), 0 0 0 6px rgba(253, 224, 71, 0.08);
+  animation: room-relic-rete 20s linear infinite;
+}
+html[data-player-skin="relic"] .hud-app-name,
+html[data-player-skin="relic"] .launcher-card-name {
+  font-family: var(--at-font-display);
+}
+
+html[data-player-skin="relic"] .launcher-card {
+  border-radius: 14px 2px;
+  padding: 21px 16px;
+  background: #2a180c;
+  border: 1px solid rgba(253, 224, 71, 0.32);
+}
+html[data-player-skin="relic"] button.primary,
+html[data-player-skin="relic"] .tab-chip.active {
+  background: #fde047;
+  color: #3a1a04;
+  border: 1px solid #78350f;
+}
+
+html[data-player-skin="relic"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 6px 2px; }
+html[data-player-skin="relic"][data-app-tab="Tasks"] .tsk-row { border-radius: 10px 2px; }
+html[data-player-skin="relic"][data-app-tab="Agent"] .agent-bubble { border-radius: 12px 2px; }
+
+@keyframes room-relic-rete { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="relic"] .top-hud::before { animation: none; }
+}

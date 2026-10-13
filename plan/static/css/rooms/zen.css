@@ -1,0 +1,75 @@
+/* Zen Wayfinder — karesansui / enso.
+   Raked gravel, ma (empty space), one sitting enso.
+   Stillness is the geometry. */
+
+html[data-player-skin="zen"] {
+  --at-r-plate: 0 0 28px 28px;
+  --at-r-card: 0 0 28px 28px;
+  --at-r-ctl: 0 0 12px 12px;
+  --at-r-chip: 0 0 10px 10px;
+  --at-r-cell: 0 0 8px 8px;
+  --at-font-display: "Iowan Old Style", Georgia, serif;
+  --bg-shell: #11140f;
+  --bg-card: #1a1f18;
+  --ink-primary: #f5d0fe;
+  --accent: #f0abfc;
+  --accent-ink: #134e4a;
+}
+
+html[data-player-skin="zen"] body {
+  background:
+    repeating-linear-gradient(12deg, transparent 0 10px, rgba(240, 171, 252, 0.04) 10px 11px),
+    #11140f !important;
+}
+html[data-player-skin="zen"] body::after {
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.3;
+  background: repeating-linear-gradient(8deg, transparent 0 13px, rgba(19, 78, 74, 0.18) 13px 14px);
+  animation: room-zen-rake 36s linear infinite;
+}
+
+html[data-player-skin="zen"] .top-hud {
+  background: #1a1f18;
+  border-bottom: 1px solid rgba(240, 171, 252, 0.28);
+}
+html[data-player-skin="zen"] .top-hud::after {
+  content: "";
+  position: absolute;
+  right: 22px;
+  top: 11px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f0abfc;
+  border-radius: 50%;
+  border-left-color: transparent;
+  pointer-events: none;
+}
+html[data-player-skin="zen"] .hud-app-name,
+html[data-player-skin="zen"] .launcher-card-name {
+  font-family: var(--at-font-display);
+  font-style: italic;
+}
+
+html[data-player-skin="zen"] .launcher-card {
+  border-radius: 0 0 28px 28px;
+  padding: 32px 20px 14px;
+  background: #1a1f18;
+  border: 1px solid rgba(240, 171, 252, 0.2);
+}
+html[data-player-skin="zen"] .launcher-card::before { content: none; }
+html[data-player-skin="zen"] button.primary,
+html[data-player-skin="zen"] .tab-chip.active {
+  background: #f0abfc;
+  color: #134e4a;
+  border: 1px solid #0f766e;
+}
+
+html[data-player-skin="zen"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 0 0 8px 8px; }
+html[data-player-skin="zen"][data-app-tab="Tasks"] .tsk-row { border-radius: 0 0 16px 16px; padding-top: 14px; }
+html[data-player-skin="zen"][data-app-tab="Agent"] .agent-bubble { border-radius: 0 0 18px 18px; }
+
+@keyframes room-zen-rake { to { background-position: 80px 0; } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="zen"] body::after { animation: none; }
+}

@@ -1,0 +1,1032 @@
+/* ═══════════════════════════════════════════════════════════════
+   PAPRIKA MILE — ground spice on a wooden mill.
+
+   The object: a turned-wood mill standing on a butcher-block
+   board. Someone has been grinding. Paprika dust fans diagonally
+   from the mill foot — dry, brick-orange, a kitchen powder, not
+   a fire. Every chip carries one mill-click: a spice-red tick,
+   the tally of a grind.
+
+   Place is chip,page. The board is the page. The tick is the
+   chip. HUD, companion, and pulse stay quiet mill-wood so the
+   flame family cannot claim them.
+
+   Not cherry candy (no #fb7185 / #be123c, no gloss pulse).
+   Not coral reef (no teal channel, no polyp, no water).
+   Not magma / Magmaheart / Cinderfall (no lava, no stepped
+   ember, no rivers, no falling fire). Ember here is mill-warmth:
+   dry spice catching kitchen light. Diagonal is turned-wood
+   grain with paprika in the grooves.
+
+   Signature cut: mill in side elevation. Cap at the left, crank
+   bulge at the right, grind-plate foot, paprika spill on the
+   down-board corner. Pixel radii. Never 42%/48% ovals.
+   Signature glyph: the mill standing — knob, crank, body,
+   grind plate, a dust spill at the foot. Glyphs may clip.
+   Signature motion: mill-click. A short tick, then rest. Dust
+   settles. Nothing flickers.
+   Selectors carry :root to outrank the flame family's forged-
+   steel stencil. Never clip #main or .launcher-card.
+   Loot: colorA #ea580c, colorB #9a3412, effect ember,
+   pattern diagonal, place chip,page.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — walnut mill, butcher block, dry paprika ───── */
+
+html[data-player-skin="paprika"]:root {
+  color-scheme: light;
+
+  --pk-board: #f3e6cf;
+  --pk-board-2: #e8d4b0;
+  --pk-well: #faf3e6;
+  --pk-cream: #fffaf0;
+  --pk-wood: #6b3e22;
+  --pk-wood-hi: #8b5a32;
+  --pk-wood-lo: #4a2814;
+  --pk-beech: #c4a06a;
+  --pk-cap: #3f2312;
+  --pk-paprika: #ea580c;
+  --pk-paprika-hot: #f97316;
+  --pk-toasted: #c2410c;
+  --pk-mill: #9a3412;
+  --pk-ink: #3b1a0c;
+  --pk-ink-2: #5c3317;
+  --pk-mute: #8a6244;
+  --pk-tick: #ea580c;
+
+  --pk-hair: rgba(154, 52, 18, 0.28);
+  --pk-hair-2: rgba(234, 88, 12, 0.45);
+  --pk-dust: rgba(234, 88, 12, 0.22);
+  --pk-shine: rgba(255, 250, 240, 0.62);
+
+  /* Mill in side elevation: cap, crank bulge, grind foot, spill. */
+  --pk-r-mill: 13px 24px 6px 17px / 16px 11px 8px 13px;
+  --pk-r-card: 11px 20px 5px 14px / 13px 9px 7px 11px;
+  --pk-r-ctl: 8px 16px 4px 11px / 10px 7px 5px 9px;
+  --pk-r-chip: 5px 13px 3px 10px / 9px 5px 4px 8px;
+  --pk-r-cell: 6px 12px 3px 9px / 8px 6px 4px 7px;
+  --pk-r-tick: 1px 8px 1px 4px / 6px 2px 6px 2px;
+  --pk-r-knob: 14px 18px 10px 8px / 12px 14px 7px 9px;
+
+  /* Turned-wood grain — loot diagonal, paprika in the grooves. */
+  --pk-grain:
+    repeating-linear-gradient(
+      -28deg,
+      transparent 0 9px,
+      rgba(107, 62, 34, 0.14) 9px 10px,
+      transparent 10px 21px,
+      rgba(234, 88, 12, 0.1) 21px 22px
+    );
+  --pk-grain-soft:
+    repeating-linear-gradient(
+      -28deg,
+      transparent 0 12px,
+      rgba(74, 40, 20, 0.08) 12px 13px,
+      transparent 13px 26px,
+      rgba(234, 88, 12, 0.06) 26px 27px
+    );
+  --pk-dust-field:
+    radial-gradient(circle at 18% 24%, rgba(234, 88, 12, 0.55) 0 0.7px, transparent 1.2px),
+    radial-gradient(circle at 71% 38%, rgba(154, 52, 18, 0.4) 0 0.55px, transparent 1.05px),
+    radial-gradient(circle at 44% 72%, rgba(194, 65, 12, 0.35) 0 0.65px, transparent 1.15px),
+    radial-gradient(circle at 86% 16%, rgba(249, 115, 22, 0.3) 0 0.45px, transparent 0.95px),
+    radial-gradient(circle at 28% 88%, rgba(154, 52, 18, 0.28) 0 0.5px, transparent 1px);
+  --pk-dust-size: 17px 19px, 23px 21px, 29px 25px, 21px 17px, 31px 27px;
+
+  --bg-shell: #ead9b8;
+  --bg-content: var(--pk-board);
+  --bg-card: var(--pk-cream);
+  --bg-card-hover: #fff4e0;
+  --ink-primary: var(--pk-ink);
+  --ink-secondary: var(--pk-ink-2);
+  --ink-muted: var(--pk-mute);
+  --border: rgba(154, 52, 18, 0.32);
+  --gridline: rgba(107, 62, 34, 0.14);
+  --accent: var(--pk-paprika);
+  --ws-accent: var(--pk-paprika);
+  --accent-ink: var(--pk-cream);
+
+  /* Loot catalog source of truth. */
+  --skin-a: #ea580c;
+  --skin-b: #9a3412;
+  --at-a: #ea580c;
+  --at-b: #9a3412;
+  --feel-a: #ea580c;
+  --feel-b: #9a3412;
+  --feel-accent: var(--pk-paprika);
+  --feel-ground: #ead9b8;
+  --feel-paper: var(--pk-cream);
+  --feel-ink: var(--pk-ink);
+
+  --at-plate: var(--pk-cream);
+  --at-plate-2: var(--pk-board-2);
+  --at-well: var(--pk-well);
+  --at-ink: var(--pk-ink);
+  --at-ink-2: var(--pk-ink-2);
+  --at-ink-3: var(--pk-mute);
+  --at-hair: var(--pk-hair);
+  --at-hair-2: var(--pk-hair-2);
+  --at-hair-a: rgba(234, 88, 12, 0.55);
+  --at-tint: rgba(234, 88, 12, 0.12);
+  --at-tint-b: rgba(154, 52, 18, 0.18);
+  --at-focus: 0 0 0 2px var(--pk-cream), 0 0 0 5px rgba(234, 88, 12, 0.45);
+  --at-gold: var(--pk-paprika);
+  --at-gold-soft: var(--pk-paprika-hot);
+  --at-inset: inset 0 1px 0 var(--pk-shine);
+  --at-rise: 0 14px 28px -18px rgba(74, 40, 20, 0.45);
+  --at-rise-soft: 0 8px 16px -12px rgba(74, 40, 20, 0.32);
+  --at-r-plate: var(--pk-r-mill);
+  --at-r-card: var(--pk-r-card);
+  --at-r-ctl: var(--pk-r-ctl);
+  --at-r-chip: var(--pk-r-chip);
+  --at-r-cell: var(--pk-r-cell);
+
+  --pk-font: "Palatino Linotype", Palatino, "Iowan Old Style", "Book Antiqua",
+    Georgia, serif;
+  --font-display: var(--pk-font);
+  --at-font-display: var(--pk-font);
+
+  /* Turned wood, not forged-steel hammer press. */
+  --feel-3d:
+    inset 0 1px 0 rgba(255, 250, 240, 0.7),
+    inset 0 -10px 14px rgba(154, 52, 18, 0.08),
+    0 1px 0 rgba(107, 62, 34, 0.18),
+    0 8px 16px -10px rgba(74, 40, 20, 0.38);
+  --feel-3d-press:
+    inset 0 4px 8px rgba(74, 40, 20, 0.28),
+    inset 0 1px 0 rgba(255, 250, 240, 0.35),
+    0 1px 0 rgba(107, 62, 34, 0.2);
+  --feel-grain-opacity: 0.28;
+  --feel-grain-blend: multiply;
+  --feel-grain: var(--pk-grain-soft);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 1px solid rgba(154, 52, 18, 0.38);
+  --feel-icon:
+    sepia(0.22) saturate(1.18) contrast(1.06)
+    drop-shadow(0 1px 0 rgba(255, 250, 240, 0.5));
+  --feel-title-case: none;
+  --feel-title-tracking: 0.03em;
+  --feel-plate-image:
+    linear-gradient(180deg, rgba(255, 250, 240, 0.45), transparent 32%),
+    var(--pk-grain-soft);
+  --plate-shadow: var(--feel-3d);
+  --plate-shadow-hover:
+    inset 0 1px 0 rgba(255, 250, 240, 0.82),
+    inset 0 -12px 16px rgba(154, 52, 18, 0.12),
+    0 12px 20px -12px rgba(74, 40, 20, 0.42);
+
+  --pk-ease: cubic-bezier(0.22, 0.7, 0.28, 1);
+}
+
+/* ── 2 · Body — kitchen board, mill in the room, not magma ──── */
+
+html[data-player-skin="paprika"]:root body {
+  background-color: var(--pk-board) !important;
+  background-image:
+    radial-gradient(ellipse 64% 22% at 78% 8%, rgba(234, 88, 12, 0.18), transparent 70%),
+    radial-gradient(ellipse 36% 18% at 12% 92%, rgba(154, 52, 18, 0.1), transparent 68%),
+    linear-gradient(180deg, #f7ecda 0 16%, #f0ddc0 58%, #e4ceaa 100%),
+    var(--pk-grain) !important;
+  background-attachment: fixed !important;
+  color: var(--pk-ink);
+}
+
+/* Paprika dust in the air — dry grains, not falling fire. */
+html[data-player-skin="paprika"]:root body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  background: var(--pk-dust-field);
+  background-size: var(--pk-dust-size);
+  animation: room-paprika-dust 22s linear infinite;
+}
+
+html[data-player-skin="paprika"]:root body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+  background: var(--pk-grain-soft);
+  animation: room-paprika-grind 28s linear infinite;
+}
+
+/* Kill the flame-family stepped ember. Place is page, not a kiln. */
+html[data-player-skin="paprika"]:root #main {
+  clip-path: none !important;
+  isolation: isolate;
+  position: relative;
+  overflow: visible;
+  background: rgba(250, 243, 230, 0.55);
+  border-inline: 1px solid rgba(107, 62, 34, 0.16);
+}
+
+html[data-player-skin="paprika"]:root #main::before,
+html[data-player-skin="paprika"]:root #main::after {
+  clip-path: none !important;
+  animation: none;
+}
+
+/* ── 3 · Page — the mill board. Place honors page. ──────────── */
+
+html[data-player-skin="paprika"]:root[data-skin-place~="page"] #main {
+  background:
+    radial-gradient(ellipse 38% 16% at 86% 6%, rgba(234, 88, 12, 0.28), transparent 72%),
+    linear-gradient(180deg, rgba(196, 160, 106, 0.35) 0 28px, transparent 90px),
+    var(--pk-grain-soft),
+    rgba(250, 243, 230, 0.78) !important;
+  box-shadow:
+    inset 0 18px 32px -22px rgba(74, 40, 20, 0.22),
+    inset 0 -22px 28px -20px rgba(234, 88, 12, 0.08);
+}
+
+/* Mill-board groove under the grind plate. Not a lava river. */
+html[data-player-skin="paprika"]:root[data-skin-place~="page"] #main::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+  top: 18px;
+  right: 7%;
+  width: 86px;
+  height: 10px;
+  border-radius: var(--pk-r-tick);
+  background: linear-gradient(90deg, transparent, var(--pk-wood-hi) 18%, var(--pk-mill) 52%, var(--pk-paprika) 78%, transparent);
+  opacity: 0.7;
+  box-shadow:
+    0 14px 0 -4px rgba(234, 88, 12, 0.22),
+    0 28px 0 -6px rgba(154, 52, 18, 0.12);
+}
+
+/* Dust fan from the mill foot — loot diagonal, ember as warmth. */
+html[data-player-skin="paprika"]:root[data-skin-place~="page"] #main::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.2;
+  mix-blend-mode: multiply;
+  background:
+    var(--pk-dust-field),
+    repeating-linear-gradient(
+      -28deg,
+      transparent 0 17px,
+      rgba(234, 88, 12, 0.08) 17px 18px,
+      transparent 18px 35px
+    );
+  background-size: var(--pk-dust-size), auto;
+  animation: room-paprika-settle 9.6s ease-in-out infinite;
+}
+
+html[data-player-skin="paprika"]:root[data-app-tab="Home"][data-skin-place~="page"] #main {
+  clip-path: none !important;
+  background:
+    radial-gradient(ellipse 44% 20% at 82% 4%, rgba(234, 88, 12, 0.32), transparent 74%),
+    linear-gradient(180deg, rgba(196, 160, 106, 0.4) 0 36px, transparent 120px),
+    var(--pk-grain-soft),
+    rgba(250, 243, 230, 0.7) !important;
+}
+
+html[data-player-skin="paprika"]:root[data-app-tab="Today"][data-skin-place~="page"] #main {
+  clip-path: none !important;
+  background:
+    linear-gradient(180deg, rgba(234, 88, 12, 0.1) 0 22px, transparent 80px),
+    repeating-linear-gradient(180deg, transparent 0 31px, rgba(107, 62, 34, 0.06) 31px 32px),
+    var(--pk-well) !important;
+}
+
+html[data-player-skin="paprika"]:root[data-app-tab="Today"] #main .tdy-hour-cell {
+  border: 1px solid rgba(107, 62, 34, 0.18);
+  border-radius: var(--pk-r-cell);
+  background: rgba(255, 250, 240, 0.88);
+  color: var(--pk-ink);
+  box-shadow: inset 0 -5px 8px rgba(154, 52, 18, 0.05);
+}
+
+html[data-player-skin="paprika"]:root[data-app-tab="Today"] #main .tdy-hour-painted {
+  border-color: var(--pk-mill);
+  background:
+    linear-gradient(118deg, rgba(234, 88, 12, 0.22), transparent 36%),
+    linear-gradient(180deg, #fed7aa, #fdba74 70%, #ea580c);
+  color: var(--pk-ink);
+  box-shadow: inset 0 1px 0 var(--pk-shine), inset 3px 0 0 var(--pk-mill);
+}
+
+html[data-player-skin="paprika"]:root[data-app-tab="Today"] .tdy-now-marker {
+  background: var(--pk-paprika);
+  box-shadow: 0 0 0 1px var(--pk-mill);
+}
+
+html[data-player-skin="paprika"]:root[data-app-tab="Tasks"][data-skin-place~="page"] #main :is(.card, .tsk-row, .task-row) {
+  border-left: 4px solid var(--pk-paprika);
+  background:
+    linear-gradient(90deg, rgba(234, 88, 12, 0.14), transparent 22%),
+    var(--pk-cream);
+}
+
+html[data-player-skin="paprika"]:root[data-app-tab="Calendar"][data-skin-place~="page"] #main :is(.cal-day, .cal-hour-cell, .cal-month-cell:not(.cal-month-cell-pad)) {
+  border-radius: var(--pk-r-cell);
+  border: 1px solid rgba(107, 62, 34, 0.16);
+  background: rgba(255, 250, 240, 0.86);
+  color: var(--pk-ink);
+}
+
+html[data-player-skin="paprika"]:root[data-app-tab="Calendar"][data-skin-place~="page"] #main .cal-month-cell-today,
+html[data-player-skin="paprika"]:root[data-app-tab="Calendar"][data-skin-place~="page"] #main .cal-week-day-today {
+  border-color: var(--pk-mill);
+  background: linear-gradient(180deg, #fdba74, var(--pk-paprika));
+  box-shadow: inset 0 -3px 0 var(--pk-mill);
+}
+
+html[data-player-skin="paprika"]:root[data-app-tab="Agent"][data-skin-place~="page"] #main .agent-pane {
+  border: 1px solid rgba(154, 52, 18, 0.26);
+  border-top: 3px solid var(--pk-paprika);
+  border-radius: var(--pk-r-mill);
+  background:
+    radial-gradient(ellipse 70% 24% at 80% 0%, rgba(234, 88, 12, 0.18), transparent 70%),
+    var(--pk-well);
+  box-shadow: inset 0 10px 22px rgba(74, 40, 20, 0.06);
+}
+
+html[data-player-skin="paprika"]:root[data-app-tab="Hub"][data-skin-place~="page"] #main :is(.hub-card, .hub-glance-item),
+html[data-player-skin="paprika"]:root[data-app-tab="Practice"][data-skin-place~="page"] #main .card,
+html[data-player-skin="paprika"]:root[data-app-tab="Settings"][data-skin-place~="page"] #main .card,
+html[data-player-skin="paprika"]:root[data-app-tab="Paint"][data-skin-place~="page"] #main .card,
+html[data-player-skin="paprika"]:root[data-app-tab="Projects"][data-skin-place~="page"] #main .card,
+html[data-player-skin="paprika"]:root[data-app-tab="Parallel"][data-skin-place~="page"] #main .card,
+html[data-player-skin="paprika"]:root[data-app-tab="Goals"][data-skin-place~="page"] #main .card,
+html[data-player-skin="paprika"]:root[data-app-tab="About"][data-skin-place~="page"] #main .card {
+  border-radius: var(--pk-r-card);
+  border: 1px solid rgba(154, 52, 18, 0.22);
+  background:
+    linear-gradient(180deg, rgba(196, 160, 106, 0.28) 0 12%, transparent 28%),
+    var(--pk-cream);
+  box-shadow: var(--feel-3d);
+}
+
+/* ── 4 · HUD — quiet mill-wood lip. Place is not hud. ───────── */
+
+html[data-player-skin="paprika"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  background:
+    linear-gradient(180deg, #fff8ec 0 54%, #e8d4b0 78%, #c4a06a 100%);
+  border-bottom: 2px solid var(--pk-wood);
+  border-radius: 0 0 var(--pk-r-card);
+  color: var(--pk-ink);
+  box-shadow:
+    inset 0 1px 0 var(--pk-shine),
+    0 8px 16px -12px rgba(74, 40, 20, 0.35);
+  backdrop-filter: none;
+}
+
+html[data-player-skin="paprika"]:root .top-hud::after {
+  content: none;
+}
+
+html[data-player-skin="paprika"]:root .top-hud > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-player-skin="paprika"]:root :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: currentColor;
+  color: var(--pk-ink);
+  font-family: var(--pk-font);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  text-shadow: 0 1px 0 rgba(255, 250, 240, 0.7);
+}
+
+html[data-player-skin="paprika"]:root :is(.hud-intention, .hud-now-focus-kicker) {
+  color: var(--pk-mute);
+  letter-spacing: 0.04em;
+}
+
+/* Brand jewel becomes the mill knob, not a flame disc. */
+html[data-player-skin="paprika"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border-radius: var(--pk-r-knob);
+  border: 1px solid var(--pk-wood-lo);
+  background:
+    radial-gradient(circle at 34% 28%, var(--pk-beech) 0 22%, var(--pk-wood-hi) 52%, var(--pk-wood-lo) 100%);
+  box-shadow:
+    inset 0 1px 0 var(--pk-shine),
+    0 3px 0 var(--pk-cap);
+}
+
+html[data-player-skin="paprika"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 22%;
+  top: 18%;
+  width: 38%;
+  height: 22%;
+  inset: auto;
+  border-radius: inherit;
+  background: linear-gradient(118deg, var(--pk-shine), transparent 70%);
+  mix-blend-mode: normal;
+  animation: none;
+}
+
+html[data-player-skin="paprika"]:root :is(.brand-mark, .ws-mark, .hud-icon-svg, .tab-chip-mark) {
+  filter: var(--feel-icon);
+  animation: none;
+}
+
+html[data-player-skin="paprika"]:root .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .hud-model-chip--status
+) {
+  border: 1px solid rgba(154, 52, 18, 0.28);
+  border-radius: var(--pk-r-ctl);
+  background: linear-gradient(180deg, #fffaf0, #f3e6cf 72%, #e8d4b0);
+  color: var(--pk-ink);
+  box-shadow: inset 0 1px 0 var(--pk-shine);
+}
+
+html[data-player-skin="paprika"]:root .top-hud :is(.hud-icon-btn, .hud-glyph-btn):hover:not(:disabled) {
+  border-color: var(--pk-mill);
+  transform: translateY(1px);
+  box-shadow: inset 0 3px 6px rgba(74, 40, 20, 0.12);
+}
+
+html[data-player-skin="paprika"]:root .tab-chip-bar {
+  background: rgba(250, 243, 230, 0.92);
+  border-bottom: 1px solid rgba(107, 62, 34, 0.16);
+  backdrop-filter: none;
+}
+
+/* ── 5 · Chips — one spice-red tick per mill-click. Place chip. */
+
+html[data-player-skin="paprika"]:root[data-skin-place~="chip"] :is(
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .tab-chip,
+  .pill,
+  .tsk-day-chip,
+  .hud-chip,
+  .tdy-cat-chip,
+  .seg-pill-btn,
+  .pln-mode-chip
+) {
+  position: relative;
+  overflow: visible;
+  border: 1px solid rgba(154, 52, 18, 0.34);
+  border-radius: var(--pk-r-chip);
+  background:
+    linear-gradient(180deg, rgba(255, 250, 240, 0.7) 0 28%, transparent 52%),
+    var(--pk-grain-soft),
+    linear-gradient(180deg, #fff4e0 0 46%, #e8d4b0 100%);
+  color: var(--pk-ink);
+  font-family: var(--pk-font);
+  box-shadow:
+    inset 0 1px 0 var(--pk-shine),
+    0 3px 0 rgba(74, 40, 20, 0.16);
+  transition: transform 280ms var(--pk-ease), box-shadow 280ms ease, border-color 220ms ease;
+}
+
+/* The tick. A mill-click tally, not a drip, not a polyp, not a flame. */
+html[data-player-skin="paprika"]:root[data-skin-place~="chip"] :is(
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .tab-chip,
+  .pill,
+  .tsk-day-chip,
+  .hud-chip,
+  .tdy-cat-chip,
+  .seg-pill-btn,
+  .pln-mode-chip
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  width: 11px;
+  height: 3px;
+  border-radius: var(--pk-r-tick);
+  background: linear-gradient(118deg, var(--pk-paprika-hot), var(--pk-mill));
+  box-shadow: 1px 1px 0 rgba(154, 52, 18, 0.28);
+  transform: rotate(-28deg);
+  transform-origin: 80% 50%;
+  animation: room-paprika-tick 2.8s var(--pk-ease) infinite;
+}
+
+html[data-player-skin="paprika"]:root[data-skin-place~="chip"] :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active,
+  .pill[aria-pressed="true"],
+  .seg-pill-btn[aria-pressed="true"]
+) {
+  color: var(--pk-cream);
+  border-color: var(--pk-mill);
+  background:
+    linear-gradient(180deg, var(--pk-paprika-hot) 0 36%, var(--pk-paprika) 62%, var(--pk-mill) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 237, 213, 0.45),
+    0 3px 0 var(--pk-wood-lo);
+}
+
+html[data-player-skin="paprika"]:root[data-skin-place~="chip"] :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active
+)::after {
+  background: linear-gradient(118deg, #fff7ed, var(--pk-paprika-hot));
+  box-shadow: 0 1px 0 rgba(63, 35, 18, 0.35);
+  animation: room-paprika-tick 1.8s var(--pk-ease) infinite;
+}
+
+html[data-player-skin="paprika"]:root[data-skin-place~="chip"] .tab-chip:hover:not(.active) {
+  transform: translateY(1px);
+  border-color: var(--pk-toasted);
+}
+
+html[data-player-skin="paprika"]:root .tab-chip {
+  border-radius: var(--pk-r-chip);
+  border: 1px solid rgba(154, 52, 18, 0.2);
+  background: linear-gradient(180deg, #fffaf0, #f3e6cf);
+  color: var(--pk-ink-2);
+}
+
+html[data-player-skin="paprika"]:root .tab-chip.active,
+html[data-player-skin="paprika"]:root .tab-chip[aria-selected="true"] {
+  border-color: var(--pk-mill);
+  background: linear-gradient(180deg, var(--pk-paprika-hot), var(--pk-paprika));
+  color: var(--pk-cream);
+}
+
+/* ── 6 · Glyph — mill in side elevation. Glyphs may clip. ───── */
+
+html[data-player-skin="paprika"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .nav-app-glyph,
+  .loot-skin-avatar,
+  .wp-skin-mark
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: none;
+  transform: none;
+  color: var(--pk-cream);
+  clip-path: polygon(
+    41% 0%, 59% 0%,
+    66% 11%, 61% 15%,
+    79% 18%, 91% 22%, 91% 29%, 79% 31%, 61% 27%,
+    71% 76%,
+    86% 82%, 86% 100%, 14% 100%, 14% 82%,
+    29% 76%, 39% 15%, 34% 11%
+  );
+  background:
+    linear-gradient(180deg,
+      var(--pk-beech) 0 14%,
+      var(--pk-wood-hi) 14% 28%,
+      var(--pk-wood) 28% 74%,
+      var(--pk-cap) 74% 82%,
+      var(--pk-paprika) 82% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 240, 0.45),
+    0 4px 0 rgba(74, 40, 20, 0.35);
+  filter: none;
+}
+
+html[data-player-skin="paprika"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .loot-skin-avatar
+)::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 78%;
+  height: 8%;
+  border-radius: 1px;
+  background: var(--pk-cap);
+  box-shadow: 0 0 0 1px rgba(63, 35, 18, 0.4);
+}
+
+html[data-player-skin="paprika"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .loot-skin-avatar
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 8%;
+  bottom: -6px;
+  width: 38%;
+  height: 7px;
+  border-radius: var(--pk-r-tick);
+  background: linear-gradient(118deg, var(--pk-paprika-hot), var(--pk-mill));
+  transform: rotate(-18deg);
+  box-shadow: 10px 3px 0 -1px rgba(234, 88, 12, 0.45);
+  animation: room-paprika-settle 6.4s ease-in-out infinite;
+}
+
+html[data-player-skin="paprika"]:root :is(.launcher-tile-glyph, .launcher-card-glyph) svg {
+  filter: brightness(0.28) contrast(1.12) sepia(0.35);
+}
+
+html[data-player-skin="paprika"]:root .launcher-custom-app-emoji {
+  border-radius: var(--pk-r-knob);
+  background: linear-gradient(180deg, var(--pk-beech), var(--pk-wood));
+}
+
+/* ── 7 · Cards — mill-wood plates. Kill the flame 40% blob. ─── */
+
+html[data-player-skin="paprika"]:root :is(
+  .launcher-card,
+  .card,
+  .hub-card,
+  .pln-rail-card,
+  .evt-card,
+  .tsk-row,
+  .task-row
+) {
+  clip-path: none !important;
+  overflow: visible;
+  border: 1px solid rgba(154, 52, 18, 0.26);
+  border-top: 3px solid rgba(234, 88, 12, 0.7);
+  border-radius: var(--pk-r-card);
+  background:
+    linear-gradient(180deg, rgba(196, 160, 106, 0.35) 0 12%, transparent 26%),
+    var(--pk-grain-soft),
+    linear-gradient(176deg, #fffaf0 0 62%, #f3e6cf 100%);
+  color: var(--pk-ink);
+  box-shadow: var(--feel-3d);
+  transition: transform 280ms var(--pk-ease), box-shadow 280ms ease, border-color 220ms ease;
+}
+
+html[data-player-skin="paprika"]:root .launcher-card {
+  outline: none;
+  clip-path: none !important;
+  border-radius: var(--pk-r-card);
+}
+
+/* A mill-cap highlight, not an atelier duotone disc. */
+html[data-player-skin="paprika"]:root .launcher-card::before {
+  left: 14px;
+  right: 28px;
+  top: 8px;
+  width: auto;
+  height: 6px;
+  border-radius: var(--pk-r-tick);
+  background: linear-gradient(90deg, var(--pk-shine), rgba(196, 160, 106, 0.35));
+  opacity: 0.85;
+  box-shadow: none;
+  animation: none;
+}
+
+html[data-player-skin="paprika"]:root .launcher-card::after {
+  content: none;
+}
+
+html[data-player-skin="paprika"]:root :is(.launcher-card-name, .launcher-tile-name) {
+  color: var(--pk-ink);
+  font-family: var(--pk-font);
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+html[data-player-skin="paprika"]:root :is(.launcher-card-intention, .launcher-card-sub, .launcher-card-stats) {
+  color: var(--pk-mute);
+}
+
+html[data-player-skin="paprika"]:root .launcher-card:hover,
+html[data-player-skin="paprika"]:root .launcher-card--focused,
+html[data-player-skin="paprika"]:root .card:hover,
+html[data-player-skin="paprika"]:root .hub-card:hover {
+  transform: translateY(1px);
+  border-color: var(--pk-mill);
+  box-shadow: var(--plate-shadow-hover);
+  filter: none;
+}
+
+/* ── 8 · Primary — a mill you press, not a kiln you stoke ───── */
+
+html[data-player-skin="paprika"]:root button.primary,
+html[data-player-skin="paprika"]:root .primary,
+html[data-player-skin="paprika"]:root .agent-pane-chat .agc-send {
+  border: 1px solid var(--pk-mill);
+  border-radius: var(--pk-r-ctl);
+  background-image:
+    linear-gradient(180deg, rgba(255, 237, 213, 0.35), transparent 36%),
+    linear-gradient(180deg, var(--pk-paprika-hot) 0 36%, var(--pk-paprika) 64%, var(--pk-mill) 100%);
+  color: var(--pk-cream);
+  font-family: var(--pk-font);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 0 rgba(63, 35, 18, 0.35);
+  box-shadow: var(--feel-3d);
+  transform-origin: 50% 100%;
+  transition: transform 240ms var(--pk-ease), box-shadow 240ms ease, filter 240ms ease;
+}
+
+html[data-player-skin="paprika"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="paprika"]:root .primary:hover:not(:disabled),
+html[data-player-skin="paprika"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: saturate(1.06);
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 237, 213, 0.5),
+    0 10px 16px -10px rgba(154, 52, 18, 0.45);
+}
+
+html[data-player-skin="paprika"]:root button.primary:active:not(:disabled),
+html[data-player-skin="paprika"]:root .primary:active:not(:disabled),
+html[data-player-skin="paprika"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translateY(3px);
+  filter: brightness(0.98);
+  box-shadow: var(--feel-3d-press);
+}
+
+html[data-player-skin="paprika"]:root :is(button.secondary, .secondary, .ghost-btn) {
+  border: 1px solid rgba(154, 52, 18, 0.3);
+  border-radius: var(--pk-r-ctl);
+  background: linear-gradient(180deg, #fffaf0, #e8d4b0);
+  color: var(--pk-ink-2);
+  box-shadow: inset 0 1px 0 var(--pk-shine);
+  transition: transform 240ms var(--pk-ease);
+}
+
+html[data-player-skin="paprika"]:root :is(button.secondary, .secondary, .ghost-btn):hover:not(:disabled) {
+  transform: translateY(1px);
+  border-color: var(--pk-mill);
+}
+
+html[data-player-skin="paprika"]:root :is(button.secondary, .ghost-btn):active:not(:disabled) {
+  transform: translateY(2px);
+}
+
+/* ── 9 · Empty / input / focus ──────────────────────────────── */
+
+html[data-player-skin="paprika"]:root :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]) {
+  border: 1px solid rgba(154, 52, 18, 0.3);
+  border-bottom: 2px solid var(--pk-wood);
+  border-radius: var(--pk-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(234, 88, 12, 0.06) 0 16%, transparent 40%),
+    var(--pk-cream);
+  color: var(--pk-ink);
+  caret-color: var(--pk-paprika);
+  box-shadow: inset 0 3px 8px rgba(74, 40, 20, 0.08);
+  transition: border-color 220ms ease, box-shadow 220ms ease;
+}
+
+html[data-player-skin="paprika"]:root :is(input, textarea)::placeholder {
+  color: #b08968;
+  letter-spacing: 0.02em;
+}
+
+html[data-player-skin="paprika"]:root :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]):focus,
+html[data-player-skin="paprika"]:root .agc-input-zone:focus-within {
+  outline: none;
+  border-color: var(--pk-paprika);
+  border-bottom-color: var(--pk-mill);
+  background: #fffdf8;
+  box-shadow:
+    inset 0 3px 8px rgba(74, 40, 20, 0.06),
+    0 0 0 3px rgba(234, 88, 12, 0.28);
+}
+
+/* The mill is on the board. No one has ground yet. */
+html[data-player-skin="paprika"]:root .empty-state {
+  position: relative;
+  border: 2px dashed rgba(154, 52, 18, 0.38);
+  border-top: 3px solid rgba(196, 160, 106, 0.85);
+  border-radius: var(--pk-r-mill);
+  background:
+    radial-gradient(ellipse 36% 22% at 78% 18%, rgba(234, 88, 12, 0.12), transparent 70%),
+    var(--pk-grain-soft),
+    linear-gradient(180deg, #fffaf0 0 58%, #f3e6cf 100%);
+  color: var(--pk-mute);
+  box-shadow: inset 0 1px 0 var(--pk-shine);
+  padding: 28px 20px 24px;
+}
+
+html[data-player-skin="paprika"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 34px;
+  margin: 0 auto 10px;
+  clip-path: polygon(
+    41% 0%, 59% 0%,
+    66% 11%, 61% 15%,
+    79% 18%, 91% 22%, 91% 29%, 79% 31%, 61% 27%,
+    71% 76%,
+    86% 82%, 86% 100%, 14% 100%, 14% 82%,
+    29% 76%, 39% 15%, 34% 11%
+  );
+  background: linear-gradient(180deg, var(--pk-beech), var(--pk-wood) 70%, var(--pk-paprika));
+  animation: room-paprika-grind 8s linear infinite;
+}
+
+html[data-player-skin="paprika"]:root .empty-state-title {
+  color: var(--pk-mill);
+  font-family: var(--pk-font);
+  letter-spacing: 0.06em;
+}
+
+html[data-player-skin="paprika"]:root :is(.empty-state-body, .empty-state-hint) {
+  color: var(--pk-ink-2);
+}
+
+html[data-player-skin="paprika"]:root :focus-visible {
+  outline: 2px solid var(--pk-paprika);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(154, 52, 18, 0.2);
+}
+
+html[data-player-skin="paprika"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: rgba(154, 52, 18, 0.14);
+  background: #efe0c8;
+  background-image: none;
+  color: #b08968;
+  opacity: 1;
+  filter: saturate(0.4) brightness(1.04);
+  box-shadow: none;
+  transform: none;
+  text-shadow: none;
+}
+
+/* ── 10 · Dialogs, toast, companion — mill-wood, quiet ──────── */
+
+html[data-player-skin="paprika"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .launcher-search-panel,
+  .wp-alarm-card,
+  dialog
+) {
+  border: 1px solid var(--pk-mill);
+  border-top: 4px solid var(--pk-paprika);
+  border-radius: var(--pk-r-mill);
+  background:
+    linear-gradient(180deg, rgba(196, 160, 106, 0.32) 0 14%, transparent 30%),
+    linear-gradient(176deg, #fffaf0 0 60%, #f3e6cf 100%);
+  color: var(--pk-ink);
+  box-shadow:
+    inset 0 1px 0 var(--pk-shine),
+    0 28px 52px -24px rgba(74, 40, 20, 0.45);
+}
+
+html[data-player-skin="paprika"]:root .toast-item {
+  border: 1px solid var(--pk-mill);
+  border-radius: var(--pk-r-ctl);
+  background: linear-gradient(180deg, var(--pk-paprika-hot), var(--pk-paprika) 55%, var(--pk-mill));
+  color: var(--pk-cream);
+  box-shadow: var(--feel-3d);
+  animation: room-paprika-tick 520ms var(--pk-ease) both;
+}
+
+html[data-player-skin="paprika"]:root .agent-bubble {
+  border-radius: var(--pk-r-card);
+  background: var(--pk-cream);
+  color: var(--pk-ink);
+}
+
+html[data-player-skin="paprika"]:root .agent-msg.assistant .agent-bubble {
+  border: 1px solid rgba(154, 52, 18, 0.2);
+  background: #fffaf0;
+}
+
+html[data-player-skin="paprika"]:root .agent-msg.user .agent-bubble {
+  border: 1px solid var(--pk-mill);
+  background: linear-gradient(180deg, var(--pk-paprika-hot), var(--pk-paprika));
+  color: var(--pk-cream);
+}
+
+html[data-player-skin="paprika"]:root .companion-launcher-orb {
+  border-radius: var(--pk-r-knob);
+  background: radial-gradient(circle at 36% 28%, var(--pk-beech), var(--pk-wood) 55%, var(--pk-mill));
+  box-shadow: inset 0 1px 0 var(--pk-shine), 0 4px 10px rgba(74, 40, 20, 0.32);
+}
+
+html[data-player-skin="paprika"]:root :is(.loot-skin-card, .loot-collection-card) {
+  border-radius: var(--pk-r-card);
+  border: 1px solid rgba(154, 52, 18, 0.24);
+  background: linear-gradient(176deg, #fffaf0 0 62%, #f3e6cf 100%);
+  color: var(--pk-ink);
+}
+
+html[data-player-skin="paprika"]:root :is(
+  .modal-overlay,
+  .wf-code-modal-overlay,
+  .wp-board-overlay,
+  .rit-overlay,
+  .wp-alarm-overlay,
+  .wp-arcade-overlay
+) {
+  background:
+    radial-gradient(120% 50% at 80% 0%, rgba(234, 88, 12, 0.1) 0%, rgba(58, 26, 12, 0) 58%),
+    rgba(58, 26, 12, 0.46);
+  backdrop-filter: blur(2px);
+}
+
+/* ── 11 · Motion — mill-click, dust, grind, settle ──────────── */
+
+@keyframes room-paprika-tick {
+  0%, 100% {
+    transform: rotate(-28deg) scaleX(1);
+    opacity: 0.92;
+  }
+  12% {
+    transform: rotate(-28deg) scaleX(1.18);
+    opacity: 1;
+  }
+  22% {
+    transform: rotate(-28deg) scaleX(0.92);
+    opacity: 0.8;
+  }
+  36% {
+    transform: rotate(-28deg) scaleX(1);
+    opacity: 0.95;
+  }
+}
+
+@keyframes room-paprika-dust {
+  0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+  100% { background-position: 17px 19px, -23px 11px, 14px -25px, -10px 17px, 8px -13px; }
+}
+
+@keyframes room-paprika-grind {
+  0% { background-position: 0 0; }
+  100% { background-position: 37px 0; }
+}
+
+@keyframes room-paprika-settle {
+  0%, 100% { opacity: 0.18; filter: saturate(1); }
+  50% { opacity: 0.28; filter: saturate(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="paprika"]:root body::before,
+  html[data-player-skin="paprika"]:root body::after,
+  html[data-player-skin="paprika"]:root #main::after,
+  html[data-player-skin="paprika"]:root .empty-state::before,
+  html[data-player-skin="paprika"]:root .toast-item,
+  html[data-player-skin="paprika"]:root .launcher-card-glyph::after,
+  html[data-player-skin="paprika"]:root .launcher-tile-glyph::after,
+  html[data-player-skin="paprika"]:root .loot-skin-avatar::after,
+  html[data-player-skin="paprika"]:root[data-skin-place~="chip"] :is(
+    .loot-profile-chip,
+    .app-subnav-pill,
+    .tab-chip,
+    .pill,
+    .tsk-day-chip,
+    .hud-chip,
+    .tdy-cat-chip,
+    .seg-pill-btn,
+    .pln-mode-chip
+  )::after {
+    animation: none !important;
+  }
+
+  html[data-player-skin="paprika"]:root .launcher-card:hover,
+  html[data-player-skin="paprika"]:root button.primary:hover:not(:disabled),
+  html[data-player-skin="paprika"]:root button.primary:active:not(:disabled),
+  html[data-player-skin="paprika"]:root .tab-chip:hover {
+    transform: none !important;
+  }
+
+  html[data-player-skin="paprika"]:root * {
+    transition-duration: 0.01ms !important;
+  }
+}

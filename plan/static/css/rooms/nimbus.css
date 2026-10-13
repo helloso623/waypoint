@@ -1,0 +1,768 @@
+/* ═══════════════════════════════════════════════════════════════
+   NIMBUS WALK — soft cloud banding across Today.
+
+   The object: walking inside a stratus. Not looking up at weather
+   (Storm's anvil), not fog before a waypost (Mist Walker), not a
+   whiteout of falling grit (Blizzard Post), not contact silver.
+   You are in the layer. The cloud is stacked horizontal shelves
+   of vapor. Each shelf has a pale body (#f1f5f9) and a cyan
+   underside (#7dd3fc) where sky leaks through the floor of the
+   deck you are on. You walk from band to band.
+
+   Critique: the object holds only while the bands stay shelves —
+   long, even, slightly undercut, walking-height. It fails the
+   moment the air becomes a veil, a speckle, or a polish. Place
+   is page + pulse because Today is the walk and Pulse is the
+   breath of the layer, not HUD chrome. Paleness is the risk:
+   #f1f5f9 will erase ink unless decks sit more opaque than the
+   air. Frost here is rime on the underside of a shelf, not ice
+   hex, not glacier glass. Waves are stacked strata, not pond
+   rings from a corner.
+
+   Architecture:
+   - Signature cut: the stratus shelf. Long crown, tight height,
+     a wind-sheared right foot. Pixel radii, never 42%/48%.
+   - Signature glyph: three stacked shelves. Not the frost hex,
+     not Mist's waypost, not Silver's ⊙.
+   - Signature motion: the walk (bands drift) and the breath
+     (a shelf lifts). Nothing nucleates, nothing flashes.
+   - Place page: #main and Today wear the bands.
+   - Place pulse: the pulse row is one breathing shelf.
+   - HUD is only the ceiling you are under. Quiet.
+
+   Loot: colorA #f1f5f9 · colorB #7dd3fc · effect frost ·
+   pattern waves · place page,pulse.
+   Selectors carry :root to outrank the frost-family stencil.
+   Never clip #main or .launcher-card.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — vapor body, cyan floor, slate ink ─────────── */
+
+html[data-player-skin="nimbus"]:root {
+  color-scheme: light;
+
+  --nb-air: #e8eef4;
+  --nb-air-2: #d7e3ee;
+  --nb-deck: #f1f5f9;
+  --nb-deck-2: #e2ebf3;
+  --nb-well: #c5d4e2;
+  --nb-sky: #7dd3fc;
+  --nb-sky-hot: #bae6fd;
+  --nb-sky-deep: #38bdf8;
+  --nb-rime: #e0f2fe;
+  --nb-ink: #1a3344;
+  --nb-ink-2: #2c4a5c;
+  --nb-mute: #5a7386;
+  --nb-hair: rgba(56, 189, 248, 0.28);
+  --nb-hair-2: rgba(26, 51, 68, 0.16);
+
+  --bg-shell: #d7e3ee;
+  --bg-content: var(--nb-air);
+  --bg-card: var(--nb-deck);
+  --bg-card-hover: #f8fafc;
+  --ink-primary: var(--nb-ink);
+  --ink-secondary: var(--nb-ink-2);
+  --ink-muted: var(--nb-mute);
+  --border: rgba(56, 189, 248, 0.28);
+  --gridline: rgba(26, 51, 68, 0.1);
+  --accent: var(--nb-sky);
+  --ws-accent: var(--nb-sky);
+  --accent-ink: var(--nb-ink);
+
+  --skin-a: #f1f5f9;
+  --skin-b: #7dd3fc;
+  --at-a: #f1f5f9;
+  --at-b: #7dd3fc;
+  --feel-a: #f1f5f9;
+  --feel-b: #7dd3fc;
+  --feel-accent: #7dd3fc;
+  --feel-ground: #d7e3ee;
+  --feel-paper: #f1f5f9;
+  --feel-ink: #1a3344;
+
+  --at-plate: var(--nb-deck);
+  --at-plate-2: var(--nb-deck-2);
+  --at-well: var(--nb-well);
+  --at-ink: var(--nb-ink);
+  --at-ink-2: var(--nb-ink-2);
+  --at-ink-3: var(--nb-mute);
+  --at-hair: var(--nb-hair-2);
+  --at-hair-2: var(--nb-hair);
+  --at-hair-a: rgba(125, 211, 252, 0.55);
+  --at-tint: rgba(241, 245, 249, 0.7);
+  --at-tint-b: rgba(125, 211, 252, 0.22);
+  --at-focus: 0 0 0 3px rgba(125, 211, 252, 0.45);
+  --at-inset: inset 0 1px 0 rgba(255, 255, 255, 0.86);
+  --at-rise: 0 12px 22px -14px rgba(26, 51, 68, 0.28);
+  --at-rise-soft: 0 8px 16px -12px rgba(26, 51, 68, 0.2);
+
+  /* Stratus shelf: long crown, tight height, wind-sheared right foot. */
+  --nb-r-shelf: 22px 28px 16px 20px / 8px 10px 14px 11px;
+  --nb-r-card: 18px 24px 14px 16px / 7px 9px 12px 9px;
+  --nb-r-ctl: 14px 18px 10px 12px / 6px 7px 9px 7px;
+  --nb-r-chip: 12px 16px 8px 10px / 5px 6px 8px 6px;
+  --nb-r-cell: 10px 14px 8px 9px / 4px 6px 8px 5px;
+  --at-r-plate: var(--nb-r-shelf);
+  --at-r-card: var(--nb-r-card);
+  --at-r-ctl: var(--nb-r-ctl);
+  --at-r-chip: var(--nb-r-chip);
+  --at-r-cell: var(--nb-r-cell);
+
+  --nb-font: "Avenir Next", "Nunito", "Segoe UI", system-ui, sans-serif;
+  --at-font-display: var(--nb-font);
+
+  /* Stacked strata — loot pattern `waves` rewritten as shelves. */
+  --nb-bands:
+    repeating-linear-gradient(
+      180deg,
+      rgba(241, 245, 249, 0.72) 0 10px,
+      rgba(125, 211, 252, 0.22) 10px 12px,
+      rgba(226, 235, 243, 0.5) 12px 22px,
+      rgba(56, 189, 248, 0.12) 22px 24px
+    );
+  --nb-bands-soft:
+    repeating-linear-gradient(
+      180deg,
+      rgba(241, 245, 249, 0.4) 0 14px,
+      rgba(125, 211, 252, 0.12) 14px 16px,
+      transparent 16px 28px
+    );
+
+  /* Soft deck, cyan rime on the foot. Not frost-family ice step. */
+  --feel-3d:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -10px 16px rgba(125, 211, 252, 0.28),
+    0 10px 18px -12px rgba(26, 51, 68, 0.24);
+  --feel-3d-press:
+    inset 0 8px 12px rgba(125, 211, 252, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 2px 6px rgba(26, 51, 68, 0.18);
+  --feel-grain-opacity: 0.2;
+  --feel-grain-blend: multiply;
+  --feel-grain: var(--nb-bands-soft);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 2px solid rgba(125, 211, 252, 0.45);
+  --feel-icon:
+    saturate(0.92) brightness(1.04) contrast(1.06)
+    drop-shadow(0 1px 0 rgba(255, 255, 255, 0.7));
+  --feel-title-case: none;
+  --feel-title-tracking: 0.04em;
+  --plate-shadow: var(--feel-3d);
+  --plate-shadow-hover:
+    inset 0 1px 0 #fff,
+    inset 0 -14px 18px rgba(125, 211, 252, 0.36),
+    0 14px 22px -12px rgba(26, 51, 68, 0.28);
+}
+
+/* Kill frost-family glacier: no hex clip, no ice scratch, no blur. */
+html[data-player-skin="nimbus"]:root .app-shell::before {
+  content: none;
+  background: none;
+  animation: none;
+}
+
+html[data-player-skin="nimbus"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar
+) {
+  clip-path: none !important;
+}
+
+/* ── 2 · Body — inside the layer, not a fog veil ────────────── */
+
+html[data-player-skin="nimbus"]:root body {
+  background-color: var(--nb-air) !important;
+  background-image:
+    linear-gradient(180deg, rgba(241, 245, 249, 0.55) 0 18%, transparent 38%),
+    linear-gradient(180deg, transparent 62%, rgba(125, 211, 252, 0.28) 100%),
+    var(--nb-bands),
+    linear-gradient(180deg, #eef4f9 0%, #d9e6f0 58%, #cfe4f4 100%) !important;
+  background-attachment: fixed !important;
+  color: var(--nb-ink);
+}
+
+/* Soft strata drift. Multiply, low opacity — text stays in the cloud. */
+html[data-player-skin="nimbus"]:root body::after,
+html[data-player-skin="nimbus"]:root[data-skin-effect="frost"] body::after,
+html[data-player-skin="nimbus"]:root[data-skin-pattern="waves"] body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+  background: var(--nb-bands);
+  animation: room-nimbus-drift 22s ease-in-out infinite alternate;
+}
+
+html[data-player-skin="nimbus"]:root[data-skin-pattern="waves"] body {
+  background-image:
+    linear-gradient(180deg, rgba(241, 245, 249, 0.55) 0 18%, transparent 38%),
+    linear-gradient(180deg, transparent 62%, rgba(125, 211, 252, 0.28) 100%),
+    var(--nb-bands),
+    linear-gradient(180deg, #eef4f9 0%, #d9e6f0 58%, #cfe4f4 100%) !important;
+}
+
+/* ── 3 · Page — the walk lives on #main ─────────────────────── */
+
+html[data-player-skin="nimbus"]:root #main {
+  clip-path: none !important;
+  isolation: isolate;
+  overflow: visible;
+  background: rgba(241, 245, 249, 0.46);
+  border-inline: 1px solid rgba(125, 211, 252, 0.18);
+}
+
+html[data-player-skin="nimbus"]:root[data-skin-place~="page"] #main,
+html[data-player-skin="nimbus"]:root[data-skin-pattern="waves"] #main {
+  background:
+    var(--nb-bands),
+    linear-gradient(180deg, rgba(241, 245, 249, 0.62) 0 28px, rgba(125, 211, 252, 0.14) 96px, rgba(232, 238, 244, 0.72) 100%) !important;
+  box-shadow:
+    inset 0 14px 28px -18px rgba(255, 255, 255, 0.8),
+    inset 0 -22px 32px -20px rgba(125, 211, 252, 0.28);
+}
+
+html[data-player-skin="nimbus"]:root #main::before,
+html[data-player-skin="nimbus"]:root #main::after {
+  clip-path: none !important;
+}
+
+html[data-player-skin="nimbus"]:root[data-skin-place~="page"] #main::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: auto 8% 10px 8%;
+  height: 7px;
+  z-index: 0;
+  border-radius: 8px 12px 6px 7px / 3px 4px 6px 4px;
+  background: linear-gradient(90deg, transparent, var(--nb-sky) 18%, var(--nb-rime) 50%, var(--nb-sky) 82%, transparent);
+  opacity: 0.55;
+  animation: room-nimbus-rime 8s ease-in-out infinite;
+}
+
+/* ── 4 · HUD — the ceiling you walk under, not the object ───── */
+
+html[data-player-skin="nimbus"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  clip-path: none;
+  border-image: none;
+  border-bottom: 0;
+  border-radius: 0 0 26px 22px / 0 0 10px 8px;
+  background:
+    linear-gradient(180deg, #f8fafc 0 62%, #e2eef6 78%, #7dd3fc 100%);
+  color: var(--nb-ink);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 8px 18px -12px rgba(26, 51, 68, 0.22);
+  backdrop-filter: none;
+}
+
+html[data-player-skin="nimbus"]:root .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 0;
+  height: 3px;
+  z-index: 2;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(90deg, var(--nb-sky-hot), var(--nb-sky) 40%, var(--nb-rime) 70%, var(--nb-sky));
+  box-shadow: 0 0 10px rgba(125, 211, 252, 0.35);
+}
+
+html[data-player-skin="nimbus"]:root .top-hud > * {
+  position: relative;
+  z-index: 3;
+}
+
+html[data-player-skin="nimbus"]:root :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--nb-ink);
+  color: var(--nb-ink);
+  font-family: var(--nb-font);
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 0 #fff;
+}
+
+html[data-player-skin="nimbus"]:root .hud-app-name::before {
+  content: "≋  ";
+  color: var(--nb-sky-deep);
+  font-weight: 700;
+  text-shadow: 0 1px 0 #fff;
+}
+
+html[data-player-skin="nimbus"]:root .hud-intention {
+  color: var(--nb-ink-2);
+}
+
+html[data-player-skin="nimbus"]:root .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-chip,
+  .hud-game-chip,
+  .hud-model-chip--status,
+  .hud-agent-chip,
+  .loot-profile-chip
+) {
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: var(--nb-r-chip);
+  background: rgba(241, 245, 249, 0.86);
+  color: var(--nb-ink);
+  box-shadow: inset 0 1px 0 #fff;
+}
+
+html[data-player-skin="nimbus"]:root .top-hud :is(.hud-icon-btn, .hud-glyph-btn):hover:not(:disabled) {
+  border-color: var(--nb-sky);
+  background: #fff;
+  box-shadow: 0 0 12px rgba(125, 211, 252, 0.28);
+}
+
+html[data-player-skin="nimbus"]:root .tab-chip-bar {
+  background: rgba(232, 238, 244, 0.94);
+  border-bottom: 1px solid rgba(125, 211, 252, 0.22);
+}
+
+html[data-player-skin="nimbus"]:root :is(
+  .tab-chip,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .tsk-day-chip,
+  .seg-pill-btn
+) {
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-radius: var(--nb-r-chip);
+  background: rgba(241, 245, 249, 0.88);
+  color: var(--nb-ink-2);
+  box-shadow: inset 0 1px 0 #fff;
+}
+
+html[data-player-skin="nimbus"]:root :is(.tab-chip.active, .app-subnav-pill.active, .pill.active, .pill[aria-pressed="true"]) {
+  border-color: var(--nb-sky);
+  background: linear-gradient(180deg, #f8fafc 0 58%, var(--nb-sky-hot) 100%);
+  color: var(--nb-ink);
+  font-weight: 650;
+  box-shadow: inset 0 1px 0 #fff, inset 0 -6px 10px rgba(125, 211, 252, 0.28);
+}
+
+/* ── 5 · Glyph — three stacked shelves ──────────────────────── */
+
+html[data-player-skin="nimbus"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar,
+  .nav-app-glyph
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  clip-path: none !important;
+  border: 1px solid rgba(125, 211, 252, 0.4);
+  border-radius: var(--nb-r-ctl);
+  color: var(--nb-ink);
+  background:
+    linear-gradient(180deg, #f8fafc 0 34%, #e2eef6 34% 68%, var(--nb-sky) 68% 100%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -5px 8px rgba(56, 189, 248, 0.28);
+}
+
+html[data-player-skin="nimbus"]:root :is(.launcher-tile-glyph, .launcher-card-glyph, .loot-skin-avatar)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  top: 18%;
+  height: 58%;
+  border-radius: 7px 9px 5px 6px / 3px 4px 5px 3px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0 28%, transparent 28%),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 5px,
+      rgba(125, 211, 252, 0.55) 5px 6px,
+      transparent 6px 11px
+    );
+  box-shadow: 0 6px 0 -2px rgba(125, 211, 252, 0.35);
+}
+
+/* ── 6 · Cards — decks in the air, never clipped ────────────── */
+
+html[data-player-skin="nimbus"]:root .launcher-card {
+  position: relative;
+  isolation: isolate;
+  clip-path: none !important;
+  overflow: visible;
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  border-radius: var(--nb-r-card);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0 36%, transparent 70%),
+    rgba(241, 245, 249, 0.92);
+  color: var(--nb-ink);
+  box-shadow: var(--feel-3d);
+  transform: none;
+  backdrop-filter: none;
+}
+
+html[data-player-skin="nimbus"]:root .launcher-card::before {
+  width: 28px;
+  height: 4px;
+  border-radius: 6px 8px 3px 4px / 2px 3px 4px 2px;
+  background: linear-gradient(90deg, var(--nb-rime), var(--nb-sky));
+  box-shadow: 0 5px 0 -1px rgba(125, 211, 252, 0.35);
+}
+
+html[data-player-skin="nimbus"]:root .launcher-card:hover,
+html[data-player-skin="nimbus"]:root .launcher-card--focused {
+  border-color: var(--nb-sky);
+  transform: none;
+  box-shadow: var(--plate-shadow-hover);
+}
+
+html[data-player-skin="nimbus"]:root :is(.launcher-card-name, .launcher-tile-name, .launcher-card-intention) {
+  color: var(--nb-ink);
+}
+
+html[data-player-skin="nimbus"]:root :is(
+  .card,
+  .hub-card,
+  .pln-rail-card,
+  .evt-card,
+  .tsk-row,
+  .hub-glance-item,
+  .page-intent
+) {
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: var(--nb-r-card);
+  background: rgba(241, 245, 249, 0.9);
+  color: var(--nb-ink);
+  box-shadow: inset 0 1px 0 #fff, inset 0 -8px 12px rgba(125, 211, 252, 0.16);
+  backdrop-filter: none;
+}
+
+/* ── 7 · Buttons ────────────────────────────────────────────── */
+
+html[data-player-skin="nimbus"]:root button.primary,
+html[data-player-skin="nimbus"]:root .agent-pane-chat .agc-send {
+  border: 1px solid var(--nb-sky);
+  border-radius: var(--nb-r-ctl);
+  background: linear-gradient(180deg, #f8fafc 0 46%, var(--nb-sky-hot) 46% 72%, var(--nb-sky) 100%);
+  color: var(--nb-ink);
+  font-weight: 720;
+  letter-spacing: 0.03em;
+  text-shadow: 0 1px 0 #fff;
+  box-shadow: var(--feel-3d);
+}
+
+html[data-player-skin="nimbus"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="nimbus"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.04);
+  animation: room-nimbus-lift 0.8s ease-out 1;
+}
+
+html[data-player-skin="nimbus"]:root button.primary:active:not(:disabled),
+html[data-player-skin="nimbus"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: var(--feel-3d-press);
+  filter: none;
+}
+
+html[data-player-skin="nimbus"]:root :is(button.secondary, .ghost-btn) {
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: var(--nb-r-ctl);
+  background: rgba(241, 245, 249, 0.88);
+  color: var(--nb-ink-2);
+}
+
+html[data-player-skin="nimbus"]:root #quick-capture-fab.quick-capture-fab {
+  background: linear-gradient(180deg, #f8fafc, var(--nb-sky)) !important;
+  color: var(--nb-ink) !important;
+  border-color: var(--nb-sky) !important;
+  border-radius: var(--nb-r-ctl) !important;
+}
+
+/* ── 8 · Empty / input / focus ──────────────────────────────── */
+
+html[data-player-skin="nimbus"]:root .empty-state {
+  position: relative;
+  border: 1px dashed rgba(56, 189, 248, 0.4);
+  border-radius: var(--nb-r-shelf);
+  background:
+    var(--nb-bands-soft),
+    rgba(241, 245, 249, 0.78);
+  color: var(--nb-ink-2);
+  box-shadow: inset 0 1px 0 #fff, inset 0 -12px 18px rgba(125, 211, 252, 0.18);
+}
+
+html[data-player-skin="nimbus"]:root .empty-state::before {
+  content: "≋";
+  display: block;
+  margin-bottom: 8px;
+  color: var(--nb-sky-deep);
+  font-size: 22px;
+  letter-spacing: 0.18em;
+  line-height: 0.9;
+  text-shadow: 0 1px 0 #fff;
+}
+
+html[data-player-skin="nimbus"]:root .empty-state-title {
+  color: var(--nb-ink);
+}
+
+html[data-player-skin="nimbus"]:root :is(input, textarea, select, .agc-input-zone) {
+  border: 1px solid rgba(56, 189, 248, 0.34);
+  border-radius: var(--nb-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(197, 212, 226, 0.45), rgba(241, 245, 249, 0.92));
+  color: var(--nb-ink);
+  caret-color: var(--nb-sky-deep);
+  box-shadow: inset 0 2px 6px rgba(26, 51, 68, 0.1);
+}
+
+html[data-player-skin="nimbus"]:root :is(input, textarea)::placeholder {
+  color: var(--nb-mute);
+}
+
+html[data-player-skin="nimbus"]:root :is(input, textarea, select):focus,
+html[data-player-skin="nimbus"]:root .agc-input-zone:focus-within {
+  border-color: var(--nb-sky);
+  outline: none;
+  box-shadow:
+    inset 0 2px 6px rgba(26, 51, 68, 0.1),
+    0 0 0 3px rgba(125, 211, 252, 0.4);
+}
+
+html[data-player-skin="nimbus"]:root :focus-visible {
+  outline: 2px solid var(--nb-sky-deep);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(125, 211, 252, 0.28);
+}
+
+html[data-player-skin="nimbus"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  dialog
+) {
+  border: 1px solid rgba(56, 189, 248, 0.34);
+  border-radius: var(--nb-r-shelf);
+  background:
+    var(--nb-bands-soft),
+    #f1f5f9;
+  color: var(--nb-ink);
+  box-shadow: inset 0 1px 0 #fff, 0 26px 52px rgba(26, 51, 68, 0.28);
+}
+
+html[data-player-skin="nimbus"]:root .toast-item {
+  border: 1px solid var(--nb-sky);
+  border-radius: var(--nb-r-chip);
+  background: linear-gradient(180deg, #f8fafc, var(--nb-sky-hot));
+  color: var(--nb-ink);
+}
+
+html[data-player-skin="nimbus"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: rgba(90, 115, 134, 0.22);
+  background: #d7e3ee;
+  color: #7a8fa0;
+  opacity: 0.58;
+  box-shadow: none;
+  animation: none !important;
+}
+
+html[data-player-skin="nimbus"]:root ::selection {
+  background: color-mix(in srgb, var(--nb-sky) 46%, #fff);
+  color: var(--nb-ink);
+}
+
+/* ── 9 · Pulse — one breathing shelf ────────────────────────── */
+
+html[data-player-skin="nimbus"]:root[data-skin-place~="pulse"] :is(
+  .tdy-pulse,
+  .pls-card,
+  .pls-form,
+  .pln-pulse-compact
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid rgba(125, 211, 252, 0.36);
+  border-radius: var(--nb-r-shelf);
+  background:
+    var(--nb-bands),
+    linear-gradient(180deg, rgba(248, 250, 252, 0.88), rgba(125, 211, 252, 0.22));
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -10px 16px rgba(125, 211, 252, 0.28),
+    0 10px 20px -12px rgba(26, 51, 68, 0.22);
+}
+
+html[data-player-skin="nimbus"]:root[data-skin-place~="pulse"] .pls-card::after,
+html[data-player-skin="nimbus"]:root[data-skin-place~="pulse"] .tdy-pulse::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 4px;
+  height: 5px;
+  z-index: 2;
+  border-radius: 6px 8px 4px 5px / 2px 3px 4px 2px;
+  background: linear-gradient(90deg, transparent, var(--nb-sky), var(--nb-rime), var(--nb-sky), transparent);
+  animation: room-nimbus-rime 6.4s ease-in-out infinite;
+}
+
+html[data-player-skin="nimbus"]:root[data-skin-place~="pulse"] .pls-h-btn {
+  border: 1px solid rgba(125, 211, 252, 0.4);
+  border-radius: var(--nb-r-chip);
+  color: var(--nb-ink);
+  font-weight: 700;
+  background: linear-gradient(180deg, #f8fafc 0 52%, var(--nb-sky-hot) 100%);
+  box-shadow: inset 0 1px 0 #fff, inset 0 -5px 8px rgba(125, 211, 252, 0.28);
+  animation: room-nimbus-lift 5.6s ease-in-out infinite;
+}
+
+html[data-player-skin="nimbus"]:root[data-skin-place~="pulse"] .pls-h-btn:nth-child(odd) {
+  animation-delay: -1.8s;
+}
+
+html[data-player-skin="nimbus"]:root[data-skin-place~="pulse"] .pls-h-btn:nth-child(3n) {
+  animation-delay: -3.2s;
+}
+
+html[data-player-skin="nimbus"]:root[data-skin-place~="pulse"] .pls-h-btn.pls-selected {
+  border-color: var(--nb-sky-deep);
+  background: linear-gradient(180deg, var(--nb-rime), var(--nb-sky));
+  color: var(--nb-ink);
+  box-shadow: inset 0 1px 0 #fff, 0 0 12px rgba(125, 211, 252, 0.4);
+}
+
+html[data-player-skin="nimbus"]:root[data-skin-place~="pulse"] .pls-e-btn {
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: var(--nb-r-chip);
+  background: rgba(241, 245, 249, 0.9);
+  color: var(--nb-ink-2);
+}
+
+html[data-player-skin="nimbus"]:root[data-skin-place~="pulse"] .pls-e-btn.pls-selected {
+  border-color: var(--nb-sky);
+  background: var(--nb-sky-hot);
+  color: var(--nb-ink);
+}
+
+html[data-player-skin="nimbus"]:root[data-skin-place~="pulse"] .pls-dot {
+  width: 9px;
+  height: 6px;
+  border-radius: 5px 7px 3px 4px / 2px 3px 4px 2px;
+  background: var(--nb-well);
+}
+
+html[data-player-skin="nimbus"]:root[data-skin-place~="pulse"] .pls-dot-filled {
+  background: linear-gradient(180deg, #fff, var(--nb-sky));
+  box-shadow: 0 0 8px rgba(125, 211, 252, 0.5);
+  animation: room-nimbus-lift 2.8s ease-in-out infinite;
+}
+
+html[data-player-skin="nimbus"]:root[data-skin-place~="pulse"] .pls-note {
+  border-radius: var(--nb-r-ctl);
+  background: rgba(241, 245, 249, 0.92);
+  border-color: rgba(56, 189, 248, 0.3);
+  caret-color: var(--nb-sky-deep);
+  color: var(--nb-ink);
+}
+
+html[data-player-skin="nimbus"]:root[data-skin-place~="pulse"] .pls-label {
+  color: var(--nb-ink-2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+/* ── 10 · Today — the walk through successive shelves ───────── */
+
+html[data-player-skin="nimbus"]:root[data-app-tab="Today"][data-skin-place~="page"] #main {
+  clip-path: none !important;
+  background:
+    var(--nb-bands),
+    linear-gradient(180deg, rgba(248, 250, 252, 0.55), rgba(125, 211, 252, 0.16) 100%) !important;
+}
+
+html[data-player-skin="nimbus"]:root[data-app-tab="Today"] .tdy-hour-row:nth-child(odd) .tdy-hour-cell {
+  background: rgba(241, 245, 249, 0.86);
+}
+
+html[data-player-skin="nimbus"]:root[data-app-tab="Today"] .tdy-hour-row:nth-child(even) .tdy-hour-cell {
+  background: rgba(186, 230, 253, 0.28);
+}
+
+html[data-player-skin="nimbus"]:root[data-app-tab="Today"] :is(.tdy-hour-cell, .cal-hour-cell) {
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-radius: var(--nb-r-cell);
+  color: var(--nb-ink);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+html[data-player-skin="nimbus"]:root[data-app-tab="Today"] .tdy-hour-time {
+  color: var(--nb-ink-2);
+}
+
+html[data-player-skin="nimbus"]:root[data-skin-place~="pulse"] .tdy-hour-painted,
+html[data-player-skin="nimbus"]:root[data-app-tab="Today"] .tdy-hour-painted {
+  border-color: var(--nb-sky);
+  background:
+    linear-gradient(180deg, #f8fafc 0 54%, var(--nb-sky-hot) 54% 78%, var(--nb-sky) 100%);
+  color: var(--nb-ink);
+  box-shadow: inset 0 1px 0 #fff, inset 0 -8px 12px rgba(56, 189, 248, 0.28);
+}
+
+html[data-player-skin="nimbus"]:root[data-app-tab="Today"] .tdy-now-marker {
+  background: var(--nb-sky);
+  box-shadow: 0 0 10px rgba(125, 211, 252, 0.45);
+}
+
+html[data-player-skin="nimbus"]:root .companion-launcher-orb {
+  border-radius: var(--nb-r-shelf);
+  background: linear-gradient(180deg, #f8fafc 0 46%, var(--nb-sky) 100%);
+  box-shadow: inset 0 1px 0 #fff, 0 0 12px rgba(125, 211, 252, 0.32);
+}
+
+/* ── 11 · Motion — walk, breath, rime ───────────────────────── */
+
+@keyframes room-nimbus-drift {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 24px; }
+}
+
+@keyframes room-nimbus-lift {
+  0%, 100% { transform: translateY(0); filter: brightness(1); }
+  50% { transform: translateY(-2px); filter: brightness(1.04); }
+}
+
+@keyframes room-nimbus-rime {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.85; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="nimbus"]:root *,
+  html[data-player-skin="nimbus"]:root *::before,
+  html[data-player-skin="nimbus"]:root *::after {
+    animation: none !important;
+  }
+}

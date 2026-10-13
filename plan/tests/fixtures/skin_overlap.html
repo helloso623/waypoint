@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Skin overlap fixture</title>
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/world-skins.css">
+  <link rel="stylesheet" href="/css/napkin_remaining.css">
+  <link rel="stylesheet" href="/css/napkin_depth.css">
+  <link rel="stylesheet" href="/css/napkin_issues.css">
+  <link rel="stylesheet" href="/css/atelier.css">
+  <link rel="stylesheet" href="/css/skin-feels.css">
+  <link rel="stylesheet" href="/css/parallel_atelier.css">
+  <link rel="stylesheet" href="/css/atelier-home-pass.css">
+  <link rel="stylesheet" href="/css/atelier-pass.css">
+  <link rel="stylesheet" href="/css/skin-pass.css">
+  <link rel="stylesheet" href="/css/skin-intent.css">
+  <link rel="stylesheet" href="/css/skin-rooms.css">
+  <link rel="stylesheet" href="/css/skin-fit.css">
+  <link rel="stylesheet" href="/css/skin-icons.css">
+  <link rel="stylesheet" href="/css/skin-spectacle.css">
+  <style>
+    html, body { min-height: 100%; }
+    #main { min-height: 520px; padding: 24px; }
+    .page { display: none; }
+    html[data-app-tab="Home"] #page-home,
+    html[data-app-tab="Today"] #page-today,
+    html[data-app-tab="Tasks"] #page-tasks { display: block; }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; align-items: stretch; }
+    .launcher-card { width: 220px; min-height: 240px; }
+    .card, .empty-state { min-width: 200px; max-width: 260px; }
+    .tdy-hour-cell { min-width: 160px; min-height: 72px; padding: 10px 12px; }
+    .tsk-row { min-width: 280px; padding: 12px 14px; }
+  </style>
+</head>
+<body>
+  <header class="top-hud">
+    <button type="button" class="hud-glyph-btn hud-brand-jewel">◈</button>
+    <div class="hud-title-block">
+      <span class="hud-app-name">Waypoint</span>
+      <span class="hud-intention">Keep the next hour honest</span>
+    </div>
+    <button type="button" class="hud-icon-btn">Go</button>
+    <span class="hud-status-pill">ready</span>
+    <button type="button" class="loot-profile-chip" data-loot-profile>
+      <span class="loot-profile-glyph" aria-hidden="true">✦</span>
+      <span class="loot-profile-copy">
+        <strong class="loot-profile-name">skin</strong>
+        <small>equipped</small>
+      </span>
+    </button>
+  </header>
+  <div class="tab-chip-bar">
+    <button class="tab-chip active">Home</button>
+    <button class="tab-chip">Today</button>
+    <button class="tab-chip">Tasks</button>
+  </div>
+  <main id="main">
+    <section id="page-home" class="page">
+      <div class="row">
+        <article class="launcher-card">
+          <div class="launcher-card-glyph">✦</div>
+          <div class="launcher-card-main">
+            <div class="launcher-card-name">Today</div>
+            <div class="launcher-card-intention" style="max-height:none;opacity:1;overflow:visible">Keep the next hour honest.</div>
+          </div>
+        </article>
+        <article class="card">
+          <h3>Inbox</h3>
+          <p>Three notes waiting in the tray.</p>
+          <button class="primary" type="button">Open</button>
+          <button class="secondary" type="button">Later</button>
+        </article>
+        <div class="empty-state">
+          <div class="empty-state-title">Empty</div>
+          <div class="empty-state-body">Nothing queued for this page.</div>
+        </div>
+      </div>
+    </section>
+    <section id="page-today" class="page">
+      <div class="row">
+        <div class="tdy-hour-cell">
+          <div class="tdy-hour-time">09:00</div>
+          <div class="tdy-hour-body">Walk the block once.</div>
+        </div>
+        <div class="tdy-hour-cell">
+          <div class="tdy-hour-time">10:00</div>
+          <div class="tdy-hour-body">Write the next note.</div>
+        </div>
+      </div>
+    </section>
+    <section id="page-tasks" class="page">
+      <div class="tsk-row">
+        <div class="tsk-title">Ship the overlap test</div>
+        <p>Type sits on a plate. Nothing paints through it.</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

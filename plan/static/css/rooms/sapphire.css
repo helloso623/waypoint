@@ -1,0 +1,679 @@
+/* ── sapphire · Sapphire Signal — faceted blue lamp in a stone lamp house ──
+   Cut gem + radio reach, not Cobalt's enamel relay, not Satellite's dish ping,
+   not Quartz's crystal on charcoal. One cabochon in a dark metal bezel, one
+   caustic, no rainbow. Photograph: /img/skins/sapphire.png
+   Loot: colorA #60a5fa, colorB #1e3a8a, effect signal.
+   HUD is the lamp house; companion is the rotating beam (static if reduced-motion).
+   Never clip-path #main or .launcher-card. No 42%/48% radii.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html[data-player-skin="sapphire"] {
+  color-scheme: dark;
+
+  --sph-housing: #0a0f18;
+  --sph-stone: #111827;
+  --sph-stone-2: #1a2332;
+  --sph-stone-3: #243044;
+  --sph-bezel: #3d4f63;
+  --sph-bezel-lit: #5a6d82;
+  --sph-ink: #e8eef7;
+  --sph-ink-2: #a8b8cc;
+  --sph-ink-3: #6b7d94;
+  --sph-sky: var(--skin-a, #60a5fa);
+  --sph-deep: var(--skin-b, #1e3a8a);
+  --sph-caustic: #93c5fd;
+  --sph-lens-hot: #dbeafe;
+
+  --bg-shell: var(--sph-housing);
+  --bg-content: var(--sph-stone);
+  --bg-card: var(--sph-stone-2);
+  --bg-card-hover: color-mix(in srgb, var(--sph-stone-2) 86%, var(--sph-sky) 14%);
+  --ink-primary: var(--sph-ink);
+  --ink-secondary: var(--sph-ink-2);
+  --ink-muted: var(--sph-ink-3);
+  --border: color-mix(in srgb, var(--sph-bezel-lit) 55%, transparent);
+  --accent: var(--sph-sky);
+  --ws-accent: var(--sph-sky);
+  --accent-ink: #071225;
+
+  --skin-a: #60a5fa;
+  --skin-b: #1e3a8a;
+  --at-a: #60a5fa;
+  --at-b: #1e3a8a;
+  --feel-a: #60a5fa;
+  --feel-b: #1e3a8a;
+  --feel-ground: var(--sph-housing);
+  --feel-paper: var(--sph-stone-2);
+  --feel-ink: var(--sph-ink);
+  --feel-accent: var(--sph-sky);
+
+  --at-plate: var(--sph-stone-2);
+  --at-plate-2: var(--sph-stone-3);
+  --at-well: #070b12;
+  --at-ink: var(--sph-ink);
+  --at-ink-2: var(--sph-ink-2);
+  --at-ink-3: var(--sph-ink-3);
+  --at-hair: color-mix(in srgb, var(--sph-bezel-lit) 35%, transparent);
+  --at-hair-2: color-mix(in srgb, var(--sph-sky) 28%, transparent);
+  --at-hair-a: color-mix(in srgb, var(--sph-sky) 45%, transparent);
+  --at-focus: 0 0 0 4px color-mix(in srgb, var(--sph-sky) 22%, transparent);
+
+  /* Lantern-cap radii — wider at the lamp mouth, unique to this room */
+  --sph-r-plate: 10px 20px 8px 6px;
+  --sph-r-card: 8px 16px 7px 5px;
+  --sph-r-ctl: 6px 12px 5px 4px;
+  --sph-r-chip: 5px 11px 4px 3px;
+  --sph-r-cell: 4px 9px 3px 3px;
+  --at-r-plate: var(--sph-r-plate);
+  --at-r-card: var(--sph-r-card);
+  --at-r-ctl: var(--sph-r-ctl);
+  --at-r-chip: var(--sph-r-chip);
+  --at-r-cell: var(--sph-r-cell);
+
+  --at-font-display: "Optima", "Candara", "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--at-font-display);
+
+  --feel-3d:
+    0 1px 0 color-mix(in srgb, var(--sph-ink) 18%, transparent) inset,
+    0 -2px 0 color-mix(in srgb, var(--sph-deep) 70%, #000) inset,
+    0 4px 0 #070d16,
+    0 10px 18px rgba(4, 8, 16, 0.38);
+  --feel-3d-press:
+    0 1px 0 color-mix(in srgb, var(--sph-ink) 10%, transparent) inset,
+    0 1px 0 #070d16,
+    0 3px 7px rgba(4, 8, 16, 0.32);
+  --feel-grain-opacity: 0.28;
+  --feel-grain-blend: overlay;
+  --feel-grain:
+    repeating-linear-gradient(94deg, transparent 0 7px, rgba(255, 255, 255, 0.04) 7px 8px, transparent 8px 19px),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 5px);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 2px solid color-mix(in srgb, var(--sph-bezel-lit) 55%, var(--sph-deep));
+  --feel-icon: saturate(0.92) contrast(1.1) drop-shadow(0 0 4px color-mix(in srgb, var(--sph-sky) 35%, transparent));
+  --feel-title-tracking: 0.04em;
+  --feel-title-case: none;
+}
+
+/* ── body: cabochon photograph, one caustic, stone night ──────── */
+
+html[data-player-skin="sapphire"] body {
+  background-color: var(--sph-housing) !important;
+  background-image:
+    radial-gradient(ellipse 52% 38% at 56% 34%, color-mix(in srgb, var(--sph-caustic) 22%, transparent), transparent 68%),
+    linear-gradient(180deg, rgba(7, 11, 18, 0.9) 0%, rgba(7, 11, 18, 0.55) 40%, rgba(7, 11, 18, 0.92) 100%),
+    url("/img/skins/sapphire.png") !important;
+  background-position: center, center, center 38% !important;
+  background-size: cover, cover, cover !important;
+  background-attachment: fixed !important;
+  color: var(--sph-ink);
+  text-shadow: none;
+}
+
+/* Kill signal-family scanlines — stone grain instead. */
+html[data-player-skin="sapphire"] body::after {
+  opacity: 0.24;
+  mix-blend-mode: overlay;
+  animation: room-sapphire-caustic 18s ease-in-out infinite;
+  background:
+    radial-gradient(ellipse 34% 22% at 58% 36%, color-mix(in srgb, var(--sph-caustic) 30%, transparent), transparent 72%),
+    repeating-linear-gradient(94deg, transparent 0 11px, rgba(255, 255, 255, 0.035) 11px 12px, transparent 12px 24px);
+}
+
+html[data-player-skin="sapphire"] #main {
+  isolation: isolate;
+  position: relative;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--sph-sky) 6%, transparent), transparent 28%),
+    rgba(10, 15, 24, 0.58) !important;
+  border-inline: 1px solid color-mix(in srgb, var(--sph-bezel) 40%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--sph-ink) 8%, transparent);
+  clip-path: none;
+}
+
+html[data-player-skin="sapphire"] #main::after {
+  animation: none !important;
+  background: none;
+}
+
+/* ── HUD · the lamp house: stone block, vent slats, lens mouth ─ */
+
+html[data-player-skin="sapphire"] .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  color: var(--sph-ink);
+  border-bottom: 3px solid var(--sph-bezel);
+  border-radius: 0 0 10px 20px 8px 6px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 11px),
+    repeating-linear-gradient(90deg, transparent 0 14px, rgba(0, 0, 0, 0.22) 14px 15px, transparent 15px 28px),
+    linear-gradient(180deg, var(--sph-stone-3), var(--sph-stone) 58%, var(--sph-housing));
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--sph-ink) 14%, transparent),
+    inset 0 -3px 0 color-mix(in srgb, var(--sph-deep) 55%, #000),
+    0 8px 0 #060a11,
+    0 14px 28px rgba(2, 6, 14, 0.44);
+  backdrop-filter: none;
+}
+
+/* Lantern mouth — faceted glass aperture under the coping. */
+html[data-player-skin="sapphire"] .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  bottom: -1px;
+  transform: translateX(-50%);
+  width: min(220px, 38vw);
+  height: 5px;
+  z-index: 2;
+  border-radius: 2px 2px 8px 8px;
+  background:
+    linear-gradient(90deg, transparent, var(--sph-sky) 18%, var(--sph-lens-hot) 50%, var(--sph-sky) 82%, transparent);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--sph-sky) 55%, transparent);
+  animation: room-sapphire-lamp-pulse 5.6s ease-in-out infinite;
+}
+
+/* Stone coping lip. */
+html[data-player-skin="sapphire"] .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 5px 10px auto;
+  height: 1px;
+  z-index: 0;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--sph-bezel-lit) 70%, transparent) 20%, color-mix(in srgb, var(--sph-bezel-lit) 70%, transparent) 80%, transparent);
+}
+
+html[data-player-skin="sapphire"] .hud-app-name,
+html[data-player-skin="sapphire"] .launcher-title,
+html[data-player-skin="sapphire"] .page-title {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--sph-ink);
+  color: var(--sph-ink);
+  font-family: var(--at-font-display);
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  text-shadow: 0 1px 0 #060a11;
+}
+
+html[data-player-skin="sapphire"] .hud-app-name::before {
+  content: "◇ ";
+  color: var(--sph-sky);
+  font-size: 0.82em;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--sph-sky) 50%, transparent);
+}
+
+/* Kill signal-family Morse cursor. */
+html[data-player-skin="sapphire"] .hud-app-name::after {
+  content: none !important;
+  animation: none !important;
+}
+
+html[data-player-skin="sapphire"] .hud-intention {
+  color: var(--sph-ink-2);
+  letter-spacing: 0.05em;
+}
+
+/* Brand jewel: cabochon lens set in a dark metal bezel. */
+html[data-player-skin="sapphire"] .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  border-radius: 50%;
+}
+
+html[data-player-skin="sapphire"] .hud-brand-jewel::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -7px;
+  z-index: -2;
+  border: 2px solid #1a2433;
+  border-radius: 50%;
+  background:
+    conic-gradient(from 210deg,
+      #2a3548 0 16%,
+      #4a5d72 16% 22%,
+      #1a2433 22% 38%,
+      #5a6d82 38% 44%,
+      #1a2433 44% 100%);
+  box-shadow:
+    0 0 0 1px #0a0f18,
+    0 0 0 3px var(--sph-bezel-lit),
+    inset 0 2px 4px rgba(0, 0, 0, 0.45);
+}
+
+html[data-player-skin="sapphire"] .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -4px;
+  z-index: -1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 36% 28%, var(--sph-lens-hot) 0 9%, var(--sph-sky) 16%, var(--sph-deep) 54%, #0a1220 58%);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--sph-sky) 65%, transparent);
+  animation: room-sapphire-lamp-pulse 5.6s ease-in-out infinite;
+}
+
+html[data-player-skin="sapphire"] .hud-icon-btn,
+html[data-player-skin="sapphire"] .hud-glyph-btn,
+html[data-player-skin="sapphire"] .hud-status-pill,
+html[data-player-skin="sapphire"] .hud-chip,
+html[data-player-skin="sapphire"] .hud-metric,
+html[data-player-skin="sapphire"] .hud-game-chip,
+html[data-player-skin="sapphire"] .hud-agent-chip,
+html[data-player-skin="sapphire"] .loot-profile-chip {
+  color: var(--sph-ink);
+  border: 1px solid color-mix(in srgb, var(--sph-bezel-lit) 65%, transparent);
+  border-radius: var(--sph-r-chip);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 46%),
+    linear-gradient(135deg, var(--sph-stone-3), var(--sph-stone));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -2px 0 rgba(4, 8, 16, 0.38);
+}
+
+html[data-player-skin="sapphire"] .hud-icon-btn:hover:not(:disabled),
+html[data-player-skin="sapphire"] .hud-glyph-btn:hover:not(:disabled) {
+  border-color: var(--sph-sky);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 0 12px color-mix(in srgb, var(--sph-sky) 22%, transparent);
+}
+
+html[data-player-skin="sapphire"] .ws-mark,
+html[data-player-skin="sapphire"] .hud-icon-svg,
+html[data-player-skin="sapphire"] .tab-chip-mark {
+  image-rendering: auto;
+  animation: none;
+  filter: var(--feel-icon);
+}
+
+html[data-player-skin="sapphire"] .tab-chip-bar {
+  background: var(--sph-housing);
+  border-bottom: 1px solid color-mix(in srgb, var(--sph-bezel) 70%, transparent);
+}
+
+html[data-player-skin="sapphire"] .tab-chip {
+  border: 1px solid color-mix(in srgb, var(--sph-bezel-lit) 45%, transparent);
+  border-radius: var(--sph-r-chip);
+  background: var(--sph-stone);
+  color: var(--sph-ink-2);
+  letter-spacing: 0.04em;
+}
+
+html[data-player-skin="sapphire"] .tab-chip.active {
+  color: var(--accent-ink);
+  border-color: var(--sph-sky);
+  background: linear-gradient(180deg, var(--sph-lens-hot), var(--sph-sky) 55%, color-mix(in srgb, var(--sph-deep) 35%, var(--sph-sky)));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 0 10px color-mix(in srgb, var(--sph-sky) 28%, transparent);
+}
+
+/* ── glyphs: octagonal cabochon + etched radio arcs (not a dish) ─ */
+
+html[data-player-skin="sapphire"] .launcher-tile-glyph,
+html[data-player-skin="sapphire"] .launcher-card-glyph,
+html[data-player-skin="sapphire"] .loot-skin-avatar {
+  position: relative;
+  border: 2px solid var(--sph-bezel-lit);
+  border-radius: 0;
+  color: var(--accent-ink);
+  background:
+    radial-gradient(circle at 34% 26%, var(--sph-lens-hot) 0 14%, var(--sph-sky) 22%, var(--sph-deep) 58%, #0a1220 64%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.14), transparent 40%);
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 0 12px color-mix(in srgb, var(--sph-sky) 40%, transparent);
+}
+
+html[data-player-skin="sapphire"] .launcher-tile-glyph::before,
+html[data-player-skin="sapphire"] .launcher-card-glyph::before {
+  content: "";
+  position: absolute;
+  inset: 18% 12% 12% 12%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+html[data-player-skin="sapphire"] .launcher-tile-glyph::after,
+html[data-player-skin="sapphire"] .launcher-card-glyph::after {
+  content: "⌁";
+  position: absolute;
+  right: -6px;
+  bottom: -7px;
+  display: grid;
+  width: 15px;
+  height: 15px;
+  place-items: center;
+  border: 1px solid var(--sph-bezel-lit);
+  border-radius: 3px 8px 3px 8px;
+  background: var(--sph-stone);
+  color: var(--sph-sky);
+  font: 700 10px/1 var(--at-font-display);
+  box-shadow: 0 1px 0 #060a11;
+}
+
+/* ── cards · dressed stone panels in the tower well ───────────── */
+
+html[data-player-skin="sapphire"] .launcher-card,
+html[data-player-skin="sapphire"] .card,
+html[data-player-skin="sapphire"] .hub-card,
+html[data-player-skin="sapphire"] .pln-rail-card,
+html[data-player-skin="sapphire"] .evt-card,
+html[data-player-skin="sapphire"] .tsk-row,
+html[data-player-skin="sapphire"] .page-intent {
+  border: 1px solid color-mix(in srgb, var(--sph-bezel-lit) 50%, transparent);
+  border-radius: var(--sph-r-card);
+  background:
+    linear-gradient(104deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 20px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 18%, rgba(4, 8, 16, 0.18)),
+    var(--sph-stone-2);
+  color: var(--sph-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -2px 0 color-mix(in srgb, var(--sph-deep) 55%, #000),
+    0 4px 0 #060a11,
+    0 10px 18px rgba(2, 6, 14, 0.28);
+  clip-path: none;
+  overflow: visible;
+}
+
+html[data-player-skin="sapphire"] .launcher-card::before {
+  width: 10px;
+  height: 3px;
+  border-radius: 1px 6px 1px 6px;
+  background: linear-gradient(90deg, transparent, var(--sph-sky), transparent);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--sph-sky) 45%, transparent);
+  animation: room-sapphire-signal-hold 6.8s ease-in-out infinite;
+}
+
+html[data-player-skin="sapphire"] .launcher-card:hover,
+html[data-player-skin="sapphire"] .launcher-card--focused,
+html[data-player-skin="sapphire"] .card:hover {
+  border-color: color-mix(in srgb, var(--sph-sky) 55%, transparent);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -2px 0 color-mix(in srgb, var(--sph-deep) 55%, #000),
+    0 6px 0 #060a11,
+    0 14px 22px rgba(2, 6, 14, 0.36),
+    0 0 18px color-mix(in srgb, var(--sph-sky) 12%, transparent);
+}
+
+/* ── buttons · bezel latch, not terminal phosphor ─────────────── */
+
+html[data-player-skin="sapphire"] button.primary,
+html[data-player-skin="sapphire"] .primary,
+html[data-player-skin="sapphire"] .agent-pane-chat .agc-send {
+  border: 1px solid color-mix(in srgb, var(--sph-sky) 55%, transparent);
+  border-radius: var(--sph-r-ctl);
+  background:
+    linear-gradient(180deg, var(--sph-lens-hot), var(--sph-sky) 46%, color-mix(in srgb, var(--sph-deep) 40%, var(--sph-sky)) 54%, var(--sph-deep));
+  color: var(--accent-ink);
+  font-family: var(--at-font-display);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 4px 0 #060a11,
+    0 0 14px color-mix(in srgb, var(--sph-sky) 24%, transparent);
+  animation: none;
+}
+
+html[data-player-skin="sapphire"] button.primary:hover:not(:disabled),
+html[data-player-skin="sapphire"] .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+html[data-player-skin="sapphire"] button.primary:active:not(:disabled),
+html[data-player-skin="sapphire"] .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: inset 0 2px 0 color-mix(in srgb, var(--sph-deep) 50%, transparent), 0 1px 0 #060a11;
+}
+
+html[data-player-skin="sapphire"] button.secondary,
+html[data-player-skin="sapphire"] .ghost-btn {
+  border: 1px solid color-mix(in srgb, var(--sph-bezel-lit) 55%, transparent);
+  border-radius: var(--sph-r-ctl);
+  background: var(--sph-stone);
+  color: var(--sph-ink-2);
+}
+
+/* ── empty / input / focus / disabled / dialogs ─────────────── */
+
+html[data-player-skin="sapphire"] .empty-state {
+  border: 1px dashed color-mix(in srgb, var(--sph-sky) 40%, transparent);
+  border-radius: var(--sph-r-plate);
+  background:
+    radial-gradient(ellipse 50% 40% at 50% 0%, color-mix(in srgb, var(--sph-sky) 10%, transparent), transparent 70%),
+    var(--sph-stone);
+  color: var(--sph-ink-2);
+  box-shadow:
+    inset 0 0 0 4px color-mix(in srgb, var(--sph-deep) 70%, #000),
+    inset 0 0 0 5px color-mix(in srgb, var(--sph-bezel-lit) 18%, transparent);
+}
+
+html[data-player-skin="sapphire"] .empty-state::before {
+  content: "◇";
+  display: block;
+  margin-bottom: 6px;
+  color: var(--sph-sky);
+  font-size: 15px;
+  text-shadow: 0 0 10px color-mix(in srgb, var(--sph-sky) 50%, transparent);
+}
+
+html[data-player-skin="sapphire"] input,
+html[data-player-skin="sapphire"] textarea,
+html[data-player-skin="sapphire"] select,
+html[data-player-skin="sapphire"] .agc-input-zone {
+  border: 1px solid color-mix(in srgb, var(--sph-bezel-lit) 55%, transparent);
+  border-radius: var(--sph-r-ctl);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 22px, color-mix(in srgb, var(--sph-bezel-lit) 10%, transparent) 22px 23px),
+    var(--sph-housing);
+  color: var(--sph-ink);
+  caret-color: var(--sph-sky);
+  box-shadow: inset 0 2px 8px rgba(2, 6, 14, 0.45), 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+html[data-player-skin="sapphire"] input::placeholder,
+html[data-player-skin="sapphire"] textarea::placeholder {
+  color: var(--sph-ink-3);
+}
+
+html[data-player-skin="sapphire"] input:focus,
+html[data-player-skin="sapphire"] textarea:focus,
+html[data-player-skin="sapphire"] select:focus,
+html[data-player-skin="sapphire"] .agc-input-zone:focus-within {
+  border-color: color-mix(in srgb, var(--sph-sky) 60%, transparent);
+  box-shadow:
+    inset 0 2px 8px rgba(2, 6, 14, 0.45),
+    0 0 0 2px color-mix(in srgb, var(--sph-sky) 24%, transparent),
+    0 0 16px color-mix(in srgb, var(--sph-sky) 14%, transparent);
+}
+
+html[data-player-skin="sapphire"] .loot-shell-dialog,
+html[data-player-skin="sapphire"] .command-palette,
+html[data-player-skin="sapphire"] .napkin-capture-dialog {
+  border: 2px solid var(--sph-bezel-lit);
+  border-radius: var(--sph-r-plate);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 24%),
+    var(--sph-stone-2);
+  color: var(--sph-ink);
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--sph-deep) 65%, #000),
+    0 0 0 6px rgba(4, 8, 16, 0.82),
+    0 22px 55px rgba(2, 6, 14, 0.58);
+}
+
+html[data-player-skin="sapphire"] button:disabled,
+html[data-player-skin="sapphire"] input:disabled,
+html[data-player-skin="sapphire"] textarea:disabled,
+html[data-player-skin="sapphire"] select:disabled,
+html[data-player-skin="sapphire"] [aria-disabled="true"] {
+  border-color: color-mix(in srgb, var(--sph-bezel) 55%, transparent);
+  background: var(--sph-stone);
+  color: var(--sph-ink-3);
+  opacity: 0.68;
+  filter: saturate(0.45);
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+html[data-player-skin="sapphire"] :focus-visible {
+  outline: 2px solid var(--sph-sky);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--sph-sky) 20%, transparent);
+}
+
+/* ── companion · the rotating beam (static if reduced-motion) ─ */
+
+html[data-player-skin="sapphire"] .companion-launcher {
+  background: rgba(10, 15, 24, 0.9);
+  border: 1px solid color-mix(in srgb, var(--sph-bezel-lit) 55%, transparent);
+  border-radius: 50% 50% 36% 36%;
+  box-shadow: 0 12px 24px rgba(2, 6, 14, 0.45);
+}
+
+html[data-player-skin="sapphire"] .companion-launcher-orb {
+  position: relative;
+  isolation: isolate;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 30%, var(--sph-lens-hot) 0 12%, var(--sph-sky) 24%, var(--sph-deep) 62%, #0a1220 68%);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--sph-sky) 50%, transparent);
+  overflow: visible;
+}
+
+html[data-player-skin="sapphire"] .companion-launcher-orb::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -140%;
+  z-index: -1;
+  background: conic-gradient(from 0deg,
+    transparent 0deg 300deg,
+    color-mix(in srgb, var(--sph-sky) 55%, transparent) 300deg 318deg,
+    color-mix(in srgb, var(--sph-caustic) 35%, transparent) 318deg 336deg,
+    transparent 336deg 360deg);
+  opacity: 0.72;
+  animation: room-sapphire-beam-sweep 12s linear infinite;
+}
+
+/* ── per-tab rooms ────────────────────────────────────────────── */
+
+html[data-player-skin="sapphire"][data-app-tab="Home"] #main {
+  background:
+    radial-gradient(ellipse 60% 36% at 50% 0%, color-mix(in srgb, var(--sph-sky) 14%, transparent), transparent 68%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 36%),
+    var(--sph-housing);
+}
+
+html[data-player-skin="sapphire"][data-app-tab="Agent"] #main .agent-pane {
+  border: 1px solid color-mix(in srgb, var(--sph-bezel-lit) 50%, transparent);
+  border-radius: var(--sph-r-plate);
+  background:
+    radial-gradient(ellipse 58% 30% at 50% 0%, color-mix(in srgb, var(--sph-sky) 20%, transparent) 0%, color-mix(in srgb, var(--sph-sky) 5%, transparent) 36%, transparent 64%),
+    repeating-linear-gradient(90deg, transparent 0 32px, color-mix(in srgb, var(--sph-bezel-lit) 8%, transparent) 32px 33px),
+    var(--sph-stone);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -2px 0 #060a11;
+}
+
+html[data-player-skin="sapphire"] .agent-msg.assistant .agent-bubble {
+  border: 1px solid color-mix(in srgb, var(--sph-bezel-lit) 45%, transparent);
+  border-radius: var(--sph-r-ctl);
+  background: var(--sph-stone-2);
+  color: var(--sph-ink);
+}
+
+html[data-player-skin="sapphire"] .agent-msg.user .agent-bubble {
+  border: 1px solid color-mix(in srgb, var(--sph-sky) 45%, transparent);
+  border-radius: 6px 12px 5px 10px;
+  background: color-mix(in srgb, var(--sph-sky) 18%, var(--sph-stone-2));
+  color: var(--sph-ink);
+}
+
+html[data-player-skin="sapphire"][data-app-tab="Today"] #main,
+html[data-player-skin="sapphire"][data-app-tab="Calendar"] #main {
+  background:
+    linear-gradient(180deg, var(--sph-stone-3), var(--sph-stone));
+}
+
+html[data-player-skin="sapphire"][data-app-tab="Today"] #main .tdy-hour-cell,
+html[data-player-skin="sapphire"][data-app-tab="Calendar"] #main .tdy-hour-cell,
+html[data-player-skin="sapphire"][data-app-tab="Calendar"] .cal-day,
+html[data-player-skin="sapphire"][data-app-tab="Calendar"] .cal-hour-cell {
+  border: 1px solid color-mix(in srgb, var(--sph-bezel-lit) 40%, transparent);
+  border-radius: var(--sph-r-cell);
+  background: var(--sph-stone-2);
+  color: var(--sph-ink-2);
+}
+
+html[data-player-skin="sapphire"][data-app-tab="Today"] #main .tdy-hour-painted,
+html[data-player-skin="sapphire"][data-app-tab="Calendar"] #main .tdy-hour-painted {
+  border-color: color-mix(in srgb, var(--sph-sky) 55%, transparent);
+  background: color-mix(in srgb, var(--sph-sky) 22%, var(--sph-stone-2));
+  color: var(--sph-ink);
+  box-shadow: inset 3px 0 0 var(--sph-sky);
+}
+
+html[data-player-skin="sapphire"][data-app-tab="Calendar"] .cal-month-cell:not(.cal-month-cell-pad) {
+  border-radius: var(--sph-r-cell);
+  border: 1px solid color-mix(in srgb, var(--sph-bezel-lit) 40%, transparent);
+  background: var(--sph-stone-2);
+}
+
+html[data-player-skin="sapphire"][data-app-tab="Calendar"] .cal-month-cell-today {
+  border-color: color-mix(in srgb, var(--sph-sky) 55%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sph-sky) 35%, transparent);
+}
+
+/* ── motion ───────────────────────────────────────────────────── */
+
+@keyframes room-sapphire-lamp-pulse {
+  0%, 100% { filter: brightness(0.96); opacity: 0.92; }
+  50% { filter: brightness(1.08); opacity: 1; }
+}
+
+@keyframes room-sapphire-beam-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes room-sapphire-caustic {
+  0%, 100% { opacity: 0.2; background-position: 0 0, 0 0; }
+  50% { opacity: 0.28; background-position: 6px 4px, 12px 0; }
+}
+
+@keyframes room-sapphire-signal-hold {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="sapphire"] body::after,
+  html[data-player-skin="sapphire"] .top-hud::before,
+  html[data-player-skin="sapphire"] .hud-brand-jewel::after,
+  html[data-player-skin="sapphire"] .launcher-card::before,
+  html[data-player-skin="sapphire"] .companion-launcher-orb::after {
+    animation: none !important;
+  }
+
+  html[data-player-skin="sapphire"] .companion-launcher-orb::after {
+    transform: rotate(24deg);
+    opacity: 0.5;
+  }
+
+  html[data-player-skin="sapphire"] * {
+    transition-duration: 0.01ms !important;
+  }
+}

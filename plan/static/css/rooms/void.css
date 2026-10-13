@@ -1,0 +1,63 @@
+/* Void Cartographer — astrolabe negative space.
+   One violet bearing on lightless chart. Mono ticks. */
+
+html[data-player-skin="void"] {
+  --at-r-plate: 18px 0 0 18px;
+  --at-r-card: 18px 0 0 18px;
+  --at-r-ctl: 8px 0 0 8px;
+  --at-r-chip: 8px 0;
+  --at-r-cell: 6px 0;
+  --at-font-display: "IBM Plex Mono", ui-monospace, monospace;
+  --at-font-ui: "IBM Plex Mono", ui-monospace, monospace;
+  --bg-shell: #0b0618;
+  --bg-card: #16132c;
+  --ink-primary: #ede9fe;
+  --accent: #8b5cf6;
+  --accent-ink: #0b0618;
+}
+
+html[data-player-skin="void"] body {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(237, 233, 254, 0.35) 0 1px, transparent 2px),
+    #0b0618 !important;
+}
+html[data-player-skin="void"] body::after {
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  background:
+    linear-gradient(32deg, transparent 48%, rgba(139, 92, 246, 0.35) 48.4% 49%, transparent 49.4%);
+  animation: room-void-bearing 14s ease-in-out infinite;
+}
+
+html[data-player-skin="void"] .top-hud { background: #100e22; border-bottom: 1px solid #8b5cf6; }
+html[data-player-skin="void"] .hud-app-name {
+  font-family: var(--at-font-display);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+html[data-player-skin="void"] .launcher-card {
+  border-radius: 18px 0 0 18px;
+  padding: 18px 16px 24px;
+  background: #16132c;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: #ede9fe;
+}
+html[data-player-skin="void"] button.primary,
+html[data-player-skin="void"] .tab-chip.active {
+  background: #8b5cf6;
+  color: #0b0618;
+  border: 1px solid #a78bfa;
+  font-weight: 700;
+}
+
+html[data-player-skin="void"][data-app-tab="Today"] #main .tdy-hour-cell { border-radius: 6px 0; }
+html[data-player-skin="void"][data-app-tab="Tasks"] .tsk-row { border-radius: 14px 0 0 14px; }
+html[data-player-skin="void"][data-app-tab="Agent"] .agent-bubble { border-radius: 16px 0 0 16px; }
+
+@keyframes room-void-bearing { 50% { opacity: 0.15; } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="void"] body::after { animation: none; }
+}

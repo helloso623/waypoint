@@ -1,0 +1,1143 @@
+/* ═══════════════════════════════════════════════════════════════
+   SATELLITE PING — a dish on the HUD cluster. One return.
+
+   The object: a pale parabolic dish aimed at you. Ice metal bowl,
+   sky-blue lock pip at the focus, range rings on the face. The
+   blink is a ping leaving the feed horn — a short flash, then
+   a ring that walks out. You are looking at a ground station,
+   not sitting at a radio.
+
+   Place is hud,chip. The dish and the lock chips are the room.
+   Cards, calendar, companion, and tab pages stay night-quiet.
+
+   Not Cobalt Courier (no enamel relay box, no bolted fascia,
+   no single cyan lamp, no RLY / chalk).
+   Not Sapphire Signal (no stone lamp-house, no cabochon, no
+   lantern mouth, no rotating beam).
+   Not Signal Station (no phosphor desk, no Morse caret, no
+   scanlines, no green CRT, no page-wide radar).
+
+   Loot: colorA #f8fafc, colorB #0369a1, effect signal,
+   pattern grid, place hud,chip.
+   Signature cut: offset dish — open face left, boom pinch
+   right. 67 / 19 / 8 / 44 with a 31px trailing vertical.
+   Never 42%/48%. Never clip-path #main or .launcher-card.
+   Glyphs may clip. Selectors carry :root so this room
+   outranks the signal-family phosphor stencil.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — night well, ice dish, sky lock ────────────── */
+
+html[data-player-skin="satellite"]:root {
+  color-scheme: dark;
+
+  --sat-night: #071018;
+  --sat-well: #050d14;
+  --sat-panel: #0c1c2a;
+  --sat-rim: #1a3348;
+  --sat-metal: #f8fafc;
+  --sat-steel: #cbd5e1;
+  --sat-lock: #0369a1;
+  --sat-ping: #38bdf8;
+  --sat-hot: #e0f2fe;
+  --sat-ink: #f8fafc;
+  --sat-ink-2: #b8c9d6;
+  --sat-mute: #7f96a8;
+
+  --sat-hair: rgba(248, 250, 252, 0.16);
+  --sat-hair-2: rgba(3, 105, 161, 0.4);
+  --sat-live: rgba(56, 189, 248, 0.55);
+
+  /* Offset dish in 3/4 view. Open face on the leading side,
+     boom pinch on the trailing foot. Nothing else uses
+     67 / 19 / 8 / 44 with a 31px trailing vertical.
+     Never 42%/48%. */
+  --sat-r-dish: 67px 19px 8px 44px / 23px 31px 6px 17px;
+  --sat-r-card: 41px 13px 7px 28px / 16px 22px 5px 12px;
+  --sat-r-ctl: 29px 9px 6px 20px / 13px 18px 4px 10px;
+  --sat-r-chip: 33px 11px 5px 22px / 15px 19px 4px 11px;
+  --sat-r-cell: 17px 6px 4px 12px / 9px 11px 3px 7px;
+
+  /* Range grid — loot pattern. Concentric rings + azimuth
+     ticks. Not CRT scan, not enamel bolts, not lamp slats. */
+  --sat-grid:
+    repeating-radial-gradient(
+      circle at 18% 50%,
+      transparent 0 13px,
+      rgba(3, 105, 161, 0.16) 13px 14px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 17px,
+      rgba(248, 250, 252, 0.045) 17px 18px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 17px,
+      rgba(248, 250, 252, 0.035) 17px 18px
+    );
+  --sat-grid-soft:
+    repeating-radial-gradient(
+      circle at 18% 50%,
+      transparent 0 21px,
+      rgba(3, 105, 161, 0.1) 21px 22px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 23px,
+      rgba(248, 250, 252, 0.03) 23px 24px
+    );
+
+  --bg-shell: var(--sat-night);
+  --bg-content: var(--sat-panel);
+  --bg-card: var(--sat-rim);
+  --bg-card-hover: #22425c;
+  --ink-primary: var(--sat-ink);
+  --ink-secondary: var(--sat-ink-2);
+  --ink-muted: var(--sat-mute);
+  --border: rgba(3, 105, 161, 0.38);
+  --gridline: rgba(248, 250, 252, 0.08);
+  --accent: var(--sat-ping);
+  --ws-accent: var(--sat-ping);
+  --accent-ink: var(--sat-well);
+
+  /* Loot catalog source of truth. */
+  --skin-a: #f8fafc;
+  --skin-b: #0369a1;
+  --at-a: #f8fafc;
+  --at-b: #0369a1;
+  --feel-a: #f8fafc;
+  --feel-b: #0369a1;
+  --feel-accent: var(--sat-ping);
+  --feel-ground: var(--sat-night);
+  --feel-paper: var(--sat-panel);
+  --feel-ink: var(--sat-ink);
+
+  --at-plate: var(--sat-panel);
+  --at-plate-2: var(--sat-rim);
+  --at-well: var(--sat-well);
+  --at-ink: var(--sat-ink);
+  --at-ink-2: var(--sat-ink-2);
+  --at-ink-3: var(--sat-mute);
+  --at-hair: var(--sat-hair);
+  --at-hair-2: var(--sat-hair-2);
+  --at-hair-a: rgba(56, 189, 248, 0.55);
+  --at-tint: rgba(3, 105, 161, 0.16);
+  --at-tint-b: rgba(7, 16, 24, 0.55);
+  --at-focus: 0 0 0 3px rgba(56, 189, 248, 0.32);
+  --at-inset: inset 0 1px 0 rgba(248, 250, 252, 0.22);
+  --at-rise: 0 16px 32px -20px rgba(2, 8, 14, 0.72);
+  --at-rise-soft: 0 10px 20px -16px rgba(2, 8, 14, 0.55);
+  --at-r-plate: var(--sat-r-dish);
+  --at-r-card: var(--sat-r-card);
+  --at-r-ctl: var(--sat-r-ctl);
+  --at-r-chip: var(--sat-r-chip);
+  --at-r-cell: var(--sat-r-cell);
+
+  --sat-font: "Rajdhani", "Eurostile", "Bank Gothic", "DIN Alternate",
+    "Avenir Next Condensed", "Segoe UI", sans-serif;
+  --font-display: var(--sat-font);
+  --at-font-display: var(--sat-font);
+  --at-font-ui: var(--sat-font);
+
+  /* Ice bowl, not phosphor glow, not enamel step, not lamp bezel. */
+  --feel-3d:
+    inset 0 1px 0 rgba(248, 250, 252, 0.28),
+    inset 0 -10px 16px rgba(3, 105, 161, 0.18),
+    0 0 0 1px #050d14,
+    0 0 16px rgba(56, 189, 248, 0.12);
+  --feel-3d-press:
+    inset 0 3px 8px rgba(5, 13, 20, 0.55),
+    inset 0 1px 0 rgba(248, 250, 252, 0.1),
+    0 0 0 1px #050d14;
+  --feel-grain-opacity: 0.22;
+  --feel-grain-blend: overlay;
+  --feel-grain: var(--sat-grid-soft);
+  --feel-grain-size: auto;
+  --feel-hud-hair: 0;
+  --feel-icon:
+    saturate(0.92) contrast(1.08)
+    drop-shadow(0 0 5px rgba(56, 189, 248, 0.45));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.16em;
+  --feel-plate-image:
+    radial-gradient(ellipse 80% 55% at 18% 0%, rgba(248, 250, 252, 0.1), transparent 62%),
+    var(--sat-grid-soft);
+}
+
+/* ── 2 · Body — night behind the dish. Place is not page. ───── */
+
+html[data-player-skin="satellite"]:root body {
+  background-color: var(--sat-night) !important;
+  background-image:
+    radial-gradient(ellipse 64% 28% at 50% -8%, rgba(3, 105, 161, 0.26), transparent 70%),
+    radial-gradient(ellipse 18% 12% at 16% 14%, rgba(248, 250, 252, 0.08), transparent 66%),
+    linear-gradient(180deg, #0a1622 0%, #071018 55%, #050d14 100%) !important;
+  background-attachment: fixed !important;
+  color: var(--sat-ink);
+  text-shadow: none;
+  animation: none;
+}
+
+/* Kill phosphor scan, Morse grain, and the generic grid stamp.
+   Range rings stay faint and still on the air, not marching. */
+html[data-player-skin="satellite"]:root body::before,
+html[data-player-skin="satellite"]:root body::after {
+  animation: none !important;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background: var(--sat-grid-soft) !important;
+  background-size: auto !important;
+}
+
+html[data-player-skin="satellite"]:root #main {
+  isolation: isolate;
+  position: relative;
+  clip-path: none !important;
+  overflow: visible;
+  background: color-mix(in srgb, var(--sat-night) 58%, transparent) !important;
+  border-inline: 1px solid rgba(3, 105, 161, 0.22);
+  box-shadow: inset 0 1px 0 rgba(248, 250, 252, 0.06);
+}
+
+html[data-player-skin="satellite"]:root #main::before,
+html[data-player-skin="satellite"]:root #main::after {
+  animation: none !important;
+  background: none !important;
+  clip-path: none !important;
+}
+
+html[data-player-skin="satellite"]:root[data-skin-effect="signal"] #main,
+html[data-player-skin="satellite"]:root[data-skin-pattern="grid"] #main {
+  background-image: none !important;
+}
+
+/* Cards stay quiet night plates. No 3D tilt, no clip. */
+html[data-player-skin="satellite"]:root .launcher-card {
+  clip-path: none !important;
+  overflow: visible;
+  transform: none;
+  border-radius: var(--sat-r-card);
+}
+
+/* ── 3 · Place · HUD — the dish cluster ─────────────────────── */
+
+html[data-player-skin="satellite"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  color: var(--sat-ink);
+  border-bottom: 0;
+  border-image: none;
+  border-radius: 0 0 41px 13px / 0 0 16px 7px;
+  backdrop-filter: none;
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.08), transparent 28%),
+    linear-gradient(180deg, #1a3348 0%, #0c1c2a 68%, #071018 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(248, 250, 252, 0.12),
+    0 10px 22px rgba(2, 8, 14, 0.4);
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .top-hud {
+  background:
+    radial-gradient(ellipse 90% 160% at 16% 50%, rgba(248, 250, 252, 0.16), transparent 58%),
+    var(--sat-grid),
+    linear-gradient(180deg, #244a64 0%, #0c1c2a 62%, #071018 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(248, 250, 252, 0.28),
+    inset 0 -12px 18px rgba(3, 105, 161, 0.16),
+    0 0 0 1px #050d14,
+    0 0 22px rgba(56, 189, 248, 0.1);
+}
+
+/* Range rings sitting in the bowl. Still map, not a scan. */
+html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    repeating-radial-gradient(
+      circle at 16% 52%,
+      transparent 0 16px,
+      rgba(248, 250, 252, 0.1) 16px 17px
+    );
+  opacity: 0.7;
+  mix-blend-mode: screen;
+}
+
+/* The ping — a ring leaving the feed horn. */
+html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 8%;
+  top: 50%;
+  width: 54px;
+  height: 54px;
+  z-index: 2;
+  margin-top: -27px;
+  border: 2px solid var(--sat-ping);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.45);
+  transform-origin: center;
+  animation: room-satellite-ping 2.4s ease-out infinite;
+}
+
+html[data-player-skin="satellite"]:root .top-hud > * {
+  position: relative;
+  z-index: 3;
+}
+
+html[data-player-skin="satellite"]:root :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--sat-ink);
+  color: var(--sat-ink);
+  font-family: var(--sat-font);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 #050d14;
+}
+
+/* Small dish beside the name — bowl + boom, not RLY, not ◇. */
+html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .hud-app-name::before {
+  content: "";
+  display: inline-block;
+  width: 0.92em;
+  height: 0.7em;
+  margin-right: 0.42em;
+  vertical-align: -0.08em;
+  border: 1.5px solid var(--sat-metal);
+  border-bottom-color: var(--sat-lock);
+  border-radius: var(--sat-r-chip);
+  background:
+    radial-gradient(circle at 28% 40%, var(--sat-hot) 0 12%, transparent 38%),
+    linear-gradient(165deg, #94a3b8, #0369a1 70%, #0c1c2a);
+  box-shadow: inset 0 1px 0 rgba(248, 250, 252, 0.45), 0 0 7px rgba(56, 189, 248, 0.4);
+  animation: room-satellite-blink 2.4s steps(2, jump-end) infinite;
+}
+
+/* Kill the signal-family Morse caret. */
+html[data-player-skin="satellite"]:root .hud-app-name::after {
+  content: none !important;
+  animation: none !important;
+}
+
+html[data-player-skin="satellite"]:root .hud-intention,
+html[data-player-skin="satellite"]:root .hud-now-focus-kicker {
+  color: var(--sat-mute);
+  font-family: var(--sat-font);
+  letter-spacing: 0.08em;
+}
+
+html[data-player-skin="satellite"]:root :is(
+  .brand-mark,
+  .ws-mark,
+  .hud-icon-svg,
+  .tab-chip-mark,
+  .hud-metric-mark,
+  .wp-skin-mark
+) {
+  color: var(--sat-ping);
+  filter: var(--feel-icon);
+  image-rendering: auto;
+  animation: none;
+  transform: none;
+}
+
+/* Brand jewel: feed horn / LNB. A tapering horn, not a lamp. */
+html[data-player-skin="satellite"]:root .hud-brand-jewel,
+html[data-player-skin="satellite"]:root .hud-glyph-btn {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border-radius: 7px 7px 22px 22px / 9px 9px 26px 26px;
+  border: 2px solid #050d14;
+  background:
+    radial-gradient(circle at 50% 18%, var(--sat-hot) 0 14%, transparent 36%),
+    linear-gradient(180deg, var(--sat-metal) 0 22%, #94a3b8 22% 54%, var(--sat-lock) 54% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 0 0 1px #1a3348,
+    0 0 10px rgba(56, 189, 248, 0.28);
+  transform: none;
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .hud-brand-jewel {
+  animation: room-satellite-blink 2.4s steps(2, jump-end) infinite;
+}
+
+html[data-player-skin="satellite"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 36%;
+  right: 36%;
+  top: 58%;
+  bottom: 8%;
+  border-radius: 1px 1px 4px 4px;
+  background: linear-gradient(180deg, var(--sat-hot), var(--sat-ping) 55%, var(--sat-lock));
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .top-hud :is(
+  .hud-icon-btn,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-chip,
+  .hud-game-cluster,
+  .hud-game-chip,
+  .hud-model-chip--status,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .loot-profile-chip
+) {
+  color: var(--sat-ink);
+  border: 1px solid rgba(248, 250, 252, 0.22);
+  border-radius: var(--sat-r-chip);
+  background:
+    var(--sat-grid-soft),
+    #0c1c2a;
+  box-shadow: inset 0 1px 0 rgba(248, 250, 252, 0.1);
+  animation: none;
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn
+):hover:not(:disabled) {
+  border-color: var(--sat-ping);
+  box-shadow:
+    inset 0 1px 0 rgba(248, 250, 252, 0.18),
+    0 0 12px rgba(56, 189, 248, 0.28);
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .hud-status-pill::before,
+html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .top-hud .hud-agent-chip::before {
+  border-radius: 50%;
+  background: var(--sat-ping);
+  box-shadow: 0 0 7px rgba(56, 189, 248, 0.7);
+  animation: room-satellite-blink 2.4s steps(2, jump-end) infinite;
+}
+
+html[data-player-skin="satellite"]:root .tab-chip-bar {
+  overflow: visible;
+  background: color-mix(in srgb, var(--sat-night) 88%, var(--sat-lock));
+  border-bottom: 1px solid rgba(3, 105, 161, 0.32);
+  backdrop-filter: none;
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="hud"] #hud-quests-btn,
+html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .hud-quests-btn {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid rgba(248, 250, 252, 0.35);
+  border-radius: var(--sat-r-chip);
+  background:
+    radial-gradient(circle at 18% 50%, rgba(56, 189, 248, 0.28), transparent 46%),
+    var(--sat-grid-soft),
+    linear-gradient(165deg, #1a3348, #0c1c2a);
+  color: var(--sat-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(248, 250, 252, 0.18),
+    0 0 12px rgba(56, 189, 248, 0.22);
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .loot-daily-hud-meter {
+  display: block;
+  height: 3px;
+  border-radius: 99px;
+  background: rgba(3, 105, 161, 0.28);
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .loot-daily-hud-meter i {
+  background: linear-gradient(90deg, var(--sat-metal), var(--sat-ping));
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .loot-daily-hud-meter.complete i {
+  background: linear-gradient(90deg, var(--sat-hot), var(--sat-metal));
+}
+
+/* ── 4 · Place · CHIP — lock tiles that blink a return ──────── */
+
+html[data-player-skin="satellite"]:root[data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .hud-model-chip--status,
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .seg-pill-btn,
+  .tsk-day-chip,
+  .tsk-keyword-chip,
+  .tsk-bucket-chip,
+  .tsk-due-chip,
+  .tsk-bar-chip,
+  .hub-chip,
+  .nts-chip,
+  .pln-mode-chip,
+  .pln-commit-chip,
+  .pln-keyword-chip,
+  .tdy-cat-chip,
+  .tdy-week-chip,
+  .today-day-chip,
+  .cal-week-chip,
+  .cal-month-chip,
+  .repo-cat-chip,
+  .agc-followup-chip,
+  .quick-capture-chip,
+  .game-stamp-chip
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid rgba(248, 250, 252, 0.22);
+  border-radius: var(--sat-r-chip);
+  background:
+    radial-gradient(ellipse 70% 80% at 16% 50%, rgba(248, 250, 252, 0.14), transparent 58%),
+    var(--sat-grid-soft),
+    linear-gradient(165deg, #1a3348, #0c1c2a 72%, #071018);
+  color: var(--sat-ink-2);
+  font-family: var(--sat-font);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 1px 0 rgba(248, 250, 252, 0.16),
+    0 0 0 1px rgba(5, 13, 20, 0.55);
+  transition:
+    filter 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease;
+  animation: none;
+}
+
+/* Lock pip — the return sitting on every chip. */
+html[data-player-skin="satellite"]:root[data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .tsk-day-chip,
+  .tsk-keyword-chip,
+  .tsk-bucket-chip,
+  .hub-chip,
+  .nts-chip,
+  .pln-mode-chip,
+  .tdy-cat-chip,
+  .today-day-chip,
+  .repo-cat-chip,
+  .quick-capture-chip
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  width: 7px;
+  height: 7px;
+  z-index: 1;
+  margin-top: -3.5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--sat-hot) 0 35%, var(--sat-ping) 70%, var(--sat-lock) 100%);
+  box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.55);
+  animation: room-satellite-lock 2.4s ease-out infinite;
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="chip"] :is(
+  .tab-chip:hover:not(.active):not(:disabled),
+  .hud-chip:hover:not(:disabled),
+  .hud-icon-btn:hover:not(:disabled),
+  .hud-glyph-btn:hover:not(:disabled),
+  .hud-status-pill:hover:not(:disabled),
+  .hud-metric:hover:not(:disabled),
+  .app-subnav-pill:hover:not(.active),
+  .pill:hover:not(.active):not([aria-pressed="true"]),
+  .seg-pill-btn:hover:not([aria-pressed="true"]),
+  .tsk-day-chip:hover,
+  .hub-chip:hover,
+  .nts-chip:hover,
+  .pln-mode-chip:hover,
+  .tdy-cat-chip:hover,
+  .loot-profile-chip:hover
+) {
+  color: var(--sat-ink);
+  border-color: rgba(56, 189, 248, 0.55);
+  filter: brightness(1.08);
+  box-shadow:
+    inset 0 1px 0 rgba(248, 250, 252, 0.22),
+    0 0 0 1px #050d14,
+    0 0 14px rgba(56, 189, 248, 0.28);
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="chip"] :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active,
+  .pill[aria-pressed="true"],
+  .tsk-day-chip-active,
+  .tsk-day-chip.active,
+  .hub-chip.active,
+  .nts-chip.active,
+  .pln-mode-chip-active,
+  .tdy-cat-armed,
+  .today-day-chip-selected,
+  .tdy-week-chip-selected,
+  .loot-profile-chip--complete
+) {
+  color: var(--sat-well);
+  font-weight: 700;
+  border-color: var(--sat-metal);
+  background:
+    radial-gradient(ellipse 70% 80% at 16% 50%, rgba(255, 255, 255, 0.45), transparent 58%),
+    linear-gradient(165deg, var(--sat-hot) 0 18%, var(--sat-ping) 18% 68%, var(--sat-lock) 68% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 0 0 1px #050d14,
+    0 0 16px rgba(56, 189, 248, 0.4);
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="chip"] :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active,
+  .loot-profile-chip--complete
+)::after {
+  background: radial-gradient(circle at 35% 30%, #fff 0 40%, var(--sat-lock) 100%);
+  box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.35);
+  animation: room-satellite-blink 2.4s steps(2, jump-end) infinite;
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="chip"] .tab-chip.active .tab-chip-mark {
+  color: var(--sat-well);
+  opacity: 1;
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="chip"] :is(
+  .tab-chip:active:not(:disabled),
+  .hud-icon-btn:active:not(:disabled),
+  .hud-glyph-btn:active:not(:disabled),
+  .hud-chip:active:not(:disabled)
+) {
+  transform: none;
+  filter: brightness(0.94);
+  box-shadow: var(--feel-3d-press);
+}
+
+/* Quiet fallback if place data is missing. */
+html[data-player-skin="satellite"]:root .tab-chip {
+  border-radius: var(--sat-r-chip);
+  border: 1px solid rgba(248, 250, 252, 0.14);
+  background: #0c1c2a;
+  color: var(--sat-ink-2);
+}
+
+html[data-player-skin="satellite"]:root .tab-chip.active,
+html[data-player-skin="satellite"]:root .tab-chip[aria-selected="true"] {
+  border-color: rgba(248, 250, 252, 0.45);
+  background: linear-gradient(165deg, var(--sat-hot), var(--sat-ping));
+  color: var(--sat-well);
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="chip"] :is(
+  .loot-quest-card,
+  .loot-quest-summary,
+  .wp-quest-banner
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid rgba(248, 250, 252, 0.22);
+  border-radius: var(--sat-r-dish);
+  background:
+    var(--sat-grid-soft),
+    linear-gradient(165deg, #1a3348 0 46%, #0c1c2a 100%);
+  color: var(--sat-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(248, 250, 252, 0.14),
+    0 0 14px rgba(56, 189, 248, 0.12);
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="chip"] .loot-quest-card.selected,
+html[data-player-skin="satellite"]:root[data-skin-place~="chip"] .loot-quest-summary.complete {
+  border-color: var(--sat-ping);
+  box-shadow:
+    inset 0 1px 0 rgba(248, 250, 252, 0.22),
+    0 0 18px rgba(56, 189, 248, 0.35);
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="chip"] .loot-quest-check {
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--sat-hot), var(--sat-ping) 55%, var(--sat-lock));
+  color: var(--sat-well);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+}
+
+html[data-player-skin="satellite"]:root[data-skin-place~="chip"] .loot-quest-copy b {
+  background: linear-gradient(90deg, var(--sat-metal), var(--sat-ping));
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.4);
+}
+
+/* ── 5 · Glyph — dish in 3/4, boom, lock pip ────────────────── */
+/* Glyphs may clip. Cards and #main may not. Not an enamel badge,
+   not an octagon cabochon, not a radio diamond. */
+
+html[data-player-skin="satellite"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .loot-skin-avatar,
+  .nav-app-glyph,
+  .launcher-custom-app-emoji
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 2px solid #050d14;
+  border-radius: 0;
+  transform: none;
+  color: var(--sat-well);
+  clip-path: polygon(
+    8% 64%, 12% 36%, 24% 16%, 40% 7%, 62% 9%, 80% 22%, 91% 40%, 89% 58%,
+    72% 52%, 54% 50%, 36% 55%,
+    52% 64%, 70% 80%, 76% 88%, 67% 92%, 54% 76%, 38% 64%
+  );
+  background:
+    radial-gradient(circle at 32% 36%, var(--sat-hot) 0 10%, var(--sat-metal) 18%, #7aa0b4 36%, var(--sat-lock) 68%, #071018 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 0 12px rgba(56, 189, 248, 0.3);
+}
+
+html[data-player-skin="satellite"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph
+) svg {
+  filter: brightness(0.25) contrast(1.15);
+}
+
+html[data-player-skin="satellite"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .loot-skin-avatar
+)::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 18% 22% 28% 16%;
+  border: 1px solid rgba(248, 250, 252, 0.35);
+  border-radius: 50%;
+  opacity: 0.55;
+}
+
+html[data-player-skin="satellite"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .loot-skin-avatar
+)::after {
+  content: "⊙";
+  position: absolute;
+  right: -2px;
+  bottom: -4px;
+  display: grid;
+  width: 15px;
+  height: 15px;
+  place-items: center;
+  border: 1px solid var(--sat-metal);
+  border-radius: 50%;
+  background: var(--sat-lock);
+  color: var(--sat-hot);
+  font: 700 10px/1 var(--sat-font);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.55);
+  animation: room-satellite-blink 2.4s steps(2, jump-end) infinite;
+}
+
+/* ── 6 · Quiet plates — night metal, not a radio desk ───────── */
+
+html[data-player-skin="satellite"]:root :is(
+  .launcher-card,
+  .card,
+  .hub-card,
+  .pln-rail-card,
+  .evt-card,
+  .tsk-row,
+  .task-row,
+  .page-intent
+) {
+  clip-path: none !important;
+  overflow: visible;
+  border: 1px solid rgba(3, 105, 161, 0.32);
+  border-radius: var(--sat-r-card);
+  background: var(--sat-panel);
+  color: var(--sat-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(248, 250, 252, 0.08),
+    0 8px 18px -14px rgba(2, 8, 14, 0.45);
+}
+
+html[data-player-skin="satellite"]:root .launcher-card::before,
+html[data-player-skin="satellite"]:root .launcher-card::after {
+  animation: none;
+}
+
+html[data-player-skin="satellite"]:root .launcher-card::before {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--sat-hot) 0 30%, var(--sat-lock) 100%);
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.35);
+}
+
+html[data-player-skin="satellite"]:root :is(.launcher-card:hover, .launcher-card--focused, .card:hover) {
+  border-color: rgba(56, 189, 248, 0.45);
+  transform: none;
+  box-shadow:
+    inset 0 1px 0 rgba(248, 250, 252, 0.14),
+    0 0 14px rgba(56, 189, 248, 0.16);
+}
+
+html[data-player-skin="satellite"]:root :is(.launcher-card-name, .launcher-tile-name) {
+  color: var(--sat-ink);
+  font-family: var(--sat-font);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="satellite"]:root :is(.launcher-card-intention, .launcher-card-sub) {
+  color: var(--sat-mute);
+}
+
+html[data-player-skin="satellite"]:root button.primary,
+html[data-player-skin="satellite"]:root .primary,
+html[data-player-skin="satellite"]:root .page-intent-primary,
+html[data-player-skin="satellite"]:root .agent-pane-chat .agc-send {
+  border: 1px solid rgba(248, 250, 252, 0.55);
+  border-radius: var(--sat-r-ctl);
+  background:
+    radial-gradient(ellipse 80% 45% at 16% 0%, rgba(255, 255, 255, 0.45), transparent 58%),
+    linear-gradient(180deg, var(--sat-hot), var(--sat-ping) 52%, var(--sat-lock));
+  color: var(--sat-well);
+  font-family: var(--sat-font);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 0 0 1px #050d14,
+    0 0 14px rgba(56, 189, 248, 0.22);
+  animation: none;
+}
+
+html[data-player-skin="satellite"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="satellite"]:root .primary:hover:not(:disabled),
+html[data-player-skin="satellite"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 0 0 1px #050d14,
+    0 0 18px rgba(56, 189, 248, 0.38);
+}
+
+html[data-player-skin="satellite"]:root button.primary:active:not(:disabled),
+html[data-player-skin="satellite"]:root .primary:active:not(:disabled),
+html[data-player-skin="satellite"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: none;
+  filter: brightness(0.94);
+  box-shadow: var(--feel-3d-press);
+}
+
+html[data-player-skin="satellite"]:root :is(button.secondary, .secondary, .ghost-btn) {
+  border: 1px solid rgba(3, 105, 161, 0.4);
+  border-radius: var(--sat-r-ctl);
+  background: var(--sat-panel);
+  color: var(--sat-ink-2);
+}
+
+/* Companion is not a lighthouse, not a lamp, not a radio orb. */
+html[data-player-skin="satellite"]:root .companion-launcher {
+  background: rgba(7, 16, 24, 0.92);
+  border: 1px solid rgba(3, 105, 161, 0.35);
+  border-radius: var(--sat-r-dish);
+  box-shadow: 0 14px 28px -16px rgba(2, 8, 14, 0.6);
+}
+
+html[data-player-skin="satellite"]:root .companion-launcher-orb {
+  border-radius: var(--sat-r-dish);
+  background:
+    radial-gradient(circle at 32% 30%, var(--sat-hot) 0 12%, var(--sat-ping) 36%, var(--sat-lock) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 0 10px rgba(56, 189, 248, 0.28);
+  animation: none;
+}
+
+html[data-player-skin="satellite"]:root .agent-msg.assistant .agent-bubble {
+  border: 1px solid rgba(3, 105, 161, 0.32);
+  border-radius: var(--sat-r-ctl);
+  background: var(--sat-panel);
+  color: var(--sat-ink);
+}
+
+html[data-player-skin="satellite"]:root .agent-msg.user .agent-bubble {
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 20px 9px 6px 28px / 13px 18px 4px 10px;
+  background: color-mix(in srgb, var(--sat-lock) 28%, var(--sat-panel));
+  color: var(--sat-ink);
+}
+
+/* ── 7 · Empty / input / focus / disabled / dialog ──────────── */
+
+html[data-player-skin="satellite"]:root :is(
+  input,
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+) {
+  border: 1px solid rgba(3, 105, 161, 0.4);
+  border-radius: var(--sat-r-ctl);
+  background:
+    var(--sat-grid-soft),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.28), transparent 36%),
+    var(--sat-well);
+  color: var(--sat-ink);
+  caret-color: var(--sat-ping);
+  box-shadow:
+    inset 0 2px 8px rgba(2, 8, 14, 0.5),
+    inset 0 -2px 0 rgba(3, 105, 161, 0.28);
+}
+
+html[data-player-skin="satellite"]:root :is(input, textarea)::placeholder {
+  color: var(--sat-mute);
+  opacity: 0.75;
+}
+
+html[data-player-skin="satellite"]:root :is(
+  input,
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+):focus,
+html[data-player-skin="satellite"]:root .agc-input-zone:focus-within {
+  outline: none;
+  border-color: rgba(56, 189, 248, 0.7);
+  box-shadow:
+    inset 0 2px 8px rgba(2, 8, 14, 0.5),
+    inset 0 -2px 0 var(--sat-ping),
+    0 0 0 3px rgba(56, 189, 248, 0.18),
+    0 0 16px rgba(56, 189, 248, 0.2);
+}
+
+html[data-player-skin="satellite"]:root :focus-visible {
+  outline: 2px solid var(--sat-ping);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(56, 189, 248, 0.18);
+}
+
+html[data-player-skin="satellite"]:root ::selection {
+  background: rgba(56, 189, 248, 0.38);
+  color: var(--sat-well);
+}
+
+/* Empty: a silent dish. No return yet. */
+html[data-player-skin="satellite"]:root .empty-state {
+  position: relative;
+  border: 1.5px dashed rgba(3, 105, 161, 0.45);
+  border-radius: var(--sat-r-dish);
+  background:
+    repeating-radial-gradient(
+      circle at 50% 18%,
+      transparent 0 14px,
+      rgba(3, 105, 161, 0.1) 14px 15px
+    ),
+    var(--sat-panel);
+  color: var(--sat-ink-2);
+  box-shadow: inset 0 12px 24px rgba(2, 8, 14, 0.35);
+}
+
+html[data-player-skin="satellite"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 22px;
+  margin: 0 0 12px;
+  border: 1.5px solid rgba(248, 250, 252, 0.4);
+  border-bottom-color: rgba(3, 105, 161, 0.55);
+  border-radius: var(--sat-r-chip);
+  background:
+    radial-gradient(circle at 30% 40%, rgba(248, 250, 252, 0.18), transparent 50%),
+    #0c1c2a;
+  box-shadow: inset 0 1px 0 rgba(248, 250, 252, 0.12);
+  opacity: 0.75;
+}
+
+html[data-player-skin="satellite"]:root .empty-state-title {
+  color: var(--sat-ink);
+  font-family: var(--sat-font);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="satellite"]:root :is(.empty-state-body, .empty-state-hint) {
+  color: var(--sat-mute);
+}
+
+html[data-player-skin="satellite"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .launcher-search-panel,
+  .wp-arcade-card,
+  .wp-alarm-card,
+  dialog
+) {
+  border: 1px solid rgba(248, 250, 252, 0.22);
+  border-radius: var(--sat-r-dish);
+  background:
+    var(--sat-grid-soft),
+    linear-gradient(180deg, rgba(56, 189, 248, 0.08), transparent 22%),
+    #0c1c2a;
+  color: var(--sat-ink);
+  box-shadow:
+    inset 0 2px 0 var(--sat-ping),
+    0 0 0 6px rgba(5, 13, 20, 0.82),
+    0 22px 55px rgba(2, 8, 14, 0.58);
+}
+
+html[data-player-skin="satellite"]:root .toast-item {
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  border-radius: var(--sat-r-chip);
+  background: #0c1c2a;
+  color: var(--sat-hot);
+  box-shadow: inset 0 -2px 0 var(--sat-ping), 0 0 12px rgba(56, 189, 248, 0.22);
+}
+
+html[data-player-skin="satellite"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: #1a3348;
+  background: #101820;
+  color: #5d7180;
+  opacity: 0.58;
+  filter: grayscale(0.45) brightness(0.82);
+  box-shadow: none;
+  text-shadow: none;
+  animation: none !important;
+}
+
+html[data-player-skin="satellite"]:root * {
+  scrollbar-color: rgba(56, 189, 248, 0.4) transparent;
+}
+
+/* ── 8 · Motion — ping out, blink at the horn ───────────────── */
+
+@keyframes room-satellite-ping {
+  0% {
+    transform: scale(0.28);
+    opacity: 0.95;
+    border-color: var(--sat-hot);
+  }
+  62% {
+    transform: scale(1.05);
+    opacity: 0.28;
+    border-color: var(--sat-ping);
+  }
+  100% {
+    transform: scale(1.32);
+    opacity: 0;
+    border-color: var(--sat-lock);
+  }
+}
+
+@keyframes room-satellite-blink {
+  0%, 68%, 100% { opacity: 0.4; filter: brightness(0.82); }
+  74%, 86% { opacity: 1; filter: brightness(1.28); }
+}
+
+@keyframes room-satellite-lock {
+  0% {
+    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.55);
+    opacity: 1;
+  }
+  70% {
+    box-shadow: 0 0 0 9px rgba(56, 189, 248, 0);
+    opacity: 0.85;
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="satellite"]:root *,
+  html[data-player-skin="satellite"]:root *::before,
+  html[data-player-skin="satellite"]:root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Static ping — one frozen ring, horn stays lit. */
+  html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .top-hud::after {
+    transform: scale(0.72);
+    opacity: 0.55;
+    border-color: var(--sat-ping);
+  }
+
+  html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .hud-brand-jewel,
+  html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .hud-app-name::before,
+  html[data-player-skin="satellite"]:root[data-skin-place~="hud"] .hud-status-pill::before,
+  html[data-player-skin="satellite"]:root :is(
+    .launcher-card-glyph,
+    .launcher-tile-glyph,
+    .loot-skin-avatar
+  )::after {
+    opacity: 1;
+    filter: none;
+  }
+
+  html[data-player-skin="satellite"]:root[data-skin-place~="chip"] :is(
+    .tab-chip,
+    .hud-chip,
+    .hud-status-pill,
+    .loot-profile-chip,
+    .app-subnav-pill,
+    .pill
+  )::after {
+    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.28);
+    opacity: 1;
+  }
+
+  html[data-player-skin="satellite"]:root button.primary:hover:not(:disabled),
+  html[data-player-skin="satellite"]:root button.primary:active:not(:disabled) {
+    transform: none !important;
+    filter: none;
+  }
+}

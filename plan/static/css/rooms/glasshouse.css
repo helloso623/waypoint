@@ -1,0 +1,760 @@
+/* ═══════════════════════════════════════════════════════════════
+   GLASSHOUSE — greenhouse panes and fireflies. Player-skin chrome.
+
+   Critique: the object is a transom sash you are standing under,
+   not a herb note on a recipe card. Mullions are painted glazing
+   bars — straight, crossing, putty-white inside a forest timber
+   frame. Chips are fireflies: a small thorax, a lamp for an
+   abdomen. The world already photographed the beds. This file
+   hangs the sash and the insects. It fails if the HUD becomes
+   basil's kitchen wash, solarium noon limestone, a chapel of
+   gold leading, or emberglass heat-sag. Stop at the transom.
+
+   Not Basil Scout (kitchen-green notes, hex leaf, page).
+   Not Solarium (glass-roof sun, limestone caustics, gold).
+   Not Stained Glass (chapel, jewel tesserae, gold leading).
+   Not Shoji (paper lattice, charcoal). Not Emberglass (rose
+   pane, iron sash, gather striae). Not Signal Station (phosphor
+   radar). Architecture plus insects. Dusk, not a chopping board.
+
+   Architecture:
+   - Signature cut: the putty rebate. Nearly square lite, a
+     thicker ridge transom at the crown, a small putty drip at
+     the trailing foot. Pixel radii. Never 42%/48% ovals.
+   - Signature glyph: greenhouse gable — peaked ridge, four
+     lites, one firefly in the lower-right pane. Glyphs may
+     clip. #main and .launcher-card may not.
+   - HUD: transom sash, mullion grid. Place hud.
+   - Chips: fireflies. Place chip.
+   - Empty: a sash at dusk, lamps not yet lit.
+   - Input: a zinc plant label. Focus is a firefly landing.
+   - NEVER body { background-image }. The world keeps the beds.
+
+   Loot: colorA #86efac · colorB #166534 · effect bloom
+   (overridden: firefly lamp, not petal press) · pattern hex
+   (as diamond glazing, not a leaf) · world:true ·
+   place hud,page,chip,companion,calendar,pulse.
+   Selectors carry :root to outrank bloom / glass / leaf stencils.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — timber sash, mint lite, one lamp ──────────── */
+
+html[data-player-skin="glasshouse"]:root {
+  color-scheme: light;
+
+  --gh-bed: #ecfccb;
+  --gh-glass: #86efac;
+  --gh-glass-hot: #bbf7d0;
+  --gh-putty: #f7fee7;
+  --gh-sash: #166534;
+  --gh-timber: #14532d;
+  --gh-zinc: #3f6b4a;
+  --gh-lamp: #fde68a;
+  --gh-lamp-hot: #facc15;
+  --gh-lamp-core: #fffbeb;
+  --gh-ink: #14532d;
+  --gh-ink-2: #166534;
+  --gh-mute: #4d7c5a;
+
+  --gh-hair: rgba(22, 101, 52, 0.28);
+  --gh-hair-2: rgba(22, 101, 52, 0.5);
+  --gh-glow: rgba(250, 204, 21, 0.55);
+
+  /* Putty rebate: square lite, thicker ridge, trailing drip.
+     2 / 3 / 10 / 4 over 2 / 2 / 8 / 3 — not a petal, not a
+     sagged iron pane, never 42%/48%. */
+  --gh-r-sash: 2px 3px 10px 4px / 2px 2px 8px 3px;
+  --gh-r-lite: 2px 2px 7px 3px / 2px 2px 6px 2px;
+  --gh-r-fly: 11px 19px 16px 8px / 9px 11px 14px 7px;
+  --gh-r-ctl: 2px 4px 8px 3px / 2px 3px 6px 2px;
+  --gh-r-cell: 2px 3px 6px 2px / 2px 2px 5px 2px;
+  --gh-r-label: 2px 2px 2px 2px;
+
+  /* Diamond glazing — loot hex rewritten as conservatory
+     lozenges, not basil leaf veins, not wax comb. */
+  --gh-lozenge:
+    repeating-linear-gradient(
+      60deg,
+      transparent 0 13px,
+      rgba(22, 101, 52, 0.12) 13px 14px
+    ),
+    repeating-linear-gradient(
+      -60deg,
+      transparent 0 13px,
+      rgba(134, 239, 172, 0.22) 13px 14px
+    );
+  --gh-lozenge-soft:
+    repeating-linear-gradient(
+      60deg,
+      transparent 0 17px,
+      rgba(22, 101, 52, 0.08) 17px 18px
+    ),
+    repeating-linear-gradient(
+      -60deg,
+      transparent 0 17px,
+      rgba(247, 254, 231, 0.35) 17px 18px
+    );
+
+  /* Four-lite sash: two bars, putty-white, not iron, not gold. */
+  --gh-mullion:
+    linear-gradient(
+      90deg,
+      transparent 0 49%,
+      var(--gh-putty) 49% 51%,
+      transparent 51%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0 46%,
+      var(--gh-putty) 46% 54%,
+      transparent 54%
+    );
+
+  --gh-font: "Gill Sans", "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+
+  --skin-a: #86efac;
+  --skin-b: #166534;
+  --at-a: #86efac;
+  --at-b: #166534;
+  --feel-a: #86efac;
+  --feel-b: #166534;
+  --feel-accent: #86efac;
+  --feel-ink: #14532d;
+  --feel-paper: #f7fee7;
+  --feel-ground: #ecfccb;
+
+  --accent: var(--gh-glass);
+  --ws-accent: var(--gh-sash);
+  --accent-ink: var(--gh-putty);
+  --ink-primary: var(--gh-ink);
+  --ink-secondary: var(--gh-ink-2);
+  --ink-muted: var(--gh-mute);
+  --border: var(--gh-hair);
+
+  --at-r-plate: var(--gh-r-sash);
+  --at-r-card: var(--gh-r-lite);
+  --at-r-ctl: var(--gh-r-ctl);
+  --at-r-chip: var(--gh-r-fly);
+  --at-r-cell: var(--gh-r-cell);
+  --at-focus: 0 0 0 3px rgba(250, 204, 21, 0.45);
+  --at-font-display: var(--gh-font);
+  --font-display: var(--gh-font);
+
+  /* A lite in a sash: highlight on the putty, weight in the timber. */
+  --feel-3d:
+    inset 0 1px 0 rgba(247, 254, 231, 0.85),
+    inset 0 -8px 12px rgba(22, 101, 52, 0.12),
+    0 0 0 2px var(--gh-sash),
+    0 8px 16px rgba(20, 83, 45, 0.18);
+  --feel-3d-press:
+    inset 0 3px 8px rgba(20, 83, 45, 0.22),
+    inset 0 1px 0 rgba(247, 254, 231, 0.4),
+    0 0 0 2px var(--gh-timber);
+  --feel-hud-hair: 3px solid var(--gh-sash);
+  --feel-icon:
+    saturate(1.08) brightness(1.04)
+    drop-shadow(0 0 5px rgba(250, 204, 21, 0.45));
+  --feel-title-case: uppercase;
+  --feel-title-tracking: 0.1em;
+  --feel-grain: var(--gh-lozenge-soft);
+  --feel-grain-opacity: 0.22;
+  --feel-grain-blend: multiply;
+}
+
+/* Kill bloom petal press and hex leaf overlay. Do not paint the beds. */
+html[data-player-skin="glasshouse"]:root .app-shell::before {
+  content: none;
+  background: none;
+  animation: none;
+}
+
+html[data-player-skin="glasshouse"]:root body::after,
+html[data-player-skin="glasshouse"]:root[data-skin-effect="bloom"] body::after,
+html[data-player-skin="glasshouse"]:root[data-skin-pattern="hex"] body::after {
+  animation: none;
+  background-image: none;
+  opacity: 0;
+}
+
+html[data-player-skin="glasshouse"]:root #main,
+html[data-player-skin="glasshouse"]:root .launcher-card {
+  clip-path: none !important;
+}
+
+/* Bloom family paints a petal card. World owns the bed — keep
+   the photograph, drop the petal. */
+html[data-player-skin="glasshouse"]:root .launcher-card {
+  border-radius: var(--gh-r-sash);
+}
+
+/* ── 2 · HUD — transom sash, painted mullions ───────────────── */
+
+html[data-player-skin="glasshouse"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  min-height: 60px;
+  color: var(--gh-ink);
+  border-radius: 0 0 10px 4px / 0 0 8px 3px;
+  border-bottom: 4px solid var(--gh-sash);
+  background:
+    linear-gradient(180deg, rgba(247, 254, 231, 0.55) 0 10%, transparent 28%),
+    var(--gh-lozenge-soft),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--gh-putty) 72%, var(--gh-glass)) 0 18%,
+      color-mix(in srgb, var(--gh-glass) 55%, transparent) 18% 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(247, 254, 231, 0.9),
+    inset 0 -10px 14px rgba(22, 101, 52, 0.1),
+    0 0 0 1px var(--gh-timber);
+  backdrop-filter: none;
+}
+
+/* Glazing bars: four verticals, one transom. Putty, not gold. */
+html[data-player-skin="glasshouse"]:root .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 3px 8px 6px;
+  z-index: 1;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0 19.4%,
+      var(--gh-putty) 19.4% 20.8%,
+      transparent 20.8% 39.4%,
+      var(--gh-putty) 39.4% 40.8%,
+      transparent 40.8% 59.4%,
+      var(--gh-putty) 59.4% 60.8%,
+      transparent 60.8% 79.4%,
+      var(--gh-putty) 79.4% 80.8%,
+      transparent 80.8%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0 36%,
+      var(--gh-putty) 36% 46%,
+      transparent 46%
+    );
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--gh-sash) 55%, var(--gh-putty));
+  opacity: 0.88;
+  mix-blend-mode: multiply;
+  animation: room-glasshouse-mullion 9s ease-in-out infinite;
+}
+
+/* One firefly crossing the transom — the insect, not a caustic. */
+html[data-player-skin="glasshouse"]:root .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+  top: 38%;
+  left: 8%;
+  width: 7px;
+  height: 7px;
+  border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+  background:
+    radial-gradient(circle at 35% 35%, var(--gh-lamp-core), var(--gh-lamp) 55%, var(--gh-lamp-hot));
+  box-shadow:
+    0 0 8px var(--gh-lamp-hot),
+    0 0 16px rgba(250, 204, 21, 0.45);
+  animation: room-glasshouse-drift 7.4s ease-in-out infinite;
+}
+
+html[data-player-skin="glasshouse"]:root .top-hud > * {
+  position: relative;
+  z-index: 3;
+}
+
+html[data-player-skin="glasshouse"]:root :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--gh-timber);
+  color: var(--gh-timber);
+  font-family: var(--gh-font);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(247, 254, 231, 0.8);
+}
+
+html[data-player-skin="glasshouse"]:root :is(.hud-intention, .hud-now-focus-kicker) {
+  color: var(--gh-ink-2);
+  letter-spacing: 0.04em;
+}
+
+/* Brand jewel is one lite with a firefly inside — not a leaf. */
+html[data-player-skin="glasshouse"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 2px solid var(--gh-sash);
+  border-radius: var(--gh-r-lite);
+  background:
+    var(--gh-mullion),
+    radial-gradient(circle at 72% 68%, var(--gh-lamp) 0 14%, transparent 22%),
+    linear-gradient(165deg, rgba(247, 254, 231, 0.7) 0 18%, transparent 40%),
+    linear-gradient(180deg, var(--gh-glass-hot), var(--gh-glass) 55%, color-mix(in srgb, var(--gh-sash) 35%, var(--gh-glass)));
+  box-shadow:
+    inset 0 1px 0 rgba(247, 254, 231, 0.8),
+    0 0 10px rgba(134, 239, 172, 0.35);
+}
+
+html[data-player-skin="glasshouse"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  right: 18%;
+  bottom: 18%;
+  width: 6px;
+  height: 6px;
+  border-radius: 60% 40% 50% 50%;
+  background: var(--gh-lamp-hot);
+  box-shadow: 0 0 8px var(--gh-lamp);
+  animation: room-glasshouse-firefly 2.4s ease-in-out infinite;
+}
+
+html[data-player-skin="glasshouse"]:root :is(
+  .brand-mark,
+  .ws-mark,
+  .hud-icon-svg,
+  .tab-chip-mark,
+  .wp-skin-mark
+) {
+  color: var(--gh-sash);
+  filter: var(--feel-icon);
+}
+
+html[data-player-skin="glasshouse"]:root .tab-chip-bar {
+  background: color-mix(in srgb, var(--gh-putty) 78%, var(--gh-glass));
+  border-bottom: 2px solid var(--gh-sash);
+  box-shadow: inset 0 1px 0 rgba(247, 254, 231, 0.7);
+  backdrop-filter: none;
+}
+
+html[data-player-skin="glasshouse"]:root .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-agent-chip,
+  .loot-profile-chip,
+  .hud-game-chip,
+  .hud-loot-coins,
+  .hud-model-chip--status
+) {
+  border-radius: var(--gh-r-fly);
+  border: 1px solid var(--gh-sash);
+  color: var(--gh-ink);
+  background:
+    radial-gradient(circle at 78% 50%, rgba(253, 230, 138, 0.55), transparent 44%),
+    color-mix(in srgb, var(--gh-putty) 70%, var(--gh-glass));
+  box-shadow:
+    inset 0 1px 0 rgba(247, 254, 231, 0.7),
+    0 0 8px rgba(250, 204, 21, 0.18);
+}
+
+html[data-player-skin="glasshouse"]:root .hud-status-pill::before,
+html[data-player-skin="glasshouse"]:root .top-hud .hud-agent-chip::before {
+  border-radius: 60% 40% 55% 45%;
+  background: var(--gh-lamp-hot);
+  box-shadow: 0 0 6px var(--gh-lamp);
+  animation: room-glasshouse-firefly 2.2s ease-in-out infinite;
+}
+
+/* ── 3 · Chips — fireflies, thorax + lamp abdomen ───────────── */
+
+html[data-player-skin="glasshouse"]:root[data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .hud-agent-chip,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .tsk-day-chip,
+  .tdy-cat-chip,
+  .pln-mode-chip,
+  .cal-week-chip,
+  .cal-month-chip,
+  .hub-chip,
+  .nts-chip,
+  .quick-capture-chip
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid var(--gh-sash);
+  border-radius: var(--gh-r-fly);
+  background:
+    radial-gradient(ellipse 38% 70% at 82% 50%, var(--gh-lamp) 0 36%, transparent 62%),
+    linear-gradient(90deg, var(--gh-sash) 0 28%, var(--gh-glass) 28% 68%, var(--gh-lamp) 68% 100%);
+  color: var(--gh-putty);
+  font-family: var(--gh-font);
+  letter-spacing: 0.04em;
+  box-shadow:
+    inset 0 1px 0 rgba(247, 254, 231, 0.35),
+    0 0 12px rgba(250, 204, 21, 0.28);
+}
+
+/* Lamp organ sitting on the trailing abdomen. */
+html[data-player-skin="glasshouse"]:root[data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  right: 7px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  z-index: 1;
+  border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+  background: radial-gradient(circle at 35% 35%, var(--gh-lamp-core), var(--gh-lamp-hot));
+  transform: translateY(-50%);
+  box-shadow: 0 0 8px var(--gh-lamp-hot);
+  animation: room-glasshouse-lamp 2.6s ease-in-out infinite;
+}
+
+html[data-player-skin="glasshouse"]:root[data-skin-place~="chip"] :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active,
+  .tsk-day-chip-active,
+  .loot-profile-chip--complete
+) {
+  color: var(--gh-timber);
+  border-color: var(--gh-lamp-hot);
+  background:
+    radial-gradient(ellipse 44% 80% at 80% 50%, var(--gh-lamp-core) 0 40%, transparent 64%),
+    linear-gradient(90deg, var(--gh-glass) 0 30%, var(--gh-lamp) 30% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 251, 235, 0.7),
+    0 0 18px rgba(250, 204, 21, 0.55);
+  animation: room-glasshouse-firefly 2.4s ease-in-out infinite;
+}
+
+html[data-player-skin="glasshouse"]:root[data-skin-place~="chip"] :is(
+  .tab-chip:hover:not(.active):not(:disabled),
+  .hud-chip:hover:not(:disabled),
+  .app-subnav-pill:hover:not(.active),
+  .pill:hover,
+  .loot-profile-chip:hover
+) {
+  filter: brightness(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(247, 254, 231, 0.5),
+    0 0 16px rgba(250, 204, 21, 0.4);
+}
+
+html[data-player-skin="glasshouse"]:root .tab-chip {
+  border-radius: var(--gh-r-fly);
+}
+
+html[data-player-skin="glasshouse"]:root .tab-chip.active .tab-chip-mark {
+  color: var(--gh-timber);
+}
+
+/* ── 4 · Glyph — greenhouse gable, four lites, one firefly ──── */
+/* Glyphs may clip. Cards and #main may not. Not a leaf, not a
+   sagged iron sash, not a chapel rose. */
+
+html[data-player-skin="glasshouse"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .nav-app-glyph,
+  .loot-skin-avatar
+) {
+  position: relative;
+  overflow: visible;
+  border: 2px solid var(--gh-sash);
+  border-radius: 0;
+  transform: none;
+  color: var(--gh-timber);
+  clip-path: polygon(
+    50% 2%,
+    96% 22%,
+    96% 96%,
+    4% 96%,
+    4% 22%
+  );
+  background:
+    var(--gh-mullion),
+    linear-gradient(165deg, rgba(247, 254, 231, 0.65) 0 16%, transparent 38%),
+    linear-gradient(180deg, var(--gh-glass-hot) 0 22%, var(--gh-glass) 22% 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(247, 254, 231, 0.7),
+    0 0 12px rgba(134, 239, 172, 0.28);
+  filter: none;
+}
+
+html[data-player-skin="glasshouse"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar
+)::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: var(--gh-mullion);
+  opacity: 0.95;
+}
+
+html[data-player-skin="glasshouse"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  right: 18%;
+  bottom: 16%;
+  width: 18%;
+  height: 18%;
+  border-radius: 60% 40% 55% 45%;
+  background: radial-gradient(circle at 35% 35%, var(--gh-lamp-core), var(--gh-lamp-hot));
+  box-shadow: 0 0 8px var(--gh-lamp);
+  animation: room-glasshouse-lamp 2.8s ease-in-out infinite;
+}
+
+html[data-player-skin="glasshouse"]:root .launcher-custom-app-emoji {
+  border-radius: var(--gh-r-lite);
+  background: color-mix(in srgb, var(--gh-glass) 40%, transparent);
+  border: 1px solid rgba(22, 101, 52, 0.4);
+}
+
+html[data-player-skin="glasshouse"]:root :is(.launcher-tile-glyph, .launcher-card-glyph) svg {
+  filter: var(--feel-icon);
+}
+
+/* ── 5 · Empty / input / focus ──────────────────────────────── */
+
+/* Empty: a sash at dusk. Mullions up, lamps not yet lit. */
+html[data-player-skin="glasshouse"]:root .empty-state {
+  position: relative;
+  overflow: visible;
+  border: 2px solid var(--gh-sash);
+  border-radius: var(--gh-r-sash);
+  background:
+    var(--gh-mullion),
+    var(--gh-lozenge-soft),
+    linear-gradient(180deg, color-mix(in srgb, var(--gh-putty) 55%, var(--gh-sash)), var(--gh-timber));
+  color: var(--gh-glass);
+  padding: 28px 18px 22px;
+  box-shadow:
+    inset 0 1px 0 rgba(247, 254, 231, 0.25),
+    0 0 0 1px var(--gh-timber);
+}
+
+html[data-player-skin="glasshouse"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 28px;
+  margin: 0 auto 12px;
+  border: 2px solid var(--gh-putty);
+  background:
+    var(--gh-mullion),
+    linear-gradient(180deg, rgba(134, 239, 172, 0.35), rgba(22, 101, 52, 0.45));
+  clip-path: polygon(
+    50% 2%,
+    96% 22%,
+    96% 96%,
+    4% 96%,
+    4% 22%
+  );
+  box-shadow: inset 0 1px 0 rgba(247, 254, 231, 0.35);
+}
+
+html[data-player-skin="glasshouse"]:root .empty-state-title {
+  color: var(--gh-lamp);
+  font-family: var(--gh-font);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+html[data-player-skin="glasshouse"]:root :is(.empty-state-body, .empty-state-hint) {
+  color: var(--gh-glass-hot);
+}
+
+/* Input is a zinc plant label: cream slip, timber clip, dashed soil. */
+html[data-player-skin="glasshouse"]:root :is(
+  input,
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+) {
+  border: 1px solid var(--gh-sash);
+  border-top: 3px solid var(--gh-zinc);
+  border-radius: var(--gh-r-label);
+  background: var(--gh-putty);
+  color: var(--gh-ink);
+  caret-color: var(--gh-lamp-hot);
+  font-family: var(--gh-font);
+  box-shadow: inset 0 2px 6px rgba(20, 83, 45, 0.08);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+html[data-player-skin="glasshouse"]:root :is(input, textarea)::placeholder {
+  color: var(--gh-mute);
+  letter-spacing: 0.03em;
+}
+
+html[data-player-skin="glasshouse"]:root :is(
+  input,
+  textarea,
+  select,
+  .agc-input-zone,
+  [contenteditable="true"]
+):focus,
+html[data-player-skin="glasshouse"]:root .agc-input-zone:focus-within {
+  outline: none;
+  border-color: var(--gh-lamp-hot);
+  border-top-color: var(--gh-sash);
+  background: #fffef6;
+  box-shadow:
+    inset 0 2px 6px rgba(20, 83, 45, 0.06),
+    0 0 0 2px var(--gh-sash),
+    0 0 0 4px var(--gh-lamp),
+    0 0 16px rgba(250, 204, 21, 0.4);
+}
+
+html[data-player-skin="glasshouse"]:root :focus-visible {
+  outline: 2px solid var(--gh-lamp-hot);
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 5px var(--gh-sash),
+    0 0 12px rgba(250, 204, 21, 0.4);
+}
+
+html[data-player-skin="glasshouse"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: color-mix(in srgb, var(--gh-sash) 40%, #9ca3af);
+  background: color-mix(in srgb, var(--gh-putty) 70%, #d1d5db);
+  color: var(--gh-mute);
+  opacity: 0.55;
+  filter: saturate(0.35);
+  box-shadow: none;
+  animation: none !important;
+}
+
+html[data-player-skin="glasshouse"]:root ::selection {
+  background: rgba(250, 204, 21, 0.45);
+  color: var(--gh-timber);
+}
+
+/* Companion is one firefly in a lite, not a kitchen sprig. */
+html[data-player-skin="glasshouse"]:root .companion-launcher-orb {
+  border-radius: var(--gh-r-fly);
+  border: 2px solid var(--gh-sash);
+  background:
+    radial-gradient(circle at 72% 50%, var(--gh-lamp-core) 0 22%, var(--gh-lamp) 36%, var(--gh-sash) 78%);
+  box-shadow: 0 0 16px rgba(250, 204, 21, 0.5);
+  animation: room-glasshouse-firefly 2.2s ease-in-out infinite;
+}
+
+html[data-player-skin="glasshouse"]:root .toast,
+html[data-player-skin="glasshouse"]:root .toast-item {
+  border: 1px solid var(--gh-sash);
+  border-radius: var(--gh-r-fly);
+  background: linear-gradient(90deg, var(--gh-sash) 0 24%, var(--gh-lamp) 24% 100%);
+  color: var(--gh-timber);
+  font-family: var(--gh-font);
+  box-shadow: 0 0 14px rgba(250, 204, 21, 0.35);
+}
+
+html[data-player-skin="glasshouse"]:root .toast-item {
+  animation: room-glasshouse-settle 320ms cubic-bezier(0.2, 0.8, 0.25, 1) both;
+}
+
+/* ── 6 · Motion — mullion light, firefly lamp, transom drift ── */
+
+@keyframes room-glasshouse-mullion {
+  0%, 100% { opacity: 0.78; }
+  50% { opacity: 0.95; }
+}
+
+@keyframes room-glasshouse-firefly {
+  0%, 100% {
+    filter: brightness(0.92);
+    box-shadow:
+      inset 0 1px 0 rgba(247, 254, 231, 0.3),
+      0 0 8px rgba(250, 204, 21, 0.28);
+  }
+  50% {
+    filter: brightness(1.14);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 251, 235, 0.6),
+      0 0 18px rgba(250, 204, 21, 0.65),
+      0 0 28px rgba(134, 239, 172, 0.25);
+  }
+}
+
+@keyframes room-glasshouse-lamp {
+  0%, 100% { opacity: 0.55; transform: translateY(-50%) scale(0.92); }
+  50% { opacity: 1; transform: translateY(-50%) scale(1.08); }
+}
+
+@keyframes room-glasshouse-drift {
+  0%, 100% { transform: translate(0, 0); opacity: 0.7; }
+  35% { transform: translate(220px, -6px); opacity: 1; }
+  70% { transform: translate(420px, 4px); opacity: 0.85; }
+}
+
+@keyframes room-glasshouse-settle {
+  0% { transform: translateY(-6px) scale(0.96); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="glasshouse"]:root .top-hud::before,
+  html[data-player-skin="glasshouse"]:root .top-hud::after,
+  html[data-player-skin="glasshouse"]:root .hud-brand-jewel::after,
+  html[data-player-skin="glasshouse"]:root .companion-launcher-orb,
+  html[data-player-skin="glasshouse"]:root .toast-item,
+  html[data-player-skin="glasshouse"]:root .hud-status-pill::before,
+  html[data-player-skin="glasshouse"]:root .top-hud .hud-agent-chip::before,
+  html[data-player-skin="glasshouse"]:root :is(
+    .launcher-tile-glyph,
+    .launcher-card-glyph,
+    .loot-skin-avatar
+  )::after,
+  html[data-player-skin="glasshouse"]:root[data-skin-place~="chip"] :is(
+    .tab-chip,
+    .hud-chip,
+    .loot-profile-chip,
+    .app-subnav-pill,
+    .pill
+  ),
+  html[data-player-skin="glasshouse"]:root[data-skin-place~="chip"] :is(
+    .tab-chip,
+    .hud-chip,
+    .loot-profile-chip,
+    .app-subnav-pill,
+    .pill
+  )::after {
+    animation: none !important;
+  }
+
+  html[data-player-skin="glasshouse"]:root .top-hud::after {
+    left: 36%;
+    opacity: 0.85;
+  }
+}

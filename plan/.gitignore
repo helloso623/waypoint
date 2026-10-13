@@ -1,0 +1,19 @@
+.env
+__pycache__/
+*.pyc
+planner.db
+last-git-pull.log
+backups/
+generated_scripts/
+attachments/
+repo_store/
+static/scenes/
+static/items/
+static/portraits/
+parallel_images/
+companion/
+rag_index/
+
+# Personal content lives in WAYPOINT_DATA_DIR, never in the shareable repo.
+obsidian_vault/
+*.xlsx

@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Planner App",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}\\desktop.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Run Planner App (browser)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}\\app.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        }
+    ]
+}

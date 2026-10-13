@@ -1,0 +1,998 @@
+/* ═══════════════════════════════════════════════════════════════
+   CHERRY BEACON — two candy cherries on a stem, lit as a beacon.
+
+   The object: a soda-shop garnish held up like a lamp. Two glossy
+   fruits share one Y-stem. A leaf ticks off the join. Candy glaze
+   holds white dots of specular sugar. The pulse is that glaze
+   catching a sweet red — a beacon, not a wound.
+
+   Place: chip,hud. Quest chips carry the candy-red pulse. The HUD
+   is the cream soda bar the garnish stands on. Cards, calendar,
+   companion, and tab pages stay quiet cream.
+
+   Not coral reef (no teal channel, no polyp calyx, no tide chart).
+   Not candyfloss spun sugar (no airborne fibers, no paper stick,
+   no #f9a8d4 nest). Not paprika mill (no grind, no diagonal spice,
+   no #ea580c). Sweet, not gore.
+
+   Loot: colorA #fb7185, colorB #be123c, effect glow,
+   pattern dots, place chip,hud.
+
+   Signature cut: a pair of fruits with a stem pinch at the crown
+   and a slightly heavier trailing berry. Pixel radii. Never 42%/48%.
+   Signature glyph: two cherries on a Y-stem, one leaf.
+   Signature motion: candy-red pulse; glaze dots breathe.
+   Never clip-path #main or .launcher-card. Glyphs may clip.
+   Selectors carry :root to outrank the flame-family stencil.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — cream soda, candy glaze, one green stem ───── */
+
+html[data-player-skin="cherry"]:root {
+  color-scheme: light;
+
+  --ch-cream: #fff6f2;
+  --ch-soda: #ffe8ea;
+  --ch-bar: #fffdfb;
+  --ch-glaze: #fb7185;
+  --ch-candy: #be123c;
+  --ch-pit: #881337;
+  --ch-hot: #fff1f2;
+  --ch-stem: #2f6b28;
+  --ch-leaf: #6aa329;
+  --ch-ink: #3a1218;
+  --ch-ink-2: #6b2a36;
+  --ch-muted: #a56b74;
+  --ch-hair: rgba(190, 18, 60, 0.18);
+  --ch-glow: rgba(251, 113, 133, 0.45);
+
+  /* Pair of fruits. Crown pinches for the stem; trailing berry
+     sits heavier. Nothing else uses 28 / 7 / 21 / 15 with a
+     26px vertical on the leading fruit. Never 42%/48%. */
+  --ch-r-pair: 28px 7px 21px 15px / 18px 26px 13px 20px;
+  --ch-r-card: 18px 6px 16px 10px / 12px 17px 11px 14px;
+  --ch-r-ctl: 14px 4px 12px 8px / 10px 14px 8px 11px;
+  --ch-r-chip: 20px 5px 16px 11px / 13px 19px 10px 15px;
+  --ch-r-cell: 11px 3px 10px 7px / 8px 11px 7px 9px;
+
+  /* Candy glaze speckles — loot pattern dots, not spun stars. */
+  --ch-dots:
+    radial-gradient(circle at 16% 24%, #fff 0 1.05px, transparent 1.55px),
+    radial-gradient(circle at 78% 18%, var(--ch-hot) 0 0.7px, transparent 1.2px),
+    radial-gradient(circle at 38% 72%, rgba(190, 18, 60, 0.28) 0 0.9px, transparent 1.4px),
+    radial-gradient(circle at 88% 62%, #fff 0 0.55px, transparent 1.05px),
+    radial-gradient(circle at 54% 36%, rgba(255, 241, 242, 0.8) 0 0.65px, transparent 1.15px);
+  --ch-dots-size: 17px 21px, 23px 19px, 29px 25px, 15px 27px, 21px 15px;
+
+  --bg-shell: #ffe8ea;
+  --bg-content: var(--ch-cream);
+  --bg-card: var(--ch-bar);
+  --bg-card-hover: #fff4f2;
+  --ink-primary: var(--ch-ink);
+  --ink-secondary: var(--ch-ink-2);
+  --ink-muted: var(--ch-muted);
+  --border: rgba(190, 18, 60, 0.22);
+  --gridline: rgba(251, 113, 133, 0.22);
+  --accent: var(--ch-glaze);
+  --ws-accent: var(--ch-candy);
+  --accent-ink: #fff8f8;
+
+  /* Loot catalog source of truth. */
+  --skin-a: #fb7185;
+  --skin-b: #be123c;
+  --at-a: #fb7185;
+  --at-b: #be123c;
+  --feel-a: #fb7185;
+  --feel-b: #be123c;
+  --feel-accent: #fb7185;
+  --feel-ground: #ffe8ea;
+  --feel-paper: #fffdfb;
+  --feel-ink: #3a1218;
+
+  --at-plate: #fffdfb;
+  --at-plate-2: #ffe8ea;
+  --at-well: #fff4f2;
+  --at-ink: #3a1218;
+  --at-ink-2: #6b2a36;
+  --at-ink-3: #a56b74;
+  --at-hair: rgba(190, 18, 60, 0.14);
+  --at-hair-2: rgba(190, 18, 60, 0.28);
+  --at-hair-a: rgba(251, 113, 133, 0.55);
+  --at-tint: rgba(251, 113, 133, 0.14);
+  --at-tint-b: rgba(190, 18, 60, 0.12);
+  --at-focus: 0 0 0 3px rgba(251, 113, 133, 0.4);
+  --at-rise: 0 14px 28px -16px rgba(136, 19, 55, 0.22);
+  --at-rise-soft: 0 8px 18px -12px rgba(136, 19, 55, 0.16);
+  --at-inset: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --at-r-plate: var(--ch-r-pair);
+  --at-r-card: var(--ch-r-card);
+  --at-r-ctl: var(--ch-r-ctl);
+  --at-r-chip: var(--ch-r-chip);
+  --at-r-cell: var(--ch-r-cell);
+
+  --font-display: "Trebuchet MS", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --at-font-display: var(--font-display);
+
+  /* Candy, not forged steel: cream highlight, no iron step. */
+  --feel-3d:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0 12px rgba(251, 113, 133, 0.28),
+    0 8px 16px -10px rgba(136, 19, 55, 0.22);
+  --feel-3d-press:
+    inset 0 3px 8px rgba(136, 19, 55, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  --feel-grain-opacity: 0.28;
+  --feel-grain-blend: screen;
+  --feel-grain: var(--ch-dots);
+  --feel-grain-size: var(--ch-dots-size);
+  --feel-hud-hair: 1px solid rgba(47, 107, 40, 0.45);
+  --feel-icon:
+    saturate(1.1) brightness(1.04)
+    drop-shadow(0 0 5px rgba(251, 113, 133, 0.55));
+  --feel-plate-image: linear-gradient(168deg, rgba(255, 255, 255, 0.55), transparent 36%);
+  --feel-title-style: normal;
+  --feel-title-case: none;
+  --feel-title-tracking: 0.05em;
+}
+
+/* Kill flame-family stepped ember. Place is not page. */
+html[data-player-skin="cherry"]:root #main::before,
+html[data-player-skin="cherry"]:root #main::after {
+  animation: none !important;
+  background: none !important;
+  clip-path: none !important;
+}
+
+html[data-player-skin="cherry"]:root[data-skin-effect="glow"] #main,
+html[data-player-skin="cherry"]:root[data-skin-pattern="dots"] #main {
+  background-image: none;
+}
+
+/* ── 2 · Body — cream soda air, quiet. Fruit lives on chips. ── */
+
+html[data-player-skin="cherry"]:root body {
+  background-color: var(--ch-cream) !important;
+  background-image:
+    radial-gradient(ellipse 70% 28% at 50% -6%, rgba(251, 113, 133, 0.28), transparent 70%),
+    radial-gradient(ellipse 22% 14% at 12% 16%, rgba(255, 255, 255, 0.7), transparent 68%),
+    radial-gradient(ellipse 18% 12% at 88% 10%, rgba(106, 163, 41, 0.1), transparent 66%),
+    linear-gradient(180deg, #fffdfb 0 20%, #fff6f2 58%, #ffe8ea 100%) !important;
+  background-attachment: fixed !important;
+  color: var(--ch-ink);
+}
+
+/* Specular glaze dust. Dots, not fibers, not coral silt. */
+html[data-player-skin="cherry"]:root body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.18;
+  mix-blend-mode: screen;
+  background: var(--ch-dots);
+  background-size: var(--ch-dots-size);
+  animation: room-cherry-glaze 18s linear infinite;
+}
+
+html[data-player-skin="cherry"]:root #main {
+  clip-path: none !important;
+  isolation: isolate;
+  background: rgba(255, 253, 251, 0.5) !important;
+  border-inline: 1px solid rgba(251, 113, 133, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+html[data-player-skin="cherry"]:root .launcher-card {
+  clip-path: none !important;
+  overflow: visible;
+  border-radius: var(--ch-r-card);
+}
+
+/* ── 3 · Place · HUD — cream soda bar, garnish as beacon ────── */
+
+html[data-player-skin="cherry"]:root[data-skin-place~="hud"] .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  color: var(--ch-ink);
+  background:
+    var(--ch-dots),
+    linear-gradient(180deg, #fffdfb 0 58%, #ffe8ea 100%);
+  background-size: var(--ch-dots-size), auto;
+  border-bottom: 2px solid var(--ch-stem);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 0 18px rgba(251, 113, 133, 0.18),
+    0 10px 22px -16px rgba(136, 19, 55, 0.22);
+  backdrop-filter: none;
+}
+
+/* Candy-red pulse riding the soda-bar foot. */
+html[data-player-skin="cherry"]:root[data-skin-place~="hud"] .top-hud::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 8%;
+  right: 10%;
+  bottom: -2px;
+  height: 3px;
+  z-index: 2;
+  border-radius: 2px 8px 8px 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--ch-glaze) 18%,
+    var(--ch-hot) 36%,
+    var(--ch-candy) 55%,
+    var(--ch-stem) 78%,
+    transparent 100%
+  );
+  box-shadow: 0 0 10px rgba(251, 113, 133, 0.7);
+  animation: room-cherry-beacon 2.6s ease-in-out infinite;
+}
+
+html[data-player-skin="cherry"]:root .top-hud > * {
+  position: relative;
+  z-index: 3;
+}
+
+html[data-player-skin="cherry"]:root :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: currentColor;
+  color: var(--ch-ink);
+  font-family: var(--font-display);
+  font-weight: 750;
+  font-style: normal;
+  letter-spacing: 0.05em;
+  text-transform: none;
+  text-shadow: 0 1px 0 #fff;
+}
+
+/* Stem tick beside the name — not a coral polyp, not a stick. */
+html[data-player-skin="cherry"]:root .hud-app-name::before {
+  content: "";
+  display: inline-block;
+  width: 0.22em;
+  height: 0.85em;
+  margin-right: 0.4em;
+  vertical-align: -0.12em;
+  border-radius: 1px 1px 2px 2px;
+  background: linear-gradient(180deg, var(--ch-leaf), var(--ch-stem));
+  box-shadow:
+    6px -2px 0 -2px var(--ch-glaze),
+    -5px 1px 0 -2px var(--ch-candy);
+}
+
+html[data-player-skin="cherry"]:root .hud-app-name::after {
+  content: none !important;
+  animation: none !important;
+}
+
+html[data-player-skin="cherry"]:root .hud-intention,
+html[data-player-skin="cherry"]:root .hud-now-focus-kicker {
+  color: var(--ch-muted);
+  letter-spacing: 0.03em;
+}
+
+html[data-player-skin="cherry"]:root :is(
+  .brand-mark,
+  .ws-mark,
+  .hud-icon-svg,
+  .tab-chip-mark,
+  .hud-metric-mark,
+  .wp-skin-mark
+) {
+  color: var(--ch-candy);
+  filter: var(--feel-icon);
+  animation: none;
+}
+
+/* Brand jewel: two fruits on a stem. */
+html[data-player-skin="cherry"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border-radius: var(--ch-r-pair);
+  border: 1px solid rgba(190, 18, 60, 0.4);
+  background:
+    radial-gradient(circle at 28% 62%, var(--ch-hot) 0 12%, var(--ch-glaze) 32%, var(--ch-candy) 78%),
+    radial-gradient(circle at 74% 60%, var(--ch-hot) 0 10%, var(--ch-glaze) 30%, var(--ch-pit) 82%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 0 12px rgba(251, 113, 133, 0.55);
+  animation: room-cherry-pulse 2.8s ease-in-out infinite;
+}
+
+html[data-player-skin="cherry"]:root .hud-brand-jewel::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 47%;
+  top: -28%;
+  width: 2px;
+  height: 38%;
+  border-radius: 1px;
+  background: linear-gradient(180deg, var(--ch-leaf), var(--ch-stem));
+  transform: rotate(-8deg);
+  transform-origin: bottom center;
+}
+
+html[data-player-skin="cherry"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 52%;
+  top: -18%;
+  width: 7px;
+  height: 5px;
+  border-radius: 60% 40% 50% 30% / 50% 60% 40% 50%;
+  background: var(--ch-leaf);
+  transform: rotate(28deg);
+}
+
+html[data-player-skin="cherry"]:root[data-skin-place~="hud"] .top-hud :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-game-cluster,
+  .hud-game-chip,
+  .hud-model-chip--status,
+  .hud-agent-chip,
+  .hud-calm-pill
+) {
+  color: var(--ch-ink);
+  border: 1px solid rgba(190, 18, 60, 0.22);
+  border-radius: var(--ch-r-ctl);
+  background: rgba(255, 253, 251, 0.88);
+  box-shadow: inset 0 1px 0 #fff;
+}
+
+html[data-player-skin="cherry"]:root .top-hud :is(.hud-icon-btn, .hud-glyph-btn):hover:not(:disabled) {
+  border-color: rgba(190, 18, 60, 0.5);
+  background: #fff;
+  box-shadow: 0 0 12px rgba(251, 113, 133, 0.35);
+}
+
+html[data-player-skin="cherry"]:root .hud-status-pill::before,
+html[data-player-skin="cherry"]:root .top-hud .hud-agent-chip::before {
+  border-radius: 50%;
+  background: var(--ch-glaze);
+  box-shadow: 0 0 6px rgba(251, 113, 133, 0.7);
+  animation: room-cherry-pulse 2.2s ease-in-out infinite;
+}
+
+html[data-player-skin="cherry"]:root .tab-chip-bar {
+  background: rgba(255, 246, 242, 0.88);
+  border-bottom: 1px solid rgba(251, 113, 133, 0.22);
+  backdrop-filter: blur(8px);
+}
+
+/* The HUD quest chip is the beacon. */
+html[data-player-skin="cherry"]:root[data-skin-place~="hud"] #hud-quests-btn,
+html[data-player-skin="cherry"]:root[data-skin-place~="hud"] .hud-quests-btn {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid rgba(190, 18, 60, 0.4);
+  border-radius: var(--ch-r-chip);
+  background:
+    var(--ch-dots),
+    radial-gradient(ellipse 80% 50% at 50% 8%, rgba(255, 255, 255, 0.8), transparent 64%),
+    linear-gradient(168deg, var(--ch-hot) 0 32%, var(--ch-glaze) 58%, var(--ch-candy) 100%);
+  background-size: var(--ch-dots-size), auto, auto;
+  color: var(--ch-ink);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 0 14px rgba(251, 113, 133, 0.45);
+  animation: room-cherry-pulse 2.4s ease-in-out infinite;
+}
+
+html[data-player-skin="cherry"]:root[data-skin-place~="hud"] .loot-daily-hud-meter {
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(190, 18, 60, 0.16);
+}
+
+html[data-player-skin="cherry"]:root[data-skin-place~="hud"] .loot-daily-hud-meter i {
+  background: linear-gradient(90deg, var(--ch-glaze), var(--ch-candy));
+  box-shadow: 0 0 6px rgba(251, 113, 133, 0.7);
+}
+
+html[data-player-skin="cherry"]:root[data-skin-place~="hud"] .loot-daily-hud-meter.complete i {
+  background: linear-gradient(90deg, var(--ch-leaf), var(--ch-stem));
+}
+
+/* ── 4 · Place · CHIP — candy-red pulse on quest chips ──────── */
+
+html[data-player-skin="cherry"]:root[data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .hud-metric,
+  .hud-game-chip,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .hud-model-chip--status,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .tsk-day-chip,
+  .tsk-keyword-chip,
+  .tsk-bucket-chip,
+  .tsk-due-chip,
+  .tsk-bar-chip,
+  .hub-chip,
+  .nts-chip,
+  .pln-mode-chip,
+  .pln-commit-chip,
+  .pln-keyword-chip,
+  .tdy-cat-chip,
+  .tdy-week-chip,
+  .today-day-chip,
+  .cal-week-chip,
+  .cal-month-chip,
+  .repo-cat-chip,
+  .agc-followup-chip,
+  .quick-capture-chip,
+  .game-stamp-chip
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid rgba(190, 18, 60, 0.32);
+  border-radius: var(--ch-r-chip);
+  background:
+    var(--ch-dots),
+    radial-gradient(ellipse 80% 50% at 50% 8%, rgba(255, 255, 255, 0.78), transparent 62%),
+    linear-gradient(168deg, var(--ch-hot) 0 34%, var(--ch-glaze) 62%, var(--ch-candy) 100%);
+  background-size: var(--ch-dots-size), auto, auto;
+  color: var(--ch-ink);
+  font-family: var(--font-display);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.88),
+    0 0 10px rgba(251, 113, 133, 0.35);
+  transition: transform 200ms ease, box-shadow 200ms ease, filter 200ms ease;
+}
+
+/* Glaze highlight sitting on the leading fruit. */
+html[data-player-skin="cherry"]:root[data-skin-place~="chip"] :is(
+  .tab-chip,
+  .hud-chip,
+  .hud-status-pill,
+  .loot-profile-chip,
+  .app-subnav-pill,
+  .pill,
+  .tsk-day-chip,
+  .hub-chip,
+  .nts-chip,
+  .pln-mode-chip,
+  .tdy-cat-chip,
+  .today-day-chip,
+  .game-stamp-chip
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 3px auto auto 7px;
+  width: 7px;
+  height: 7px;
+  z-index: 1;
+  border-radius: 50% 40% 50% 40%;
+  background: radial-gradient(circle at 35% 30%, #fff 0 35%, transparent 70%);
+  opacity: 0.85;
+  animation: room-cherry-glaze-speck 2.6s ease-in-out infinite;
+}
+
+html[data-player-skin="cherry"]:root[data-skin-place~="chip"] :is(
+  .tab-chip:hover:not(.active):not(:disabled),
+  .hud-chip:hover:not(:disabled),
+  .app-subnav-pill:hover:not(.active),
+  .pill:hover,
+  .tsk-day-chip:hover,
+  .hub-chip:hover,
+  .nts-chip:hover,
+  .tdy-cat-chip:hover,
+  .loot-profile-chip:hover
+) {
+  filter: brightness(1.04) saturate(1.05);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 0 16px rgba(251, 113, 133, 0.65);
+}
+
+html[data-player-skin="cherry"]:root[data-skin-place~="chip"] :is(
+  .tab-chip.active,
+  .tab-chip[aria-selected="true"],
+  .app-subnav-pill.active,
+  .pill.active,
+  .tsk-day-chip-active,
+  .tsk-day-chip.active,
+  .hub-chip.active,
+  .nts-chip.active,
+  .pln-mode-chip-active,
+  .tdy-cat-armed,
+  .today-day-chip-selected,
+  .loot-profile-chip--complete
+) {
+  border-color: var(--ch-candy);
+  background:
+    var(--ch-dots),
+    radial-gradient(ellipse 90% 55% at 50% 6%, #fff 0 18%, transparent 64%),
+    linear-gradient(168deg, var(--ch-hot) 0 26%, var(--ch-glaze) 52%, var(--ch-candy) 100%);
+  color: var(--ch-ink);
+  font-weight: 700;
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 0 18px rgba(251, 113, 133, 0.75);
+  animation: room-cherry-pulse 2.4s ease-in-out infinite;
+}
+
+html[data-player-skin="cherry"]:root[data-skin-place~="chip"] .tab-chip.active .tab-chip-mark {
+  color: var(--ch-candy);
+  opacity: 1;
+}
+
+/* Quiet fallback if place data is missing. */
+html[data-player-skin="cherry"]:root .tab-chip {
+  border-radius: var(--ch-r-chip);
+  border: 1px solid rgba(190, 18, 60, 0.18);
+  background: rgba(255, 253, 251, 0.8);
+  color: var(--ch-ink-2);
+}
+
+html[data-player-skin="cherry"]:root .tab-chip.active,
+html[data-player-skin="cherry"]:root .tab-chip[aria-selected="true"] {
+  border-color: rgba(190, 18, 60, 0.45);
+  background: linear-gradient(168deg, var(--ch-hot), var(--ch-glaze));
+  color: var(--ch-ink);
+}
+
+/* Quest chips: the candy-red pulse lives here. */
+html[data-player-skin="cherry"]:root[data-skin-place~="chip"] :is(
+  .loot-quest-card,
+  .loot-quest-summary,
+  .wp-quest-banner
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid rgba(190, 18, 60, 0.38);
+  border-radius: var(--ch-r-pair);
+  background:
+    var(--ch-dots),
+    radial-gradient(ellipse 70% 40% at 18% 20%, rgba(255, 255, 255, 0.55), transparent 60%),
+    linear-gradient(168deg, var(--ch-bar) 0 46%, var(--ch-soda) 100%);
+  background-size: var(--ch-dots-size), auto, auto;
+  color: var(--ch-ink);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 0 14px rgba(251, 113, 133, 0.28);
+  animation: room-cherry-pulse 2.8s ease-in-out infinite;
+}
+
+html[data-player-skin="cherry"]:root[data-skin-place~="chip"] .loot-quest-card.selected,
+html[data-player-skin="cherry"]:root[data-skin-place~="chip"] .loot-quest-summary.complete {
+  border-color: var(--ch-candy);
+  background:
+    var(--ch-dots),
+    linear-gradient(168deg, var(--ch-hot) 0 28%, var(--ch-glaze) 100%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 0 22px rgba(251, 113, 133, 0.7);
+}
+
+html[data-player-skin="cherry"]:root[data-skin-place~="chip"] .loot-quest-card.done {
+  border-color: var(--ch-stem);
+  animation: none;
+}
+
+html[data-player-skin="cherry"]:root[data-skin-place~="chip"] .loot-quest-check {
+  border-radius: var(--ch-r-pair);
+  background:
+    radial-gradient(circle at 32% 30%, var(--ch-hot) 0 18%, var(--ch-glaze) 45%, var(--ch-candy) 100%);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(251, 113, 133, 0.55);
+}
+
+html[data-player-skin="cherry"]:root[data-skin-place~="chip"] .loot-quest-card.done .loot-quest-check {
+  background: linear-gradient(180deg, var(--ch-leaf), var(--ch-stem));
+  box-shadow: none;
+}
+
+html[data-player-skin="cherry"]:root[data-skin-place~="chip"] .loot-quest-copy b {
+  background: linear-gradient(90deg, var(--ch-glaze), var(--ch-candy));
+  box-shadow: 0 0 6px rgba(251, 113, 133, 0.55);
+}
+
+html[data-player-skin="cherry"]:root[data-skin-place~="chip"] .loot-quest-copy i {
+  border-radius: 2px 6px 6px 2px;
+  background: rgba(190, 18, 60, 0.12);
+}
+
+/* ── 5 · Glyph — two cherries on a Y-stem, one leaf ─────────── */
+/* Glyphs may clip. Cards and #main may not. Not a coral calyx,
+   not a sugar nest, not a mill stone, not the flame chamfer. */
+
+html[data-player-skin="cherry"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .nav-app-glyph,
+  .loot-skin-avatar
+) {
+  position: relative;
+  overflow: visible;
+  border: 1px solid rgba(190, 18, 60, 0.4);
+  border-radius: 0;
+  transform: none;
+  color: var(--ch-hot);
+  clip-path: polygon(
+    50% 0%, 54% 1%,
+    58% 14%, 72% 8%, 76% 14%, 62% 22%,
+    78% 32%, 96% 50%, 97% 68%, 84% 88%, 64% 99%,
+    50% 78%,
+    36% 99%, 16% 88%, 3% 68%, 4% 50%, 22% 32%,
+    38% 22%, 46% 14%
+  );
+  background:
+    radial-gradient(circle at 30% 64%, var(--ch-hot) 0 10%, var(--ch-glaze) 28%, var(--ch-candy) 70%, var(--ch-pit) 100%),
+    radial-gradient(circle at 72% 62%, var(--ch-hot) 0 8%, var(--ch-glaze) 26%, var(--ch-candy) 72%, var(--ch-pit) 100%);
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.7),
+    0 0 12px rgba(251, 113, 133, 0.45);
+  filter: none;
+}
+
+/* Stem shine down the join. */
+html[data-player-skin="cherry"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar
+)::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 47%;
+  top: 2%;
+  width: 3px;
+  height: 36%;
+  border-radius: 1px;
+  background: linear-gradient(180deg, var(--ch-leaf), var(--ch-stem) 55%, transparent);
+  transform: rotate(-6deg);
+  animation: none;
+}
+
+html[data-player-skin="cherry"]:root :is(
+  .launcher-tile-glyph,
+  .launcher-card-glyph,
+  .loot-skin-avatar
+)::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 22%;
+  top: 52%;
+  width: 22%;
+  height: 18%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.85), transparent 62%);
+  animation: room-cherry-glaze-speck 3.1s ease-in-out infinite;
+}
+
+html[data-player-skin="cherry"]:root .launcher-custom-app-emoji {
+  border-radius: var(--ch-r-pair);
+  background: rgba(251, 113, 133, 0.22);
+  border: 1px solid rgba(190, 18, 60, 0.28);
+}
+
+/* ── 6 · Quiet plates — cream paper, not a carnival ─────────── */
+
+html[data-player-skin="cherry"]:root :is(
+  .launcher-card,
+  .card,
+  .hub-card,
+  .pln-rail-card,
+  .evt-card,
+  .tsk-row,
+  .task-row
+) {
+  clip-path: none !important;
+  overflow: visible;
+  border: 1px solid rgba(251, 113, 133, 0.28);
+  border-radius: var(--ch-r-card);
+  background: var(--ch-bar);
+  color: var(--ch-ink);
+  box-shadow: inset 0 1px 0 #fff, 0 8px 18px -14px rgba(136, 19, 55, 0.14);
+}
+
+html[data-player-skin="cherry"]:root .launcher-card::before,
+html[data-player-skin="cherry"]:root .launcher-card::after {
+  animation: none;
+}
+
+html[data-player-skin="cherry"]:root .launcher-card::before {
+  width: 3px;
+  height: 12px;
+  border-radius: 1px;
+  background: var(--ch-stem);
+  opacity: 0.75;
+}
+
+html[data-player-skin="cherry"]:root :is(.launcher-card:hover, .launcher-card--focused) {
+  border-color: rgba(190, 18, 60, 0.45);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 0 14px rgba(251, 113, 133, 0.22),
+    0 12px 22px -14px rgba(136, 19, 55, 0.2);
+}
+
+html[data-player-skin="cherry"]:root :is(.launcher-card-name, .launcher-tile-name) {
+  color: var(--ch-ink);
+  font-family: var(--font-display);
+  font-style: normal;
+}
+
+html[data-player-skin="cherry"]:root :is(.launcher-card-intention, .launcher-card-sub) {
+  color: var(--ch-muted);
+}
+
+html[data-player-skin="cherry"]:root button.primary,
+html[data-player-skin="cherry"]:root .primary,
+html[data-player-skin="cherry"]:root .agent-pane-chat .agc-send {
+  border: 1px solid var(--ch-candy);
+  border-radius: var(--ch-r-ctl);
+  background:
+    radial-gradient(ellipse 80% 45% at 50% 8%, #fff 0 16%, transparent 64%),
+    linear-gradient(180deg, var(--ch-hot), var(--ch-glaze) 55%, var(--ch-candy));
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 750;
+  box-shadow: var(--feel-3d);
+}
+
+html[data-player-skin="cherry"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="cherry"]:root .primary:hover:not(:disabled),
+html[data-player-skin="cherry"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.05);
+  box-shadow: inset 0 1px 0 #fff, 0 0 14px rgba(251, 113, 133, 0.55);
+}
+
+html[data-player-skin="cherry"]:root button.primary:active:not(:disabled),
+html[data-player-skin="cherry"]:root .primary:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: var(--feel-3d-press);
+}
+
+html[data-player-skin="cherry"]:root :is(button.secondary, .secondary, .ghost-btn) {
+  border: 1px solid rgba(190, 18, 60, 0.22);
+  border-radius: var(--ch-r-ctl);
+  background: #fffdfb;
+  color: var(--ch-ink-2);
+}
+
+/* Companion is not a nest, not a reef pearl. Quiet cream. */
+html[data-player-skin="cherry"]:root .companion-launcher {
+  background: rgba(255, 253, 251, 0.9);
+  border: 1px solid rgba(251, 113, 133, 0.28);
+  border-radius: var(--ch-r-pair);
+  box-shadow: 0 14px 28px -16px rgba(136, 19, 55, 0.22);
+}
+
+html[data-player-skin="cherry"]:root .companion-launcher-orb {
+  border-radius: var(--ch-r-pair);
+  background:
+    radial-gradient(circle at 32% 30%, var(--ch-hot) 0 16%, var(--ch-glaze) 46%, var(--ch-candy) 100%);
+  box-shadow: inset 0 1px 0 #fff, 0 0 10px rgba(251, 113, 133, 0.35);
+  animation: none;
+}
+
+/* ── 7 · Empty / input / focus / disabled / dialog ──────────── */
+
+html[data-player-skin="cherry"]:root :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]) {
+  border: 1px solid rgba(190, 18, 60, 0.22);
+  border-bottom: 2px solid rgba(47, 107, 40, 0.45);
+  border-radius: var(--ch-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(251, 113, 133, 0.08) 0 16%, transparent 40%),
+    var(--ch-bar);
+  color: var(--ch-ink);
+  caret-color: var(--ch-candy);
+  box-shadow: inset 0 2px 7px rgba(136, 19, 55, 0.06);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+html[data-player-skin="cherry"]:root :is(input, textarea)::placeholder {
+  color: var(--ch-muted);
+  opacity: 1;
+}
+
+html[data-player-skin="cherry"]:root :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]):focus,
+html[data-player-skin="cherry"]:root .agc-input-zone:focus-within {
+  outline: none;
+  border-color: var(--ch-glaze);
+  border-bottom-color: var(--ch-candy);
+  background: #fff;
+  box-shadow:
+    inset 0 2px 7px rgba(136, 19, 55, 0.05),
+    0 0 0 3px rgba(251, 113, 133, 0.35),
+    0 0 14px rgba(251, 113, 133, 0.28);
+}
+
+/* Empty: a Y-stem waiting for fruit. The garnish never landed. */
+html[data-player-skin="cherry"]:root .empty-state {
+  position: relative;
+  border: 1.5px dashed rgba(190, 18, 60, 0.32);
+  border-radius: var(--ch-r-pair);
+  background:
+    radial-gradient(ellipse 55% 36% at 50% 12%, rgba(251, 113, 133, 0.12), transparent 70%),
+    var(--ch-bar);
+  color: var(--ch-muted);
+  box-shadow: inset 0 1px 0 #fff;
+  padding: 26px 18px 22px;
+}
+
+html[data-player-skin="cherry"]:root .empty-state::before {
+  content: "";
+  display: block;
+  width: 3px;
+  height: 22px;
+  margin: 0 auto 12px;
+  border-radius: 1px;
+  background: linear-gradient(180deg, var(--ch-leaf), var(--ch-stem));
+  box-shadow: 7px -6px 0 -1px var(--ch-leaf);
+  opacity: 0.7;
+}
+
+html[data-player-skin="cherry"]:root .empty-state-title {
+  color: var(--ch-candy);
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+}
+
+html[data-player-skin="cherry"]:root :is(.empty-state-body, .empty-state-hint) {
+  color: var(--ch-ink-2);
+}
+
+html[data-player-skin="cherry"]:root :focus-visible {
+  outline: 2px solid var(--ch-candy);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(251, 113, 133, 0.28);
+}
+
+html[data-player-skin="cherry"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .launcher-search-panel,
+  .wp-alarm-card,
+  dialog
+) {
+  border: 1px solid rgba(190, 18, 60, 0.28);
+  border-radius: var(--ch-r-pair);
+  background:
+    linear-gradient(180deg, rgba(251, 113, 133, 0.12) 0 18%, transparent 36%),
+    var(--ch-bar);
+  color: var(--ch-ink);
+  box-shadow: inset 0 1px 0 #fff, 0 24px 52px rgba(58, 18, 24, 0.16);
+}
+
+html[data-player-skin="cherry"]:root .toast-item {
+  border: 1px solid var(--ch-candy);
+  border-radius: var(--ch-r-chip);
+  background: linear-gradient(168deg, var(--ch-hot), var(--ch-glaze));
+  color: var(--ch-ink);
+  box-shadow: 0 0 14px rgba(251, 113, 133, 0.45);
+}
+
+html[data-player-skin="cherry"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: rgba(165, 107, 116, 0.28);
+  background: #f3e4e6;
+  color: var(--ch-muted);
+  opacity: 0.62;
+  filter: saturate(0.35);
+  box-shadow: none;
+  animation: none;
+}
+
+html[data-player-skin="cherry"]:root .agent-bubble {
+  border-radius: var(--ch-r-card);
+  background: var(--ch-bar);
+  color: var(--ch-ink);
+}
+
+html[data-player-skin="cherry"]:root .agent-msg.assistant .agent-bubble {
+  border: 1px solid rgba(251, 113, 133, 0.32);
+}
+
+html[data-player-skin="cherry"]:root .agent-msg.user .agent-bubble {
+  border: 1px solid rgba(190, 18, 60, 0.35);
+  background: linear-gradient(168deg, var(--ch-hot), var(--ch-glaze));
+}
+
+/* ── 8 · Motion — pulse, beacon, glaze ──────────────────────── */
+
+@keyframes room-cherry-pulse {
+  0%, 100% {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.88),
+      0 0 8px rgba(251, 113, 133, 0.32);
+  }
+  50% {
+    box-shadow:
+      inset 0 1px 0 #fff,
+      0 0 18px rgba(251, 113, 133, 0.8),
+      0 0 28px rgba(190, 18, 60, 0.28);
+  }
+}
+
+@keyframes room-cherry-beacon {
+  0%, 100% {
+    opacity: 0.55;
+    filter: drop-shadow(0 0 3px rgba(251, 113, 133, 0.4));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px rgba(251, 113, 133, 0.9));
+  }
+}
+
+@keyframes room-cherry-glaze {
+  0% { background-position: 0 0, 8px 4px, 3px 10px, 12px 2px, 5px 7px; }
+  100% { background-position: 5px 8px, 2px 12px, 10px 3px, 0 9px, 8px 1px; }
+}
+
+@keyframes room-cherry-glaze-speck {
+  0%, 100% { opacity: 0.4; transform: scale(0.82); }
+  45% { opacity: 1; transform: scale(1.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="cherry"]:root body::after,
+  html[data-player-skin="cherry"]:root[data-skin-place~="hud"] .top-hud::after,
+  html[data-player-skin="cherry"]:root[data-skin-place~="hud"] #hud-quests-btn,
+  html[data-player-skin="cherry"]:root[data-skin-place~="hud"] .hud-quests-btn,
+  html[data-player-skin="cherry"]:root .hud-brand-jewel,
+  html[data-player-skin="cherry"]:root .hud-status-pill::before,
+  html[data-player-skin="cherry"]:root .top-hud .hud-agent-chip::before,
+  html[data-player-skin="cherry"]:root[data-skin-place~="chip"] :is(
+    .tab-chip,
+    .hud-chip,
+    .hud-status-pill,
+    .loot-profile-chip,
+    .app-subnav-pill,
+    .pill,
+    .tsk-day-chip,
+    .hub-chip,
+    .nts-chip,
+    .pln-mode-chip,
+    .tdy-cat-chip,
+    .today-day-chip,
+    .game-stamp-chip,
+    .loot-quest-card,
+    .loot-quest-summary,
+    .wp-quest-banner
+  ),
+  html[data-player-skin="cherry"]:root :is(
+    .launcher-tile-glyph,
+    .launcher-card-glyph,
+    .loot-skin-avatar
+  )::after {
+    animation: none !important;
+  }
+
+  html[data-player-skin="cherry"]:root button.primary:hover:not(:disabled),
+  html[data-player-skin="cherry"]:root button.primary:active:not(:disabled) {
+    transform: none !important;
+  }
+}

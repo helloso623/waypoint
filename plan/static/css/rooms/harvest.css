@@ -1,0 +1,984 @@
+/* ═══════════════════════════════════════════════════════════════
+   HARVEST FLAG — autumn gold along the page edge.
+
+   Critique: the object is one corn shock at the working margin,
+   husks bound at the waist, a harvest pennant on a stake through
+   the twine. It marks a row. It is not a paddock fence, not a wax
+   comb, not a sunflower facing the HUD. If the gold reads as grass,
+   honey, or a sun disc, the object has failed. Place is the page:
+   the shock stands in the #main margin and does not climb the fascia.
+
+   Not Prairie Scout (T-post, lime sod, horizon grass).
+   Not Honeycomb Plot (hex wax, calendar cells).
+   Not Sunflower Post (HUD facing, glow, dots).
+   Not Dune Surveyor (mesa cap, brass dial, noon grit).
+   Not Honey Route (pour, drips, cling).
+   Not Rust Cart (iron gondola, wiped hub).
+
+   Signature cut: the sheaf cinch. A flared husk crown, a tight
+   waist where twine binds, a standing stubble foot that leans
+   leeward. Pixel radii. Never 42%/48% ovals, never a mesa.
+   Signature glyph: a hoist and fly — stake plus pennant.
+     Glyphs may clip. #main and .launcher-card may not.
+   Signature edge: husk stripes down the page margin
+     (loot pattern `stripes`). The flag lives there.
+   Signature grit: chaff. Sand of this room is grain dust,
+     falling, never dune grit and never wind-combed grass.
+
+   Loot: colorA #fbbf24 · colorB #b45309 · effect sand ·
+   pattern stripes · place page. Selectors carry :root to
+   outrank the dune-family stencil. Never clip #main or
+   .launcher-card.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Tokens — husk gold, twine, one leaning shock ──────── */
+
+html[data-player-skin="harvest"]:root {
+  color-scheme: light;
+
+  --hv-paper: #fff8e7;
+  --hv-paper-2: #f6ecd0;
+  --hv-field: #efe0b4;
+  --hv-well: #e8d29a;
+  --hv-gold: #fbbf24;
+  --hv-gold-hot: #fde68a;
+  --hv-husk: #d97706;
+  --hv-amber: #b45309;
+  --hv-stalk: #92400e;
+  --hv-stubble: #78350f;
+  --hv-soil: #5c3310;
+  --hv-twine: #fef3c7;
+  --hv-ink: #3b1d08;
+  --hv-ink-2: #6b3a12;
+  --hv-mute: #8a5a28;
+
+  --hv-hair: rgba(180, 83, 9, 0.26);
+  --hv-hair-2: rgba(180, 83, 9, 0.46);
+  --hv-chaff: rgba(251, 191, 36, 0.4);
+
+  /* Sheaf cinch: flared crown, bound waist, leeward foot.
+     37/21/29/9 over 51/13/23/17 — nothing else uses this lean. */
+  --hv-r-plate: 37px 21px 29px 9px / 51px 13px 23px 17px;
+  --hv-r-card: 29px 17px 23px 7px / 41px 11px 19px 13px;
+  --hv-r-ctl: 17px 11px 15px 5px / 25px 7px 13px 9px;
+  --hv-r-chip: 13px 9px 11px 4px / 19px 6px 10px 7px;
+  --hv-r-cell: 11px 7px 9px 3px / 15px 5px 8px 6px;
+  --hv-r-dialog: 41px 23px 33px 11px / 55px 15px 27px 19px;
+
+  /* Bound husks: loot stripes as standing corn, not prairie sod. */
+  --hv-husks:
+    repeating-linear-gradient(
+      102deg,
+      transparent 0 7px,
+      rgba(180, 83, 9, 0.16) 7px 8px,
+      transparent 8px 15px,
+      rgba(251, 191, 36, 0.22) 15px 16px
+    );
+  --hv-husks-edge:
+    repeating-linear-gradient(
+      180deg,
+      #fbbf24 0 6px,
+      #d97706 6px 9px,
+      #b45309 9px 12px,
+      #fde68a 12px 14px
+    );
+  --hv-husks-soft:
+    repeating-linear-gradient(
+      98deg,
+      transparent 0 9px,
+      rgba(146, 64, 14, 0.1) 9px 10px,
+      transparent 10px 19px,
+      rgba(251, 191, 36, 0.12) 19px 20px
+    );
+
+  --hv-font: "Rockwell", "Palatino Linotype", "Iowan Old Style", Georgia, serif;
+  --hv-figure: ui-monospace, "IBM Plex Mono", "Courier New", monospace;
+  --hv-cast-1: 0 3px 0 rgba(92, 51, 16, 0.16);
+  --hv-cast-2: 0 5px 0 rgba(92, 51, 16, 0.14), 0 12px 18px rgba(92, 51, 16, 0.12);
+  --hv-cast-press: 0 1px 0 rgba(92, 51, 16, 0.28);
+
+  --bg-shell: #f3e6c4;
+  --bg-content: var(--hv-paper-2);
+  --bg-card: var(--hv-paper);
+  --bg-card-hover: #fff4d2;
+  --ink-primary: var(--hv-ink);
+  --ink-secondary: var(--hv-ink-2);
+  --ink-muted: var(--hv-mute);
+  --border: var(--hv-hair);
+  --gridline: rgba(180, 83, 9, 0.14);
+  --accent: var(--hv-amber);
+  --ws-accent: var(--hv-amber);
+  --accent-ink: var(--hv-twine);
+  --glow-accent: rgba(251, 191, 36, 0.28);
+  --glow-violet: rgba(180, 83, 9, 0.16);
+
+  --skin-a: #fbbf24;
+  --skin-b: #b45309;
+  --at-a: #fbbf24;
+  --at-b: #b45309;
+  --feel-a: #fbbf24;
+  --feel-b: #b45309;
+  --feel-accent: #fbbf24;
+  --feel-ground: #f3e6c4;
+  --feel-paper: #fff8e7;
+  --feel-ink: #3b1d08;
+
+  --at-plate: var(--hv-paper);
+  --at-plate-2: var(--hv-paper-2);
+  --at-well: var(--hv-well);
+  --at-ink: var(--hv-ink);
+  --at-ink-2: var(--hv-ink-2);
+  --at-ink-3: var(--hv-mute);
+  --at-hair: var(--hv-hair);
+  --at-hair-2: var(--hv-hair-2);
+  --at-hair-a: rgba(251, 191, 36, 0.55);
+  --at-focus: var(--hv-gold);
+  --at-gold: var(--hv-husk);
+  --at-gold-soft: var(--hv-gold-hot);
+  --at-inset: inset 0 1px 0 rgba(254, 243, 199, 0.7);
+  --at-rise: var(--hv-cast-2);
+  --at-rise-soft: var(--hv-cast-1);
+  --at-r-plate: var(--hv-r-plate);
+  --at-r-card: var(--hv-r-card);
+  --at-r-ctl: var(--hv-r-ctl);
+  --at-r-chip: var(--hv-r-chip);
+  --at-r-cell: var(--hv-r-cell);
+  --at-font-display: var(--hv-font);
+  --at-font-mono: var(--hv-figure);
+  --font-display: var(--hv-font);
+  --font-ui: var(--hv-font);
+
+  /* Bound sheaf: highlight on the crown, weight at the stubble. */
+  --feel-3d:
+    inset 0 1px 0 rgba(254, 243, 199, 0.75),
+    inset 0 -3px 0 rgba(92, 51, 16, 0.16),
+    0 5px 0 #5c3310,
+    0 12px 18px rgba(92, 51, 16, 0.14);
+  --feel-3d-press:
+    inset 0 3px 6px rgba(92, 51, 16, 0.22),
+    0 1px 0 #5c3310;
+  --feel-grain-opacity: 0.3;
+  --feel-grain-blend: multiply;
+  --feel-grain:
+    repeating-linear-gradient(
+      102deg,
+      transparent 0 7px,
+      rgba(180, 83, 9, 0.08) 7px 8px,
+      transparent 8px 15px,
+      rgba(251, 191, 36, 0.1) 15px 16px
+    ),
+    radial-gradient(circle at 24% 28%, rgba(180, 83, 9, 0.22) 0 0.8px, transparent 1.5px),
+    radial-gradient(circle at 71% 66%, rgba(251, 191, 36, 0.28) 0 0.7px, transparent 1.4px);
+  --feel-grain-size: auto, 27px 23px, 35px 29px;
+  --feel-hud-hair: 2px solid var(--hv-amber);
+  --feel-icon:
+    sepia(0.18) saturate(1.12) contrast(1.04)
+    drop-shadow(0 1px 0 rgba(254, 243, 199, 0.7));
+  --feel-title-case: none;
+  --feel-title-style: normal;
+  --feel-title-tracking: 0.03em;
+  --feel-plate-image: var(--hv-husks-soft);
+  --plate-shadow: var(--hv-cast-1);
+  --plate-shadow-hover: var(--hv-cast-2);
+}
+
+/* ── 2 · Body — a field of standing husks, not a mesa ───────── */
+
+html[data-player-skin="harvest"]:root body {
+  background-color: #f3e6c4 !important;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(180, 83, 9, 0.2) 0 11px,
+      transparent 11px 100%
+    ),
+    repeating-linear-gradient(
+      96deg,
+      #f6ecd0 0 11px,
+      #f0e0b6 11px 12px,
+      #efe0b4 12px 23px
+    ) !important;
+  background-attachment: fixed, fixed !important;
+  color: var(--hv-ink);
+}
+
+/* Chaff. Sand of this room: grain dust falling, not noon grit. */
+html[data-player-skin="harvest"]:root body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.28;
+  mix-blend-mode: multiply;
+  background:
+    radial-gradient(circle at 16% 18%, rgba(180, 83, 9, 0.4) 0 0.9px, transparent 1.6px),
+    radial-gradient(circle at 62% 36%, rgba(251, 191, 36, 0.5) 0 0.7px, transparent 1.4px),
+    radial-gradient(circle at 84% 71%, rgba(146, 64, 14, 0.35) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 33% 82%, rgba(217, 119, 6, 0.28) 0 0.6px, transparent 1.3px);
+  background-size: 29px 25px, 21px 19px, 37px 31px, 17px 23px;
+  animation: room-harvest-chaff 18s linear infinite;
+}
+
+html[data-player-skin="harvest"]:root body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+  background: var(--hv-husks);
+  animation: room-harvest-bind 22s ease-in-out infinite;
+}
+
+/* ── 3 · Page — the shock stands in the margin. Honor place. ── */
+
+html[data-player-skin="harvest"]:root #main {
+  clip-path: none !important;
+  isolation: isolate;
+  position: relative;
+  overflow: visible;
+  background:
+    var(--hv-husks-soft),
+    linear-gradient(180deg, rgba(255, 248, 231, 0.55), rgba(246, 236, 208, 0.4)) !important;
+  border-inline: 1px solid rgba(180, 83, 9, 0.14);
+}
+
+html[data-player-skin="harvest"]:root[data-skin-place~="page"] #main {
+  overflow: visible;
+  background:
+    var(--hv-husks-edge) 0 0 / 9px 100% no-repeat,
+    var(--hv-husks-soft),
+    linear-gradient(
+      180deg,
+      rgba(255, 248, 231, 0.62) 0%,
+      rgba(246, 236, 208, 0.45) 62%,
+      rgba(232, 210, 154, 0.35) 100%
+    ) !important;
+  border-inline-start: 9px solid var(--hv-amber);
+  border-inline-end: 1px solid rgba(180, 83, 9, 0.14);
+  box-shadow:
+    inset 18px 0 28px -20px rgba(180, 83, 9, 0.22),
+    inset 0 1px 0 rgba(254, 243, 199, 0.55);
+}
+
+/* The corn shock. Bound husks, soil foot, lean. Not a T-post. */
+html[data-player-skin="harvest"]:root[data-skin-place~="page"] #main::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  z-index: 3;
+  left: -7px;
+  bottom: 16%;
+  width: 36px;
+  height: 118px;
+  border-radius: 37px 21px 29px 9px / 51px 13px 23px 17px;
+  background:
+    linear-gradient(180deg, transparent 37%, #78350f 37% 41%, transparent 41%),
+    linear-gradient(90deg, transparent 72%, #5c3310 72% 78%, transparent 78%),
+    repeating-linear-gradient(
+      102deg,
+      #fde68a 0 3px,
+      #fbbf24 3px 6px,
+      #d97706 6px 8px,
+      #b45309 8px 11px
+    );
+  box-shadow:
+    12px 10px 0 -9px #d97706,
+    -5px 16px 0 -11px #b45309,
+    inset 0 -9px 0 #5c3310,
+    0 6px 0 #5c3310;
+  transform-origin: 50% 100%;
+  animation: room-harvest-cinch 7.4s ease-in-out infinite;
+}
+
+/* The harvest pennant. A fly on the stake through the twine. */
+html[data-player-skin="harvest"]:root[data-skin-place~="page"] #main::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  z-index: 4;
+  left: 24px;
+  bottom: 31%;
+  width: 0;
+  height: 0;
+  clip-path: none !important;
+  border-style: solid;
+  border-width: 8px 0 8px 26px;
+  border-color: transparent transparent transparent #fbbf24;
+  filter: drop-shadow(0 1px 0 #b45309);
+  transform-origin: 0 50%;
+  animation: room-harvest-pennant 4.8s ease-in-out infinite;
+}
+
+html[data-player-skin="harvest"]:root #main::after {
+  clip-path: none !important;
+}
+
+html[data-player-skin="harvest"]:root[data-app-tab="Home"][data-skin-place~="page"] #main {
+  clip-path: none !important;
+  background:
+    var(--hv-husks-edge) 0 0 / 9px 100% no-repeat,
+    var(--hv-husks),
+    linear-gradient(180deg, rgba(255, 248, 231, 0.7), rgba(232, 210, 154, 0.4)) !important;
+}
+
+/* ── 4 · HUD — quiet field paper. Not a sunflower facing. ───── */
+
+html[data-player-skin="harvest"]:root .top-hud {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border-image: none;
+  min-height: 58px;
+  background: linear-gradient(180deg, #fff8e7 0 72%, #f6ecd0 72% 100%);
+  border-bottom: 2px solid var(--hv-amber);
+  border-radius: 0;
+  color: var(--hv-ink);
+  box-shadow: inset 0 1px 0 rgba(254, 243, 199, 0.8), 0 2px 0 rgba(92, 51, 16, 0.08);
+  backdrop-filter: none;
+}
+
+/* A stubble tick, not a horizon and not a sun disc. */
+html[data-player-skin="harvest"]:root .top-hud::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 4px;
+  height: 3px;
+  z-index: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--hv-amber) 0 5px,
+    var(--hv-gold) 5px 7px,
+    transparent 7px 13px
+  );
+  opacity: 0.7;
+}
+
+html[data-player-skin="harvest"]:root .top-hud::after {
+  content: none !important;
+  animation: none !important;
+}
+
+html[data-player-skin="harvest"]:root .top-hud > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-player-skin="harvest"]:root :is(.hud-app-name, .launcher-title, .page-title) {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--hv-ink);
+  color: var(--hv-ink);
+  font-family: var(--hv-font);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  text-shadow: 0 1px 0 var(--hv-twine);
+}
+
+html[data-player-skin="harvest"]:root .hud-app-name::before {
+  content: "⚑  ";
+  color: var(--hv-amber);
+  font-size: 0.78em;
+  letter-spacing: 0;
+}
+
+html[data-player-skin="harvest"]:root .hud-app-name::after {
+  content: none !important;
+  animation: none !important;
+}
+
+html[data-player-skin="harvest"]:root .hud-intention,
+html[data-player-skin="harvest"]:root .hud-now-focus-kicker {
+  color: var(--hv-ink-2);
+  font-family: var(--hv-figure);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+
+/* Jewel is a twine knot, not a sun and not a wiped hub. */
+html[data-player-skin="harvest"]:root .hud-brand-jewel {
+  position: relative;
+  isolation: isolate;
+  border-radius: 40% 20% / 55% 30%;
+  border: 2px solid var(--hv-stubble);
+  background:
+    linear-gradient(180deg, var(--hv-twine), var(--hv-gold-hot) 40%, var(--hv-husk) 70%, var(--hv-amber));
+  box-shadow:
+    inset 0 1px 0 rgba(254, 243, 199, 0.85),
+    0 2px 0 var(--hv-soil);
+  animation: room-harvest-bind 8.2s ease-in-out infinite;
+}
+
+html[data-player-skin="harvest"]:root .hud-brand-jewel::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 44%;
+  height: 3px;
+  background: var(--hv-stubble);
+  border-radius: 1px;
+}
+
+html[data-player-skin="harvest"]:root .brand-mark,
+html[data-player-skin="harvest"]:root .ws-mark,
+html[data-player-skin="harvest"]:root .hud-icon-svg,
+html[data-player-skin="harvest"]:root .tab-chip-mark,
+html[data-player-skin="harvest"]:root .wp-skin-mark {
+  color: var(--hv-amber);
+  filter: var(--feel-icon);
+  image-rendering: auto;
+  transform: none;
+}
+
+html[data-player-skin="harvest"]:root :is(
+  .hud-icon-btn,
+  .hud-glyph-btn,
+  .hud-status-pill,
+  .hud-chip,
+  .hud-metric,
+  .hud-game-cluster,
+  .hud-game-chip,
+  .hud-model-chip--status,
+  .hud-agent-chip,
+  .hud-calm-pill,
+  .loot-profile-chip
+) {
+  color: var(--hv-ink);
+  border: 1px solid rgba(180, 83, 9, 0.28);
+  border-radius: var(--hv-r-chip);
+  background: var(--hv-paper);
+  box-shadow: inset 0 1px 0 rgba(254, 243, 199, 0.7), 0 2px 0 rgba(92, 51, 16, 0.1);
+  animation: none;
+}
+
+html[data-player-skin="harvest"]:root :is(.hud-icon-btn, .hud-glyph-btn):hover:not(:disabled) {
+  border-color: var(--hv-amber);
+  filter: brightness(1.03);
+}
+
+html[data-player-skin="harvest"]:root .tab-chip-bar {
+  background: color-mix(in srgb, var(--hv-paper-2) 88%, var(--hv-husk));
+  border-bottom: 1px solid rgba(180, 83, 9, 0.18);
+}
+
+html[data-player-skin="harvest"]:root .tab-chip,
+html[data-player-skin="harvest"]:root .pill,
+html[data-player-skin="harvest"]:root .seg-pill-btn,
+html[data-player-skin="harvest"]:root .pln-mode-chip,
+html[data-player-skin="harvest"]:root .app-subnav-pill,
+html[data-player-skin="harvest"]:root .tsk-day-chip {
+  border: 1px solid rgba(180, 83, 9, 0.22);
+  border-radius: var(--hv-r-chip);
+  background: var(--hv-paper);
+  color: var(--hv-ink-2);
+  font-family: var(--hv-font);
+  letter-spacing: 0.03em;
+  text-transform: none;
+  box-shadow: 0 2px 0 rgba(92, 51, 16, 0.1);
+}
+
+html[data-player-skin="harvest"]:root .tab-chip.active,
+html[data-player-skin="harvest"]:root .pill.active,
+html[data-player-skin="harvest"]:root .pill[aria-pressed="true"],
+html[data-player-skin="harvest"]:root .app-subnav-pill.active {
+  color: var(--hv-ink);
+  border-color: var(--hv-amber);
+  background: linear-gradient(180deg, var(--hv-gold-hot), var(--hv-gold) 62%, var(--hv-husk));
+  box-shadow: inset 0 1px 0 rgba(254, 243, 199, 0.7), 0 2px 0 var(--hv-soil);
+}
+
+/* ── 5 · Glyph — hoist and fly. Stake plus pennant. ─────────── */
+/* Glyphs may clip. This is the harvest flag, not a 🌽 disc. */
+
+html[data-player-skin="harvest"]:root :is(
+  .launcher-card-glyph,
+  .launcher-tile-glyph,
+  .nav-app-glyph,
+  .loot-skin-avatar,
+  .wp-skin-mark
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: none;
+  transform: none;
+  color: var(--hv-ink);
+  clip-path: polygon(
+    16% 6%, 26% 6%, 26% 32%, 92% 22%, 26% 50%, 26% 94%, 16% 94%
+  );
+  background:
+    linear-gradient(180deg, var(--hv-soil) 0 8%, var(--hv-stubble) 8% 100%) 0 0 / 28% 100% no-repeat,
+    linear-gradient(115deg, var(--hv-gold-hot), var(--hv-gold) 40%, var(--hv-amber) 78%, var(--hv-stalk));
+  box-shadow:
+    inset 0 1px 0 rgba(254, 243, 199, 0.45),
+    0 3px 0 var(--hv-soil);
+  filter: none;
+  animation: room-harvest-pennant 5.6s ease-in-out infinite;
+}
+
+html[data-player-skin="harvest"]:root .launcher-card-glyph::before,
+html[data-player-skin="harvest"]:root .launcher-tile-glyph::before,
+html[data-player-skin="harvest"]:root .loot-skin-avatar::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  left: 22%;
+  top: 38%;
+  width: 56%;
+  height: 2px;
+  background: var(--hv-stubble);
+}
+
+html[data-player-skin="harvest"]:root .launcher-card-glyph::after,
+html[data-player-skin="harvest"]:root .launcher-tile-glyph::after,
+html[data-player-skin="harvest"]:root .loot-skin-avatar::after {
+  content: "⚑";
+  position: absolute;
+  right: -6px;
+  bottom: -5px;
+  display: grid;
+  width: 15px;
+  height: 15px;
+  place-items: center;
+  border: 1px solid var(--hv-stubble);
+  border-radius: 37px 21px 29px 9px / 51px 13px 23px 17px;
+  background: var(--hv-twine);
+  color: var(--hv-amber);
+  font: 700 8px/1 var(--hv-figure), sans-serif;
+  box-shadow: 0 1px 0 var(--hv-soil);
+  clip-path: none;
+}
+
+html[data-player-skin="harvest"]:root .launcher-custom-app-emoji {
+  clip-path: polygon(
+    16% 6%, 26% 6%, 26% 32%, 92% 22%, 26% 50%, 26% 94%, 16% 94%
+  );
+  background: rgba(251, 191, 36, 0.45);
+  border: 1px solid rgba(180, 83, 9, 0.3);
+}
+
+html[data-player-skin="harvest"]:root .launcher-card-glyph svg,
+html[data-player-skin="harvest"]:root .launcher-tile-glyph svg {
+  filter: sepia(0.35) saturate(1.15) brightness(0.85);
+}
+
+/* ── 6 · Cards — sheaves on the field, not clay stamps ──────── */
+
+html[data-player-skin="harvest"]:root .launcher-card {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  outline: none;
+  clip-path: none !important;
+  border: 1px solid rgba(180, 83, 9, 0.26);
+  border-bottom: 3px solid var(--hv-stubble);
+  border-radius: var(--hv-r-card);
+  background:
+    var(--hv-husks-soft),
+    linear-gradient(180deg, #fffaf0, var(--hv-paper) 70%);
+  color: var(--hv-ink);
+  box-shadow: var(--feel-3d);
+  transform: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 180ms ease;
+}
+
+html[data-player-skin="harvest"]:root :is(
+  .card,
+  .hub-card,
+  .pln-rail-card,
+  .evt-card,
+  .tsk-row,
+  .task-row,
+  .hub-glance-item,
+  .page-intent,
+  .napkin-entry
+) {
+  border: 1px solid rgba(180, 83, 9, 0.22);
+  border-bottom: 2px solid var(--hv-stalk);
+  border-radius: var(--hv-r-plate);
+  background:
+    var(--hv-husks-soft),
+    var(--hv-paper);
+  color: var(--hv-ink);
+  box-shadow: inset 0 1px 0 rgba(254, 243, 199, 0.65), 0 4px 0 rgba(92, 51, 16, 0.1);
+}
+
+/* Twine at the waist — the binding, not a four-corner fastener. */
+html[data-player-skin="harvest"]:root .launcher-card::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  top: 46%;
+  height: 3px;
+  border-radius: 1px;
+  background: var(--hv-stubble);
+  opacity: 0.7;
+  box-shadow: 0 1px 0 var(--hv-twine);
+}
+
+html[data-player-skin="harvest"]:root .launcher-card::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 8px;
+  width: auto;
+  height: 3px;
+  aspect-ratio: auto;
+  border-radius: 0;
+  opacity: 0.45;
+  transform: none;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--hv-gold) 0 5px,
+    var(--hv-amber) 5px 7px,
+    transparent 7px 12px
+  );
+  background-color: transparent;
+}
+
+html[data-player-skin="harvest"]:root .launcher-card:hover,
+html[data-player-skin="harvest"]:root .launcher-card--focused {
+  transform: none;
+  border-color: rgba(180, 83, 9, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(254, 243, 199, 0.85),
+    0 3px 0 var(--hv-soil),
+    0 10px 16px rgba(92, 51, 16, 0.14);
+}
+
+html[data-player-skin="harvest"]:root .launcher-card:hover::after,
+html[data-player-skin="harvest"]:root .launcher-card--focused::after {
+  opacity: 0.9;
+}
+
+html[data-player-skin="harvest"]:root :is(.card, .hub-card):hover {
+  border-color: rgba(180, 83, 9, 0.45);
+}
+
+html[data-player-skin="harvest"]:root :is(.launcher-card-name, .launcher-tile-name) {
+  color: var(--hv-ink);
+  font-family: var(--hv-font);
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+html[data-player-skin="harvest"]:root :is(.launcher-card-intention, .launcher-card-sub, .launcher-card-stats) {
+  color: var(--hv-ink-2);
+}
+
+html[data-player-skin="harvest"]:root :is(.loot-skin-card, .loot-collection-card) {
+  border: 1px solid rgba(180, 83, 9, 0.26);
+  border-radius: var(--hv-r-card);
+  background: var(--hv-paper);
+  color: var(--hv-ink);
+}
+
+/* ── 7 · Buttons — a binding you pull taut ──────────────────── */
+
+html[data-player-skin="harvest"]:root button.primary,
+html[data-player-skin="harvest"]:root .primary,
+html[data-player-skin="harvest"]:root .page-intent-primary,
+html[data-player-skin="harvest"]:root .agent-pane-chat .agc-send {
+  position: relative;
+  border: 1px solid var(--hv-amber);
+  border-bottom: 3px solid var(--hv-stubble);
+  border-radius: var(--hv-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(254, 243, 199, 0.45), transparent 32%),
+    linear-gradient(180deg, var(--hv-gold-hot), var(--hv-gold) 55%, var(--hv-husk));
+  color: var(--hv-ink);
+  font-family: var(--hv-font);
+  font-weight: 750;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  text-shadow: 0 1px 0 rgba(254, 243, 199, 0.6);
+  box-shadow: var(--feel-3d);
+  animation: none;
+  transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+}
+
+html[data-player-skin="harvest"]:root button.primary::before,
+html[data-player-skin="harvest"]:root .agent-pane-chat .agc-send::before {
+  content: "⚑";
+  margin-right: 6px;
+  opacity: 0.7;
+  font-size: 0.85em;
+  color: var(--hv-stubble);
+}
+
+html[data-player-skin="harvest"]:root button.primary:hover:not(:disabled),
+html[data-player-skin="harvest"]:root .agent-pane-chat .agc-send:hover:not(:disabled) {
+  filter: brightness(1.04);
+  transform: none;
+}
+
+html[data-player-skin="harvest"]:root button.primary:active:not(:disabled),
+html[data-player-skin="harvest"]:root .agent-pane-chat .agc-send:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: var(--feel-3d-press);
+  animation: room-harvest-cinch 220ms ease-out 1;
+}
+
+html[data-player-skin="harvest"]:root :is(button.secondary, .ghost-btn, .pill) {
+  border: 1px solid rgba(180, 83, 9, 0.26);
+  border-bottom: 2px solid var(--hv-stalk);
+  border-radius: var(--hv-r-ctl);
+  background: var(--hv-paper);
+  color: var(--hv-ink-2);
+  font-family: var(--hv-font);
+  letter-spacing: 0.02em;
+  text-transform: none;
+  box-shadow: inset 0 1px 0 rgba(254, 243, 199, 0.6), 0 2px 0 rgba(92, 51, 16, 0.1);
+}
+
+html[data-player-skin="harvest"]:root button.secondary:hover:not(:disabled),
+html[data-player-skin="harvest"]:root .ghost-btn:hover:not(:disabled) {
+  border-color: var(--hv-amber);
+  color: var(--hv-ink);
+}
+
+html[data-player-skin="harvest"]:root #quick-capture-fab.quick-capture-fab {
+  background: linear-gradient(180deg, var(--hv-gold), var(--hv-amber)) !important;
+  color: var(--hv-ink) !important;
+  border-color: var(--hv-stubble) !important;
+  border-radius: var(--hv-r-card) !important;
+  box-shadow: 0 4px 0 var(--hv-soil) !important;
+}
+
+/* ── 8 · Empty / input / focus ──────────────────────────────── */
+
+/* Empty: a vacant row. Husk stripes, no shock, the stake pocket. */
+html[data-player-skin="harvest"]:root .empty-state {
+  position: relative;
+  border: 1px dashed rgba(180, 83, 9, 0.4);
+  border-left: 6px solid var(--hv-gold);
+  border-radius: var(--hv-r-plate);
+  background:
+    var(--hv-husks),
+    var(--hv-paper-2);
+  color: var(--hv-ink-2);
+  box-shadow:
+    inset 0 0 0 4px var(--hv-paper),
+    0 4px 0 rgba(92, 51, 16, 0.1);
+}
+
+html[data-player-skin="harvest"]:root .empty-state::before {
+  content: "⚑";
+  display: block;
+  margin-bottom: 8px;
+  color: var(--hv-amber);
+  font: 700 20px/1 var(--hv-figure), sans-serif;
+  opacity: 0.75;
+}
+
+html[data-player-skin="harvest"]:root .empty-state-title {
+  color: var(--hv-ink);
+  font-family: var(--hv-font);
+  letter-spacing: 0.04em;
+}
+
+html[data-player-skin="harvest"]:root .empty-state-body,
+html[data-player-skin="harvest"]:root .empty-state-hint {
+  color: var(--hv-ink-2);
+}
+
+/* Input: a furrow cut for seed, not a clay stamp slot. */
+html[data-player-skin="harvest"]:root :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]) {
+  border: 1px solid rgba(180, 83, 9, 0.3);
+  border-bottom: 2px solid var(--hv-amber);
+  border-radius: var(--hv-r-ctl);
+  background:
+    linear-gradient(180deg, rgba(92, 51, 16, 0.06), transparent 36%),
+    var(--hv-husks-soft),
+    var(--hv-paper);
+  color: var(--hv-ink);
+  caret-color: var(--hv-amber);
+  font-family: var(--hv-figure);
+  box-shadow: inset 0 2px 5px rgba(92, 51, 16, 0.1);
+}
+
+html[data-player-skin="harvest"]:root :is(input, textarea)::placeholder {
+  color: var(--hv-mute);
+  letter-spacing: 0.03em;
+}
+
+html[data-player-skin="harvest"]:root :is(input, textarea, select, .agc-input-zone, [contenteditable="true"]):focus,
+html[data-player-skin="harvest"]:root .agc-input-zone:focus-within {
+  border-color: var(--hv-gold);
+  outline: none;
+  box-shadow:
+    inset 0 2px 5px rgba(92, 51, 16, 0.1),
+    0 0 0 2px var(--hv-paper),
+    0 0 0 4px color-mix(in srgb, var(--hv-gold) 55%, transparent);
+}
+
+/* Focus is the pennant snap: gold fly, then the amber hoist. */
+html[data-player-skin="harvest"]:root :focus-visible {
+  outline: 2px solid var(--hv-gold);
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 5px var(--hv-paper),
+    0 0 0 6px var(--hv-amber);
+}
+
+html[data-player-skin="harvest"]:root :is(
+  .loot-shell-dialog,
+  .command-palette,
+  .napkin-capture-dialog,
+  .launcher-search-panel,
+  .wp-alarm-card,
+  dialog
+) {
+  border: 1px solid rgba(180, 83, 9, 0.34);
+  border-left: 8px solid var(--hv-gold);
+  border-radius: var(--hv-r-dialog);
+  background:
+    var(--hv-husks-soft),
+    var(--hv-paper);
+  color: var(--hv-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(254, 243, 199, 0.7),
+    0 8px 0 rgba(92, 51, 16, 0.12),
+    0 24px 40px rgba(92, 51, 16, 0.16);
+}
+
+html[data-player-skin="harvest"]:root .toast-item {
+  border: 1px solid var(--hv-amber);
+  border-radius: var(--hv-r-chip);
+  background: linear-gradient(135deg, var(--hv-gold), var(--hv-husk));
+  color: var(--hv-ink);
+  box-shadow: 0 3px 0 var(--hv-soil);
+  animation: room-harvest-cinch 0.7s ease-out 1;
+}
+
+html[data-player-skin="harvest"]:root :is(
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"]
+) {
+  border-color: #c4b48a;
+  background: #efe6cc;
+  color: #9a8860;
+  opacity: 0.58;
+  filter: grayscale(0.35) saturate(0.5);
+  box-shadow: none;
+  cursor: not-allowed;
+  animation: none !important;
+}
+
+html[data-player-skin="harvest"]:root ::selection {
+  background: color-mix(in srgb, var(--hv-gold) 45%, transparent);
+  color: var(--hv-ink);
+}
+
+html[data-player-skin="harvest"]:root * {
+  scrollbar-color: color-mix(in srgb, var(--hv-amber) 40%, transparent) transparent;
+}
+
+/* ── 9 · Quiet companions of a page-place room ──────────────── */
+
+html[data-player-skin="harvest"]:root .companion-launcher-orb {
+  border-radius: var(--hv-r-card);
+  border: 2px solid var(--hv-stubble);
+  background:
+    repeating-linear-gradient(
+      102deg,
+      #fde68a 0 3px,
+      #fbbf24 3px 6px,
+      #d97706 6px 8px
+    );
+  box-shadow: inset 0 1px 0 rgba(254, 243, 199, 0.6), 0 3px 0 var(--hv-soil);
+  animation: room-harvest-bind 9s ease-in-out infinite;
+}
+
+html[data-player-skin="harvest"]:root .agent-msg.assistant .agent-bubble {
+  border: 1px solid rgba(180, 83, 9, 0.2);
+  border-radius: var(--hv-r-card);
+  background: var(--hv-paper);
+  color: var(--hv-ink);
+}
+
+html[data-player-skin="harvest"]:root .agent-msg.user .agent-bubble {
+  border: 1px solid var(--hv-amber);
+  border-radius: 17px 11px 15px 5px / 25px 7px 13px 9px;
+  background: color-mix(in srgb, var(--hv-gold) 22%, var(--hv-paper));
+  color: var(--hv-ink);
+}
+
+html[data-player-skin="harvest"]:root[data-app-tab="Today"][data-skin-place~="page"] #main,
+html[data-player-skin="harvest"]:root[data-app-tab="Calendar"][data-skin-place~="page"] #main {
+  clip-path: none !important;
+  background:
+    var(--hv-husks-edge) 0 0 / 9px 100% no-repeat,
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 27px,
+      rgba(180, 83, 9, 0.08) 27px 28px
+    ),
+    var(--hv-paper-2) !important;
+}
+
+html[data-player-skin="harvest"]:root :is(.tdy-hour-cell, .cal-day, .cal-hour-cell) {
+  border: 1px solid rgba(180, 83, 9, 0.2);
+  border-radius: var(--hv-r-cell);
+  background: var(--hv-paper);
+  color: var(--hv-ink-2);
+}
+
+html[data-player-skin="harvest"]:root :is(.tdy-hour-painted, .cal-hour-painted, .cal-month-cell-today) {
+  border-color: var(--hv-amber);
+  background: color-mix(in srgb, var(--hv-gold) 32%, var(--hv-paper));
+  color: var(--hv-ink);
+  box-shadow: inset 3px 0 0 var(--hv-amber);
+}
+
+/* ── 10 · Motion — chaff falls, twine tautens, the fly lifts ── */
+
+@keyframes room-harvest-chaff {
+  0% { background-position: 0 0, 0 0, 0 0, 0 0; }
+  100% { background-position: 0 52px, 8px 36px, -6px 64px, 4px 22px; }
+}
+
+@keyframes room-harvest-bind {
+  0%, 100% { opacity: 0.14; filter: brightness(1); }
+  50% { opacity: 0.22; filter: brightness(1.04); }
+}
+
+@keyframes room-harvest-pennant {
+  0%, 100% { transform: rotate(0deg); }
+  40% { transform: rotate(4deg); }
+  62% { transform: rotate(-2deg); }
+}
+
+@keyframes room-harvest-cinch {
+  0%, 100% { transform: rotate(-1.2deg); }
+  50% { transform: rotate(1.4deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-player-skin="harvest"]:root *,
+  html[data-player-skin="harvest"]:root *::before,
+  html[data-player-skin="harvest"]:root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  html[data-player-skin="harvest"]:root .launcher-card:hover,
+  html[data-player-skin="harvest"]:root .launcher-card--focused,
+  html[data-player-skin="harvest"]:root button.primary:hover:not(:disabled) {
+    transform: none;
+  }
+}
